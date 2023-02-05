@@ -1,0 +1,43 @@
+enum EventPermissions {
+  SEND_TICKETS
+  SCAN_TICKETS
+}
+
+type Job @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  untitledfield: EventPermissions
+}
+
+type Ticket @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: ID! @index(name: "byUser")
+  eventID: ID! @index(name: "byEvent")
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  email: AWSEmail!
+  name: String!
+  familyName: String!
+  Tickets: [Ticket] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+type Event @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  description: String
+  startDate: AWSDate!
+  startTime: AWSTime!
+  finishDate: AWSDate!
+  finishTime: AWSTime!
+  yearMonth: String!
+  address: String!
+  minAge: Int
+  maxAssistants: Int
+  currentAssistants: Int!
+  contactNumber: String
+  images: [AWSURL!]
+  needsCode: Boolean
+  Tickets: [Ticket] @hasMany(indexName: "byEvent", fields: ["id"])
+  Admin: User! @hasOne
+}

@@ -21,7 +21,12 @@ IconThemeData navBarIconThemeData(Set<MaterialState> states) {
 final dark_theme = ThemeData(
   primaryColor: Color.fromRGBO(255, 0, 255, 1),
   primarySwatch: primaryswatchcolor,
-  errorColor: Color.fromRGBO(237, 67, 55, 1),
+  colorScheme: ColorScheme.fromSwatch(
+    backgroundColor: Color.fromRGBO(16, 16, 16, 1),
+    primarySwatch: primaryswatchcolor,
+    cardColor: Color.fromRGBO(33, 33, 33, 1),
+    errorColor: Color.fromARGB(237, 67, 55, 1),
+  ),
   fontFamily: "Nunito",
   scaffoldBackgroundColor: Color.fromRGBO(16, 16, 16, 1),
   cardColor: Color.fromRGBO(33, 33, 33, 1),
@@ -110,7 +115,12 @@ final dark_theme = ThemeData(
     labelTextStyle: MaterialStateProperty.resolveWith(navBarTextStyle),
     iconTheme: MaterialStateProperty.resolveWith(navBarIconThemeData),
   ),
-  // useMaterial3: true,
+  tabBarTheme: TabBarTheme(
+    labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+    labelColor: Colors.white,
+    unselectedLabelColor: Colors.white,
+  ),
+  useMaterial3: true,
 );
 const MaterialColor primaryswatchcolor =
     MaterialColor(_primaryswatchcolorPrimaryValue, <int, Color>{

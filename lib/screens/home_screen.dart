@@ -32,7 +32,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: (() {
-                    final args = EventCategoriesOverviewScreenArgs(id: event_categories[index].id);
+                    final args = EventCategoriesOverviewScreenArgs(
+                      id: event_categories[index].id,
+                    );
                     context.goNamed(EventCategoriesOverviewScreen.name, params: args.params());
                   }),
                   style: TextButton.styleFrom(

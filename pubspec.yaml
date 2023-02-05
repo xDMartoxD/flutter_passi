@@ -50,6 +50,12 @@ dependencies:
   intl: ^0.18.0
   google_fonts: ^3.0.1
   google_maps_flutter: ^2.2.3-nullsafety
+  amplify_flutter: ^0.5.1
+  amplify_auth_cognito: ^0.5.1
+  amplify_core: ^0.5.1
+  amplify_api: ^0.5.1
+  amplify_datastore: ^0.5.1
+  amplify_storage_s3: ^0.5.1
 
 dev_dependencies:
   flutter_test:

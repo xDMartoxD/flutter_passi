@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/event_details_screen.dart';
-import '../models/screen_args/event_detail_sreen_args.dart';
+import '../models/screen_args/event_detail_screen_args.dart';
 
 class EventItem extends StatelessWidget {
   final String imageUrl;
@@ -22,10 +22,10 @@ class EventItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: (() => context.goNamed(
-                  EventDetailsScreen.name,
-                  queryParams: EventDetailScreenArgs(id: id, imageUrl: imageUrl).queryParams(),
-                )),
+            onTap: () {
+              final args = EventDetailScreenArgs(id: id, imageUrl: imageUrl);
+              context.goNamed(EventDetailsScreen.name, queryParams: args.queryParams());
+            },
             child: Container(
               height: 150,
               width: 150,

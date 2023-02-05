@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:go_router/go_router.dart";
 
-import '../models/screen_args/event_detail_sreen_args.dart';
+import '../models/screen_args/event_detail_screen_args.dart';
 import '../screens/event_details_screen.dart';
 
 class EventItemLarge extends StatelessWidget {
@@ -27,19 +27,16 @@ class EventItemLarge extends StatelessWidget {
               width: double.infinity,
               child: AspectRatio(
                 aspectRatio: 1,
-                child: Hero(
-                  tag: id,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.network(
-                      imageUrl,
-                      fit: BoxFit.cover,
-                    ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
-            Divider(),
+            SizedBox(height: 20),
             Text(
               "Nombre del Evento",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -60,9 +57,7 @@ class EventItemLarge extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
-            Divider(
-              height: 40,
-            )
+            SizedBox(height: 40),
           ],
         ),
       ),

@@ -74,6 +74,7 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
   void dispose() {
     _scrollableController.removeListener(_scrollableControllerListener);
     _scrollableController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -90,6 +91,7 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
         children: [
           AppMapView(),
           Positioned.fill(
+            top: 0,
             child: DraggableScrollableSheet(
               maxChildSize: 1,
               initialChildSize: 1,
