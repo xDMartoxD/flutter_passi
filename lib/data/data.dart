@@ -1,4 +1,3 @@
-import '../models/event.dart';
 import '../models/event_category.dart';
 import 'json_data.dart';
 

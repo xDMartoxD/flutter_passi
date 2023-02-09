@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:passi_app/models/screen_args/event_checkout_screen_args.dart';
 import 'package:passi_app/screens/event_checkout_screen.dart';
+import 'package:passi_app/widgets/expandable_text.dart';
 import 'package:passi_app/widgets/app_map_view.dart';
 
 class EventDetailsScreen extends StatelessWidget {
@@ -30,7 +31,6 @@ class EventDetailsScreen extends StatelessWidget {
                 ),
           ),
           onPressed: () {
-            print("ID $id");
             final args = EventCheckoutScreenArgs(id: id);
             context.goNamed(
               EventCheckoutScreen.name,
@@ -95,7 +95,7 @@ class EventDetailsScreen extends StatelessWidget {
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
+                child: ExpandableText(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
               ),
               SizedBox(height: 80)

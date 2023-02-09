@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 TextStyle navBarTextStyle(Set<MaterialState> states) {
   if (states.contains(MaterialState.selected)) {
-    return TextStyle(color: Colors.white, fontWeight: FontWeight.w500);
+    return const TextStyle(color: Colors.white, fontWeight: FontWeight.w500);
   } else {
     return TextStyle(color: Colors.grey[400]);
   }
@@ -12,25 +12,25 @@ TextStyle navBarTextStyle(Set<MaterialState> states) {
 
 IconThemeData navBarIconThemeData(Set<MaterialState> states) {
   if (states.contains(MaterialState.selected)) {
-    return IconThemeData(color: Colors.white);
+    return const IconThemeData(color: Colors.white);
   } else {
     return IconThemeData(color: Colors.grey[400]);
   }
 }
 
 final dark_theme = ThemeData(
-  primaryColor: Color.fromRGBO(255, 0, 255, 1),
+  primaryColor: const Color.fromRGBO(255, 0, 255, 1),
   primarySwatch: primaryswatchcolor,
   colorScheme: ColorScheme.fromSwatch(
     backgroundColor: Color.fromRGBO(16, 16, 16, 1),
     primarySwatch: primaryswatchcolor,
-    cardColor: Color.fromRGBO(33, 33, 33, 1),
-    errorColor: Color.fromARGB(237, 67, 55, 1),
+    cardColor: const Color.fromRGBO(33, 33, 33, 1),
+    errorColor: const Color.fromARGB(237, 67, 55, 1),
   ),
   fontFamily: "Nunito",
-  scaffoldBackgroundColor: Color.fromRGBO(16, 16, 16, 1),
-  cardColor: Color.fromRGBO(33, 33, 33, 1),
-  appBarTheme: AppBarTheme(
+  scaffoldBackgroundColor: const Color.fromRGBO(16, 16, 16, 1),
+  cardColor: const Color.fromRGBO(33, 33, 33, 1),
+  appBarTheme: const AppBarTheme(
     foregroundColor: Colors.white,
     backgroundColor: Color.fromRGBO(33, 33, 33, 1),
     elevation: 5,
@@ -48,21 +48,19 @@ final dark_theme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       disabledBackgroundColor: Colors.grey[700],
-      disabledForegroundColor: Color.fromRGBO(16, 16, 16, 1),
-      shape: StadiumBorder(),
-      textStyle: TextStyle(
-        fontWeight: FontWeight.w600,
-      ),
+      disabledForegroundColor: const Color.fromRGBO(16, 16, 16, 1),
+      shape: const StadiumBorder(),
+      textStyle: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
     ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       disabledBackgroundColor: Colors.grey[700],
-      disabledForegroundColor: Color.fromRGBO(16, 16, 16, 1),
-      backgroundColor: Color.fromRGBO(33, 33, 33, 1),
-      shape: StadiumBorder(),
-      side: BorderSide(color: Color.fromRGBO(255, 0, 255, 1)),
-      textStyle: TextStyle(
+      disabledForegroundColor: const Color.fromRGBO(16, 16, 16, 1),
+      backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
+      shape: const StadiumBorder(),
+      side: const BorderSide(color: Color.fromRGBO(255, 0, 255, 1)),
+      textStyle: const TextStyle(
         fontWeight: FontWeight.w600,
       ),
     ),
@@ -70,9 +68,9 @@ final dark_theme = ThemeData(
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       disabledBackgroundColor: Colors.grey[700],
-      disabledForegroundColor: Color.fromRGBO(16, 16, 16, 1),
-      shape: StadiumBorder(),
-      textStyle: TextStyle(
+      disabledForegroundColor: const Color.fromRGBO(16, 16, 16, 1),
+      shape: const StadiumBorder(),
+      textStyle: const TextStyle(
         fontWeight: FontWeight.w600,
       ),
     ),
@@ -107,7 +105,7 @@ final dark_theme = ThemeData(
     hintStyle: TextStyle(color: Colors.grey),
     errorStyle: TextStyle(color: Color.fromRGBO(237, 67, 55, 1)),
   ),
-  iconTheme: IconThemeData(
+  iconTheme: const IconThemeData(
     color: Colors.white,
   ),
   navigationBarTheme: NavigationBarThemeData(
@@ -115,10 +113,15 @@ final dark_theme = ThemeData(
     labelTextStyle: MaterialStateProperty.resolveWith(navBarTextStyle),
     iconTheme: MaterialStateProperty.resolveWith(navBarIconThemeData),
   ),
-  tabBarTheme: TabBarTheme(
+  tabBarTheme: const TabBarTheme(
     labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
     labelColor: Colors.white,
     unselectedLabelColor: Colors.white,
+  ),
+  checkboxTheme: const CheckboxThemeData(
+    side: BorderSide(
+      color: Colors.white,
+    ),
   ),
   useMaterial3: true,
 );

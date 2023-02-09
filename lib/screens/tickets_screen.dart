@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
+import 'package:qr_flutter/qr_flutter.dart';
 
 class TicketsScreen extends StatefulWidget {
   final TabController tabController;
@@ -52,7 +52,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                       ),
                       Positioned.fill(
                           child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           gradient: LinearGradient(
                             colors: [Colors.transparent, Colors.black],
                             begin: Alignment.topCenter,
@@ -98,25 +98,24 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                   return Stack(
                     children: [
                       Positioned.fill(
-                        child: Image.network(
-                          "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
-                          fit: BoxFit.cover,
+                        child: Container(
+                          child: Image.network(
+                            "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Positioned.fill(
                         child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
+                          decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               colors: [Colors.transparent, Colors.black],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                             ),
                           ),
-                          child: Card(
-                              child: Column(
-                            children: [],
-                          )),
+                          child: Ticket(),
                         ),
                       )
                     ],
@@ -124,7 +123,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 },
                 onPageChanged: (value) {
                   setState(() {
-                    _tabController1.index = value;
+                    _tabController2.index = value;
                   });
                 },
               ),
@@ -136,7 +135,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 child: RotatedBox(
                   quarterTurns: 1,
                   child: TabPageSelector(
-                    controller: _tabController1,
+                    controller: _tabController2,
                     color: Colors.grey,
                     selectedColor: Colors.white,
                     borderStyle: BorderStyle.none,
@@ -164,7 +163,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                       ),
                       Positioned.fill(
                           child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           gradient: LinearGradient(
                             colors: [Colors.transparent, Colors.black],
                             begin: Alignment.topCenter,
@@ -177,7 +176,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 },
                 onPageChanged: (value) {
                   setState(() {
-                    _tabController1.index = value;
+                    _tabController3.index = value;
                   });
                 },
               ),
@@ -189,7 +188,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 child: RotatedBox(
                   quarterTurns: 1,
                   child: TabPageSelector(
-                    controller: _tabController1,
+                    controller: _tabController3,
                     color: Colors.grey,
                     selectedColor: Colors.white,
                     borderStyle: BorderStyle.none,
@@ -201,6 +200,148 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
           ],
         ),
       ],
+    );
+  }
+}
+
+class Ticket extends StatelessWidget {
+  const Ticket({
+    super.key,
+  });
+
+  showQr(BuildContext context) {
+    showModalBottomSheet<void>(
+        elevation: 5,
+        context: context,
+        builder: (context) {
+          return Center(
+            child: QrImage(
+              data: "1234567890",
+              version: QrVersions.auto,
+              size: MediaQuery.of(context).size.width * .8,
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+            ),
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12.0,
+            horizontal: 20.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      "Iggy's-SAVAGE",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text(
+                    "7:00 PM",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[400],
+                        ),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "+18",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.grey,
+                        ),
+                  ),
+                  Text(
+                    "2022-04-06",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Text(
+                "Evento",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Text(
+                "Nombre del Evento",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Lugar y Direccion",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Text(
+                "Direccion del Evento",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Asistencia",
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Checkbox(value: false, onChanged: (value) {})
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              InkWell(
+                onTap: () => showQr(context),
+                child: Center(
+                    child: QrImage(
+                  data: "1234567890",
+                  version: QrVersions.auto,
+                  size: 120.0,
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.white,
+                )),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

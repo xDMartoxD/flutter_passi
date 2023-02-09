@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "98317691272",
+    "project_id": "passi-333817",
+    "storage_bucket": "passi-333817.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98317691272:android:1f61167acf81fcd303b23d",
+        "android_client_info": {
+          "package_name": "com.example.passi_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98317691272-gupr4idve1m2duakp04eb5lc7bb3chpv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7wO1ZF6rmtX0olYzcleta-IDzIAyhp-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98317691272-6956ojsblrc5qsp6i1nhrgcrg5ldd6gf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
