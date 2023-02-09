@@ -1,0 +1,60 @@
+const AWS = require('aws-sdk')
+const axios = require('axios')
+
+const fetchTransaction = async (body) => {
+	return axios
+		.post('https://production.wompi.co/v1/payment_sources', body, {
+			headers: {
+				Authorization: process.env.AUTH,
+			},
+		})
+		.then((response) => response.data)
+		.catch((err) => {
+			console.log(err)
+			return new Error('error al comunicarse con wompi')
+		})
+}
+
+const updatePaymentMethod = async (docClient, data, id) => {
+	const { id: paymentSourceID, token, type, status, customer_email } = data
+	return docClient
+		.update({
+			TableName: process.env.PAYMENTMETHODTABLE,
+			Key: {
+				id,
+			},
+			UpdateExpression: `set #status = :status, #paymentSourceID = :paymentSourceID, #token = :token, #type = :type, #customer_email = :customer_email`,
+			ExpressionAttributeValues: {
+				':status': status,
+				':paymentSourceID': paymentSourceID,
+				':token': token,
+				':type': type,
+				':customer_email': customer_email,
+			},
+			ExpressionAttributeNames: {
+				'#status': 'status',
+				'#paymentSourceID': 'paymentSourceID',
+				'#token': 'token',
+				'#type': 'type',
+				'#customer_email': 'customer_email',
+			},
+			ReturnValues: 'ALL_NEW',
+		})
+		.promise()
+}
+
+/**
+ * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
+ */
+exports.handler = async (event) => {
+	const docClient = new AWS.DynamoDB.DocumentClient()
+	const { arguments: args } = event
+	try {
+		const { data } = await fetchTransaction(args)
+		const { Attributes } = await updatePaymentMethod(docClient, data, args.id)
+		return 'OK'
+	} catch (err) {
+		console.log('ERROR', err)
+		return new Error('Ocurrio un error en la base de datos')
+	}
+}

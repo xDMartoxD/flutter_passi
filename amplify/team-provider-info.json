@@ -1,0 +1,54 @@
+{
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-passi-prod-143527-authRole",
+      "UnauthRoleArn": "arn:aws:iam::954573579519:role/amplify-passi-prod-143527-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::954573579519:role/amplify-passi-prod-143527-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-passi-prod-143527-deployment",
+      "UnauthRoleName": "amplify-passi-prod-143527-unauthRole",
+      "StackName": "amplify-passi-prod-143527",
+      "StackId": "arn:aws:cloudformation:us-east-1:954573579519:stack/amplify-passi-prod-143527/9672db30-98cd-11ec-94ce-1290edeb2569",
+      "AmplifyAppId": "d32iatki73wyls"
+    },
+    "categories": {
+      "auth": {
+        "appamplify02fef6e8": {}
+      },
+      "storage": {
+        "passiStorage": {}
+      },
+      "function": {
+        "RefreshTransactionStatus": {
+          "deploymentBucketName": "amplify-passi-prod-143527-deployment",
+          "s3Key": "amplify-builds/RefreshTransactionStatus-6e544a426b2b446e4571-build.zip"
+        },
+        "CreatePaymentSource": {
+          "deploymentBucketName": "amplify-passi-prod-143527-deployment",
+          "s3Key": "amplify-builds/CreatePaymentSource-635931466a772b44562f-build.zip"
+        },
+        "passiModelsLayer": {
+          "deploymentBucketName": "amplify-passi-prod-143527-deployment",
+          "s3Key": "amplify-builds/passiModelsLayer-LambdaLayerVersionfbb77b09-build.zip"
+        },
+        "passiWompiLayer": {
+          "deploymentBucketName": "amplify-passi-prod-143527-deployment",
+          "s3Key": "amplify-builds/passiWompiLayer-LambdaLayerVersion3ea5a0ea-build.zip"
+        },
+        "ConfirmNequiPayment": {
+          "deploymentBucketName": "amplify-passi-prod-143527-deployment",
+          "s3Key": "amplify-builds/ConfirmNequiPayment-4e4165754c464a424862-build.zip"
+        },
+        "CreateUserDynamo": {},
+        "CreateEntrance": {},
+        "CreateFreeEntrance": {},
+        "CreateEntrancePSE": {},
+        "CreateEntranceBusinessLogic": {},
+        "CreateEntracePayment": {},
+        "CreateEntranceDB": {},
+        "CreateEntranceNequiDB": {},
+        "CreateEntranceNequiBusinessLogic": {}
+      }
+    }
+  }
+}

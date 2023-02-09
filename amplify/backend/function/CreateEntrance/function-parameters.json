@@ -1,0 +1,18 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "passiModelsLayer",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true,
+      "env": "prod"
+    },
+    {
+      "type": "ProjectLayer",
+      "resourceName": "passiWompiLayer",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true,
+      "env": "prod"
+    }
+  ]
+}
