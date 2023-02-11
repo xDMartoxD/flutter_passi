@@ -1,484 +1,484 @@
 type Mutation {
-	createEntrance(
-		acceptanceToken: String
-		installments: Int
-		eventID: ID!
-		code: String
-		ticketCategoriesID: [String!]!
-	): CreateEntranceResponse!
-		@function(name: "CreateEntranceBusinessLogic-${env}")
-		@function(name: "CreateEntracePayment-${env}")
-		@function(name: "CreateEntranceDB-${env}")
-		@auth(rules: [{ allow: private }])
-	confirmNequiPayment(
-		eventID: String!
-		code: String
-		ticketCategoriesID: [String!]!
-		paymentID: String!
-	): CreateEntranceResponse!
-		@function(name: "CreateEntranceNequiBusinessLogic-${env}")
-		@function(name: "CreateEntranceNequiDB-${env}")
-		@auth(rules: [{ allow: private }])
-	createEntrancePSE(
-		acceptanceToken: String!
-		customerEmail: String!
-		userLegalIdType: String!
-		userLegalId: String!
-		eventID: ID!
-		discountCode: String
-		financialInstitutionCode: String!
-	): String!
-		@function(name: "CreateEntrancePSE-${env}")
-		@auth(rules: [{ allow: private }])
-	tokenizeCard(
-		number: String!
-		exp_month: String!
-		exp_year: String!
-		cvc: String!
-		card_holder: String!
-	): TokenCardRes!
-		@http(
-			url: "https://production.wompi.co/v1/tokens/cards"
-			headers: [
-				{
-					key: "Authorization"
-					value: "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
-				}
-			]
-			method: POST
-		)
-		@auth(rules: [{ allow: private }])
-	tokenizeNequi(phone_number: String!): TokenNequiRes!
-		@http(
-			url: "https://production.wompi.co/v1/tokens/nequi"
-			headers: [
-				{
-					key: "Authorization"
-					value: "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
-				}
-			]
-			method: POST
-		)
-		@auth(rules: [{ allow: private }])
-	createPaymentSource(
-		type: PaymentMethodEnum!
-		token: String!
-		customer_email: String!
-		acceptance_token: String!
-		id: ID!
-	): String!
-		@function(name: "CreatePaymentSource-${env}")
-		@auth(rules: [{ allow: private }])
+  createEntrance(
+    acceptanceToken: String
+    installments: Int
+    eventID: ID!
+    code: String
+    ticketCategoriesID: [String!]!
+  ): CreateEntranceResponse!
+    @function(name: "CreateEntranceBusinessLogic-${env}")
+    @function(name: "CreateEntracePayment-${env}")
+    @function(name: "CreateEntranceDB-${env}")
+    @auth(rules: [{ allow: private }])
+  confirmNequiPayment(
+    eventID: String!
+    code: String
+    ticketCategoriesID: [String!]!
+    paymentID: String!
+  ): CreateEntranceResponse!
+    @function(name: "CreateEntranceNequiBusinessLogic-${env}")
+    @function(name: "CreateEntranceNequiDB-${env}")
+    @auth(rules: [{ allow: private }])
+  createEntrancePSE(
+    acceptanceToken: String!
+    customerEmail: String!
+    userLegalIdType: String!
+    userLegalId: String!
+    eventID: ID!
+    discountCode: String
+    financialInstitutionCode: String!
+  ): String!
+    @function(name: "CreateEntrancePSE-${env}")
+    @auth(rules: [{ allow: private }])
+  tokenizeCard(
+    number: String!
+    exp_month: String!
+    exp_year: String!
+    cvc: String!
+    card_holder: String!
+  ): TokenCardRes!
+    @http(
+      url: "https://production.wompi.co/v1/tokens/cards"
+      headers: [
+        {
+          key: "Authorization"
+          value: "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
+        }
+      ]
+      method: POST
+    )
+    @auth(rules: [{ allow: private }])
+  tokenizeNequi(phone_number: String!): TokenNequiRes!
+    @http(
+      url: "https://production.wompi.co/v1/tokens/nequi"
+      headers: [
+        {
+          key: "Authorization"
+          value: "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
+        }
+      ]
+      method: POST
+    )
+    @auth(rules: [{ allow: private }])
+  createPaymentSource(
+    type: PaymentMethodEnum!
+    token: String!
+    customer_email: String!
+    acceptance_token: String!
+    id: ID!
+  ): String!
+    @function(name: "CreatePaymentSource-${env}")
+    @auth(rules: [{ allow: private }])
 }
 
 type Query {
-	refreshTransactionStatus(ticketID: String!): Transaction!
-		@function(name: "RefreshTransactionStatus-${env}")
-		@auth(rules: [{ allow: private }])
-	checkNequiTokenStatus: TokenNequiRes!
-		@http(
-			url: "https://production.wompi.co/v1/tokens/nequi/:id"
-			headers: [
-				{
-					key: "Authorization"
-					value: "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
-				}
-			]
-			method: GET
-		)
-		@auth(rules: [{ allow: private }])
-	financialInstitutions: FinancialInstitutionResponse
-		@http(
-			url: "https://production.wompi.co/v1/pse/financial_institutions"
-			headers: [
-				{
-					key: "Authorization"
-					value: "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
-				}
-			]
-			method: GET
-		)
-		@auth(rules: [{ allow: private }])
+  refreshTransactionStatus(ticketID: String!): Transaction!
+    @function(name: "RefreshTransactionStatus-${env}")
+    @auth(rules: [{ allow: private }])
+  checkNequiTokenStatus: TokenNequiRes!
+    @http(
+      url: "https://production.wompi.co/v1/tokens/nequi/:id"
+      headers: [
+        {
+          key: "Authorization"
+          value: "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
+        }
+      ]
+      method: GET
+    )
+    @auth(rules: [{ allow: private }])
+  financialInstitutions: FinancialInstitutionResponse
+    @http(
+      url: "https://production.wompi.co/v1/pse/financial_institutions"
+      headers: [
+        {
+          key: "Authorization"
+          value: "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
+        }
+      ]
+      method: GET
+    )
+    @auth(rules: [{ allow: private }])
 }
 type FinancialInstitutionResponse {
-	data: [FinancialInstitution!] @auth(rules: [{ allow: private }])
+  data: [FinancialInstitution!] @auth(rules: [{ allow: private }])
 }
 type FinancialInstitution {
-	financial_institution_code: String! @auth(rules: [{ allow: private }])
-	financial_institution_name: String! @auth(rules: [{ allow: private }])
+  financial_institution_code: String! @auth(rules: [{ allow: private }])
+  financial_institution_name: String! @auth(rules: [{ allow: private }])
 }
 
 type CreateEntranceResponse {
-	data: String @auth(rules: [{ allow: private }])
-	errors: String @auth(rules: [{ allow: private }])
+  data: String @auth(rules: [{ allow: private }])
+  errors: String @auth(rules: [{ allow: private }])
 }
 
 enum CurrenciesEnum {
-	COP
+  COP
 }
 
 type TokenCardRes {
-	status: String! @auth(rules: [{ allow: private }])
-	data: TokenCardResData @auth(rules: [{ allow: private }])
+  status: String! @auth(rules: [{ allow: private }])
+  data: TokenCardResData @auth(rules: [{ allow: private }])
 }
 
 type TokenNequiRes {
-	data: TokenNequiResData! @auth(rules: [{ allow: private }])
+  data: TokenNequiResData! @auth(rules: [{ allow: private }])
 }
 
 type TokenNequiResData {
-	id: ID! @auth(rules: [{ allow: private }])
-	status: String! @auth(rules: [{ allow: private }])
-	phone_number: String! @auth(rules: [{ allow: private }])
-	name: String @auth(rules: [{ allow: private }])
+  id: ID! @auth(rules: [{ allow: private }])
+  status: String! @auth(rules: [{ allow: private }])
+  phone_number: String! @auth(rules: [{ allow: private }])
+  name: String @auth(rules: [{ allow: private }])
 }
 
 type TokenCardResData {
-	id: ID! @auth(rules: [{ allow: private }])
-	created_at: String! @auth(rules: [{ allow: private }])
-	brand: BrandEnum! @auth(rules: [{ allow: private }])
-	name: String! @auth(rules: [{ allow: private }])
-	last_four: String! @auth(rules: [{ allow: private }])
-	bin: String! @auth(rules: [{ allow: private }])
-	exp_year: String! @auth(rules: [{ allow: private }])
-	exp_month: String! @auth(rules: [{ allow: private }])
-	card_holder: String! @auth(rules: [{ allow: private }])
-	expires_at: String! @auth(rules: [{ allow: private }])
+  id: ID! @auth(rules: [{ allow: private }])
+  created_at: String! @auth(rules: [{ allow: private }])
+  brand: BrandEnum! @auth(rules: [{ allow: private }])
+  name: String! @auth(rules: [{ allow: private }])
+  last_four: String! @auth(rules: [{ allow: private }])
+  bin: String! @auth(rules: [{ allow: private }])
+  exp_year: String! @auth(rules: [{ allow: private }])
+  exp_month: String! @auth(rules: [{ allow: private }])
+  card_holder: String! @auth(rules: [{ allow: private }])
+  expires_at: String! @auth(rules: [{ allow: private }])
 }
 
 type Job
-	@model
-	@auth(
-		rules: [
-			{ allow: private, operations: [read] }
-			{ allow: public, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-		]
-	) {
-	id: ID! @primaryKey
-	registeredTickets: [Ticket!]
-		@hasMany(indexName: "byJob", fields: ["id"])
-		@auth(
-			rules: [
-				{ allow: owner, ownerField: "userID", operations: [update] }
-				{ allow: private, operations: [read] }
-				{ allow: public, operations: [read] }
-				{ allow: groups, groups: ["Admin"] }
-			]
-		)
-	event: Event! @belongsTo(fields: ["eventID"])
-	eventID: ID! @index(name: "byEvent", queryField: "jobsByEvent")
-	user: User! @belongsTo(fields: ["userID"])
-	userID: ID! @index(name: "byUser", queryField: "jobsByUser")
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: public, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  registeredTickets: [Ticket!]
+    @hasMany(indexName: "byJob", fields: ["id"])
+    @auth(
+      rules: [
+        { allow: owner, ownerField: "userID", operations: [update] }
+        { allow: private, operations: [read] }
+        { allow: public, operations: [read] }
+        { allow: groups, groups: ["Admin"] }
+      ]
+    )
+  event: Event! @belongsTo(fields: ["eventID"])
+  eventID: ID! @index(name: "byEvent", queryField: "jobsByEvent")
+  user: User! @belongsTo(fields: ["userID"])
+  userID: ID! @index(name: "byUser", queryField: "jobsByUser")
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type S3Object {
-	bucket: String!
-	region: String!
-	key: String!
+  bucket: String!
+  region: String!
+  key: String!
 }
 
 type User
-	@model
-	@auth(
-		rules: [
-			{ allow: owner, ownerField: "id", operations: [create, update, delete] }
-			{ allow: private, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: public, operations: [read] }
-		]
-	) {
-	id: ID! @primaryKey
-	email: AWSEmail!
-	name: String!
-	avatar: S3Object!
-	tickets: [Ticket!] @hasMany(indexName: "byUser", fields: ["id"])
-	jobs: [Job!] @hasMany(indexName: "byUser", fields: ["id"])
-	codes: [DiscountCode!] @hasMany(indexName: "byUser", fields: ["id"])
-	paymentMethods: [PaymentMethod!] @hasMany(indexName: "byUser", fields: ["id"])
-	selectedPaymentMethod: PaymentMethod @hasOne
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+  @model
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "id", operations: [create, update, delete] }
+      { allow: private, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  email: AWSEmail!
+  name: String!
+  avatar: S3Object!
+  tickets: [Ticket!] @hasMany(indexName: "byUser", fields: ["id"])
+  jobs: [Job!] @hasMany(indexName: "byUser", fields: ["id"])
+  codes: [DiscountCode!] @hasMany(indexName: "byUser", fields: ["id"])
+  paymentMethods: [PaymentMethod!] @hasMany(indexName: "byUser", fields: ["id"])
+  selectedPaymentMethod: PaymentMethod @hasOne
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type PaymentMethod
-	@model
-	@auth(
-		rules: [
-			{ allow: owner, operations: [read, create, delete], ownerField: "userID" }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: public, operations: [read] }
-			{ allow: private, operations: [read] }
-		]
-	) {
-	id: ID! @primaryKey
-	userID: ID! @index(name: "byUser", queryField: "paymentMethodsByUser")
-	user: User! @belongsTo(fields: ["userID"])
-	type: PaymentMethodEnum!
-	status: String
-	data: PaymentMethodData!
-	token: String!
-	customer_email: String!
-	acceptance_token: String
-	paymentSourceID: Int
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [read, create, delete], ownerField: "userID" }
+      { allow: groups, groups: ["Admin"] }
+      { allow: public, operations: [read] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  userID: ID! @index(name: "byUser", queryField: "paymentMethodsByUser")
+  user: User! @belongsTo(fields: ["userID"])
+  type: PaymentMethodEnum!
+  status: String
+  data: PaymentMethodData!
+  token: String!
+  customer_email: String!
+  acceptance_token: String
+  paymentSourceID: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 enum PaymentMethodEnum {
-	CARD
-	NEQUI
-	PSE
-	BANCOLOMBIA_TRANSFER
-	BANCOLOMBIA_COLLECT
+  CARD
+  NEQUI
+  PSE
+  BANCOLOMBIA_TRANSFER
+  BANCOLOMBIA_COLLECT
 }
 enum BrandEnum {
-	VISA
-	AMEX
-	MASTERCARD
-	DINERS
+  VISA
+  AMEX
+  MASTERCARD
+  DINERS
 }
 type PaymentMethodData {
-	id: ID!
-	status: String
-	phone_number: String
-	name: String
-	created_at: String
-	brand: BrandEnum
-	last_four: String
-	bin: String
-	exp_year: String
-	exp_month: String
-	card_holder: String
-	expires_at: String
+  id: ID!
+  status: String
+  phone_number: String
+  name: String
+  created_at: String
+  brand: BrandEnum
+  last_four: String
+  bin: String
+  exp_year: String
+  exp_month: String
+  card_holder: String
+  expires_at: String
 }
 type Ticket
-	@model(subscriptions: { level: public })
-	@auth(
-		rules: [
-			{ allow: owner, operations: [read], ownerField: "userID" }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: public, operations: [read] }
-			{ allow: private, operations: [read] }
-		]
-	) {
-	id: ID!
-		@primaryKey
-		@auth(
-			rules: [
-				{ allow: private, operations: [read] }
-				{ allow: groups, groups: ["Admin"] }
-				{ allow: public, operations: [read] }
-			]
-		)
-	Event: Event! @belongsTo(fields: ["eventID"])
-	eventID: ID! @index(name: "byEvent", queryField: "ticketsByEvent")
-	TicketCategory: TicketCategory @belongsTo(fields: ["ticketCategoryID"])
-	ticketCategoryID: ID
-		@index(name: "byTicketCategory", queryField: "ticketsByTiketCategory")
-	in: AWSDateTime
-		@auth(
-			rules: [
-				{ allow: private, operations: [update, read] }
-				{ allow: groups, groups: ["Admin"] }
-				{ allow: public, operations: [read] }
-			]
-		)
-	out: AWSDateTime
-		@auth(
-			rules: [
-				{ allow: private, operations: [update, read] }
-				{ allow: groups, groups: ["Admin"] }
-				{ allow: public, operations: [read] }
-			]
-		)
-	didAssist: Boolean!
-		@auth(
-			rules: [
-				{ allow: private, operations: [update, read] }
-				{ allow: groups, groups: ["Admin"] }
-				{ allow: public, operations: [read] }
-			]
-		)
-	userID: ID! @index(name: "byUser", queryField: "ticketsByUser")
-	User: User! @belongsTo(fields: ["userID"])
-	jobID: ID
-		@index(name: "byJob", queryField: "ticketByJob")
-		@auth(
-			rules: [
-				{ allow: private, operations: [update, read, create] }
-				{ allow: groups, groups: ["Admin"] }
-				{ allow: public, operations: [read] }
-			]
-		)
-	registeredBy: Job @belongsTo(fields: ["jobID"])
-	code: String
-		@index(
-			name: "byDiscountCode"
-			sortKeyFields: ["eventID"]
-			queryField: "ticketsByDiscountCode"
-		)
-	discountCode: DiscountCode @belongsTo(fields: ["code", "eventID"])
-	transaction: Transaction
-	seat: String
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+  @model #(subscriptions: { level: public })
+  @auth(
+    rules: [
+      { allow: owner, operations: [read], ownerField: "userID" }
+      { allow: groups, groups: ["Admin"] }
+      { allow: public, operations: [read] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+  id: ID!
+    @primaryKey
+    @auth(
+      rules: [
+        { allow: private, operations: [read] }
+        { allow: groups, groups: ["Admin"] }
+        { allow: public, operations: [read] }
+      ]
+    )
+  Event: Event! @belongsTo(fields: ["eventID"])
+  eventID: ID! @index(name: "byEvent", queryField: "ticketsByEvent")
+  TicketCategory: TicketCategory @belongsTo(fields: ["ticketCategoryID"])
+  ticketCategoryID: ID
+    @index(name: "byTicketCategory", queryField: "ticketsByTiketCategory")
+  in: AWSDateTime
+    @auth(
+      rules: [
+        { allow: private, operations: [update, read] }
+        { allow: groups, groups: ["Admin"] }
+        { allow: public, operations: [read] }
+      ]
+    )
+  out: AWSDateTime
+    @auth(
+      rules: [
+        { allow: private, operations: [update, read] }
+        { allow: groups, groups: ["Admin"] }
+        { allow: public, operations: [read] }
+      ]
+    )
+  didAssist: Boolean!
+    @auth(
+      rules: [
+        { allow: private, operations: [update, read] }
+        { allow: groups, groups: ["Admin"] }
+        { allow: public, operations: [read] }
+      ]
+    )
+  userID: ID! @index(name: "byUser", queryField: "ticketsByUser")
+  User: User! @belongsTo(fields: ["userID"])
+  jobID: ID
+    @index(name: "byJob", queryField: "ticketByJob")
+    @auth(
+      rules: [
+        { allow: private, operations: [update, read, create] }
+        { allow: groups, groups: ["Admin"] }
+        { allow: public, operations: [read] }
+      ]
+    )
+  registeredBy: Job @belongsTo(fields: ["jobID"])
+  code: String
+    @index(
+      name: "byDiscountCode"
+      sortKeyFields: ["eventID"]
+      queryField: "ticketsByDiscountCode"
+    )
+  discountCode: DiscountCode @belongsTo(fields: ["code", "eventID"])
+  transaction: Transaction
+  seat: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type Transaction {
-	id: ID!
-	amount_in_cents: Int!
-	status: String!
-	reference: ID!
-	payment_method_type: String!
-	redirect_url: String
-	created_at: AWSDateTime
-	finalized_at: String
-	customer_email: String
-	currency: String
-	status_message: String
-	# paymentethod: ID!
-	user_type: Int
-	user_legal_id: String
-	user_legal_id_type: String
-	payment_description: String
-	financial_institution_code: String
-	async_payment_url: String
+  id: ID!
+  amount_in_cents: Int!
+  status: String!
+  reference: ID!
+  payment_method_type: String!
+  redirect_url: String
+  created_at: AWSDateTime
+  finalized_at: String
+  customer_email: String
+  currency: String
+  status_message: String
+  # paymentethod: ID!
+  user_type: Int
+  user_legal_id: String
+  user_legal_id_type: String
+  payment_description: String
+  financial_institution_code: String
+  async_payment_url: String
 }
 
 type Merchant {
-	name: String!
-	legal_name: String!
-	contact_name: String!
-	phone_number: String!
-	logo_url: String!
-	legal_id_type: String!
-	email: String!
-	legal_id: ID!
+  name: String!
+  legal_name: String!
+  contact_name: String!
+  phone_number: String!
+  logo_url: String!
+  legal_id_type: String!
+  email: String!
+  legal_id: ID!
 }
 
 type Coordinates {
-	lat: Float!
-	lng: Float!
+  lat: Float!
+  lng: Float!
 }
 
 type Event
-	@model
-	@auth(
-		rules: [
-			{ allow: public, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: private, operations: [read] }
-		]
-	) {
-	id: ID! @primaryKey
-	title: String!
-	description: String
-	company: String!
-	companyUrl: AWSURL
-	startDate: AWSDate!
-	startTime: AWSTime!
-	startDateTime: AWSDateTime!
-	finishDate: AWSDate!
-	finishTime: AWSTime!
-	finishDateTime: AWSDateTime!
-	yearMonth: String!
-		@index(
-			name: "byYearMonth"
-			sortKeyFields: ["startDate"]
-			queryField: "eventsByYearMonthByStartDate"
-		)
-	coords: Coordinates!
-	address: String!
-	place: String
-	minAge: Int
-	price: Float!
-	maxCapacity: Int!
-	totalAssistants: Int!
-	primaryImage: AWSURL!
-	contactNumber: String
-	images: [AWSURL!]
-	EventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
-	eventcategoryID: ID!
-		@index(
-			name: "byEventCategory"
-			sortKeyFields: ["startDate", "startTime"]
-			queryField: "eventsByEventCategory"
-		)
-	Tickets: [Ticket!] @hasMany(indexName: "byEvent", fields: ["id"])
-	Jobs: [Job!] @hasMany(indexName: "byEvent", fields: ["id"])
-	discountCodes: [DiscountCode!] @hasMany(indexName: "byEvent", fields: ["id"])
-	needsCode: Boolean
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
-	maxBuyQuantity: Int
-	ticketCategories: [TicketCategory!]
-		@hasMany(indexName: "byEvent", fields: ["id"])
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  title: String!
+  description: String
+  company: String!
+  companyUrl: AWSURL
+  startDate: AWSDate!
+  startTime: AWSTime!
+  startDateTime: AWSDateTime!
+  finishDate: AWSDate!
+  finishTime: AWSTime!
+  finishDateTime: AWSDateTime!
+  yearMonth: String!
+    @index(
+      name: "byYearMonth"
+      sortKeyFields: ["startDate"]
+      queryField: "eventsByYearMonthByStartDate"
+    )
+  coords: Coordinates!
+  address: String!
+  place: String
+  minAge: Int
+  price: Float!
+  maxCapacity: Int!
+  totalAssistants: Int!
+  primaryImage: AWSURL!
+  contactNumber: String
+  images: [AWSURL!]
+  EventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
+  eventcategoryID: ID!
+    @index(
+      name: "byEventCategory"
+      sortKeyFields: ["startDate", "startTime"]
+      queryField: "eventsByEventCategory"
+    )
+  Tickets: [Ticket!] @hasMany(indexName: "byEvent", fields: ["id"])
+  Jobs: [Job!] @hasMany(indexName: "byEvent", fields: ["id"])
+  discountCodes: [DiscountCode!] @hasMany(indexName: "byEvent", fields: ["id"])
+  needsCode: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  maxBuyQuantity: Int
+  ticketCategories: [TicketCategory!]
+    @hasMany(indexName: "byEvent", fields: ["id"])
 }
 
 type TicketCategory
-	@model
-	@auth(
-		rules: [
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: private, operations: [read] }
-			{ allow: public, operations: [read] }
-		]
-	) {
-	id: ID! @primaryKey
-	price: Float!
-	name: String!
-	color: String!
-	maxCapacity: Int!
-	totalAssistants: Int!
-	eventID: ID!
-		@index(
-			name: "byEvent"
-			queryField: "ticketCategoriesByEvent"
-			sortKeyFields: ["price"]
-		)
-	Event: Event! @belongsTo(fields: ["eventID"])
-	Tickets: [Ticket!] @hasMany(indexName: "byTicketCategory", fields: ["id"])
-	description: String
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Admin"] }
+      { allow: private, operations: [read] }
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  price: Float!
+  name: String!
+  color: String!
+  maxCapacity: Int!
+  totalAssistants: Int!
+  eventID: ID!
+    @index(
+      name: "byEvent"
+      queryField: "ticketCategoriesByEvent"
+      sortKeyFields: ["price"]
+    )
+  Event: Event! @belongsTo(fields: ["eventID"])
+  Tickets: [Ticket!] @hasMany(indexName: "byTicketCategory", fields: ["id"])
+  description: String
 }
 
 type EventCategory
-	@model
-	@auth(
-		rules: [
-			{ allow: public, operations: [read] }
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: private, operations: [read] }
-		]
-	) {
-	id: ID! @primaryKey
-	name: String!
-	Events: [Event!] @hasMany(indexName: "byEventCategory", fields: ["id"])
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  name: String!
+  Events: [Event!] @hasMany(indexName: "byEventCategory", fields: ["id"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type DiscountCode
-	@model
-	@auth(
-		rules: [
-			{ allow: groups, groups: ["Admin"] }
-			{ allow: private, operations: [read] }
-			{ allow: public, operations: [read] }
-		]
-	) {
-	code: String! @primaryKey(sortKeyFields: ["eventID"])
-	maxUse: Int
-	actualUse: Int!
-	validUntil: AWSDateTime!
-	discount: Float!
-	eventID: ID! @index(name: "byEvent", queryField: "discountCodesByEvent")
-	event: Event! @belongsTo(fields: ["eventID"])
-	userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
-	user: User @belongsTo(fields: ["userID"])
-	tickets: [Ticket!]
-		@hasMany(indexName: "byDiscountCode", fields: ["code", "eventID"])
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Admin"] }
+      { allow: private, operations: [read] }
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  code: String! @primaryKey(sortKeyFields: ["eventID"])
+  maxUse: Int
+  actualUse: Int!
+  validUntil: AWSDateTime!
+  discount: Float!
+  eventID: ID! @index(name: "byEvent", queryField: "discountCodesByEvent")
+  event: Event! @belongsTo(fields: ["eventID"])
+  userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
+  user: User @belongsTo(fields: ["userID"])
+  tickets: [Ticket!]
+    @hasMany(indexName: "byDiscountCode", fields: ["code", "eventID"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }

@@ -58,11 +58,28 @@
     "ConfirmNequiPayment": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
     },
     "CreateEntracePayment": {
       "build": true,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -70,18 +87,25 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ],
-          "category": "function",
-          "resourceName": "passiModelsLayer"
+          ]
         },
         {
+          "category": "function",
+          "resourceName": "passiWompiLayer",
           "attributes": [
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "passiWompiLayer"
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -91,11 +115,18 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "passiModelsLayer"
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -105,11 +136,18 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "passiModelsLayer"
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -119,11 +157,18 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "passiModelsLayer"
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -133,11 +178,18 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "passiModelsLayer"
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -147,11 +199,18 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "passiModelsLayer"
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -161,11 +220,18 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "passiModelsLayer"
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -174,17 +240,33 @@
     "CreatePaymentSource": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
     },
     "CreateUserDynamo": {
       "build": true,
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "passiModelsLayer"
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -193,7 +275,16 @@
     "RefreshTransactionStatus": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "passinodeModules",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
     },
     "passiModelsLayer": {
       "build": true,
@@ -204,6 +295,11 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
+    },
+    "passinodeModules": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
     }
   },
   "parameters": {

@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@types/aws-lambda": "^8.10.110",
+    "axios": "^1.3.2",
+    "uuid": "^9.0.0"
+  }
+}

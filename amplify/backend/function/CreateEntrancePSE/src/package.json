@@ -7,8 +7,5 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92"
   },
-  "dependencies": {
-    "axios": "^0.26.0",
-    "uuid": "^8.3.2"
-  }
+  "dependencies": {}
 }

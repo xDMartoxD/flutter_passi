@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.22\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"9.1.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -23,6 +23,10 @@
     "functionpassiWompiLayerArn": {
       "Type": "String",
       "Default": "functionpassiWompiLayerArn"
+    },
+    "functionpassinodeModulesArn": {
+      "Type": "String",
+      "Default": "functionpassinodeModulesArn"
     }
   },
   "Conditions": {
@@ -93,6 +97,9 @@
           },
           {
             "Ref": "functionpassiWompiLayerArn"
+          },
+          {
+            "Ref": "functionpassinodeModulesArn"
           }
         ],
         "Timeout": 25

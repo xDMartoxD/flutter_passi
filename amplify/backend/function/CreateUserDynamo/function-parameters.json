@@ -3,9 +3,16 @@
     {
       "type": "ProjectLayer",
       "resourceName": "passiModelsLayer",
+      "env": "devel",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true,
-      "env": "prod"
+      "isLatestVersionSelected": true
+    },
+    {
+      "type": "ProjectLayer",
+      "resourceName": "passinodeModules",
+      "env": "devel",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
     }
   ]
 }
