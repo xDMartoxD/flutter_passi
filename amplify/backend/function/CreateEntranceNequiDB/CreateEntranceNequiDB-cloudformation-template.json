@@ -19,6 +19,10 @@
     "functionpassiModelsLayerArn": {
       "Type": "String",
       "Default": "functionpassiModelsLayerArn"
+    },
+    "functionpassinodeModulesArn": {
+      "Type": "String",
+      "Default": "functionpassinodeModulesArn"
     }
   },
   "Conditions": {
@@ -86,6 +90,9 @@
         "Layers": [
           {
             "Ref": "functionpassiModelsLayerArn"
+          },
+          {
+            "Ref": "functionpassinodeModulesArn"
           }
         ],
         "Timeout": 25

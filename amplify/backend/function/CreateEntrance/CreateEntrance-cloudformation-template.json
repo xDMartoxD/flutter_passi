@@ -23,6 +23,10 @@
     "functionpassiWompiLayerArn": {
       "Type": "String",
       "Default": "functionpassiWompiLayerArn"
+    },
+    "functionpassinodeModulesArn": {
+      "Type": "String",
+      "Default": "functionpassinodeModulesArn"
     }
   },
   "Conditions": {
@@ -93,6 +97,9 @@
           },
           {
             "Ref": "functionpassiWompiLayerArn"
+          },
+          {
+            "Ref": "functionpassinodeModulesArn"
           }
         ],
         "Timeout": 25
