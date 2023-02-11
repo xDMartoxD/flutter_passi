@@ -254,7 +254,7 @@ type PaymentMethodData {
   expires_at: String
 }
 type Ticket
-  @model(subscriptions: null)
+  @model
   @auth(
     rules: [
       { allow: owner, operations: [read], ownerField: "userID" }
