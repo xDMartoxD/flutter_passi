@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -42,17 +41,7 @@ class Auth extends StatelessWidget {
 class UnAuth extends StatelessWidget {
   const UnAuth({super.key});
 
-  Future<void> googleSignIn() async {
-    final auth = FirebaseAuth.instance;
-    final googleSignIn = GoogleSignIn();
-    final googleUser = await googleSignIn.signIn();
-    final googleAuth = await googleUser?.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-    final userCredentials = await auth.signInWithCredential(credential);
-  }
+  Future<void> googleSignIn() async {}
 
   void bottomSheetHandler(BuildContext context) {
     showModalBottomSheet<dynamic>(
