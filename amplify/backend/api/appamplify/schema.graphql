@@ -272,9 +272,9 @@ type Ticket
         { allow: public, operations: [read] }
       ]
     )
-  Event: Event! @belongsTo(fields: ["eventID"])
+  event: Event! @belongsTo(fields: ["eventID"])
   eventID: ID! @index(name: "byEvent", queryField: "ticketsByEvent")
-  TicketCategory: TicketCategory @belongsTo(fields: ["ticketCategoryID"])
+  ticketCategory: TicketCategory @belongsTo(fields: ["ticketCategoryID"])
   ticketCategoryID: ID
     @index(name: "byTicketCategory", queryField: "ticketsByTiketCategory")
   inDateTime: AWSDateTime
@@ -302,7 +302,7 @@ type Ticket
       ]
     )
   userID: ID! @index(name: "byUser", queryField: "ticketsByUser")
-  User: User! @belongsTo(fields: ["userID"])
+  user: User! @belongsTo(fields: ["userID"])
   jobID: ID
     @index(name: "byJob", queryField: "ticketByJob")
     @auth(
@@ -399,14 +399,14 @@ type Event
   primaryImage: AWSURL!
   contactNumber: String
   images: [AWSURL!]
-  EventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
+  eventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
   eventcategoryID: ID!
     @index(
       name: "byEventCategory"
       sortKeyFields: ["startDate", "startTime"]
       queryField: "eventsByEventCategory"
     )
-  Tickets: [Ticket!] @hasMany(indexName: "byEvent", fields: ["id"])
+  tickets: [Ticket!] @hasMany(indexName: "byEvent", fields: ["id"])
   Jobs: [Job!] @hasMany(indexName: "byEvent", fields: ["id"])
   discountCodes: [DiscountCode!] @hasMany(indexName: "byEvent", fields: ["id"])
   needsCode: Boolean
@@ -438,8 +438,8 @@ type TicketCategory
       queryField: "ticketCategoriesByEvent"
       sortKeyFields: ["price"]
     )
-  Event: Event! @belongsTo(fields: ["eventID"])
-  Tickets: [Ticket!] @hasMany(indexName: "byTicketCategory", fields: ["id"])
+  event: Event! @belongsTo(fields: ["eventID"])
+  tickets: [Ticket!] @hasMany(indexName: "byTicketCategory", fields: ["id"])
   description: String
 }
 
@@ -454,7 +454,7 @@ type EventCategory
   ) {
   id: ID! @primaryKey
   name: String!
-  Events: [Event!] @hasMany(indexName: "byEventCategory", fields: ["id"])
+  events: [Event!] @hasMany(indexName: "byEventCategory", fields: ["id"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
