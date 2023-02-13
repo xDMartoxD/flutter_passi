@@ -59,6 +59,7 @@ dependencies:
   google_sign_in: ^5.4.4
   amplify_flutter: ^0.5.1
   amplify_auth_cognito: ^0.5.1
+  mobile_scanner: ^3.0.0
 
 dev_dependencies:
   flutter_test:
