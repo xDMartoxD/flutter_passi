@@ -57,27 +57,27 @@
   "function": {
     "ConfirmNequiPayment": {
       "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
-      ]
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     },
     "CreateEntracePayment": {
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -87,25 +87,25 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passiWompiLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiWompiLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -115,18 +115,18 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -136,18 +136,18 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -157,18 +157,18 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -178,18 +178,18 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -199,18 +199,18 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -220,18 +220,18 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -239,34 +239,34 @@
     },
     "CreatePaymentSource": {
       "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
-      ]
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     },
     "CreateUserDynamo": {
       "build": true,
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passiModelsLayer",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
         },
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -274,17 +274,17 @@
     },
     "RefreshTransactionStatus": {
       "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "passinodeModules",
           "attributes": [
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
-      ]
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     },
     "passiModelsLayer": {
       "build": true,
@@ -297,9 +297,9 @@
       "service": "LambdaLayer"
     },
     "passinodeModules": {
+      "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "LambdaLayer",
-      "build": true
+      "service": "LambdaLayer"
     }
   },
   "parameters": {
@@ -319,6 +319,134 @@
         }
       ]
     },
+    "AMPLIFY_function_CreateEntracePayment_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntracePayment"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntracePayment_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntracePayment"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceBusinessLogic_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceBusinessLogic"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceBusinessLogic_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceBusinessLogic"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceDB_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceDB"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceDB_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceDB"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceNequiBusinessLogic_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceNequiBusinessLogic"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceNequiBusinessLogic_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceNequiBusinessLogic"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceNequiDB_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceNequiDB"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceNequiDB_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceNequiDB"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntrancePSE_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntrancePSE"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntrancePSE_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntrancePSE"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntrance_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntrance"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntrance_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntrance"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateFreeEntrance_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateFreeEntrance"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateFreeEntrance_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateFreeEntrance"
+        }
+      ]
+    },
     "AMPLIFY_function_CreatePaymentSource_deploymentBucketName": {
       "usedBy": [
         {
@@ -332,6 +460,22 @@
         {
           "category": "function",
           "resourceName": "CreatePaymentSource"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateUserDynamo_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateUserDynamo"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateUserDynamo_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateUserDynamo"
         }
       ]
     },

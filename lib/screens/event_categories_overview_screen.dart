@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:passi_app/data/data.dart';
-import 'package:passi_app/models/event_category.dart';
+import 'package:passi_app/models/my_models/event_category.dart';
 import 'package:passi_app/widgets/event_item_large.dart';
 import '../widgets/app_map_view.dart';
 

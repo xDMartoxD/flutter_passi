@@ -1,4 +1,8 @@
+import 'package:amplify_api/model_queries.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:passi_app/models/Event.dart';
+import 'package:passi_app/models/EventCategory.dart';
 
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -27,7 +31,23 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
     _tabController1.dispose();
     _tabController2.dispose();
     _tabController3.dispose();
+    _fetchEventCategories();
     super.dispose();
+  }
+
+  Future<void> _fetchEventCategories() async {
+    try {
+      final request = ModelQueries.list(EventCategory.classType);
+      final response = await Amplify.API.query(request: request).response;
+      final eventCategory = response.data;
+      if (eventCategory == null) {
+        print('errors: ${response.errors}');
+      }
+      print(eventCategory?.items[0]?.name);
+    } on ApiException catch (e) {
+      print('Query failed: $e');
+      return null;
+    }
   }
 
   @override
