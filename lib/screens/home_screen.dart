@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.symmetric(vertical: 10),
-      itemCount: event_categories.length,
+      itemCount: 10,
       itemBuilder: (BuildContext context, int index) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.all(8),
                   child: Text(
-                    event_categories[index].name,
+                    "event_categories[index].name",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                 TextButton(
                   onPressed: (() {
                     final args = EventCategoriesOverviewScreenArgs(
-                      id: event_categories[index].id,
+                      id: "event_categories[index].id",
                     );
                     context.goNamed(EventCategoriesOverviewScreen.name, params: args.params());
                   }),
@@ -48,12 +48,12 @@ class HomeScreen extends StatelessWidget {
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: event_categories[index].events.length,
+                itemCount: 200,
                 itemBuilder: (BuildContext context, int index2) {
                   return EventItem(
-                    imageUrl: event_categories[index].events[index2].imageUrl,
-                    title: event_categories[index].events[index2].title,
-                    id: event_categories[index].events[index2].id.toString(),
+                    imageUrl: "event_categories[index].events[index2].imageUrl",
+                    title: "event_categories[index].events[index2].title",
+                    id: "event_categories[index].events[index2].id.toString()",
                   );
                 },
               ),

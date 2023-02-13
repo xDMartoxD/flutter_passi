@@ -5,8 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
-
+import 'package:amplify_api/amplify_api.dart';
 import '../amplifyconfiguration.dart';
+import '../models/ModelProvider.dart';
 
 class AppTabs extends StatefulWidget {
   static const route = "/";
