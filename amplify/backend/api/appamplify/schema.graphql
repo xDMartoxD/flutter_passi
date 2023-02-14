@@ -75,6 +75,9 @@ type Query {
   refreshTransactionStatus(ticketID: String!): Transaction!
     @function(name: "RefreshTransactionStatus-${env}")
     @auth(rules: [{ allow: private }])
+  validateTicket(ticketID: String!, eventID: String!): Ticket!
+    @function(name: "validateTicket-${env}")
+    @auth(rules: [{ allow: public }])
   checkNequiTokenStatus: TokenNequiRes!
     @http(
       url: "https://production.wompi.co/v1/tokens/nequi/:id"
