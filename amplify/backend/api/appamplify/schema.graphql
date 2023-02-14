@@ -380,11 +380,7 @@ type Event
   description: String
   company: String!
   companyUrl: AWSURL
-  startDate: AWSDate!
-  startTime: AWSTime!
   startDateTime: AWSDateTime!
-  finishDate: AWSDate!
-  finishTime: AWSTime!
   finishDateTime: AWSDateTime!
   yearMonth: String!
     @index(
