@@ -382,12 +382,6 @@ type Event
   companyUrl: AWSURL
   startDateTime: AWSDateTime!
   finishDateTime: AWSDateTime!
-  yearMonth: String!
-    @index(
-      name: "byYearMonth"
-      sortKeyFields: ["startDateTime"]
-      queryField: "eventsByYearMonthByStartDate"
-    )
   coords: Coordinates!
   address: String!
   place: String
