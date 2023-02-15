@@ -196,7 +196,7 @@ type User
   id: ID! @primaryKey
   email: AWSEmail!
   name: String!
-  avatar: S3Object!
+  avatar: S3Object
   tickets: [Ticket!] @hasMany(indexName: "byUser", fields: ["id"])
   jobs: [Job!] @hasMany(indexName: "byUser", fields: ["id"])
   codes: [DiscountCode!] @hasMany(indexName: "byUser", fields: ["id"])
@@ -277,8 +277,8 @@ type Ticket
     )
   event: Event! @belongsTo(fields: ["eventID"])
   eventID: ID! @index(name: "byEvent", queryField: "ticketsByEvent")
-  ticketCategory: TicketCategory @belongsTo(fields: ["ticketCategoryID"])
-  ticketCategoryID: ID
+  ticketCategory: TicketCategory! @belongsTo(fields: ["ticketCategoryID"])
+  ticketCategoryID: ID!
     @index(name: "byTicketCategory", queryField: "ticketsByTiketCategory")
   inDateTime: AWSDateTime
     @auth(
