@@ -23,7 +23,7 @@ export const handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   const query = `query MyQuery {
   getTicket(id: "${event.ticketId}") {
-    eventId
+    eventID
     ticketCategory {
       name
     }
