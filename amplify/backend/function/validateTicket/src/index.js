@@ -2,7 +2,7 @@
 	API_APPAMPLIFY_EVENTTABLE_ARN
 	API_APPAMPLIFY_EVENTTABLE_NAME
 	API_APPAMPLIFY_GRAPHQLAPIENDPOINTOUTPUT
-	API_APPAMPLIFY_GRAPHQLAPIIDOUTPUT
+	API_APPAMPLIFY_GRAPHQLAPIIdOUTPUT
 	API_APPAMPLIFY_GRAPHQLAPIKEYOUTPUT
 	API_APPAMPLIFY_TICKETCATEGORYTABLE_ARN
 	API_APPAMPLIFY_TICKETCATEGORYTABLE_NAME
@@ -20,8 +20,8 @@ import { default as fetch, Request } from "node-fetch";
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   const query = `query MyQuery {
-  getTicket(id: "${event.ticketID}}") {
-    eventID
+  getTicket(id: "${event.ticketId}}") {
+    eventId
     ticketCategory {
       name
     }
@@ -63,7 +63,7 @@ exports.handler = async (event) => {
     };
   }
 
-  if (body.data.getTicket.eventID !== event.eventID)
+  if (body.data.getTicket.eventId !== event.eventId)
     return {
       statusCode: 400,
       body: JSON.stringify("Ticket is not valid for this event"),
