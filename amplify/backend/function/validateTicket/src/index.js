@@ -22,7 +22,7 @@ const GRAPHQL_API_KEY = process.env.API_APPAMPLIFY_GRAPHQLAPIKEYOUTPUT;
 export const handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   const query = `query MyQuery {
-  getTicket(id: "${event.ticketId}") {
+  getTicket(id: $id) {
     eventID
     ticketCategory {
       name
@@ -30,13 +30,14 @@ export const handler = async (event) => {
   }
 }
 	`;
+  const variables = { id: event.ticketId };
   console.log(`QUERY: ${query}`);
   const options = {
     method: "POST",
     headers: {
       "x-api-key": GRAPHQL_API_KEY,
     },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ query, variables }),
   };
   console.log(`OPTIONS: ${JSON.stringify(options)} `);
   const request = new Request(GRAPHQL_ENDPOINT, options);
