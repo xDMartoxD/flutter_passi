@@ -50,6 +50,7 @@ export const handler = async (event) => {
     response = await fetch(request);
     console.log(`RESPONSE: ${JSON.stringify(response)}`);
     body = await response.json();
+    console.log(`BODY: ${JSON.stringify(body)}`);
     if (body.errors) statusCode = 400;
   } catch (error) {
     console.log(`ERROR: ${JSON.stringify(error)}`);
