@@ -5,8 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
-
+import 'package:amplify_api/amplify_api.dart';
 import '../amplifyconfiguration.dart';
+import '../models/ModelProvider.dart';
 
 class AppTabs extends StatefulWidget {
   static const route = "/";
@@ -54,9 +55,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         "title": "Perfil",
         "screen": ProfileScreen(),
         "appBarBottom": null,
-        "appBarActions": [
-          IconButton(onPressed: () {}, icon: Icon(Icons.settings))
-        ],
+        "appBarActions": [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
       }
     ];
   }
@@ -72,8 +71,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(_screens[_currenPageIndex]["title"] as String),
-        bottom:
-            _screens[_currenPageIndex]["appBarBottom"] as PreferredSizeWidget?,
+        bottom: _screens[_currenPageIndex]["appBarBottom"] as PreferredSizeWidget?,
         actions: List<IconButton>.from(
           _screens[_currenPageIndex]["appBarActions"] as List<dynamic>,
         ),
@@ -111,6 +109,8 @@ Future<void> _configureAmplify() async {
   // Add any Amplify plugins you want to use
   final authPlugin = AmplifyAuthCognito();
   await Amplify.addPlugin(authPlugin);
+  final api = AmplifyAPI(modelProvider: ModelProvider.instance);
+  await Amplify.addPlugin(api);
 
   // You can use addPlugins if you are going to be adding multiple plugins
   // await Amplify.addPlugins([authPlugin, analyticsPlugin]);
@@ -120,7 +120,6 @@ Future<void> _configureAmplify() async {
   try {
     await Amplify.configure(amplifyconfig);
   } on AmplifyAlreadyConfiguredException {
-    safePrint(
-        "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    safePrint("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
   }
 }
