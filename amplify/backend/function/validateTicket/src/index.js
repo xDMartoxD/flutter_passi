@@ -52,6 +52,7 @@ export const handler = async (event) => {
     console.log(`RESPONSE: ${JSON.stringify(response)}`);
     body = await response.json();
     console.log(`BODY: ${JSON.stringify(body)}`);
+    console.log(`Body.data: ${JSON.stringify(body.data)}`);
     if (body.errors) statusCode = 400;
   } catch (error) {
     console.log(`ERROR: ${JSON.stringify(error)}`);
