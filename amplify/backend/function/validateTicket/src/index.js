@@ -81,6 +81,6 @@ export const handler = async (event) => {
     //      "Access-Control-Allow-Origin": "*",
     //      "Access-Control-Allow-Headers": "*"
     //  },
-    body: JSON.stringify(body.event.getTicket.ticketCategory.name),
+    body: JSON.stringify(body.data.getTicket.ticketCategory.name),
   };
 };
