@@ -264,6 +264,7 @@ type Ticket
       { allow: groups, groups: ["Admin"] }
       { allow: public, operations: [read] }
       { allow: private, operations: [read] }
+      { allow: private, provider: iam }
     ]
   ) {
   id: ID!
