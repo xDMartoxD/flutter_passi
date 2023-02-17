@@ -262,9 +262,8 @@ type Ticket
     rules: [
       { allow: owner, operations: [read], ownerField: "userID" }
       { allow: groups, groups: ["Admin"] }
-      { allow: public, operations: [read] }
+      { allow: public }
       { allow: private, operations: [read] }
-      { allow: public, provider: iam }
     ]
   ) {
   id: ID!

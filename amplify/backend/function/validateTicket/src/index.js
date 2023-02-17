@@ -11,15 +11,11 @@
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
-import crypto from "@aws-crypto/sha256-js";
-import { defaultProvider } from "@aws-sdk/credential-provider-node";
-import { SignatureV4 } from "@aws-sdk/signature-v4";
-import { HttpRequest } from "@aws-sdk/protocol-http";
+
 import { default as fetch, Request } from "node-fetch";
 const GRAPHQL_ENDPOINT = process.env.API_APPAMPLIFY_GRAPHQLAPIENDPOINTOUTPUT;
 const GRAPHQL_API_KEY = process.env.API_APPAMPLIFY_GRAPHQLAPIKEYOUTPUT;
-const AWS_REGION = process.env.AWS_REGION;
-const { Sha256 } = crypto;
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -34,31 +30,17 @@ export const handler = async (event) => {
   }
 }
 	`;
-
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
-
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-
   const variables = { id: event.ticketId };
   console.log(`QUERY: ${query}`);
-  const requestToBeSigned = new HttpRequest({
+  const options = {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
+      "x-api-key": GRAPHQL_API_KEY,
     },
-    hostname: endpoint.host,
     body: JSON.stringify({ query, variables }),
-    path: endpoint.pathname,
-  });
-
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(endpoint, signed);
+  };
+  console.log(`OPTIONS: ${JSON.stringify(options)} `);
+  const request = new Request(GRAPHQL_ENDPOINT, options);
 
   let statusCode = 200;
   let body;
