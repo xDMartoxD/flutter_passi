@@ -67,7 +67,7 @@ export const handler = async (event) => {
     };
   }
 
-  if (body.data.getTicket.eventId !== event.eventId)
+  if (body.data.getTicket.eventId !== event.eventID)
     return {
       statusCode: 400,
       body: JSON.stringify("Ticket is not valid for this event"),
