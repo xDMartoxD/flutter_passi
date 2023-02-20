@@ -150,7 +150,8 @@
         "passiWompiLayer": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
           "s3Key": "amplify-builds/passiWompiLayer-LambdaLayerVersion54cbfbda-build.zip"
-        }
+        },
+        "createEvent": {}
       }
     }
   }
