@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:provider/provider.dart';
+import 'package:scan_app/providers/event_provider.dart';
+import 'package:scan_app/services/validate_ticket_service.dart';
 
 class ScanWidget extends StatelessWidget {
   const ScanWidget({super.key});
@@ -17,13 +21,33 @@ class ScanWidget extends StatelessWidget {
             barcodes.first.type == BarcodeType.text &&
             barcodes.first.rawValue != null) {
           final Barcode barcode = barcodes.first;
-          await _checkBarcode(barcode.rawValue!);
+          String ans = await validateTicket(
+              ticketId: barcode.rawValue!,
+              eventId: context.read<EventState>().event);
+          if (!context.mounted) {
+            return;
+          }
+          _processResult(ans, context);
         }
       },
     );
   }
-}
 
-Future<bool> _checkBarcode(String barcodeValue) async {
-  return false;
+  void _processResult(String ans, BuildContext context) {
+    if (ans == "ERROR") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Error validating ticket'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: Text('Ticket is valid $ans'),
+        ),
+      );
+    }
+  }
 }

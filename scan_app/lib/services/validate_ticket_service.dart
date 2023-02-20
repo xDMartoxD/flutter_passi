@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 
 import '../environment/environment.dart';
 
-Future<String> ValidateTicket(String ticketId, String eventId) async {
+Future<String> validateTicket(
+    {required String ticketId, required String eventId}) async {
   //Send post request to Environment url
   final response = await http.post(
     Uri.parse('${Environment().config.url}/validate'),
