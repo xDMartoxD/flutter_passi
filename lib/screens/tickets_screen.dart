@@ -31,23 +31,8 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
     _tabController1.dispose();
     _tabController2.dispose();
     _tabController3.dispose();
-    _fetchEventCategories();
-    super.dispose();
-  }
 
-  Future<void> _fetchEventCategories() async {
-    try {
-      final request = ModelQueries.list(EventCategory.classType);
-      final response = await Amplify.API.query(request: request).response;
-      final eventCategory = response.data;
-      if (eventCategory == null) {
-        print('errors: ${response.errors}');
-      }
-      print(eventCategory?.items[0]?.name);
-    } on ApiException catch (e) {
-      print('Query failed: $e');
-      return null;
-    }
+    super.dispose();
   }
 
   @override

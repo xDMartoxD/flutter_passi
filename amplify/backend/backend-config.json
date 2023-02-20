@@ -526,6 +526,22 @@
           "resourceName": "passiWompiLayer"
         }
       ]
+    },
+    "AMPLIFY_function_passinodeModules_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ]
+    },
+    "AMPLIFY_function_passinodeModules_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ]
     }
   },
   "storage": {

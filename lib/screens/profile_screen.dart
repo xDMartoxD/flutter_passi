@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:passi_app/screens/email_register_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -75,20 +77,22 @@ class UnAuth extends StatelessWidget {
                     color: Colors.white,
                   ),
                   label: Text(
-                    "Ingresa con Google",
+                    "Registrate con Google",
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),
               ),
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.goNamed(EmailRegisterScreen.name);
+                  },
                   icon: FaIcon(
                     FontAwesomeIcons.envelope,
                     color: Colors.white,
                   ),
                   label: Text(
-                    "Ingresa con tu correo",
+                    "Registrate con tu correo",
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),

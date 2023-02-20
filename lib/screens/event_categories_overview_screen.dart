@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:passi_app/data/data.dart';
-import 'package:passi_app/models/my_models/event_category.dart';
+
 import 'package:passi_app/widgets/event_item_large.dart';
 import '../widgets/app_map_view.dart';
 
@@ -17,7 +16,6 @@ class EventCategoriesOverviewScreen extends StatefulWidget {
 
 class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewScreen>
     with SingleTickerProviderStateMixin {
-  late EventCategory _eventCategory;
   late DraggableScrollableController _scrollableController;
   late double _appBarElevation;
   Animation<Color?>? _appBarAnimation;
@@ -27,7 +25,7 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
   @override
   void initState() {
     super.initState();
-    _eventCategory = event_categories.firstWhere((element) => element.id == widget.id);
+
     _scrollableController = DraggableScrollableController();
     _scrollableController.addListener(_scrollableControllerListener);
     _appBarElevation = 5;
@@ -83,7 +81,7 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(_eventCategory.name),
+        title: Text("categoria del evento"),
         elevation: _appBarElevation,
         backgroundColor: _appBarAnimation?.value,
       ),

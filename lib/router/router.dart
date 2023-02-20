@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/screen_args/event_categories_screen_args.dart';
 import 'package:passi_app/models/screen_args/event_detail_screen_args.dart';
+import 'package:passi_app/screens/email_register_screen.dart';
 import 'package:passi_app/screens/error_screen.dart';
 import 'package:passi_app/screens/event_categories_overview_screen.dart';
 import 'package:passi_app/screens/event_checkout_screen.dart';
@@ -48,6 +49,13 @@ class AppRouter {
               builder: (BuildContext context, GoRouterState state) {
                 final args = EventCheckoutScreenArgs.fromJson(state.params);
                 return EventCheckoutScreen(id: args.id);
+              },
+            ),
+            GoRoute(
+              path: EmailRegisterScreen.route,
+              name: EmailRegisterScreen.name,
+              builder: (BuildContext context, GoRouterState state) {
+                return EmailRegisterScreen();
               },
             )
           ],

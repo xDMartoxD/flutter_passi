@@ -108,9 +108,8 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
 Future<void> _configureAmplify() async {
   // Add any Amplify plugins you want to use
   final authPlugin = AmplifyAuthCognito();
-  await Amplify.addPlugin(authPlugin);
   final api = AmplifyAPI(modelProvider: ModelProvider.instance);
-  await Amplify.addPlugin(api);
+  await Amplify.addPlugins([api, authPlugin]);
 
   // You can use addPlugins if you are going to be adding multiple plugins
   // await Amplify.addPlugins([authPlugin, analyticsPlugin]);

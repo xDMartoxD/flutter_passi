@@ -31,7 +31,7 @@ class EventCategory extends Model {
   static const classType = const _EventCategoryModelType();
   final String id;
   final String? _name;
-  final List<Event>? _Events;
+  final List<Event>? _events;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -56,8 +56,8 @@ class EventCategory extends Model {
     }
   }
   
-  List<Event>? get Events {
-    return _Events;
+  List<Event>? get events {
+    return _events;
   }
   
   TemporalDateTime get createdAt {
@@ -86,13 +86,13 @@ class EventCategory extends Model {
     }
   }
   
-  const EventCategory._internal({required this.id, required name, Events, required createdAt, required updatedAt}): _name = name, _Events = Events, _createdAt = createdAt, _updatedAt = updatedAt;
+  const EventCategory._internal({required this.id, required name, events, required createdAt, required updatedAt}): _name = name, _events = events, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory EventCategory({String? id, required String name, List<Event>? Events, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory EventCategory({String? id, required String name, List<Event>? events, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return EventCategory._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
-      Events: Events != null ? List<Event>.unmodifiable(Events) : Events,
+      events: events != null ? List<Event>.unmodifiable(events) : events,
       createdAt: createdAt,
       updatedAt: updatedAt);
   }
@@ -107,7 +107,7 @@ class EventCategory extends Model {
     return other is EventCategory &&
       id == other.id &&
       _name == other._name &&
-      DeepCollectionEquality().equals(_Events, other._Events) &&
+      DeepCollectionEquality().equals(_events, other._events) &&
       _createdAt == other._createdAt &&
       _updatedAt == other._updatedAt;
   }
@@ -129,11 +129,11 @@ class EventCategory extends Model {
     return buffer.toString();
   }
   
-  EventCategory copyWith({String? id, String? name, List<Event>? Events, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  EventCategory copyWith({String? id, String? name, List<Event>? events, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return EventCategory._internal(
       id: id ?? this.id,
       name: name ?? this.name,
-      Events: Events ?? this.Events,
+      events: events ?? this.events,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt);
   }
@@ -141,8 +141,8 @@ class EventCategory extends Model {
   EventCategory.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
-      _Events = json['Events'] is List
-        ? (json['Events'] as List)
+      _events = json['events'] is List
+        ? (json['events'] as List)
           .where((e) => e?['serializedData'] != null)
           .map((e) => Event.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
@@ -151,17 +151,17 @@ class EventCategory extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'Events': _Events?.map((Event? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name, 'events': _events?.map((Event? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'name': _name, 'Events': _Events, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'name': _name, 'events': _events, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField EVENTS = QueryField(
-    fieldName: "Events",
+    fieldName: "events",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Event'));
   static final QueryField CREATEDAT = QueryField(fieldName: "createdAt");
   static final QueryField UPDATEDAT = QueryField(fieldName: "updatedAt");
