@@ -53,6 +53,7 @@ dependencies:
   expandable: ^5.0.1
   qr_flutter: ^4.0.0
   google_sign_in: ^5.4.4
+  mobile_scanner: ^3.0.0
   amplify_flutter: ^0.6.12
   amplify_auth_cognito: ^0.6.12
   amplify_api: ^0.6.12

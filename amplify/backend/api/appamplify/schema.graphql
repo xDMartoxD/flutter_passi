@@ -75,6 +75,9 @@ type Query {
   refreshTransactionStatus(ticketID: String!): Transaction!
     @function(name: "RefreshTransactionStatus-${env}")
     @auth(rules: [{ allow: private }])
+  validateTicket(ticketID: String!, eventID: String!): Ticket!
+    @function(name: "validateTicket-${env}")
+    @auth(rules: [{ allow: public }])
   checkNequiTokenStatus: TokenNequiRes!
     @http(
       url: "https://production.wompi.co/v1/tokens/nequi/:id"
@@ -193,7 +196,7 @@ type User
   id: ID! @primaryKey
   email: AWSEmail!
   name: String!
-  avatar: S3Object!
+  avatar: S3Object
   tickets: [Ticket!] @hasMany(indexName: "byUser", fields: ["id"])
   jobs: [Job!] @hasMany(indexName: "byUser", fields: ["id"])
   codes: [DiscountCode!] @hasMany(indexName: "byUser", fields: ["id"])
@@ -259,7 +262,7 @@ type Ticket
     rules: [
       { allow: owner, operations: [read], ownerField: "userID" }
       { allow: groups, groups: ["Admin"] }
-      { allow: public, operations: [read] }
+      { allow: public }
       { allow: private, operations: [read] }
     ]
   ) {
@@ -274,8 +277,8 @@ type Ticket
     )
   event: Event! @belongsTo(fields: ["eventID"])
   eventID: ID! @index(name: "byEvent", queryField: "ticketsByEvent")
-  ticketCategory: TicketCategory @belongsTo(fields: ["ticketCategoryID"])
-  ticketCategoryID: ID
+  ticketCategory: TicketCategory! @belongsTo(fields: ["ticketCategoryID"])
+  ticketCategoryID: ID!
     @index(name: "byTicketCategory", queryField: "ticketsByTiketCategory")
   inDateTime: AWSDateTime
     @auth(
@@ -377,18 +380,8 @@ type Event
   description: String
   company: String!
   companyUrl: AWSURL
-  startDate: AWSDate!
-  startTime: AWSTime!
   startDateTime: AWSDateTime!
-  finishDate: AWSDate!
-  finishTime: AWSTime!
   finishDateTime: AWSDateTime!
-  yearMonth: String!
-    @index(
-      name: "byYearMonth"
-      sortKeyFields: ["startDate"]
-      queryField: "eventsByYearMonthByStartDate"
-    )
   coords: Coordinates!
   address: String!
   place: String
@@ -403,7 +396,7 @@ type Event
   eventcategoryID: ID!
     @index(
       name: "byEventCategory"
-      sortKeyFields: ["startDate", "startTime"]
+      sortKeyFields: ["startDateTime"]
       queryField: "eventsByEventCategory"
     )
   tickets: [Ticket!] @hasMany(indexName: "byEvent", fields: ["id"])
