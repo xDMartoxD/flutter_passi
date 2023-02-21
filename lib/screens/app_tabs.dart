@@ -1,5 +1,6 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:passi_app/screens/home_screen.dart';
@@ -109,7 +110,8 @@ Future<void> _configureAmplify() async {
   // Add any Amplify plugins you want to use
   final authPlugin = AmplifyAuthCognito();
   final api = AmplifyAPI(modelProvider: ModelProvider.instance);
-  await Amplify.addPlugins([api, authPlugin]);
+  final storage = AmplifyStorageS3();
+  await Amplify.addPlugins([api, authPlugin, storage]);
 
   // You can use addPlugins if you are going to be adding multiple plugins
   // await Amplify.addPlugins([authPlugin, analyticsPlugin]);

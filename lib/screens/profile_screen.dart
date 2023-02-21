@@ -1,20 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:passi_app/models/ModelProvider.dart';
+import 'package:passi_app/providers/auth_provider.dart';
 import 'package:passi_app/screens/email_register_screen.dart';
+import 'package:passi_app/utils/amplify_utilds.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  Future<void> _getUser(BuildContext context) async {
+    await Provider.of<AuthProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return false ? Auth() : UnAuth();
+    return FutureBuilder(
+        future: _getUser(context),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator(color: Colors.white));
+            default:
+              return Consumer<AuthProvider>(builder: (context, value, child) {
+                return value.user != null
+                    ? UnAuth()
+                    : Auth(name: value.user!.name, avatar: value.user!.avatar);
+              });
+          }
+        });
   }
 }
 
-class Auth extends StatelessWidget {
-  const Auth({super.key});
+class Auth extends StatefulWidget {
+  final String name;
+  final S3Object avatar;
+  const Auth({super.key, required this.name, required this.avatar});
+
+  @override
+  State<Auth> createState() => _AuthState();
+}
+
+class _AuthState extends State<Auth> {
+  String avatarUrl = "";
+  @override
+  void initState() {
+    super.initState();
+    getUrl(widget.avatar.key).then((value) {
+      setState(() {
+        avatarUrl = value ?? "";
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +64,10 @@ class Auth extends StatelessWidget {
           CircleAvatar(
             backgroundColor: Theme.of(context).cardColor,
             minRadius: 50,
+            child: Image.network(avatarUrl),
           ),
           Text(
-            "Alfonso Perez",
+            widget.name,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontWeight: FontWeight.bold,
@@ -41,7 +80,9 @@ class Auth extends StatelessWidget {
 }
 
 class UnAuth extends StatelessWidget {
-  const UnAuth({super.key});
+  const UnAuth({
+    super.key,
+  });
 
   Future<void> googleSignIn() async {}
 

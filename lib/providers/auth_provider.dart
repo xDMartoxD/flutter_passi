@@ -7,23 +7,35 @@ import 'package:passi_app/models/ModelProvider.dart';
 class AuthProvider with ChangeNotifier {
   User? _user;
 
+  AuthProvider() {
+    isUserSignedIn().then((isSignedin) {
+      if (isSignedin) {
+        setUser();
+      }
+    });
+  }
+
   User? get user {
     return _user;
   }
 
-  Future<void> _setUser(String id) async {
-    try {
-      final request = ModelQueries.get(User.classType, id);
-      final response = await Amplify.API.query(request: request).response;
-      final data = response.data;
-      if (data == null) {
-        print('errors: ${response.errors}');
-        return;
+  Future<void> setUser() async {
+    final isSignedIn = await isUserSignedIn();
+    if (isSignedIn) {
+      try {
+        final userData = await getCurrentUser();
+        final request = ModelQueries.get(User.classType, userData.userId);
+        final response = await Amplify.API.query(request: request).response;
+        final data = response.data;
+        if (data == null) {
+          print('errors: ${response.errors}');
+          return;
+        }
+        _user = data;
+        notifyListeners();
+      } on ApiException catch (e) {
+        safePrint('Query failed: $e');
       }
-      _user = data;
-      notifyListeners();
-    } on ApiException catch (e) {
-      safePrint('Query failed: $e');
     }
   }
 
@@ -71,8 +83,7 @@ class AuthProvider with ChangeNotifier {
         username: username,
         password: password,
       );
-      final currentUser = await getCurrentUser();
-      await _setUser(currentUser.userId);
+      await setUser();
     } on AuthException catch (e) {
       safePrint(e.message);
       rethrow;
@@ -83,6 +94,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await Amplify.Auth.deleteUser();
       _user = null;
+      notifyListeners();
       safePrint('Delete user succeeded');
     } on Exception catch (e) {
       safePrint('Delete user failed with error: $e');
@@ -93,6 +105,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await Amplify.Auth.signOut();
       _user = null;
+      notifyListeners();
     } on AuthException catch (e) {
       safePrint(e.message);
     }
