@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_app/providers/event_provider.dart';
@@ -13,6 +12,7 @@ class ScanWidget extends StatelessWidget {
     return MobileScanner(
       controller: MobileScannerController(
         facing: CameraFacing.back,
+        torchEnabled: true,
       ),
       onDetect: (capture) async {
         final List<Barcode> barcodes = capture.barcodes;
@@ -24,6 +24,7 @@ class ScanWidget extends StatelessWidget {
           String ans = await validateTicket(
               ticketId: barcode.rawValue!,
               eventId: context.read<EventState>().event);
+          // ignore: use_build_context_synchronously
           if (!context.mounted) {
             return;
           }
