@@ -75,7 +75,8 @@
         "passinodeModules": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
           "s3Key": "amplify-builds/passinodeModules-LambdaLayerVersion26332592-build.zip"
-        }
+        },
+        "appamplify02fef6e8PostConfirmation": {}
       },
       "storage": {
         "passiStorage": {}
