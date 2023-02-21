@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scan_app/providers/event_provider.dart';
 
 import 'environment/environment.dart';
 
@@ -9,7 +11,13 @@ void main() async {
   );
   //this is where you set the environment
   Environment().initConfig(environment);
-  runApp(const MyApp());
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => EventState()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

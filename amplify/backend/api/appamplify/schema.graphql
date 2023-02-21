@@ -370,7 +370,7 @@ type Event
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public }
       { allow: groups, groups: ["Admin"] }
       { allow: private, operations: [read] }
     ]
@@ -382,18 +382,18 @@ type Event
   companyUrl: AWSURL
   startDateTime: AWSDateTime!
   finishDateTime: AWSDateTime!
-  coords: Coordinates!
+  coords: Coordinates
   address: String!
   place: String
   minAge: Int
   price: Float!
   maxCapacity: Int!
   totalAssistants: Int!
-  primaryImage: AWSURL!
+  primaryImage: AWSURL
   contactNumber: String
   images: [AWSURL!]
   eventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
-  eventcategoryID: ID!
+  eventcategoryID: ID
     @index(
       name: "byEventCategory"
       sortKeyFields: ["startDateTime"]
