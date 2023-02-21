@@ -123,6 +123,7 @@ final dark_theme = ThemeData(
       color: Colors.white,
     ),
   ),
+  progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
   useMaterial3: true,
 );
 const MaterialColor primaryswatchcolor =

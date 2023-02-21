@@ -1,12 +1,9 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart' show AuthException;
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passi_app/models/screen_args/email_confirmation_screen_args.dart';
-import 'package:passi_app/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/auth_provider.dart';
+import '../providers/authentication_provider.dart';
 
 class EmailConfirmationScreen extends StatefulWidget {
   static const name = "email-confirmation";
@@ -26,7 +23,7 @@ class EmailConfirmationScreen extends StatefulWidget {
 class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _isLoading = false;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'code': '',
   };
   Future<void> _submit() async {
@@ -41,12 +38,16 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
       setState(() {
         _isLoading = true;
       });
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
       await authProvider.confirmUser(widget.email, _authData["code"]!);
       await authProvider.signInUser(widget.email, widget.password);
-
-      context.pop();
-      context.pop();
+      if (context.mounted) {
+        context.pop();
+        context.pop();
+        Navigator.of(context).pop();
+      }
+    } on AuthException catch (e) {
+      _showErrorDialog(e.message, context);
     } catch (err) {
       _showErrorDialog(err.toString(), context);
     } finally {
@@ -60,14 +61,14 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
     showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: Text("Ocurrio un error"),
+            title: const Text("Ocurrio un error"),
             content: Text(message),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("Cerrar"))
+                  child: const Text("Cerrar"))
             ],
           )),
     );
@@ -85,18 +86,17 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
                 TextFormField(
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(
                     labelText: 'Codigo de confirmacion',
                     helperText:
                         "Te hemos enviado un codigo de confirmacion a tu correo electronico",
                   ),
-                  textCapitalization: TextCapitalization.words,
-                  keyboardType: TextInputType.name,
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Codigo Invalido';
@@ -107,14 +107,14 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
                     _authData['code'] = value!;
                   },
                 ),
-                SizedBox(height: 30),
-                Container(
+                const SizedBox(height: 30),
+                SizedBox(
                   width: MediaQuery.of(context).size.width * .8,
                   child: FloatingActionButton(
                     backgroundColor: Colors.white,
                     onPressed: _isLoading ? null : _submit,
                     child: _isLoading
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(color: Colors.black),
                           )
                         : Text(

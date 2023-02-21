@@ -6,9 +6,9 @@ Future<String?> getUrl(String key) async {
     S3GetUrlOptions options =
         S3GetUrlOptions(accessLevel: StorageAccessLevel.private, expires: 10000);
     GetUrlResult result = await Amplify.Storage.getUrl(key: key, options: options);
-
     return result.url;
-  } catch (e) {
-    print('GetUrl Err: ' + e.toString());
+  } on StorageException catch (storeError) {
+    print('Storage failed - ${storeError.message}');
+    return '';
   }
 }

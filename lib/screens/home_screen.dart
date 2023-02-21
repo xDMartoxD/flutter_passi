@@ -19,7 +19,6 @@ class HomeScreen extends StatelessWidget {
     return FutureBuilder(
       future: _listEventCategories(context),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print(snapshot.connectionState);
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return Center(
@@ -44,7 +43,6 @@ class LoadedEvents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<EventCateroriesProvider>(
       builder: ((context, value, _) {
-        print("render ${value.eventCategroies.length}");
         return ListView.builder(
           padding: EdgeInsets.symmetric(vertical: 10),
           itemCount: value.eventCategroies.length,

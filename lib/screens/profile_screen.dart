@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/ModelProvider.dart';
-import 'package:passi_app/providers/auth_provider.dart';
+import 'package:passi_app/providers/authentication_provider.dart';
+import 'package:passi_app/screens/email_login_screen.dart';
 import 'package:passi_app/screens/email_register_screen.dart';
 import 'package:passi_app/utils/amplify_utilds.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   Future<void> _getUser(BuildContext context) async {
-    await Provider.of<AuthProvider>(context, listen: false);
+    await Provider.of<AuthenticationProvider>(context, listen: false).setUser();
   }
 
   @override
@@ -21,12 +22,12 @@ class ProfileScreen extends StatelessWidget {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator(color: Colors.white));
+              return Center(child: CircularProgressIndicator());
             default:
-              return Consumer<AuthProvider>(builder: (context, value, child) {
-                return value.user != null
-                    ? UnAuth()
-                    : Auth(name: value.user!.name, avatar: value.user!.avatar);
+              return Consumer<AuthenticationProvider>(builder: (context, value, child) {
+                return value.user == null
+                    ? const UnAuth()
+                    : Auth(name: value.user?.name ?? "Hola?", avatar: value.user?.avatar);
               });
           }
         });
@@ -35,7 +36,7 @@ class ProfileScreen extends StatelessWidget {
 
 class Auth extends StatefulWidget {
   final String name;
-  final S3Object avatar;
+  final S3Object? avatar;
   const Auth({super.key, required this.name, required this.avatar});
 
   @override
@@ -47,7 +48,7 @@ class _AuthState extends State<Auth> {
   @override
   void initState() {
     super.initState();
-    getUrl(widget.avatar.key).then((value) {
+    getUrl(widget.avatar?.key ?? "").then((value) {
       setState(() {
         avatarUrl = value ?? "";
       });
@@ -63,9 +64,18 @@ class _AuthState extends State<Auth> {
         children: [
           CircleAvatar(
             backgroundColor: Theme.of(context).cardColor,
-            minRadius: 50,
-            child: Image.network(avatarUrl),
+            radius: 50,
+            // backgroundImage: AssetImage('assets/images/empty-profile.png'),
+            child: SizedBox(
+              height: 100,
+              width: 100,
+              child: FittedBox(
+                child: ClipOval(child: Image.asset('assets/images/empty-profile.png')),
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
+          SizedBox(height: 10),
           Text(
             widget.name,
             textAlign: TextAlign.center,
@@ -143,7 +153,9 @@ class UnAuth extends StatelessWidget {
               ),
               Center(
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.goNamed(EmailLoginScreen.name);
+                      },
                       child: Text(
                         "Iniciar Sesion",
                         style: TextStyle(color: Colors.white),

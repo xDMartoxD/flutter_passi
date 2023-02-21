@@ -187,7 +187,7 @@ type User
   @model
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, delete] }
+      { allow: owner, ownerField: "id", operations: [create, update, delete, read] }
       { allow: private, operations: [read] }
       { allow: groups, groups: ["Admin"] }
       { allow: public, operations: [read] }

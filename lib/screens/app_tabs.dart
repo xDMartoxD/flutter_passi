@@ -3,10 +3,14 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
 import 'package:amplify_api/amplify_api.dart';
+import 'package:passi_app/screens/user_settings_screen.dart';
+import 'package:provider/provider.dart';
 import '../amplifyconfiguration.dart';
 import '../models/ModelProvider.dart';
 
@@ -23,10 +27,10 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
   late final List<Map<String, Object?>> _screens;
   late int _currenPageIndex;
   late final TabController _tabController;
+  List<Widget> _userScreenAppBarActions = [];
   @override
   void initState() {
     super.initState();
-    _configureAmplify();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.index = 1;
     _currenPageIndex = 0;
@@ -56,9 +60,12 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         "title": "Perfil",
         "screen": ProfileScreen(),
         "appBarBottom": null,
-        "appBarActions": [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
+        "appBarActions": _userScreenAppBarActions,
       }
     ];
+    Future.delayed(Duration.zero).then((_) {
+      Provider.of<AuthenticationProvider>(context).addListener(() {});
+    });
   }
 
   @override
@@ -90,7 +97,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
           NavigationDestination(
             icon: Icon(
               Icons.person,
-              size: 28,
+              size: 32,
             ),
             label: "Profile",
           )
@@ -103,24 +110,5 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
       ),
       body: _screens[_currenPageIndex]["screen"] as Widget,
     );
-  }
-}
-
-Future<void> _configureAmplify() async {
-  // Add any Amplify plugins you want to use
-  final authPlugin = AmplifyAuthCognito();
-  final api = AmplifyAPI(modelProvider: ModelProvider.instance);
-  final storage = AmplifyStorageS3();
-  await Amplify.addPlugins([api, authPlugin, storage]);
-
-  // You can use addPlugins if you are going to be adding multiple plugins
-  // await Amplify.addPlugins([authPlugin, analyticsPlugin]);
-
-  // Once Plugins are added, configure Amplify
-  // Note: Amplify can only be configured once.
-  try {
-    await Amplify.configure(amplifyconfig);
-  } on AmplifyAlreadyConfiguredException {
-    safePrint("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
   }
 }
