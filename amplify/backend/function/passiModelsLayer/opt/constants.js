@@ -21,4 +21,16 @@ module.exports = {
 		user: 'User-5ulwfywt4zghzkqhwavc4sprkq-test',
 		bucket: 'appamplifyfcc503d0e85e4571b2322c17f2563fbe113652-test',
 	},
+	devel: {
+		discountCode: 'DiscountCode-3woiif2zwvdizmeyltwds462jy-devel',
+		event: 'Event-3woiif2zwvdizmeyltwds462jy-devel',
+		eventCategory: 'EventCategory-3woiif2zwvdizmeyltwds462jy-devel',
+		job: 'Job-3woiif2zwvdizmeyltwds462jy-devel',
+		paymentMethod: 'PaymentMethod-3woiif2zwvdizmeyltwds462jy-devel',
+		ticket: 'Ticket-3woiif2zwvdizmeyltwds462jy-devel',
+		ticketCategory: 'TicketCategory-3woiif2zwvdizmeyltwds462jy-devel',
+		user: 'User-3woiif2zwvdizmeyltwds462jy-devel',
+		bucket: 'appamplifyfcc503d0e85e4571b2322c17f2563fbe143433-devel',
+
+	}
 }
