@@ -34,7 +34,7 @@ class EventDetailsScreen extends StatelessWidget {
             final args = EventCheckoutScreenArgs(id: id);
             context.goNamed(
               EventCheckoutScreen.name,
-              params: args.params(),
+              queryParams: args.queryParams(),
             );
           },
         ),

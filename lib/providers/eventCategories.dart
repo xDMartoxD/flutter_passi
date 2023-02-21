@@ -26,7 +26,6 @@ class EventCateroriesProvider with ChangeNotifier {
       final List<EventCategory> loadedEventCategories = [];
       for (var element in paginatedEventCategories.items) {
         if (element != null) {
-          print(element.name);
           loadedEventCategories.add(element);
         }
       }
