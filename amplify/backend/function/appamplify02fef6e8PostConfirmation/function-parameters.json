@@ -22,5 +22,12 @@
       "version": "Always choose latest version",
       "isLatestVersionSelected": true
     }
-  ]
+  ],
+  "permissions": {
+    "storage": {
+      "User:@model(appsync)": [
+        "create"
+      ]
+    }
+  }
 }
