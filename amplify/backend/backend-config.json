@@ -1,6 +1,15 @@
 {
   "api": {
     "appamplify": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "appamplify02fef6e8"
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
@@ -13,7 +22,7 @@
           ],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDate": "2023-02-17T01:54:00.349Z",
+              "apiKeyExpirationDate": "2024-02-22T01:27:48.598Z",
               "apiKeyExpirationDays": 365,
               "description": "api key"
             },
@@ -579,6 +588,38 @@
         }
       ]
     },
+    "AMPLIFY_function_appamplify02fef6e8PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "appamplify02fef6e8PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_appamplify02fef6e8PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "appamplify02fef6e8PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_createEvent_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createEvent"
+        }
+      ]
+    },
+    "AMPLIFY_function_createEvent_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createEvent"
+        }
+      ]
+    },
     "AMPLIFY_function_passiModelsLayer_deploymentBucketName": {
       "usedBy": [
         {
@@ -624,6 +665,22 @@
         {
           "category": "function",
           "resourceName": "passinodeModules"
+        }
+      ]
+    },
+    "AMPLIFY_function_validateTicket_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "validateTicket"
+        }
+      ]
+    },
+    "AMPLIFY_function_validateTicket_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "validateTicket"
         }
       ]
     }

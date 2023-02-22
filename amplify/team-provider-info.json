@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-passi-devel-143433-unauthRole",
       "StackName": "amplify-passi-devel-143433",
       "StackId": "arn:aws:cloudformation:us-east-1:954573579519:stack/amplify-passi-devel-143433/1dc405f0-aa43-11ed-a492-0a3b4282c6bf",
-      "AmplifyAppId": "d32iatki73wyls"
+      "AmplifyAppId": "d32iatki73wyls",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
@@ -26,7 +27,7 @@
         },
         "CreateEntrance": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/CreateEntrance-6b5a612b55566875532b-build.zip"
+          "s3Key": "amplify-builds/CreateEntrance-74334f4d384f6b587233-build.zip"
         },
         "CreateEntranceBusinessLogic": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
@@ -46,37 +47,48 @@
         },
         "CreateEntrancePSE": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/CreateEntrancePSE-64436242554f7a6a366c-build.zip"
+          "s3Key": "amplify-builds/CreateEntrancePSE-306f5a657578354c3764-build.zip"
         },
         "CreateFreeEntrance": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/CreateFreeEntrance-307577622b3976544d32-build.zip"
+          "s3Key": "amplify-builds/CreateFreeEntrance-4b4a2b543778696f3347-build.zip"
         },
         "CreatePaymentSource": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/CreatePaymentSource-4b5a42495839687a2b48-build.zip"
+          "s3Key": "amplify-builds/CreatePaymentSource-7762642f553432756f68-build.zip"
         },
         "CreateUserDynamo": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/CreateUserDynamo-3171634a386d4a4e744c-build.zip"
+          "s3Key": "amplify-builds/CreateUserDynamo-763971636d4636737a57-build.zip"
         },
         "RefreshTransactionStatus": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/RefreshTransactionStatus-5463734b562f2f317541-build.zip"
+          "s3Key": "amplify-builds/RefreshTransactionStatus-36774f6e6e2b5a44636a-build.zip"
         },
         "passiModelsLayer": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/passiModelsLayer-LambdaLayerVersion049e3e9f-build.zip"
+          "s3Key": "amplify-builds/passiModelsLayer-LambdaLayerVersionbd4f737a-build.zip"
         },
         "passiWompiLayer": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/passiWompiLayer-LambdaLayerVersion64ce4345-build.zip"
+          "s3Key": "amplify-builds/passiWompiLayer-LambdaLayerVersionea5e6c36-build.zip"
         },
         "passinodeModules": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/passinodeModules-LambdaLayerVersion26332592-build.zip"
+          "s3Key": "amplify-builds/passinodeModules-LambdaLayerVersiona79b50d9-build.zip"
         },
-        "appamplify02fef6e8PostConfirmation": {}
+        "appamplify02fef6e8PostConfirmation": {
+          "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+          "s3Key": "amplify-builds/appamplify02fef6e8PostConfirmation-7a4c4561424358417565-build.zip"
+        },
+        "createEvent": {
+          "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+          "s3Key": "amplify-builds/createEvent-692b4868697358334f79-build.zip"
+        },
+        "validateTicket": {
+          "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+          "s3Key": "amplify-builds/validateTicket-747a39314a7750383379-build.zip"
+        }
       },
       "storage": {
         "passiStorage": {}
