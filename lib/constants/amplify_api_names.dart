@@ -1,2 +1,2 @@
-const apiKeyApiName = "Default";
-const cognitoApiName = "appamplify_AMAZON_COGNITO_USER_POOLS";
+const apiKeyApiName = "appamplify";
+const cognitoApiName = "appamplifyWithUserPool";
