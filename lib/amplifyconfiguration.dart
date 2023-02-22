@@ -31,7 +31,7 @@ const amplifyconfig =
                     "Default": {}
                 },
                 "AppSync": {
-                    "Default": {
+                    "appamplify_API_KEY": {
                         "ApiUrl": "https://qoonxe23evgfjmnpqlehsvetk4.appsync-api.us-east-1.amazonaws.com/graphql",
                         "Region": "us-east-1",
                         "AuthMode": "API_KEY",

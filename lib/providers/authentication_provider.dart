@@ -1,9 +1,11 @@
 import 'package:amplify_api/amplify_api.dart';
-import 'package:amplify_api/model_queries.dart';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+
 import 'package:passi_app/models/ModelProvider.dart';
+import 'package:passi_app/utils/amplify_utils.dart';
 
 class AuthenticationProvider with ChangeNotifier {
   User? _user;
@@ -45,7 +47,7 @@ class AuthenticationProvider with ChangeNotifier {
       try {
         final id = await attemptAutoLogin();
         if (id != null) {
-          final request = ModelQueries.get(User.classType, id);
+          final request = apiKeyRequest(ModelQueries.get(User.classType, id));
           final response = await Amplify.API.query(request: request).response;
           final data = response.data;
           if (data == null) {
@@ -116,7 +118,7 @@ class AuthenticationProvider with ChangeNotifier {
 
   Future<void> _removeUserFromDB() async {
     if (_userSub != null && _userSub != '' && user != null) {
-      final request = ModelMutations.delete<User>(user!);
+      final request = cognitoRequest(ModelMutations.delete<User>(user!));
       final response = await Amplify.API.mutate(request: request).response;
       final data = response.data;
       if (data == null) {
@@ -134,7 +136,6 @@ class AuthenticationProvider with ChangeNotifier {
       // await Amplify.Auth.deleteUser();
       _user = null;
       notifyListeners();
-      safePrint('Delete user succeeded');
     } on Exception catch (e) {
       safePrint('Delete user failed with error: $e');
     }

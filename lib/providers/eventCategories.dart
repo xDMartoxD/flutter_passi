@@ -1,6 +1,7 @@
 import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:passi_app/utils/amplify_utils.dart';
 import '../models/ModelProvider.dart';
 
 class EventCategoriesProvider with ChangeNotifier {
@@ -14,7 +15,7 @@ class EventCategoriesProvider with ChangeNotifier {
 
   Future<void> fetchEventCategories() async {
     try {
-      final request = ModelQueries.list(EventCategory.classType);
+      final request = apiKeyRequest(ModelQueries.list(EventCategory.classType));
       final response = await Amplify.API.query(request: request).response;
       final paginatedEventCategories = response.data;
       if (paginatedEventCategories == null) {

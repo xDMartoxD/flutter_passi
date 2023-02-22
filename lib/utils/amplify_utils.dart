@@ -1,5 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:passi_app/constants/amplify_api_names.dart';
 
 Future<String?> getUrl(String key) async {
   try {
@@ -11,4 +12,24 @@ Future<String?> getUrl(String key) async {
     print('Storage failed - ${storeError.message}');
     return '';
   }
+}
+
+GraphQLRequest<K> cognitoRequest<K>(GraphQLRequest<K> request) {
+  return GraphQLRequest(
+    document: request.document,
+    apiName: cognitoApiName,
+    decodePath: request.decodePath,
+    modelType: request.modelType,
+    variables: request.variables,
+  );
+}
+
+GraphQLRequest<K> apiKeyRequest<K>(GraphQLRequest<K> request) {
+  return GraphQLRequest(
+    document: request.document,
+    apiName: apiKeyApiName,
+    decodePath: request.decodePath,
+    modelType: request.modelType,
+    variables: request.variables,
+  );
 }
