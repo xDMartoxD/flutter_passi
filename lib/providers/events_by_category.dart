@@ -20,7 +20,12 @@ class EventsByCategory with ChangeNotifier {
 
   Future<void> fetchEventsByCategory() async {
     try {
-      final request = apiKeyRequest(ModelQueries.list(Event.classType));
+      final request = apiKeyRequest(
+        ModelQueries.list(
+          Event.classType,
+          where: Event.EVENTCATEGORY.eq(categoryId),
+        ),
+      );
       final response = await Amplify.API.query(request: request).response;
       final paginatedEventCategories = response.data;
       if (paginatedEventCategories == null) {
@@ -38,7 +43,24 @@ class EventsByCategory with ChangeNotifier {
       _events = loadedEvents;
       notifyListeners();
     } on ApiException catch (e) {
-      print('Query failed: $e');
+      safePrint('Query failed: $e');
+    }
+  }
+
+  Future<Event?> getEventById(String id) async {
+    try {
+      final request = apiKeyRequest(
+        ModelQueries.get(Event.classType, id),
+      );
+      final response = await Amplify.API.query(request: request).response;
+      final event = response.data;
+      if (event == null) {
+        safePrint('errors: ${response.errors}');
+        return null;
+      }
+      return event;
+    } on ApiException catch (e) {
+      safePrint('Query failed: $e');
     }
   }
 }

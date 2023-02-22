@@ -49,12 +49,12 @@ class LoadedEvents extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                eventCategoryTitle(value, index),
+                EventCategoryTitle(value, index),
                 ChangeNotifierProvider<EventsByCategory>(
                   create: (context) {
                     return EventsByCategory(categoryId: value.eventCategroies[index].id);
                   },
-                  child: eventsByCategoryList(),
+                  child: EventsByCategoryList(),
                 ),
               ],
             );
@@ -65,8 +65,8 @@ class LoadedEvents extends StatelessWidget {
   }
 }
 
-class eventsByCategoryList extends StatelessWidget {
-  const eventsByCategoryList({
+class EventsByCategoryList extends StatelessWidget {
+  const EventsByCategoryList({
     super.key,
   });
 
@@ -85,19 +85,21 @@ class eventsByCategoryList extends StatelessWidget {
             case ConnectionState.waiting:
               return Center(child: CircularProgressIndicator(color: Colors.white));
             default:
-              return Consumer<EventsByCategory>(builder: (context, value, _) {
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: value.events.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return EventItem(
-                      imageUrl: value.events[index].primaryImage,
-                      title: value.events[index].title,
-                      id: value.events[index].id,
-                    );
-                  },
-                );
-              });
+              return Consumer<EventsByCategory>(
+                builder: (context, value, _) {
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: value.events.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return EventItem(
+                        imageUrl: value.events[index].primaryImage,
+                        title: value.events[index].title,
+                        id: value.events[index].id,
+                      );
+                    },
+                  );
+                },
+              );
           }
         },
       ),
@@ -105,10 +107,10 @@ class eventsByCategoryList extends StatelessWidget {
   }
 }
 
-class eventCategoryTitle extends StatelessWidget {
+class EventCategoryTitle extends StatelessWidget {
   final EventCategoriesProvider value;
   final int index;
-  const eventCategoryTitle(
+  const EventCategoryTitle(
     this.value,
     this.index, {
     super.key,

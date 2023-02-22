@@ -59,6 +59,7 @@ dependencies:
   amplify_api: ^0.6.12
   amplify_storage_s3: ^0.6.0
   validators: ^3.0.0
+  string_to_hex: ^0.2.2
 
 dev_dependencies:
   flutter_test:

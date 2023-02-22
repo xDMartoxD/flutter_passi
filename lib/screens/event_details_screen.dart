@@ -1,11 +1,15 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:passi_app/models/screen_args/event_checkout_screen_args.dart';
-import 'package:passi_app/screens/event_checkout_screen.dart';
+import 'package:passi_app/providers/authentication_provider.dart';
+import 'package:passi_app/providers/event_provider.dart';
+import 'package:passi_app/providers/ticket_provider_by_event.dart';
 import 'package:passi_app/widgets/expandable_text.dart';
 import 'package:passi_app/widgets/app_map_view.dart';
+import 'package:passi_app/widgets/loading.dart';
+import 'package:provider/provider.dart';
+import 'package:string_to_hex/string_to_hex.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   static const route = "event-details/:id";
@@ -13,8 +17,19 @@ class EventDetailsScreen extends StatelessWidget {
 
   final String id;
 
-  final NumberFormat thousendFormat = NumberFormat.decimalPattern('en_us');
-  EventDetailsScreen({super.key, required this.id});
+  const EventDetailsScreen({super.key, required this.id});
+
+  void goToCheckout() {}
+  void goToLogin() {}
+
+  void pressedHandler(BuildContext context) {
+    final user = Provider.of<AuthenticationProvider>(context).user;
+    if (user != null) {
+      goToCheckout();
+    } else {
+      goToLogin();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,89 +45,167 @@ class EventDetailsScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          onPressed: () {
-            final args = EventCheckoutScreenArgs(id: id);
-            context.goNamed(
-              EventCheckoutScreen.name,
-              params: args.params(),
-            );
-          },
+          onPressed: () => pressedHandler(context),
         ),
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          EventDetailsAppBar(
-            id: id,
-            imageUrl:
-                "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Titulo del Evento",
-                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  softWrap: true,
-                ),
-              ),
-              Divider(
-                color: Colors.white,
-                height: 8,
-              ),
-              Container(
-                height: 100,
-                decoration: BoxDecoration(border: Border.symmetric()),
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    EventInfoIcon(),
-                    EventInfoIcon(),
-                    EventInfoIcon(),
-                    EventInfoIcon(),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: EventDetailsCategoriesInfo(thousendFormat: thousendFormat),
-                  ),
-                ),
-              ),
-              ProotersWidget(),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AspectRatio(
-                  aspectRatio: 3 / 2,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: AppMapView(),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ExpandableText(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
-              ),
-              SizedBox(height: 80)
-            ]),
-          )
-        ],
+      body: ChangeNotifierProvider<EventProvider>(
+        create: (context) {
+          return EventProvider();
+        },
+        child: EventContent(
+          id: id,
+        ),
       ),
     );
   }
 }
 
-class ProotersWidget extends StatelessWidget {
-  const ProotersWidget({
+class EventContent extends StatefulWidget {
+  final String id;
+
+  EventContent({
+    super.key,
+    required this.id,
+  });
+
+  @override
+  State<EventContent> createState() => _EventContentState();
+}
+
+class _EventContentState extends State<EventContent> {
+  late final NumberFormat thousendFormat;
+
+  Future<void>? _setEvent;
+  @override
+  void initState() {
+    super.initState();
+    thousendFormat = NumberFormat.decimalPattern('en_us');
+
+    Future.delayed(Duration.zero).then((_) {
+      _setEvent = Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
+    });
+  }
+
+  String parseDate(TemporalDateTime date) {
+    return DateFormat('dd-MM-yy').format(DateTime.parse(date.toString()));
+  }
+
+  String parseTime(TemporalDateTime date) {
+    return DateFormat('HH:mm').format(DateTime.parse(date.toString()));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _setEvent,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Loading();
+          default:
+            return Consumer<EventProvider>(builder: (context, value, child) {
+              return value.event == null
+                  ? Loading()
+                  : CustomScrollView(
+                      slivers: <Widget>[
+                        EventDetailsAppBar(
+                          id: widget.id,
+                          images: [value.event!.primaryImage, ...(value.event!.images ?? [])],
+                        ),
+                        SliverList(
+                          delegate: SliverChildListDelegate([
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                value.event!.title,
+                                style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                softWrap: true,
+                              ),
+                            ),
+                            Divider(
+                              color: Colors.white,
+                              height: 8,
+                            ),
+                            Container(
+                              height: 100,
+                              decoration: BoxDecoration(border: Border.symmetric()),
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  EventInfoIcon(
+                                    icon: Icons.watch_later_outlined,
+                                    textContent:
+                                        "${parseTime(value.event!.startDateTime)} - ${parseTime(value.event!.finishDateTime)}",
+                                  ),
+                                  EventInfoIcon(
+                                    icon: Icons.map,
+                                    textContent: "${value.event!.address}",
+                                  ),
+                                  EventInfoIcon(
+                                    icon: Icons.calendar_today,
+                                    textContent: "${parseDate(value.event!.startDateTime)}",
+                                  ),
+                                  EventInfoIcon(
+                                    icon: Icons.corporate_fare_rounded,
+                                    textContent: "${value.event!.company}",
+                                  ),
+                                  EventInfoIcon(
+                                    icon: Icons.star_border_rounded,
+                                    textContent: value.event!.eventCategory.name,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: ChangeNotifierProvider<TicketCategoriesByEventProvider>(
+                                    create: (context) {
+                                      return TicketCategoriesByEventProvider();
+                                    },
+                                    child: EventDetailsCategoriesInfo(
+                                      thousendFormat: thousendFormat,
+                                      eventId: value.event!.id,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            PromotersWidget(),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AspectRatio(
+                                aspectRatio: 3 / 2,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: AppMapView(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ExpandableText(value.event!.description),
+                            ),
+                            SizedBox(height: 80)
+                          ]),
+                        )
+                      ],
+                    );
+            });
+        }
+      },
+    );
+  }
+}
+
+class PromotersWidget extends StatelessWidget {
+  const PromotersWidget({
     super.key,
   });
 
@@ -183,8 +276,12 @@ class ProotersWidget extends StatelessWidget {
 }
 
 class EventInfoIcon extends StatelessWidget {
-  const EventInfoIcon({
+  IconData icon;
+  String textContent;
+  EventInfoIcon({
     Key? key,
+    required this.icon,
+    required this.textContent,
   }) : super(key: key);
 
   @override
@@ -196,7 +293,7 @@ class EventInfoIcon extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [Icon(Icons.lock_clock), Text("Reloj")],
+            children: [Icon(icon), Text(textContent)],
           ),
         ),
         VerticalDivider(
@@ -213,120 +310,74 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
   const EventDetailsCategoriesInfo({
     Key? key,
     required this.thousendFormat,
+    required this.eventId,
   }) : super(key: key);
 
   final NumberFormat thousendFormat;
+  final String eventId;
+
+  Future<void> _listTicketCateogires(BuildContext context) async {
+    await Provider.of<TicketCategoriesByEventProvider>(context)
+        .fetchTicketCategoriesByEventId(eventId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Table(
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: [
-          TableRow(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 50,
-                child: Text(
-                  "Space Around",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                height: 50,
-                child: Text(
-                  "\$ ${thousendFormat.format(30000)}",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              )
-            ],
-          ),
-          TableRow(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 50,
-                child: Text(
-                  "Space Around",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                height: 50,
-                child: Text(
-                  "\$ ${thousendFormat.format(30000)}",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              )
-            ],
-          ),
-          TableRow(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 50,
-                child: Text(
-                  "Space Around",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                height: 50,
-                child: Text(
-                  "\$ ${thousendFormat.format(30000)}",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
+    return FutureBuilder(
+      future: _listTicketCateogires(context),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return Consumer<TicketCategoriesByEventProvider>(
+              builder: (context, value, child) {
+                print(value.ticketCategories[0].color);
+                return Table(
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: value.ticketCategories.map(
+                    (ticketCategory) {
+                      return TableRow(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            height: 50,
+                            child: Text(
+                              ticketCategory.name,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            height: 50,
+                            child: Text(
+                              "\$ ${thousendFormat.format(ticketCategory.price)}",
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            height: 5,
+                            decoration: BoxDecoration(
+                              color: Color(StringToHex.toColor(ticketCategory.color)),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ).toList(),
+                );
+              },
+            );
+          default:
+            return Loading();
+        }
+      },
     );
   }
 }
@@ -335,11 +386,11 @@ class EventDetailsAppBar extends StatefulWidget {
   const EventDetailsAppBar({
     Key? key,
     required this.id,
-    required this.imageUrl,
+    required this.images,
   }) : super(key: key);
 
   final String id;
-  final String imageUrl;
+  final List<String> images;
 
   @override
   State<EventDetailsAppBar> createState() => _EventDetailsAppBarState();
@@ -351,7 +402,7 @@ class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProv
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: widget.images.length, vsync: this);
   }
 
   @override
@@ -369,21 +420,21 @@ class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProv
         background: Stack(children: [
           Positioned.fill(
             child: PageView.builder(
-              itemCount: 2,
+              itemCount: widget.images.length,
               itemBuilder: (context, index) {
                 return index == 0
                     ? Hero(
                         tag: widget.id,
                         child: InteractiveViewer(
                           child: Image.network(
-                            widget.imageUrl,
+                            widget.images[index],
                             fit: BoxFit.cover,
                           ),
                         ),
                       )
                     : InteractiveViewer(
                         child: Image.network(
-                          widget.imageUrl,
+                          widget.images[index],
                           fit: BoxFit.cover,
                         ),
                       );

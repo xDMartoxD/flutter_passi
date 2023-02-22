@@ -422,7 +422,7 @@ type TicketCategory
   id: ID! @primaryKey
   price: Float!
   name: String!
-  color: String!
+  color: Int!
   maxCapacity: Int!
   totalAssistants: Int!
   eventID: ID!
