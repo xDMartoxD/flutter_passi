@@ -5,7 +5,7 @@ import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/screens/email_login_screen.dart';
 import 'package:passi_app/screens/email_register_screen.dart';
-import 'package:passi_app/utils/amplify_utilds.dart';
+import 'package:passi_app/utils/amplify_utils.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {

@@ -35,7 +35,10 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
       });
       final authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
       await authProvider.signInUser(_authData["email"]!, _authData["password"]!);
-      context.pop();
+      if (context.mounted) {
+        context.pop();
+        Navigator.of(context).pop();
+      }
     } on AuthException catch (e) {
       _showErrorDialog(e.message, context);
     } catch (err) {

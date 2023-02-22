@@ -20,6 +20,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     super.initState();
     Future.delayed(Duration.zero).then((_) {
       _authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+      if (context.mounted && _authProvider!.user == null) {
+        context.pop();
+      }
     });
   }
 
@@ -46,8 +49,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                     _isLoading = false;
                   });
                   if (context.mounted) {
-                    Navigator.of(context).pop();
                     context.pop();
+                    Navigator.of(context).pop();
                   }
                 },
               ),
@@ -71,10 +74,13 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     setState(() {
       _isLoading = true;
     });
-    _authProvider?.signOutCurrentUser();
+    await _authProvider?.signOutCurrentUser();
     setState(() {
       _isLoading = false;
     });
+    if (context.mounted) {
+      context.pop();
+    }
   }
 
   @override

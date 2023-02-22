@@ -14,7 +14,9 @@ class EventItemLarge extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.goNamed(
         EventDetailsScreen.name,
-        queryParams: EventDetailScreenArgs(id: id, imageUrl: imageUrl).queryParams(),
+        params: EventDetailScreenArgs(
+          id: id,
+        ).params(),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(

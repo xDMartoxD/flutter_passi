@@ -56,8 +56,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<AuthenticationProvider>(
           create: (context) => AuthenticationProvider(),
         ),
-        ChangeNotifierProvider<EventCateroriesProvider>(
-          create: (context) => EventCateroriesProvider(),
+        ChangeNotifierProvider<EventCategoriesProvider>(
+          create: (context) => EventCategoriesProvider(),
         )
       ],
       child: MaterialApp.router(

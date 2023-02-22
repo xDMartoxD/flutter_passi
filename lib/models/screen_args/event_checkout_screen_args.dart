@@ -9,7 +9,7 @@ class EventCheckoutScreenArgs implements ScreenArgs {
 
   @override
   Map<String, dynamic> queryParams() {
-    return {"id": id};
+    return {'id': id};
   }
 
   EventCheckoutScreenArgs.fromJson(Map<String, dynamic> json) {
@@ -18,6 +18,6 @@ class EventCheckoutScreenArgs implements ScreenArgs {
 
   @override
   Map<String, String> params() {
-    return {};
+    return {'id': id};
   }
 }

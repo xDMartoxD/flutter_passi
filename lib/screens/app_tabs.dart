@@ -1,18 +1,11 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passi_app/providers/authentication_provider.dart';
+
 import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
-import 'package:amplify_api/amplify_api.dart';
 import 'package:passi_app/screens/user_settings_screen.dart';
-import 'package:provider/provider.dart';
-import '../amplifyconfiguration.dart';
-import '../models/ModelProvider.dart';
 
 class AppTabs extends StatefulWidget {
   static const route = "/";
@@ -27,13 +20,14 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
   late final List<Map<String, Object?>> _screens;
   late int _currenPageIndex;
   late final TabController _tabController;
-  List<Widget> _userScreenAppBarActions = [];
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.index = 1;
     _currenPageIndex = 0;
+
     _screens = [
       {
         "title": "home",
@@ -60,12 +54,14 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         "title": "Perfil",
         "screen": ProfileScreen(),
         "appBarBottom": null,
-        "appBarActions": _userScreenAppBarActions,
+        "appBarActions": [
+          IconButton(
+            onPressed: () => {context.goNamed(UserSettingsScreen.name)},
+            icon: Icon(Icons.settings),
+          )
+        ],
       }
     ];
-    Future.delayed(Duration.zero).then((_) {
-      Provider.of<AuthenticationProvider>(context).addListener(() {});
-    });
   }
 
   @override

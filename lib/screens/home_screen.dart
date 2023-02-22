@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   Future<void> _listEventCategories(BuildContext context) async {
-    await Provider.of<EventCateroriesProvider>(context, listen: false).fetchEventCategories();
+    await Provider.of<EventCategoriesProvider>(context, listen: false).fetchEventCategories();
   }
 
   @override
@@ -41,7 +41,7 @@ class LoadedEvents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<EventCateroriesProvider>(
+    return Consumer<EventCategoriesProvider>(
       builder: ((context, value, _) {
         return ListView.builder(
           padding: EdgeInsets.symmetric(vertical: 10),

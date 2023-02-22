@@ -3,7 +3,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import '../models/ModelProvider.dart';
 
-class EventCateroriesProvider with ChangeNotifier {
+class EventCategoriesProvider with ChangeNotifier {
   List<EventCategory> _eventCategories = [];
   GraphQLRequest<PaginatedResult<EventCategory>>? _requestForNextToken;
   bool _hasNextResult = false;

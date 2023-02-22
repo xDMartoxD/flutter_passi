@@ -4,7 +4,7 @@ class EventCheckoutScreen extends StatefulWidget {
   static const route = "event-checkout";
   static const name = "event-checkout";
   final String id;
-  const EventCheckoutScreen({super.key, required this.id});
+  EventCheckoutScreen({super.key, required this.id});
 
   @override
   State<EventCheckoutScreen> createState() => _EventCheckoutScreenState();
@@ -13,6 +13,6 @@ class EventCheckoutScreen extends StatefulWidget {
 class _EventCheckoutScreenState extends State<EventCheckoutScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(), body: const Placeholder());
+    return Scaffold(appBar: AppBar());
   }
 }

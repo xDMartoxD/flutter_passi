@@ -16,35 +16,35 @@ import '../screens/app_tabs.dart';
 
 class AppRouter {
   late final GoRouter router = GoRouter(
-      routes: <RouteBase>[
+      routes: [
         GoRoute(
           path: AppTabs.route,
           name: AppTabs.name,
           builder: (BuildContext context, GoRouterState state) {
             return AppTabs();
           },
-          routes: <RouteBase>[
+          routes: [
             GoRoute(
               path: EventDetailsScreen.route,
               name: EventDetailsScreen.name,
+              builder: (BuildContext context, GoRouterState state) {
+                final args = EventDetailScreenArgs.fromJson(state.params);
+                return EventDetailsScreen(
+                  id: args.id,
+                );
+              },
               routes: [
                 GoRoute(
                   path: EventCheckoutScreen.route,
                   name: EventCheckoutScreen.name,
                   builder: (BuildContext context, GoRouterState state) {
-                    final args = EventCheckoutScreenArgs.fromJson(state.queryParams);
-                    return EventCheckoutScreen(id: args.id);
+                    final args = EventCheckoutScreenArgs.fromJson(state.params);
+                    return EventCheckoutScreen(
+                      id: args.id,
+                    );
                   },
                 )
               ],
-              builder: (BuildContext context, GoRouterState state) {
-                final EventDetailScreenArgs args =
-                    EventDetailScreenArgs.fromJson(state.queryParams);
-                return EventDetailsScreen(
-                  id: args.id,
-                  imageUrl: args.imageUrl,
-                );
-              },
             ),
             GoRoute(
               path: EmailLoginScreen.route,
