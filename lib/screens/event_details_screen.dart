@@ -13,8 +13,10 @@ class EventDetailsScreen extends StatelessWidget {
 
   final String id;
   final String imageUrl;
+  final String? promoterCode;
   final NumberFormat thousendFormat = NumberFormat.decimalPattern('en_us');
-  EventDetailsScreen({super.key, required this.id, required this.imageUrl});
+  EventDetailsScreen(
+      {super.key, required this.id, required this.imageUrl, this.promoterCode});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +78,8 @@ class EventDetailsScreen extends StatelessWidget {
                 child: Card(
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
-                    child: EventDetailsCategoriesInfo(thousendFormat: thousendFormat),
+                    child: EventDetailsCategoriesInfo(
+                        thousendFormat: thousendFormat),
                   ),
                 ),
               ),
@@ -341,7 +344,8 @@ class EventDetailsAppBar extends StatefulWidget {
   State<EventDetailsAppBar> createState() => _EventDetailsAppBarState();
 }
 
-class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProviderStateMixin {
+class _EventDetailsAppBarState extends State<EventDetailsAppBar>
+    with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
