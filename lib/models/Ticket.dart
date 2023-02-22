@@ -63,8 +63,17 @@ class Ticket extends Model {
     }
   }
   
-  TicketCategory? get ticketCategory {
-    return _ticketCategory;
+  TicketCategory get ticketCategory {
+    try {
+      return _ticketCategory!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   TemporalDateTime? get inDateTime {
@@ -143,9 +152,9 @@ class Ticket extends Model {
     }
   }
   
-  const Ticket._internal({required this.id, required event, ticketCategory, inDateTime, outDateTime, required didAssist, required user, registeredBy, discountCode, transaction, seat, required createdAt, required updatedAt}): _event = event, _ticketCategory = ticketCategory, _inDateTime = inDateTime, _outDateTime = outDateTime, _didAssist = didAssist, _user = user, _registeredBy = registeredBy, _discountCode = discountCode, _transaction = transaction, _seat = seat, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Ticket._internal({required this.id, required event, required ticketCategory, inDateTime, outDateTime, required didAssist, required user, registeredBy, discountCode, transaction, seat, required createdAt, required updatedAt}): _event = event, _ticketCategory = ticketCategory, _inDateTime = inDateTime, _outDateTime = outDateTime, _didAssist = didAssist, _user = user, _registeredBy = registeredBy, _discountCode = discountCode, _transaction = transaction, _seat = seat, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Ticket({String? id, required Event event, TicketCategory? ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, required bool didAssist, required User user, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory Ticket({String? id, required Event event, required TicketCategory ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, required bool didAssist, required User user, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return Ticket._internal(
       id: id == null ? UUID.getUUID() : id,
       event: event,
@@ -313,6 +322,9 @@ class Ticket extends Model {
       AuthRule(
         authStrategy: AuthStrategy.PUBLIC,
         operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
           ModelOperation.READ
         ]),
       AuthRule(
@@ -342,7 +354,7 @@ class Ticket extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Ticket.TICKETCATEGORY,
-      isRequired: false,
+      isRequired: true,
       targetName: 'ticketCategoryID',
       ofModelName: 'TicketCategory'
     ));

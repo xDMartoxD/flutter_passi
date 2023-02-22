@@ -24,10 +24,9 @@ class HomeScreen extends StatelessWidget {
             return Center(
               child: CircularProgressIndicator(),
             );
-          case ConnectionState.done:
-            return LoadedEvents();
+
           default:
-            return Container();
+            return LoadedEvents();
         }
       },
     );
@@ -50,53 +49,98 @@ class LoadedEvents extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.all(8),
-                      child: Text(
-                        value.eventCategroies[index].name,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: (() {
-                        final args = EventCategoriesOverviewScreenArgs(
-                          id: value.eventCategroies[index].id,
-                        );
-                        context.goNamed(EventCategoriesOverviewScreen.name, params: args.params());
-                      }),
-                      style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                      child: Text("Ver Mas"),
-                    )
-                  ],
-                ),
-                Container(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: value.eventCategroies[index].events?.length ?? 10,
-                    itemBuilder: (BuildContext context, int index2) {
-                      return EventItem(
-                        imageUrl: value.eventCategroies[index].events?[index2].primaryImage ??
-                            "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
-                        title: value.eventCategroies[index].events?[index2].title ?? "Hola",
-                        id: value.eventCategroies[index].events?[index2].id ?? "$index2",
-                      );
-                    },
-                  ),
+                eventCategoryTitle(value, index),
+                ChangeNotifierProvider<EventsByCategory>(
+                  create: (context) {
+                    return EventsByCategory(categoryId: value.eventCategroies[index].id);
+                  },
+                  child: eventsByCategoryList(),
                 ),
               ],
             );
           },
         );
       }),
+    );
+  }
+}
+
+class eventsByCategoryList extends StatelessWidget {
+  const eventsByCategoryList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> _fetchEventsByCategory(BuildContext context) async {
+      Provider.of<EventsByCategory>(context, listen: false).fetchEventsByCategory();
+    }
+
+    return SizedBox(
+      height: 200,
+      child: FutureBuilder(
+        future: _fetchEventsByCategory(context),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator(color: Colors.white));
+            default:
+              return Consumer<EventsByCategory>(builder: (context, value, _) {
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: value.events.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return EventItem(
+                      imageUrl: value.events[index].primaryImage,
+                      title: value.events[index].title,
+                      id: value.events[index].id,
+                    );
+                  },
+                );
+              });
+          }
+        },
+      ),
+    );
+  }
+}
+
+class eventCategoryTitle extends StatelessWidget {
+  final EventCategoriesProvider value;
+  final int index;
+  const eventCategoryTitle(
+    this.value,
+    this.index, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          margin: EdgeInsets.all(8),
+          child: Text(
+            value.eventCategroies[index].name,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        TextButton(
+          onPressed: (() {
+            final args = EventCategoriesOverviewScreenArgs(
+              id: value.eventCategroies[index].id,
+            );
+            context.goNamed(EventCategoriesOverviewScreen.name, params: args.params());
+          }),
+          style: TextButton.styleFrom(
+              foregroundColor: Colors.white, textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text("Ver Mas"),
+        )
+      ],
     );
   }
 }

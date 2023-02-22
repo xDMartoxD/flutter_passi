@@ -389,7 +389,7 @@ type Event
   price: Float!
   maxCapacity: Int!
   totalAssistants: Int!
-  primaryImage: AWSURL
+  primaryImage: AWSURL!
   contactNumber: String
   images: [AWSURL!]
   eventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
