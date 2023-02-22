@@ -45,6 +45,12 @@
     "apiappamplifyGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apiappamplifyGraphQLAPIIdOutput"
+    },
+    "deploymentBucketName": {
+      "Type": "String"
+    },
+    "s3Key": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -141,7 +147,15 @@
           {
             "Ref": "functionpassiModelsLayerArn"
           }
-        ]
+        ],
+        "Code": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": {
+            "Ref": "s3Key"
+          }
+        }
       }
     },
     "LambdaExecutionRole": {

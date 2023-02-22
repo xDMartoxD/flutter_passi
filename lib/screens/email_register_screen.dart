@@ -1,13 +1,11 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart' show AuthException;
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/screen_args/email_confirmation_screen_args.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart' show isEmail;
 
-import '../providers/auth_provider.dart';
+import '../providers/authentication_provider.dart';
 import 'email_confirmation_screen.dart';
 
 class EmailRegisterScreen extends StatefulWidget {
@@ -22,7 +20,7 @@ class EmailRegisterScreen extends StatefulWidget {
 class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _isLoading = false;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'name': '',
     'email': '',
     'password': '',
@@ -39,7 +37,7 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
       setState(() {
         _isLoading = true;
       });
-      await Provider.of<AuthProvider>(context, listen: false).signUpUser(
+      await Provider.of<AuthenticationProvider>(context, listen: false).signUpUser(
         _authData["name"]!,
         _authData["email"]!,
         _authData["password"]!,
@@ -48,7 +46,9 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
         email: _authData["email"]!,
         password: _authData["password"]!,
       );
-      context.goNamed(EmailConfirmationScreen.name, queryParams: args.queryParams());
+      if (context.mounted) {
+        context.goNamed(EmailConfirmationScreen.name, queryParams: args.queryParams());
+      }
     } on AuthException catch (e) {
       _showErrorDialog(e.message, context);
     } catch (err) {

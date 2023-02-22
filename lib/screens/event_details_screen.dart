@@ -8,15 +8,14 @@ import 'package:passi_app/widgets/expandable_text.dart';
 import 'package:passi_app/widgets/app_map_view.dart';
 
 class EventDetailsScreen extends StatelessWidget {
-  static const route = "event-details";
+  static const route = "event-details/:id";
   static const name = "event-details";
 
   final String id;
-  final String imageUrl;
   final String? promoterCode;
+
   final NumberFormat thousendFormat = NumberFormat.decimalPattern('en_us');
-  EventDetailsScreen(
-      {super.key, required this.id, required this.imageUrl, this.promoterCode});
+  EventDetailsScreen({super.key, required this.id, this.promoterCode});
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +35,18 @@ class EventDetailsScreen extends StatelessWidget {
             final args = EventCheckoutScreenArgs(id: id);
             context.goNamed(
               EventCheckoutScreen.name,
-              queryParams: args.queryParams(),
+              params: args.params(),
             );
           },
         ),
       ),
       body: CustomScrollView(
         slivers: <Widget>[
-          EventDetailsAppBar(id: id, imageUrl: imageUrl),
+          EventDetailsAppBar(
+            id: id,
+            imageUrl:
+                "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
+          ),
           SliverList(
             delegate: SliverChildListDelegate([
               Padding(

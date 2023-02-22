@@ -1,38 +1,62 @@
-import 'package:amplify_api/model_queries.dart';
+import 'package:amplify_api/amplify_api.dart';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+
 import 'package:passi_app/models/ModelProvider.dart';
+import 'package:passi_app/utils/amplify_utils.dart';
 
-class AuthProvider with ChangeNotifier {
+class AuthenticationProvider with ChangeNotifier {
   User? _user;
-
-  AuthProvider() {
-    isUserSignedIn().then((isSignedin) {
-      if (isSignedin) {
-        setUser();
-      }
-    });
-  }
+  String? _userSub;
 
   User? get user {
     return _user;
+  }
+
+  Future<String?> _getUserIdFromAttributes() async {
+    try {
+      final result = await Amplify.Auth.fetchUserAttributes();
+      _userSub = result
+          .firstWhere(
+            (element) => element.userAttributeKey.toString() == 'sub',
+          )
+          .value;
+
+      return _userSub;
+    } catch (e) {
+      safePrint("ERRROR _getUserIdFromAttributes ${e.toString()}");
+      rethrow;
+    }
+  }
+
+  Future<String?> attemptAutoLogin() async {
+    try {
+      final session = await Amplify.Auth.fetchAuthSession();
+      return session.isSignedIn ? _getUserIdFromAttributes() : null;
+    } catch (e) {
+      safePrint("ERROR EN ATTEMPT AUTO LOGIN");
+      rethrow;
+    }
   }
 
   Future<void> setUser() async {
     final isSignedIn = await isUserSignedIn();
     if (isSignedIn) {
       try {
-        final userData = await getCurrentUser();
-        final request = ModelQueries.get(User.classType, userData.userId);
-        final response = await Amplify.API.query(request: request).response;
-        final data = response.data;
-        if (data == null) {
-          print('errors: ${response.errors}');
-          return;
+        final id = await attemptAutoLogin();
+        if (id != null) {
+          final request = apiKeyRequest(ModelQueries.get(User.classType, id));
+          final response = await Amplify.API.query(request: request).response;
+          final data = response.data;
+          if (data == null) {
+            print('errors: ${response.errors}');
+            return;
+          }
+          _user = data;
+          notifyListeners();
         }
-        _user = data;
-        notifyListeners();
       } on ApiException catch (e) {
         safePrint('Query failed: $e');
       }
@@ -51,11 +75,12 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> signUpUser(String name, String email, String password) async {
     try {
+      await signOutCurrentUser();
       final userAttributes = <CognitoUserAttributeKey, String>{
         CognitoUserAttributeKey.email: email,
         CognitoUserAttributeKey.name: name
       };
-      final result = await Amplify.Auth.signUp(
+      await Amplify.Auth.signUp(
         username: email,
         password: password,
         options: CognitoSignUpOptions(userAttributes: userAttributes),
@@ -79,7 +104,8 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> signInUser(String username, String password) async {
     try {
-      final result = await Amplify.Auth.signIn(
+      await signOutCurrentUser();
+      await Amplify.Auth.signIn(
         username: username,
         password: password,
       );
@@ -90,12 +116,26 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<void> _removeUserFromDB() async {
+    if (_userSub != null && _userSub != '' && user != null) {
+      final request = cognitoRequest(ModelMutations.delete<User>(user!));
+      final response = await Amplify.API.mutate(request: request).response;
+      final data = response.data;
+      if (data == null) {
+        print('errors: ${response.errors}');
+        return;
+      }
+      _user = data;
+      notifyListeners();
+    }
+  }
+
   Future<void> deleteUser() async {
     try {
-      await Amplify.Auth.deleteUser();
+      await _removeUserFromDB();
+      // await Amplify.Auth.deleteUser();
       _user = null;
       notifyListeners();
-      safePrint('Delete user succeeded');
     } on Exception catch (e) {
       safePrint('Delete user failed with error: $e');
     }
