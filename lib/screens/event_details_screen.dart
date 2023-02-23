@@ -9,31 +9,64 @@ import 'package:passi_app/widgets/expandable_text.dart';
 import 'package:passi_app/widgets/app_map_view.dart';
 import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:string_to_hex/string_to_hex.dart';
 
-class EventDetailsScreen extends StatelessWidget {
-  static const route = "event-details/:id";
+import '../models/User.dart';
+import '../utils/flutter_utils.dart';
+
+class EventDetailsScreen extends StatefulWidget {
+  static const path = "event-details/:id";
   static const name = "event-details";
 
   final String id;
   final String? promoterCode;
 
-  void goToCheckout() {}
-  void goToLogin() {}
+  EventDetailsScreen({super.key, required this.id, this.promoterCode});
 
-  void pressedHandler(BuildContext context) {
-    final user = Provider.of<AuthenticationProvider>(
-      context,
-    ).user;
-    if (user != null) {
-      goToCheckout();
-    } else {
-      goToLogin();
-    }
+  @override
+  State<EventDetailsScreen> createState() => _EventDetailsScreenState();
+}
+
+class _EventDetailsScreenState extends State<EventDetailsScreen> {
+  AuthenticationProvider? _authenticationProvider;
+  User? _user;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero).then(
+      (value) {
+        _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+        _user = _authenticationProvider!.user;
+
+        // _authenticationProvider!.addListener(_authenticationListener);
+      },
+    );
   }
 
-  final NumberFormat thousendFormat = NumberFormat.decimalPattern('en_us');
-  EventDetailsScreen({super.key, required this.id, this.promoterCode});
+  // void _authenticationListener() {
+  //   _user = _authenticationProvider?.user;
+  //   print("LISTENER ${_user?.name}");
+  // }
+
+  @override
+  void dispose() {
+    // _authenticationProvider?.removeListener(_authenticationListener);
+    super.dispose();
+  }
+
+  void _goToCheckout() {}
+
+  void _goToLogin(BuildContext context) {
+    bottomSheetAuthHandler(context: context, fromEventDetails: true, id: widget.id);
+  }
+
+  void pressedHandler(BuildContext context) {
+    final user = Provider.of<AuthenticationProvider>(context, listen: false).user;
+    if (user != null) {
+      _goToCheckout();
+    } else {
+      _goToLogin(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +90,7 @@ class EventDetailsScreen extends StatelessWidget {
           return EventProvider();
         },
         child: EventContent(
-          id: id,
+          id: widget.id,
         ),
       ),
     );
@@ -150,7 +183,8 @@ class _EventContentState extends State<EventContent> {
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.calendar_today,
-                                      textContent: "${parseDate(value.event!.startDateTime)}",
+                                      textContent:
+                                          "${parseDate(value.event!.startDateTime)}\n${parseDate(value.event!.finishDateTime)}",
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.corporate_fare_rounded,
@@ -300,7 +334,13 @@ class EventInfoIcon extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [Icon(icon), Text(textContent)],
+            children: [
+              Icon(icon),
+              Text(
+                textContent,
+                textAlign: TextAlign.center,
+              )
+            ],
           ),
         ),
         VerticalDivider(

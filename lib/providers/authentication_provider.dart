@@ -133,7 +133,7 @@ class AuthenticationProvider with ChangeNotifier {
   Future<void> deleteUser() async {
     try {
       await _removeUserFromDB();
-      // await Amplify.Auth.deleteUser();
+      await Amplify.Auth.deleteUser();
       _user = null;
       notifyListeners();
     } on Exception catch (e) {

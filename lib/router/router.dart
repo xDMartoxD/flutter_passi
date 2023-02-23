@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/screen_args/email_confirmation_screen_args.dart';
+import 'package:passi_app/models/screen_args/email_register_screen_args.dart';
 import 'package:passi_app/models/screen_args/event_categories_screen_args.dart';
 import 'package:passi_app/models/screen_args/event_detail_screen_args.dart';
 import 'package:passi_app/screens/email_login_screen.dart';
@@ -18,14 +19,14 @@ class AppRouter {
   late final GoRouter router = GoRouter(
       routes: [
         GoRoute(
-          path: AppTabs.route,
+          path: AppTabs.path,
           name: AppTabs.name,
           builder: (BuildContext context, GoRouterState state) {
             return AppTabs();
           },
           routes: [
             GoRoute(
-              path: EventDetailsScreen.route,
+              path: EventDetailsScreen.path,
               name: EventDetailsScreen.name,
               builder: (BuildContext context, GoRouterState state) {
                 final args = EventDetailScreenArgs.fromJson(state.params);
@@ -43,11 +44,48 @@ class AppRouter {
                       id: args.id,
                     );
                   },
-                )
+                ),
+                GoRoute(
+                  path: EmailLoginScreen.fromEventDetailsPath,
+                  name: EmailLoginScreen.fromEventDetailsName,
+                  builder: (context, state) {
+                    return EmailLoginScreen();
+                  },
+                ),
+                GoRoute(
+                  path: EmailRegisterScreen.fromEventDetailsPath,
+                  name: EmailRegisterScreen.fromEventDetailsName,
+                  builder: (BuildContext context, GoRouterState state) {
+                    print(state.location);
+                    final args = EmailRegisterScreenArgs.fromJson({
+                      ...state.queryParams,
+                      ...state.params,
+                    });
+                    return EmailRegisterScreen(
+                      comesFromEventDetails: args.comesFromEventDetails,
+                      id: args.id,
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                        path: EmailConfirmationScreen.fromEventDetailsPath,
+                        name: EmailConfirmationScreen.fromEventDetailsName,
+                        builder: (context, state) {
+                          print(state.location);
+                          final args = EmailConfirmationScreenArgs.fromJson(
+                            state.queryParams,
+                          );
+                          return EmailConfirmationScreen(
+                            email: args.email,
+                            password: args.password,
+                          );
+                        })
+                  ],
+                ),
               ],
             ),
             GoRoute(
-              path: EmailLoginScreen.route,
+              path: EmailLoginScreen.path,
               name: EmailLoginScreen.name,
               builder: (context, state) {
                 return EmailLoginScreen();
@@ -71,14 +109,17 @@ class AppRouter {
               },
             ),
             GoRoute(
-              path: EmailRegisterScreen.route,
+              path: EmailRegisterScreen.path,
               name: EmailRegisterScreen.name,
               builder: (BuildContext context, GoRouterState state) {
-                return EmailRegisterScreen();
+                final args = EmailRegisterScreenArgs.fromJson(state.queryParams);
+                return EmailRegisterScreen(
+                  comesFromEventDetails: args.comesFromEventDetails,
+                );
               },
               routes: [
                 GoRoute(
-                    path: EmailConfirmationScreen.route,
+                    path: EmailConfirmationScreen.path,
                     name: EmailConfirmationScreen.name,
                     builder: (context, state) {
                       final args = EmailConfirmationScreenArgs.fromJson(
@@ -95,6 +136,11 @@ class AppRouter {
         ),
       ],
       errorPageBuilder: (context, state) {
-        return MaterialPage(child: ErrorScreen());
+        return MaterialPage(
+          key: state.pageKey,
+          child: ErrorScreen(
+            error: state.error.toString(),
+          ),
+        );
       });
 }

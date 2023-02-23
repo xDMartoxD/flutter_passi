@@ -8,7 +8,7 @@ import 'package:passi_app/screens/tickets_screen.dart';
 import 'package:passi_app/screens/user_settings_screen.dart';
 
 class AppTabs extends StatefulWidget {
-  static const route = "/";
+  static const path = "/";
   static const name = "tabs";
   const AppTabs({super.key});
 
