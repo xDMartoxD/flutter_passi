@@ -16,8 +16,7 @@ class EventDetailsScreen extends StatelessWidget {
   static const name = "event-details";
 
   final String id;
-
-  const EventDetailsScreen({super.key, required this.id});
+  final String? promoterCode;
 
   void goToCheckout() {}
   void goToLogin() {}
@@ -30,6 +29,9 @@ class EventDetailsScreen extends StatelessWidget {
       goToLogin();
     }
   }
+
+  final NumberFormat thousendFormat = NumberFormat.decimalPattern('en_us');
+  EventDetailsScreen({super.key, required this.id, this.promoterCode});
 
   @override
   Widget build(BuildContext context) {

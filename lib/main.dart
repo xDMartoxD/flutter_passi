@@ -4,6 +4,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+
+import 'package:passi_app/providers/discount_code_prvider.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/eventCategories.dart';
 import 'package:passi_app/providers/internet.dart';
@@ -42,7 +44,8 @@ class _MyAppState extends State<MyApp> {
     try {
       await Amplify.configure(amplifyconfig);
     } on AmplifyAlreadyConfiguredException {
-      safePrint("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+      safePrint(
+          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
     }
   }
 
@@ -58,7 +61,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider<EventCategoriesProvider>(
           create: (context) => EventCategoriesProvider(),
-        )
+        ),
+        ChangeNotifierProvider<DiscountCodeProvider>(
+            create: (_) => DiscountCodeProvider()),
       ],
       child: MaterialApp.router(
         // showSemanticsDebugger: true,
