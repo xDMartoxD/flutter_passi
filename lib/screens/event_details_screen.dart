@@ -22,7 +22,9 @@ class EventDetailsScreen extends StatelessWidget {
   void goToLogin() {}
 
   void pressedHandler(BuildContext context) {
-    final user = Provider.of<AuthenticationProvider>(context).user;
+    final user = Provider.of<AuthenticationProvider>(
+      context,
+    ).user;
     if (user != null) {
       goToCheckout();
     } else {
@@ -115,87 +117,90 @@ class _EventContentState extends State<EventContent> {
                           images: [value.event!.primaryImage, ...(value.event!.images ?? [])],
                         ),
                         SliverList(
-                          delegate: SliverChildListDelegate([
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                value.event!.title,
-                                style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                                      fontWeight: FontWeight.bold,
+                          delegate: SliverChildListDelegate(
+                            [
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  value.event!.title,
+                                  style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  softWrap: true,
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.white,
+                                height: 8,
+                              ),
+                              Container(
+                                height: 100,
+                                decoration: BoxDecoration(border: Border.symmetric()),
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    EventInfoIcon(
+                                      icon: Icons.watch_later_outlined,
+                                      textContent:
+                                          "${parseTime(value.event!.startDateTime)} - ${parseTime(value.event!.finishDateTime)}",
                                     ),
-                                softWrap: true,
+                                    EventInfoIcon(
+                                      icon: Icons.map,
+                                      textContent: "${value.event!.address}",
+                                    ),
+                                    EventInfoIcon(
+                                      icon: Icons.calendar_today,
+                                      textContent: "${parseDate(value.event!.startDateTime)}",
+                                    ),
+                                    EventInfoIcon(
+                                      icon: Icons.corporate_fare_rounded,
+                                      textContent: "${value.event!.company}",
+                                    ),
+                                    EventInfoIcon(
+                                      icon: Icons.star_border_rounded,
+                                      textContent: value.event!.eventCategory.name,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Divider(
-                              color: Colors.white,
-                              height: 8,
-                            ),
-                            Container(
-                              height: 100,
-                              decoration: BoxDecoration(border: Border.symmetric()),
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: [
-                                  EventInfoIcon(
-                                    icon: Icons.watch_later_outlined,
-                                    textContent:
-                                        "${parseTime(value.event!.startDateTime)} - ${parseTime(value.event!.finishDateTime)}",
-                                  ),
-                                  EventInfoIcon(
-                                    icon: Icons.map,
-                                    textContent: "${value.event!.address}",
-                                  ),
-                                  EventInfoIcon(
-                                    icon: Icons.calendar_today,
-                                    textContent: "${parseDate(value.event!.startDateTime)}",
-                                  ),
-                                  EventInfoIcon(
-                                    icon: Icons.corporate_fare_rounded,
-                                    textContent: "${value.event!.company}",
-                                  ),
-                                  EventInfoIcon(
-                                    icon: Icons.star_border_rounded,
-                                    textContent: value.event!.eventCategory.name,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Card(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: ChangeNotifierProvider<TicketCategoriesByEventProvider>(
-                                    create: (context) {
-                                      return TicketCategoriesByEventProvider();
-                                    },
-                                    child: EventDetailsCategoriesInfo(
-                                      thousendFormat: thousendFormat,
-                                      eventId: value.event!.id,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: ChangeNotifierProvider<TicketCategoriesByEventProvider>(
+                                      create: (context) {
+                                        return TicketCategoriesByEventProvider();
+                                      },
+                                      child: EventDetailsCategoriesInfo(
+                                        thousendFormat: thousendFormat,
+                                        eventId: value.event!.id,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            PromotersWidget(),
-                            SizedBox(height: 20),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: AspectRatio(
-                                aspectRatio: 3 / 2,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: AppMapView(),
+                              PromotersWidget(),
+                              SizedBox(height: 20),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AspectRatio(
+                                  aspectRatio: 3 / 2,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: AppMapView(),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 20),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ExpandableText(value.event!.description),
-                            ),
-                            SizedBox(height: 80)
-                          ]),
+                              SizedBox(height: 20),
+                              if (value.event!.description != null)
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ExpandableText(value.event!.description),
+                                ),
+                              SizedBox(height: 80)
+                            ],
+                          ),
                         )
                       ],
                     );
@@ -319,7 +324,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
   final String eventId;
 
   Future<void> _listTicketCateogires(BuildContext context) async {
-    await Provider.of<TicketCategoriesByEventProvider>(context)
+    await Provider.of<TicketCategoriesByEventProvider>(context, listen: false)
         .fetchTicketCategoriesByEventId(eventId);
   }
 
@@ -365,7 +370,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             height: 5,
                             decoration: BoxDecoration(
-                              color: Color(StringToHex.toColor(ticketCategory.color)),
+                              color: Color(ticketCategory.color),
                               borderRadius: BorderRadius.circular(50),
                             ),
                           )
