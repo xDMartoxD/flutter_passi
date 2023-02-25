@@ -12,7 +12,7 @@ class EventItemLarge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.goNamed(
+      onTap: () => context.pushNamed(
         EventDetailsScreen.name,
         params: EventDetailScreenArgs(
           id: id,

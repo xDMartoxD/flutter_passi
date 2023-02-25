@@ -44,8 +44,7 @@ class _MyAppState extends State<MyApp> {
     try {
       await Amplify.configure(amplifyconfig);
     } on AmplifyAlreadyConfiguredException {
-      safePrint(
-          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+      safePrint("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
     }
   }
 
@@ -54,16 +53,15 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<Internet>(
-          create: (context) => Internet(connectivity: widget.conectivity),
+          create: (_) => Internet(connectivity: widget.conectivity),
         ),
         ChangeNotifierProvider<AuthenticationProvider>(
-          create: (context) => AuthenticationProvider(),
+          create: (_) => AuthenticationProvider(),
         ),
         ChangeNotifierProvider<EventCategoriesProvider>(
-          create: (context) => EventCategoriesProvider(),
+          create: (_) => EventCategoriesProvider(),
         ),
-        ChangeNotifierProvider<DiscountCodeProvider>(
-            create: (_) => DiscountCodeProvider()),
+        ChangeNotifierProvider<DiscountCodeProvider>(create: (_) => DiscountCodeProvider()),
       ],
       child: MaterialApp.router(
         // showSemanticsDebugger: true,

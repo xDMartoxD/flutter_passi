@@ -2,7 +2,6 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart' show AuthExcepti
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/screen_args/email_confirmation_screen_args.dart';
-import 'package:passi_app/models/screen_args/email_register_screen_args.dart';
 import 'package:passi_app/models/screen_args/event_detail_screen_args.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart' show isEmail;
@@ -13,15 +12,9 @@ import 'email_confirmation_screen.dart';
 class EmailRegisterScreen extends StatefulWidget {
   static const name = "email-register";
   static const path = "email-register";
-  static const fromEventDetailsPath = "event-details-$path";
-  static const fromEventDetailsName = "event-details-$name";
-  final bool comesFromEventDetails;
-  final String? id;
 
   const EmailRegisterScreen({
     super.key,
-    required this.comesFromEventDetails,
-    this.id,
   });
 
   @override
@@ -58,22 +51,10 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
         password: _authData["password"]!,
       );
       if (context.mounted) {
-        if (widget.comesFromEventDetails) {
-          final emailRegisterArgs = EmailRegisterScreenArgs(comesFromEventDetails: true);
-          context.goNamed(
-            EmailConfirmationScreen.fromEventDetailsName,
-            queryParams: {
-              ...emailConfirmationArgs.queryParams(),
-              ...emailRegisterArgs.queryParams()
-            },
-            params: EventDetailScreenArgs(id: widget.id!).params(),
-          );
-        } else {
-          context.goNamed(
-            EmailConfirmationScreen.name,
-            queryParams: emailConfirmationArgs.queryParams(),
-          );
-        }
+        context.pushNamed(
+          EmailConfirmationScreen.name,
+          queryParams: emailConfirmationArgs.queryParams(),
+        );
       }
     } on AuthException catch (e) {
       _showErrorDialog(e.message, context);

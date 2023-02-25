@@ -56,7 +56,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         "appBarBottom": null,
         "appBarActions": [
           IconButton(
-            onPressed: () => {context.goNamed(UserSettingsScreen.name)},
+            onPressed: () => {context.pushNamed(UserSettingsScreen.name)},
             icon: Icon(Icons.settings),
           )
         ],

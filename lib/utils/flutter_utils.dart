@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passi_app/models/screen_args/email_register_screen_args.dart';
-import 'package:passi_app/models/screen_args/event_detail_screen_args.dart';
-
 import '../screens/email_login_screen.dart';
 import '../screens/email_register_screen.dart';
 
 void bottomSheetAuthHandler({
   required BuildContext context,
-  required bool fromEventDetails,
-  String? id,
 }) {
   showModalBottomSheet<dynamic>(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -51,22 +46,7 @@ void bottomSheetAuthHandler({
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  final args = EmailRegisterScreenArgs(
-                    comesFromEventDetails: fromEventDetails,
-                  );
-
-                  if (fromEventDetails) {
-                    context.goNamed(
-                      EmailRegisterScreen.fromEventDetailsName,
-                      queryParams: args.queryParams(),
-                      params: EventDetailScreenArgs(id: id!).params(),
-                    );
-                  } else {
-                    context.goNamed(
-                      EmailRegisterScreen.name,
-                      queryParams: args.queryParams(),
-                    );
-                  }
+                  context.pushNamed(EmailRegisterScreen.name);
                 },
                 icon: const FaIcon(
                   FontAwesomeIcons.envelope,
@@ -84,14 +64,7 @@ void bottomSheetAuthHandler({
             Center(
               child: TextButton(
                 onPressed: () {
-                  if (fromEventDetails) {
-                    context.goNamed(
-                      EmailLoginScreen.fromEventDetailsName,
-                      params: EventDetailScreenArgs(id: id!).params(),
-                    );
-                  } else {
-                    context.goNamed(EmailLoginScreen.name);
-                  }
+                  context.pushNamed(EmailLoginScreen.name);
                 },
                 child: const Text(
                   "Iniciar Sesion",

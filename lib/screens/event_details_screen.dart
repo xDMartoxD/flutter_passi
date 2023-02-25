@@ -28,14 +28,13 @@ class EventDetailsScreen extends StatefulWidget {
 
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
   AuthenticationProvider? _authenticationProvider;
-  User? _user;
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero).then(
       (value) {
         _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-        _user = _authenticationProvider!.user;
 
         // _authenticationProvider!.addListener(_authenticationListener);
       },
@@ -56,11 +55,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   void _goToCheckout() {}
 
   void _goToLogin(BuildContext context) {
-    bottomSheetAuthHandler(context: context, fromEventDetails: true, id: widget.id);
+    bottomSheetAuthHandler(context: context);
   }
 
   void pressedHandler(BuildContext context) {
-    final user = Provider.of<AuthenticationProvider>(context, listen: false).user;
+    final user = _authenticationProvider?.user;
     if (user != null) {
       _goToCheckout();
     } else {

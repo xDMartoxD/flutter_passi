@@ -136,7 +136,7 @@ class EventCategoryTitle extends StatelessWidget {
             final args = EventCategoriesOverviewScreenArgs(
               id: value.eventCategroies[index].id,
             );
-            context.goNamed(EventCategoriesOverviewScreen.name, params: args.params());
+            context.pushNamed(EventCategoriesOverviewScreen.name, params: args.params());
           }),
           style: TextButton.styleFrom(
               foregroundColor: Colors.white, textStyle: TextStyle(fontWeight: FontWeight.bold)),

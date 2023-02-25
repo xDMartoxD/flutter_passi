@@ -4,7 +4,7 @@ import 'package:passi_app/widgets/event_item_large.dart';
 import '../widgets/app_map_view.dart';
 
 class EventCategoriesOverviewScreen extends StatefulWidget {
-  static const route = "event-categories-overview/:id";
+  static const path = "event-categories-overview/:id";
   static const name = "event-categories-overview";
   final String id;
 

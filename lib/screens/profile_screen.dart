@@ -115,7 +115,6 @@ class UnAuth extends StatelessWidget {
                   shape: StadiumBorder(),
                   onPressed: () => bottomSheetAuthHandler(
                         context: context,
-                        fromEventDetails: false,
                       ),
                   child: Text(
                     "Ingresa",
