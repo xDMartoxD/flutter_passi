@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:passi_app/models/screen_args/event_checkout_screen_args.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/event_provider.dart';
-import 'package:passi_app/providers/ticket_provider_by_event.dart';
+import '../providers/ticket_cateogories_by_event_provider.dart';
+import 'package:passi_app/screens/event_checkout_screen.dart';
 import 'package:passi_app/widgets/expandable_text.dart';
 import 'package:passi_app/widgets/app_map_view.dart';
 import 'package:passi_app/widgets/loading.dart';
@@ -32,7 +35,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     Future.delayed(Duration.zero).then(
       (value) {
         _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-
         // _authenticationProvider!.addListener(_authenticationListener);
       },
     );
@@ -49,7 +51,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     super.dispose();
   }
 
-  void _goToCheckout() {}
+  void _goToCheckout(BuildContext context) {
+    print("HOLA");
+    final args = EventCheckoutScreenArgs(id: widget.id);
+    context.pushNamed(EventCheckoutScreen.name, params: args.params());
+  }
 
   void _goToLogin(BuildContext context) {
     bottomSheetAuthHandler(context: context);
@@ -58,7 +64,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   void pressedHandler(BuildContext context) {
     final user = _authenticationProvider?.user;
     if (user != null) {
-      _goToCheckout();
+      print("HOLA");
+      _goToCheckout(context);
     } else {
       _goToLogin(context);
     }
