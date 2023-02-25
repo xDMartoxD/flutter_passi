@@ -68,7 +68,7 @@ export const handler = async (event) => {
     };
   }
   console.log("aca", body.data);
-  if (body.data.getTicket.eventID !== event.eventID)
+  if (body.data.listEvents.items.length === 0)
     return {
       statusCode: 400,
       body: JSON.stringify("Ticket is not valid for this event"),
@@ -81,6 +81,6 @@ export const handler = async (event) => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
     },
-    body: JSON.stringify(body.data.getTicket.ticketCategory.name),
+    body: JSON.stringify(body.data.listEvents.items[0].title),
   };
 };
