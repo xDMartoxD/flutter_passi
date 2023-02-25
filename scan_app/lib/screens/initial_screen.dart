@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:scan_app/providers/event_provider.dart';
 import 'package:scan_app/screens/scan_screen.dart';
 
+import '../services/verify_event_service.dart';
+
 class EventSetter extends StatefulWidget {
   const EventSetter({super.key});
 
@@ -42,24 +44,37 @@ class _EventSetterState extends State<EventSetter> {
                   },
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      Provider.of<EventState>(context, listen: false).event =
-                          _eventFormController.text;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          settings: const RouteSettings(name: "/scan"),
-                          builder: (context) {
-                            return const ScanScreen();
-                          },
-                        ),
-                      );
+                    onPressed: () async {
+                      String body =
+                          await verifyEvent(eventId: _eventFormController.text);
+                      if (body == "ERROR") {
+                        return;
+                      }
+                      if (!context.mounted) {
+                        return;
+                      }
+                      auxMethod(context, body);
                     },
                     child: Text("Aceptar"))
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void auxMethod(BuildContext context, String body) {
+    Provider.of<EventState>(context, listen: false).event =
+        _eventFormController.text;
+    Provider.of<EventState>(context, listen: false).name = body;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        settings: const RouteSettings(name: "/scan"),
+        builder: (context) {
+          return const ScanScreen();
+        },
       ),
     );
   }

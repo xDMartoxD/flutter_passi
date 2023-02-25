@@ -35,6 +35,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     Future.delayed(Duration.zero).then(
       (value) {
         _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+
         // _authenticationProvider!.addListener(_authenticationListener);
       },
     );

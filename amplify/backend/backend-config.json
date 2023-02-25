@@ -36,12 +36,20 @@
     "endpoints": {
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "validateTicket",
           "attributes": [
             "Name",
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "validateTicket"
+          "resourceName": "verifyEvent",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -393,6 +401,22 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "verifyEvent": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "appamplify",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ]
+        }
+      ]
     }
   },
   "parameters": {

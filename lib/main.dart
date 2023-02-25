@@ -1,6 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:passi_app/providers/discount_code_prvider.dart';
+import 'package:passi_app/providers/discount_code_provider.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/event_categories_provider.dart';
 import 'package:passi_app/providers/internet.dart';
