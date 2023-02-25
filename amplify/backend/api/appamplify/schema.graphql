@@ -187,7 +187,11 @@ type User
   @model
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, delete] }
+      {
+        allow: owner
+        ownerField: "id"
+        operations: [create, update, delete, read]
+      }
       { allow: private, operations: [read] }
       { allow: groups, groups: ["Admin"] }
       { allow: public, operations: [read] }
@@ -370,7 +374,7 @@ type Event
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public }
       { allow: groups, groups: ["Admin"] }
       { allow: private, operations: [read] }
     ]
@@ -382,7 +386,7 @@ type Event
   companyUrl: AWSURL
   startDateTime: AWSDateTime!
   finishDateTime: AWSDateTime!
-  coords: Coordinates!
+  coords: Coordinates
   address: String!
   place: String
   minAge: Int
@@ -393,7 +397,7 @@ type Event
   contactNumber: String
   images: [AWSURL!]
   eventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
-  eventcategoryID: ID!
+  eventcategoryID: ID
     @index(
       name: "byEventCategory"
       sortKeyFields: ["startDateTime"]

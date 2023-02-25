@@ -29,12 +29,12 @@ import 'package:flutter/foundation.dart';
 class Ticket extends Model {
   static const classType = const _TicketModelType();
   final String id;
-  final Event? _Event;
-  final TicketCategory? _TicketCategory;
+  final Event? _event;
+  final TicketCategory? _ticketCategory;
   final TemporalDateTime? _inDateTime;
   final TemporalDateTime? _outDateTime;
   final bool? _didAssist;
-  final User? _User;
+  final User? _user;
   final Job? _registeredBy;
   final DiscountCode? _discountCode;
   final Transaction? _transaction;
@@ -50,9 +50,9 @@ class Ticket extends Model {
     return id;
   }
   
-  Event get Event {
+  Event get event {
     try {
-      return _Event!;
+      return _event!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -63,8 +63,17 @@ class Ticket extends Model {
     }
   }
   
-  TicketCategory? get TicketCategory {
-    return _TicketCategory;
+  TicketCategory get ticketCategory {
+    try {
+      return _ticketCategory!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   TemporalDateTime? get inDateTime {
@@ -88,9 +97,9 @@ class Ticket extends Model {
     }
   }
   
-  User get User {
+  User get user {
     try {
-      return _User!;
+      return _user!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -143,17 +152,17 @@ class Ticket extends Model {
     }
   }
   
-  const Ticket._internal({required this.id, required Event, TicketCategory, inDateTime, outDateTime, required didAssist, required User, registeredBy, discountCode, transaction, seat, required createdAt, required updatedAt}): _Event = Event, _TicketCategory = TicketCategory, _inDateTime = inDateTime, _outDateTime = outDateTime, _didAssist = didAssist, _User = User, _registeredBy = registeredBy, _discountCode = discountCode, _transaction = transaction, _seat = seat, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Ticket._internal({required this.id, required event, required ticketCategory, inDateTime, outDateTime, required didAssist, required user, registeredBy, discountCode, transaction, seat, required createdAt, required updatedAt}): _event = event, _ticketCategory = ticketCategory, _inDateTime = inDateTime, _outDateTime = outDateTime, _didAssist = didAssist, _user = user, _registeredBy = registeredBy, _discountCode = discountCode, _transaction = transaction, _seat = seat, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Ticket({String? id, required Event Event, TicketCategory? TicketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, required bool didAssist, required User User, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory Ticket({String? id, required Event event, required TicketCategory ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, required bool didAssist, required User user, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return Ticket._internal(
       id: id == null ? UUID.getUUID() : id,
-      Event: Event,
-      TicketCategory: TicketCategory,
+      event: event,
+      ticketCategory: ticketCategory,
       inDateTime: inDateTime,
       outDateTime: outDateTime,
       didAssist: didAssist,
-      User: User,
+      user: user,
       registeredBy: registeredBy,
       discountCode: discountCode,
       transaction: transaction,
@@ -171,12 +180,12 @@ class Ticket extends Model {
     if (identical(other, this)) return true;
     return other is Ticket &&
       id == other.id &&
-      _Event == other._Event &&
-      _TicketCategory == other._TicketCategory &&
+      _event == other._event &&
+      _ticketCategory == other._ticketCategory &&
       _inDateTime == other._inDateTime &&
       _outDateTime == other._outDateTime &&
       _didAssist == other._didAssist &&
-      _User == other._User &&
+      _user == other._user &&
       _registeredBy == other._registeredBy &&
       _discountCode == other._discountCode &&
       _transaction == other._transaction &&
@@ -194,12 +203,12 @@ class Ticket extends Model {
     
     buffer.write("Ticket {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("Event=" + (_Event != null ? _Event!.toString() : "null") + ", ");
-    buffer.write("TicketCategory=" + (_TicketCategory != null ? _TicketCategory!.toString() : "null") + ", ");
+    buffer.write("event=" + (_event != null ? _event!.toString() : "null") + ", ");
+    buffer.write("ticketCategory=" + (_ticketCategory != null ? _ticketCategory!.toString() : "null") + ", ");
     buffer.write("inDateTime=" + (_inDateTime != null ? _inDateTime!.format() : "null") + ", ");
     buffer.write("outDateTime=" + (_outDateTime != null ? _outDateTime!.format() : "null") + ", ");
     buffer.write("didAssist=" + (_didAssist != null ? _didAssist!.toString() : "null") + ", ");
-    buffer.write("User=" + (_User != null ? _User!.toString() : "null") + ", ");
+    buffer.write("user=" + (_user != null ? _user!.toString() : "null") + ", ");
     buffer.write("registeredBy=" + (_registeredBy != null ? _registeredBy!.toString() : "null") + ", ");
     buffer.write("discountCode=" + (_discountCode != null ? _discountCode!.toString() : "null") + ", ");
     buffer.write("transaction=" + (_transaction != null ? _transaction!.toString() : "null") + ", ");
@@ -211,15 +220,15 @@ class Ticket extends Model {
     return buffer.toString();
   }
   
-  Ticket copyWith({String? id, Event? Event, TicketCategory? TicketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, bool? didAssist, User? User, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  Ticket copyWith({String? id, Event? event, TicketCategory? ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, bool? didAssist, User? user, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return Ticket._internal(
       id: id ?? this.id,
-      Event: Event ?? this.Event,
-      TicketCategory: TicketCategory ?? this.TicketCategory,
+      event: event ?? this.event,
+      ticketCategory: ticketCategory ?? this.ticketCategory,
       inDateTime: inDateTime ?? this.inDateTime,
       outDateTime: outDateTime ?? this.outDateTime,
       didAssist: didAssist ?? this.didAssist,
-      User: User ?? this.User,
+      user: user ?? this.user,
       registeredBy: registeredBy ?? this.registeredBy,
       discountCode: discountCode ?? this.discountCode,
       transaction: transaction ?? this.transaction,
@@ -230,17 +239,17 @@ class Ticket extends Model {
   
   Ticket.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _Event = json['Event']?['serializedData'] != null
-        ? Event.fromJson(new Map<String, dynamic>.from(json['Event']['serializedData']))
+      _event = json['event']?['serializedData'] != null
+        ? Event.fromJson(new Map<String, dynamic>.from(json['event']['serializedData']))
         : null,
-      _TicketCategory = json['TicketCategory']?['serializedData'] != null
-        ? TicketCategory.fromJson(new Map<String, dynamic>.from(json['TicketCategory']['serializedData']))
+      _ticketCategory = json['ticketCategory']?['serializedData'] != null
+        ? TicketCategory.fromJson(new Map<String, dynamic>.from(json['ticketCategory']['serializedData']))
         : null,
       _inDateTime = json['inDateTime'] != null ? TemporalDateTime.fromString(json['inDateTime']) : null,
       _outDateTime = json['outDateTime'] != null ? TemporalDateTime.fromString(json['outDateTime']) : null,
       _didAssist = json['didAssist'],
-      _User = json['User']?['serializedData'] != null
-        ? User.fromJson(new Map<String, dynamic>.from(json['User']['serializedData']))
+      _user = json['user']?['serializedData'] != null
+        ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
         : null,
       _registeredBy = json['registeredBy']?['serializedData'] != null
         ? Job.fromJson(new Map<String, dynamic>.from(json['registeredBy']['serializedData']))
@@ -256,25 +265,25 @@ class Ticket extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'Event': _Event?.toJson(), 'TicketCategory': _TicketCategory?.toJson(), 'inDateTime': _inDateTime?.format(), 'outDateTime': _outDateTime?.format(), 'didAssist': _didAssist, 'User': _User?.toJson(), 'registeredBy': _registeredBy?.toJson(), 'discountCode': _discountCode?.toJson(), 'transaction': _transaction?.toJson(), 'seat': _seat, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'event': _event?.toJson(), 'ticketCategory': _ticketCategory?.toJson(), 'inDateTime': _inDateTime?.format(), 'outDateTime': _outDateTime?.format(), 'didAssist': _didAssist, 'user': _user?.toJson(), 'registeredBy': _registeredBy?.toJson(), 'discountCode': _discountCode?.toJson(), 'transaction': _transaction?.toJson(), 'seat': _seat, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'Event': _Event, 'TicketCategory': _TicketCategory, 'inDateTime': _inDateTime, 'outDateTime': _outDateTime, 'didAssist': _didAssist, 'User': _User, 'registeredBy': _registeredBy, 'discountCode': _discountCode, 'transaction': _transaction, 'seat': _seat, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'event': _event, 'ticketCategory': _ticketCategory, 'inDateTime': _inDateTime, 'outDateTime': _outDateTime, 'didAssist': _didAssist, 'user': _user, 'registeredBy': _registeredBy, 'discountCode': _discountCode, 'transaction': _transaction, 'seat': _seat, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField EVENT = QueryField(
-    fieldName: "Event",
+    fieldName: "event",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Event'));
   static final QueryField TICKETCATEGORY = QueryField(
-    fieldName: "TicketCategory",
+    fieldName: "ticketCategory",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'TicketCategory'));
   static final QueryField INDATETIME = QueryField(fieldName: "inDateTime");
   static final QueryField OUTDATETIME = QueryField(fieldName: "outDateTime");
   static final QueryField DIDASSIST = QueryField(fieldName: "didAssist");
   static final QueryField USER = QueryField(
-    fieldName: "User",
+    fieldName: "user",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'User'));
   static final QueryField REGISTEREDBY = QueryField(
     fieldName: "registeredBy",
@@ -313,6 +322,9 @@ class Ticket extends Model {
       AuthRule(
         authStrategy: AuthStrategy.PUBLIC,
         operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
           ModelOperation.READ
         ]),
       AuthRule(
@@ -342,7 +354,7 @@ class Ticket extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Ticket.TICKETCATEGORY,
-      isRequired: false,
+      isRequired: true,
       targetName: 'ticketCategoryID',
       ofModelName: 'TicketCategory'
     ));

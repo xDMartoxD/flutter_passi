@@ -1,0 +1,33 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "appamplify02fef6e8",
+  "functionName": "appamplify02fef6e8PostConfirmation",
+  "resourceName": "appamplify02fef6e8PostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "C:\\snapshot\\repo\\build\\node_modules\\@aws-amplify\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "triggerEventPath": "PostConfirmation.event.json",
+  "roleName": "appamplify02fef6e8PostConfirmation",
+  "skipEdit": true,
+  "enableCors": false,
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "passiModelsLayer",
+      "env": "devel",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ],
+  "permissions": {
+    "storage": {
+      "User:@model(appsync)": [
+        "create"
+      ]
+    }
+  }
+}

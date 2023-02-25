@@ -34,13 +34,8 @@ class Event extends Model {
   final String? _description;
   final String? _company;
   final String? _companyUrl;
-  final TemporalDate? _startDate;
-  final TemporalTime? _startTime;
   final TemporalDateTime? _startDateTime;
-  final TemporalDate? _finishDate;
-  final TemporalTime? _finishTime;
   final TemporalDateTime? _finishDateTime;
-  final String? _yearMonth;
   final Coordinates? _coords;
   final String? _address;
   final String? _place;
@@ -51,8 +46,8 @@ class Event extends Model {
   final String? _primaryImage;
   final String? _contactNumber;
   final List<String>? _images;
-  final EventCategory? _EventCategory;
-  final List<Ticket>? _Tickets;
+  final EventCategory? _eventCategory;
+  final List<Ticket>? _tickets;
   final List<Job>? _Jobs;
   final List<DiscountCode>? _discountCodes;
   final bool? _needsCode;
@@ -103,61 +98,9 @@ class Event extends Model {
     return _companyUrl;
   }
   
-  TemporalDate get startDate {
-    try {
-      return _startDate!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  TemporalTime get startTime {
-    try {
-      return _startTime!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
   TemporalDateTime get startDateTime {
     try {
       return _startDateTime!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  TemporalDate get finishDate {
-    try {
-      return _finishDate!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  TemporalTime get finishTime {
-    try {
-      return _finishTime!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -181,30 +124,8 @@ class Event extends Model {
     }
   }
   
-  String get yearMonth {
-    try {
-      return _yearMonth!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  Coordinates get coords {
-    try {
-      return _coords!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  Coordinates? get coords {
+    return _coords;
   }
   
   String get address {
@@ -288,9 +209,9 @@ class Event extends Model {
     return _images;
   }
   
-  EventCategory get EventCategory {
+  EventCategory get eventCategory {
     try {
-      return _EventCategory!;
+      return _eventCategory!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -301,8 +222,8 @@ class Event extends Model {
     }
   }
   
-  List<Ticket>? get Tickets {
-    return _Tickets;
+  List<Ticket>? get tickets {
+    return _tickets;
   }
   
   List<Job>? get Jobs {
@@ -351,22 +272,17 @@ class Event extends Model {
     return _ticketCategories;
   }
   
-  const Event._internal({required this.id, required title, description, required company, companyUrl, required startDate, required startTime, required startDateTime, required finishDate, required finishTime, required finishDateTime, required yearMonth, required coords, required address, place, minAge, required price, required maxCapacity, required totalAssistants, required primaryImage, contactNumber, images, required EventCategory, Tickets, Jobs, discountCodes, needsCode, required createdAt, required updatedAt, maxBuyQuantity, ticketCategories}): _title = title, _description = description, _company = company, _companyUrl = companyUrl, _startDate = startDate, _startTime = startTime, _startDateTime = startDateTime, _finishDate = finishDate, _finishTime = finishTime, _finishDateTime = finishDateTime, _yearMonth = yearMonth, _coords = coords, _address = address, _place = place, _minAge = minAge, _price = price, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _primaryImage = primaryImage, _contactNumber = contactNumber, _images = images, _EventCategory = EventCategory, _Tickets = Tickets, _Jobs = Jobs, _discountCodes = discountCodes, _needsCode = needsCode, _createdAt = createdAt, _updatedAt = updatedAt, _maxBuyQuantity = maxBuyQuantity, _ticketCategories = ticketCategories;
+  const Event._internal({required this.id, required title, description, required company, companyUrl, required startDateTime, required finishDateTime, coords, required address, place, minAge, required price, required maxCapacity, required totalAssistants, required primaryImage, contactNumber, images, required eventCategory, tickets, Jobs, discountCodes, needsCode, required createdAt, required updatedAt, maxBuyQuantity, ticketCategories}): _title = title, _description = description, _company = company, _companyUrl = companyUrl, _startDateTime = startDateTime, _finishDateTime = finishDateTime, _coords = coords, _address = address, _place = place, _minAge = minAge, _price = price, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _primaryImage = primaryImage, _contactNumber = contactNumber, _images = images, _eventCategory = eventCategory, _tickets = tickets, _Jobs = Jobs, _discountCodes = discountCodes, _needsCode = needsCode, _createdAt = createdAt, _updatedAt = updatedAt, _maxBuyQuantity = maxBuyQuantity, _ticketCategories = ticketCategories;
   
-  factory Event({String? id, required String title, String? description, required String company, String? companyUrl, required TemporalDate startDate, required TemporalTime startTime, required TemporalDateTime startDateTime, required TemporalDate finishDate, required TemporalTime finishTime, required TemporalDateTime finishDateTime, required String yearMonth, required Coordinates coords, required String address, String? place, int? minAge, required double price, required int maxCapacity, required int totalAssistants, required String primaryImage, String? contactNumber, List<String>? images, required EventCategory EventCategory, List<Ticket>? Tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
+  factory Event({String? id, required String title, String? description, required String company, String? companyUrl, required TemporalDateTime startDateTime, required TemporalDateTime finishDateTime, Coordinates? coords, required String address, String? place, int? minAge, required double price, required int maxCapacity, required int totalAssistants, required String primaryImage, String? contactNumber, List<String>? images, required EventCategory eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
     return Event._internal(
       id: id == null ? UUID.getUUID() : id,
       title: title,
       description: description,
       company: company,
       companyUrl: companyUrl,
-      startDate: startDate,
-      startTime: startTime,
       startDateTime: startDateTime,
-      finishDate: finishDate,
-      finishTime: finishTime,
       finishDateTime: finishDateTime,
-      yearMonth: yearMonth,
       coords: coords,
       address: address,
       place: place,
@@ -377,8 +293,8 @@ class Event extends Model {
       primaryImage: primaryImage,
       contactNumber: contactNumber,
       images: images != null ? List<String>.unmodifiable(images) : images,
-      EventCategory: EventCategory,
-      Tickets: Tickets != null ? List<Ticket>.unmodifiable(Tickets) : Tickets,
+      eventCategory: eventCategory,
+      tickets: tickets != null ? List<Ticket>.unmodifiable(tickets) : tickets,
       Jobs: Jobs != null ? List<Job>.unmodifiable(Jobs) : Jobs,
       discountCodes: discountCodes != null ? List<DiscountCode>.unmodifiable(discountCodes) : discountCodes,
       needsCode: needsCode,
@@ -401,13 +317,8 @@ class Event extends Model {
       _description == other._description &&
       _company == other._company &&
       _companyUrl == other._companyUrl &&
-      _startDate == other._startDate &&
-      _startTime == other._startTime &&
       _startDateTime == other._startDateTime &&
-      _finishDate == other._finishDate &&
-      _finishTime == other._finishTime &&
       _finishDateTime == other._finishDateTime &&
-      _yearMonth == other._yearMonth &&
       _coords == other._coords &&
       _address == other._address &&
       _place == other._place &&
@@ -418,8 +329,8 @@ class Event extends Model {
       _primaryImage == other._primaryImage &&
       _contactNumber == other._contactNumber &&
       DeepCollectionEquality().equals(_images, other._images) &&
-      _EventCategory == other._EventCategory &&
-      DeepCollectionEquality().equals(_Tickets, other._Tickets) &&
+      _eventCategory == other._eventCategory &&
+      DeepCollectionEquality().equals(_tickets, other._tickets) &&
       DeepCollectionEquality().equals(_Jobs, other._Jobs) &&
       DeepCollectionEquality().equals(_discountCodes, other._discountCodes) &&
       _needsCode == other._needsCode &&
@@ -442,13 +353,8 @@ class Event extends Model {
     buffer.write("description=" + "$_description" + ", ");
     buffer.write("company=" + "$_company" + ", ");
     buffer.write("companyUrl=" + "$_companyUrl" + ", ");
-    buffer.write("startDate=" + (_startDate != null ? _startDate!.format() : "null") + ", ");
-    buffer.write("startTime=" + (_startTime != null ? _startTime!.format() : "null") + ", ");
     buffer.write("startDateTime=" + (_startDateTime != null ? _startDateTime!.format() : "null") + ", ");
-    buffer.write("finishDate=" + (_finishDate != null ? _finishDate!.format() : "null") + ", ");
-    buffer.write("finishTime=" + (_finishTime != null ? _finishTime!.format() : "null") + ", ");
     buffer.write("finishDateTime=" + (_finishDateTime != null ? _finishDateTime!.format() : "null") + ", ");
-    buffer.write("yearMonth=" + "$_yearMonth" + ", ");
     buffer.write("coords=" + (_coords != null ? _coords!.toString() : "null") + ", ");
     buffer.write("address=" + "$_address" + ", ");
     buffer.write("place=" + "$_place" + ", ");
@@ -459,7 +365,7 @@ class Event extends Model {
     buffer.write("primaryImage=" + "$_primaryImage" + ", ");
     buffer.write("contactNumber=" + "$_contactNumber" + ", ");
     buffer.write("images=" + (_images != null ? _images!.toString() : "null") + ", ");
-    buffer.write("EventCategory=" + (_EventCategory != null ? _EventCategory!.toString() : "null") + ", ");
+    buffer.write("eventCategory=" + (_eventCategory != null ? _eventCategory!.toString() : "null") + ", ");
     buffer.write("needsCode=" + (_needsCode != null ? _needsCode!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
@@ -469,20 +375,15 @@ class Event extends Model {
     return buffer.toString();
   }
   
-  Event copyWith({String? id, String? title, String? description, String? company, String? companyUrl, TemporalDate? startDate, TemporalTime? startTime, TemporalDateTime? startDateTime, TemporalDate? finishDate, TemporalTime? finishTime, TemporalDateTime? finishDateTime, String? yearMonth, Coordinates? coords, String? address, String? place, int? minAge, double? price, int? maxCapacity, int? totalAssistants, String? primaryImage, String? contactNumber, List<String>? images, EventCategory? EventCategory, List<Ticket>? Tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
+  Event copyWith({String? id, String? title, String? description, String? company, String? companyUrl, TemporalDateTime? startDateTime, TemporalDateTime? finishDateTime, Coordinates? coords, String? address, String? place, int? minAge, double? price, int? maxCapacity, int? totalAssistants, String? primaryImage, String? contactNumber, List<String>? images, EventCategory? eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
     return Event._internal(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       company: company ?? this.company,
       companyUrl: companyUrl ?? this.companyUrl,
-      startDate: startDate ?? this.startDate,
-      startTime: startTime ?? this.startTime,
       startDateTime: startDateTime ?? this.startDateTime,
-      finishDate: finishDate ?? this.finishDate,
-      finishTime: finishTime ?? this.finishTime,
       finishDateTime: finishDateTime ?? this.finishDateTime,
-      yearMonth: yearMonth ?? this.yearMonth,
       coords: coords ?? this.coords,
       address: address ?? this.address,
       place: place ?? this.place,
@@ -493,8 +394,8 @@ class Event extends Model {
       primaryImage: primaryImage ?? this.primaryImage,
       contactNumber: contactNumber ?? this.contactNumber,
       images: images ?? this.images,
-      EventCategory: EventCategory ?? this.EventCategory,
-      Tickets: Tickets ?? this.Tickets,
+      eventCategory: eventCategory ?? this.eventCategory,
+      tickets: tickets ?? this.tickets,
       Jobs: Jobs ?? this.Jobs,
       discountCodes: discountCodes ?? this.discountCodes,
       needsCode: needsCode ?? this.needsCode,
@@ -510,13 +411,8 @@ class Event extends Model {
       _description = json['description'],
       _company = json['company'],
       _companyUrl = json['companyUrl'],
-      _startDate = json['startDate'] != null ? TemporalDate.fromString(json['startDate']) : null,
-      _startTime = json['startTime'] != null ? TemporalTime.fromString(json['startTime']) : null,
       _startDateTime = json['startDateTime'] != null ? TemporalDateTime.fromString(json['startDateTime']) : null,
-      _finishDate = json['finishDate'] != null ? TemporalDate.fromString(json['finishDate']) : null,
-      _finishTime = json['finishTime'] != null ? TemporalTime.fromString(json['finishTime']) : null,
       _finishDateTime = json['finishDateTime'] != null ? TemporalDateTime.fromString(json['finishDateTime']) : null,
-      _yearMonth = json['yearMonth'],
       _coords = json['coords']?['serializedData'] != null
         ? Coordinates.fromJson(new Map<String, dynamic>.from(json['coords']['serializedData']))
         : null,
@@ -529,11 +425,11 @@ class Event extends Model {
       _primaryImage = json['primaryImage'],
       _contactNumber = json['contactNumber'],
       _images = json['images']?.cast<String>(),
-      _EventCategory = json['EventCategory']?['serializedData'] != null
-        ? EventCategory.fromJson(new Map<String, dynamic>.from(json['EventCategory']['serializedData']))
+      _eventCategory = json['eventCategory']?['serializedData'] != null
+        ? EventCategory.fromJson(new Map<String, dynamic>.from(json['eventCategory']['serializedData']))
         : null,
-      _Tickets = json['Tickets'] is List
-        ? (json['Tickets'] as List)
+      _tickets = json['tickets'] is List
+        ? (json['tickets'] as List)
           .where((e) => e?['serializedData'] != null)
           .map((e) => Ticket.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
@@ -562,11 +458,11 @@ class Event extends Model {
         : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'title': _title, 'description': _description, 'company': _company, 'companyUrl': _companyUrl, 'startDate': _startDate?.format(), 'startTime': _startTime?.format(), 'startDateTime': _startDateTime?.format(), 'finishDate': _finishDate?.format(), 'finishTime': _finishTime?.format(), 'finishDateTime': _finishDateTime?.format(), 'yearMonth': _yearMonth, 'coords': _coords?.toJson(), 'address': _address, 'place': _place, 'minAge': _minAge, 'price': _price, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'primaryImage': _primaryImage, 'contactNumber': _contactNumber, 'images': _images, 'EventCategory': _EventCategory?.toJson(), 'Tickets': _Tickets?.map((Ticket? e) => e?.toJson()).toList(), 'Jobs': _Jobs?.map((Job? e) => e?.toJson()).toList(), 'discountCodes': _discountCodes?.map((DiscountCode? e) => e?.toJson()).toList(), 'needsCode': _needsCode, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'maxBuyQuantity': _maxBuyQuantity, 'ticketCategories': _ticketCategories?.map((TicketCategory? e) => e?.toJson()).toList()
+    'id': id, 'title': _title, 'description': _description, 'company': _company, 'companyUrl': _companyUrl, 'startDateTime': _startDateTime?.format(), 'finishDateTime': _finishDateTime?.format(), 'coords': _coords?.toJson(), 'address': _address, 'place': _place, 'minAge': _minAge, 'price': _price, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'primaryImage': _primaryImage, 'contactNumber': _contactNumber, 'images': _images, 'eventCategory': _eventCategory?.toJson(), 'tickets': _tickets?.map((Ticket? e) => e?.toJson()).toList(), 'Jobs': _Jobs?.map((Job? e) => e?.toJson()).toList(), 'discountCodes': _discountCodes?.map((DiscountCode? e) => e?.toJson()).toList(), 'needsCode': _needsCode, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'maxBuyQuantity': _maxBuyQuantity, 'ticketCategories': _ticketCategories?.map((TicketCategory? e) => e?.toJson()).toList()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'title': _title, 'description': _description, 'company': _company, 'companyUrl': _companyUrl, 'startDate': _startDate, 'startTime': _startTime, 'startDateTime': _startDateTime, 'finishDate': _finishDate, 'finishTime': _finishTime, 'finishDateTime': _finishDateTime, 'yearMonth': _yearMonth, 'coords': _coords, 'address': _address, 'place': _place, 'minAge': _minAge, 'price': _price, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'primaryImage': _primaryImage, 'contactNumber': _contactNumber, 'images': _images, 'EventCategory': _EventCategory, 'Tickets': _Tickets, 'Jobs': _Jobs, 'discountCodes': _discountCodes, 'needsCode': _needsCode, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'maxBuyQuantity': _maxBuyQuantity, 'ticketCategories': _ticketCategories
+    'id': id, 'title': _title, 'description': _description, 'company': _company, 'companyUrl': _companyUrl, 'startDateTime': _startDateTime, 'finishDateTime': _finishDateTime, 'coords': _coords, 'address': _address, 'place': _place, 'minAge': _minAge, 'price': _price, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'primaryImage': _primaryImage, 'contactNumber': _contactNumber, 'images': _images, 'eventCategory': _eventCategory, 'tickets': _tickets, 'Jobs': _Jobs, 'discountCodes': _discountCodes, 'needsCode': _needsCode, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'maxBuyQuantity': _maxBuyQuantity, 'ticketCategories': _ticketCategories
   };
 
   static final QueryField ID = QueryField(fieldName: "id");
@@ -574,13 +470,8 @@ class Event extends Model {
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
   static final QueryField COMPANY = QueryField(fieldName: "company");
   static final QueryField COMPANYURL = QueryField(fieldName: "companyUrl");
-  static final QueryField STARTDATE = QueryField(fieldName: "startDate");
-  static final QueryField STARTTIME = QueryField(fieldName: "startTime");
   static final QueryField STARTDATETIME = QueryField(fieldName: "startDateTime");
-  static final QueryField FINISHDATE = QueryField(fieldName: "finishDate");
-  static final QueryField FINISHTIME = QueryField(fieldName: "finishTime");
   static final QueryField FINISHDATETIME = QueryField(fieldName: "finishDateTime");
-  static final QueryField YEARMONTH = QueryField(fieldName: "yearMonth");
   static final QueryField COORDS = QueryField(fieldName: "coords");
   static final QueryField ADDRESS = QueryField(fieldName: "address");
   static final QueryField PLACE = QueryField(fieldName: "place");
@@ -592,10 +483,10 @@ class Event extends Model {
   static final QueryField CONTACTNUMBER = QueryField(fieldName: "contactNumber");
   static final QueryField IMAGES = QueryField(fieldName: "images");
   static final QueryField EVENTCATEGORY = QueryField(
-    fieldName: "EventCategory",
+    fieldName: "eventCategory",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'EventCategory'));
   static final QueryField TICKETS = QueryField(
-    fieldName: "Tickets",
+    fieldName: "tickets",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
   static final QueryField JOBS = QueryField(
     fieldName: "Jobs",
@@ -618,6 +509,9 @@ class Event extends Model {
       AuthRule(
         authStrategy: AuthStrategy.PUBLIC,
         operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
           ModelOperation.READ
         ]),
       AuthRule(
@@ -640,8 +534,7 @@ class Event extends Model {
     
     modelSchemaDefinition.indexes = [
       ModelIndex(fields: const ["id"], name: null),
-      ModelIndex(fields: const ["yearMonth", "startDate"], name: "byYearMonth"),
-      ModelIndex(fields: const ["eventcategoryID", "startDate", "startTime"], name: "byEventCategory")
+      ModelIndex(fields: const ["eventcategoryID", "startDateTime"], name: "byEventCategory")
     ];
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
@@ -671,33 +564,9 @@ class Event extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.STARTDATE,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.date)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.STARTTIME,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.time)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Event.STARTDATETIME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.FINISHDATE,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.date)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.FINISHTIME,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.time)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
@@ -706,15 +575,9 @@ class Event extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Event.YEARMONTH,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
     modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
       fieldName: 'coords',
-      isRequired: true,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Coordinates')
     ));
     

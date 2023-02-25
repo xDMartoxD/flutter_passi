@@ -100,7 +100,7 @@ final dark_theme = ThemeData(
     errorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color.fromRGBO(237, 67, 55, 1)),
     ),
-    contentPadding: EdgeInsets.all(16),
+    contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
     floatingLabelBehavior: FloatingLabelBehavior.always,
     hintStyle: TextStyle(color: Colors.grey),
     errorStyle: TextStyle(color: Color.fromRGBO(237, 67, 55, 1)),
@@ -123,6 +123,7 @@ final dark_theme = ThemeData(
       color: Colors.white,
     ),
   ),
+  progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
   useMaterial3: true,
 );
 const MaterialColor primaryswatchcolor =

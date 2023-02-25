@@ -76,17 +76,8 @@ class User extends Model {
     }
   }
   
-  S3Object get avatar {
-    try {
-      return _avatar!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  S3Object? get avatar {
+    return _avatar;
   }
   
   List<Ticket>? get tickets {
@@ -139,9 +130,9 @@ class User extends Model {
     return _userSelectedPaymentMethodId;
   }
   
-  const User._internal({required this.id, required email, required name, required avatar, tickets, jobs, codes, paymentMethods, selectedPaymentMethod, required createdAt, required updatedAt, userSelectedPaymentMethodId}): _email = email, _name = name, _avatar = avatar, _tickets = tickets, _jobs = jobs, _codes = codes, _paymentMethods = paymentMethods, _selectedPaymentMethod = selectedPaymentMethod, _createdAt = createdAt, _updatedAt = updatedAt, _userSelectedPaymentMethodId = userSelectedPaymentMethodId;
+  const User._internal({required this.id, required email, required name, avatar, tickets, jobs, codes, paymentMethods, selectedPaymentMethod, required createdAt, required updatedAt, userSelectedPaymentMethodId}): _email = email, _name = name, _avatar = avatar, _tickets = tickets, _jobs = jobs, _codes = codes, _paymentMethods = paymentMethods, _selectedPaymentMethod = selectedPaymentMethod, _createdAt = createdAt, _updatedAt = updatedAt, _userSelectedPaymentMethodId = userSelectedPaymentMethodId;
   
-  factory User({String? id, required String email, required String name, required S3Object avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, String? userSelectedPaymentMethodId}) {
+  factory User({String? id, required String email, required String name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, String? userSelectedPaymentMethodId}) {
     return User._internal(
       id: id == null ? UUID.getUUID() : id,
       email: email,
@@ -296,7 +287,8 @@ class User extends Model {
         operations: [
           ModelOperation.CREATE,
           ModelOperation.UPDATE,
-          ModelOperation.DELETE
+          ModelOperation.DELETE,
+          ModelOperation.READ
         ]),
       AuthRule(
         authStrategy: AuthStrategy.PRIVATE,
@@ -341,7 +333,7 @@ class User extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
       fieldName: 'avatar',
-      isRequired: true,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'S3Object')
     ));
     
