@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:passi_app/models/ModelProvider.dart';
-import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/event_provider.dart';
 import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';

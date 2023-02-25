@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:passi_app/models/screen_args/event_checkout_screen_args.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/event_provider.dart';
