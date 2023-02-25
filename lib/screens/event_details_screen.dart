@@ -84,7 +84,8 @@ class _EventContentState extends State<EventContent> {
     thousendFormat = NumberFormat.decimalPattern('en_us');
 
     Future.delayed(Duration.zero).then((_) {
-      _setEvent = Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
+      _setEvent = Provider.of<EventProvider>(context, listen: false)
+          .setEventById(widget.id);
     });
   }
 
@@ -112,7 +113,10 @@ class _EventContentState extends State<EventContent> {
                       slivers: <Widget>[
                         EventDetailsAppBar(
                           id: widget.id,
-                          images: [value.event!.primaryImage, ...(value.event!.images ?? [])],
+                          images: [
+                            value.event!.primaryImage,
+                            ...(value.event!.images ?? [])
+                          ],
                         ),
                         SliverList(
                           delegate: SliverChildListDelegate([
@@ -120,7 +124,10 @@ class _EventContentState extends State<EventContent> {
                               padding: const EdgeInsets.all(10),
                               child: Text(
                                 value.event!.title,
-                                style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayLarge!
+                                    .copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                                 softWrap: true,
@@ -132,7 +139,8 @@ class _EventContentState extends State<EventContent> {
                             ),
                             Container(
                               height: 100,
-                              decoration: BoxDecoration(border: Border.symmetric()),
+                              decoration:
+                                  BoxDecoration(border: Border.symmetric()),
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
                                 children: [
@@ -147,7 +155,8 @@ class _EventContentState extends State<EventContent> {
                                   ),
                                   EventInfoIcon(
                                     icon: Icons.calendar_today,
-                                    textContent: "${parseDate(value.event!.startDateTime)}",
+                                    textContent:
+                                        "${parseDate(value.event!.startDateTime)}",
                                   ),
                                   EventInfoIcon(
                                     icon: Icons.corporate_fare_rounded,
@@ -155,7 +164,8 @@ class _EventContentState extends State<EventContent> {
                                   ),
                                   EventInfoIcon(
                                     icon: Icons.star_border_rounded,
-                                    textContent: value.event!.eventCategory.name,
+                                    textContent:
+                                        value.event!.eventCategory.name,
                                   ),
                                 ],
                               ),
@@ -165,7 +175,8 @@ class _EventContentState extends State<EventContent> {
                               child: Card(
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: ChangeNotifierProvider<TicketCategoriesByEventProvider>(
+                                  child: ChangeNotifierProvider<
+                                      TicketCategoriesByEventProvider>(
                                     create: (context) {
                                       return TicketCategoriesByEventProvider();
                                     },
@@ -356,7 +367,8 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             height: 50,
                             child: Text(
                               "\$ ${thousendFormat.format(ticketCategory.price)}",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -365,7 +377,8 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             height: 5,
                             decoration: BoxDecoration(
-                              color: Color(StringToHex.toColor(ticketCategory.color)),
+                              color: Color(
+                                  StringToHex.toColor(ticketCategory.color)),
                               borderRadius: BorderRadius.circular(50),
                             ),
                           )
@@ -398,7 +411,8 @@ class EventDetailsAppBar extends StatefulWidget {
   State<EventDetailsAppBar> createState() => _EventDetailsAppBarState();
 }
 
-class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProviderStateMixin {
+class _EventDetailsAppBarState extends State<EventDetailsAppBar>
+    with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
