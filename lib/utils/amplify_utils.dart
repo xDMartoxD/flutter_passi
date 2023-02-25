@@ -1,5 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:intl/intl.dart';
 import 'package:passi_app/constants/amplify_api_names.dart';
 
 Future<String?> getUrl(String key) async {

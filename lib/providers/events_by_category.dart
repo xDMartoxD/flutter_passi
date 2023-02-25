@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:passi_app/utils/amplify_utils.dart';
 import '../models/Event.dart';
 
-class EventsByCategory with ChangeNotifier {
+class EventsByCategoryProvider with ChangeNotifier {
   final String categoryId;
   List<Event> _events = [];
   GraphQLRequest<PaginatedResult<Event>>? _requestForNextToken;
   bool _hasNextResult = false;
 
-  EventsByCategory({required this.categoryId}) {
+  EventsByCategoryProvider({required this.categoryId}) {
     fetchEventsByCategory();
   }
 

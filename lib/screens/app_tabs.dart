@@ -1,3 +1,7 @@
+import 'package:amplify_api/amplify_api.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -6,9 +10,13 @@ import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
 import 'package:passi_app/screens/user_settings_screen.dart';
+import 'package:passi_app/widgets/loading.dart';
+
+import '../amplifyconfiguration.dart';
+import '../models/ModelProvider.dart';
 
 class AppTabs extends StatefulWidget {
-  static const route = "/";
+  static const path = "/";
   static const name = "tabs";
   const AppTabs({super.key});
 
@@ -20,10 +28,32 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
   late final List<Map<String, Object?>> _screens;
   late int _currenPageIndex;
   late final TabController _tabController;
+  bool _isAmplifyConfigured = false;
+  Future<void> _configureAmplify() async {
+    final authPlugin = AmplifyAuthCognito();
+    final api = AmplifyAPI(modelProvider: ModelProvider.instance);
+    final storage = AmplifyStorageS3();
+    await Amplify.addPlugins([api, authPlugin, storage]);
+    setState(() {
+      _isAmplifyConfigured = true;
+    });
+    try {
+      await Amplify.configure(amplifyconfig);
+    } on AmplifyAlreadyConfiguredException {
+      safePrint("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    if (!Amplify.isConfigured) {
+      _configureAmplify();
+    } else {
+      setState(() {
+        _isAmplifyConfigured = true;
+      });
+    }
     _tabController = TabController(length: 3, vsync: this);
     _tabController.index = 1;
     _currenPageIndex = 0;
@@ -56,7 +86,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         "appBarBottom": null,
         "appBarActions": [
           IconButton(
-            onPressed: () => {context.goNamed(UserSettingsScreen.name)},
+            onPressed: () => {context.pushNamed(UserSettingsScreen.name)},
             icon: Icon(Icons.settings),
           )
         ],
@@ -104,7 +134,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         }),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
-      body: _screens[_currenPageIndex]["screen"] as Widget,
+      body: _isAmplifyConfigured ? _screens[_currenPageIndex]["screen"] as Widget : Loading(),
     );
   }
 }

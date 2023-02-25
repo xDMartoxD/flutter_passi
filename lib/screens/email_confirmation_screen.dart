@@ -7,7 +7,7 @@ import '../providers/authentication_provider.dart';
 
 class EmailConfirmationScreen extends StatefulWidget {
   static const name = "email-confirmation";
-  static const route = "email-confirmation";
+  static const path = "email-confirmation";
   final String email;
   final String password;
   const EmailConfirmationScreen({

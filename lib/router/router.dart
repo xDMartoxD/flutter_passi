@@ -18,14 +18,14 @@ class AppRouter {
   late final GoRouter router = GoRouter(
       routes: [
         GoRoute(
-          path: AppTabs.route,
+          path: AppTabs.path,
           name: AppTabs.name,
           builder: (BuildContext context, GoRouterState state) {
             return AppTabs();
           },
           routes: [
             GoRoute(
-              path: EventDetailsScreen.route,
+              path: EventDetailsScreen.path,
               name: EventDetailsScreen.name,
               builder: (BuildContext context, GoRouterState state) {
                 final args = EventDetailScreenArgs.fromJson(state.params);
@@ -33,68 +33,70 @@ class AppRouter {
                   id: args.id,
                 );
               },
-              routes: [
-                GoRoute(
-                  path: EventCheckoutScreen.route,
-                  name: EventCheckoutScreen.name,
-                  builder: (BuildContext context, GoRouterState state) {
-                    final args = EventCheckoutScreenArgs.fromJson(state.params);
-                    return EventCheckoutScreen(
-                      id: args.id,
-                    );
-                  },
-                )
-              ],
             ),
             GoRoute(
-              path: EmailLoginScreen.route,
+              path: EventCheckoutScreen.path,
+              name: EventCheckoutScreen.name,
+              builder: (BuildContext context, GoRouterState state) {
+                final args = EventCheckoutScreenArgs.fromJson(state.params);
+                return EventCheckoutScreen(
+                  id: args.id,
+                );
+              },
+            ),
+            GoRoute(
+              path: EmailLoginScreen.path,
               name: EmailLoginScreen.name,
               builder: (context, state) {
                 return EmailLoginScreen();
               },
             ),
             GoRoute(
-              path: UserSettingsScreen.route,
+              path: UserSettingsScreen.path,
               name: UserSettingsScreen.name,
               builder: (context, state) {
                 return UserSettingsScreen();
               },
             ),
             GoRoute(
-              path: EventCategoriesOverviewScreen.route,
+              path: EventCategoriesOverviewScreen.path,
               name: EventCategoriesOverviewScreen.name,
               builder: (BuildContext context, GoRouterState state) {
-                final args = EventCategoriesOverviewScreenArgs.fromJson(state.params);
+                final args = EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
                 return EventCategoriesOverviewScreen(
                   id: args.id,
+                  categoryName: args.categoryName,
                 );
               },
             ),
             GoRoute(
-              path: EmailRegisterScreen.route,
+              path: EmailRegisterScreen.path,
               name: EmailRegisterScreen.name,
               builder: (BuildContext context, GoRouterState state) {
                 return EmailRegisterScreen();
               },
-              routes: [
-                GoRoute(
-                    path: EmailConfirmationScreen.route,
-                    name: EmailConfirmationScreen.name,
-                    builder: (context, state) {
-                      final args = EmailConfirmationScreenArgs.fromJson(
-                        state.queryParams,
-                      );
-                      return EmailConfirmationScreen(
-                        email: args.email,
-                        password: args.password,
-                      );
-                    })
-              ],
             ),
+            GoRoute(
+                path: EmailConfirmationScreen.path,
+                name: EmailConfirmationScreen.name,
+                builder: (context, state) {
+                  final args = EmailConfirmationScreenArgs.fromJson(
+                    state.queryParams,
+                  );
+                  return EmailConfirmationScreen(
+                    email: args.email,
+                    password: args.password,
+                  );
+                })
           ],
         ),
       ],
       errorPageBuilder: (context, state) {
-        return MaterialPage(child: ErrorScreen());
+        return MaterialPage(
+          key: state.pageKey,
+          child: ErrorScreen(
+            error: state.error.toString(),
+          ),
+        );
       });
 }

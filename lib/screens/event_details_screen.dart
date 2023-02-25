@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -9,29 +8,62 @@ import 'package:passi_app/widgets/expandable_text.dart';
 import 'package:passi_app/widgets/app_map_view.dart';
 import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:string_to_hex/string_to_hex.dart';
+import '../utils/flutter_utils.dart';
 
-class EventDetailsScreen extends StatelessWidget {
-  static const route = "event-details/:id";
+class EventDetailsScreen extends StatefulWidget {
+  static const path = "event-details/:id";
   static const name = "event-details";
 
   final String id;
   final String? promoterCode;
 
-  void goToCheckout() {}
-  void goToLogin() {}
+  EventDetailsScreen({super.key, required this.id, this.promoterCode});
 
-  void pressedHandler(BuildContext context) {
-    final user = Provider.of<AuthenticationProvider>(context).user;
-    if (user != null) {
-      goToCheckout();
-    } else {
-      goToLogin();
-    }
+  @override
+  State<EventDetailsScreen> createState() => _EventDetailsScreenState();
+}
+
+class _EventDetailsScreenState extends State<EventDetailsScreen> {
+  AuthenticationProvider? _authenticationProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero).then(
+      (value) {
+        _authenticationProvider =
+            Provider.of<AuthenticationProvider>(context, listen: false);
+
+        // _authenticationProvider!.addListener(_authenticationListener);
+      },
+    );
   }
 
-  final NumberFormat thousendFormat = NumberFormat.decimalPattern('en_us');
-  EventDetailsScreen({super.key, required this.id, this.promoterCode});
+  // void _authenticationListener() {
+  //   _user = _authenticationProvider?.user;
+  //   print("LISTENER ${_user?.name}");
+  // }
+
+  @override
+  void dispose() {
+    // _authenticationProvider?.removeListener(_authenticationListener);
+    super.dispose();
+  }
+
+  void _goToCheckout() {}
+
+  void _goToLogin(BuildContext context) {
+    bottomSheetAuthHandler(context: context);
+  }
+
+  void pressedHandler(BuildContext context) {
+    final user = _authenticationProvider?.user;
+    if (user != null) {
+      _goToCheckout();
+    } else {
+      _goToLogin(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +87,7 @@ class EventDetailsScreen extends StatelessWidget {
           return EventProvider();
         },
         child: EventContent(
-          id: id,
+          id: widget.id,
         ),
       ),
     );
@@ -75,26 +107,15 @@ class EventContent extends StatefulWidget {
 }
 
 class _EventContentState extends State<EventContent> {
-  late final NumberFormat thousendFormat;
-
   Future<void>? _setEvent;
   @override
   void initState() {
     super.initState();
-    thousendFormat = NumberFormat.decimalPattern('en_us');
 
     Future.delayed(Duration.zero).then((_) {
       _setEvent = Provider.of<EventProvider>(context, listen: false)
           .setEventById(widget.id);
     });
-  }
-
-  String parseDate(TemporalDateTime date) {
-    return DateFormat('dd-MM-yy').format(DateTime.parse(date.toString()));
-  }
-
-  String parseTime(TemporalDateTime date) {
-    return DateFormat('HH:mm').format(DateTime.parse(date.toString()));
   }
 
   @override
@@ -119,94 +140,97 @@ class _EventContentState extends State<EventContent> {
                           ],
                         ),
                         SliverList(
-                          delegate: SliverChildListDelegate([
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                value.event!.title,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
+                          delegate: SliverChildListDelegate(
+                            [
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  value.event!.title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  softWrap: true,
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.white,
+                                height: 8,
+                              ),
+                              Container(
+                                height: 100,
+                                decoration:
+                                    BoxDecoration(border: Border.symmetric()),
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    EventInfoIcon(
+                                      icon: Icons.watch_later_outlined,
+                                      textContent:
+                                          "${parseTime(value.event!.startDateTime)} - ${parseTime(value.event!.finishDateTime)}",
                                     ),
-                                softWrap: true,
+                                    EventInfoIcon(
+                                      icon: Icons.map,
+                                      textContent: "${value.event!.address}",
+                                    ),
+                                    EventInfoIcon(
+                                      icon: Icons.calendar_today,
+                                      textContent:
+                                          "${parseDate(value.event!.startDateTime)}\n${parseDate(value.event!.finishDateTime)}",
+                                    ),
+                                    EventInfoIcon(
+                                      icon: Icons.corporate_fare_rounded,
+                                      textContent: "${value.event!.company}",
+                                    ),
+                                    EventInfoIcon(
+                                      icon: Icons.star_border_rounded,
+                                      textContent:
+                                          value.event!.eventCategory.name,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Divider(
-                              color: Colors.white,
-                              height: 8,
-                            ),
-                            Container(
-                              height: 100,
-                              decoration:
-                                  BoxDecoration(border: Border.symmetric()),
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: [
-                                  EventInfoIcon(
-                                    icon: Icons.watch_later_outlined,
-                                    textContent:
-                                        "${parseTime(value.event!.startDateTime)} - ${parseTime(value.event!.finishDateTime)}",
-                                  ),
-                                  EventInfoIcon(
-                                    icon: Icons.map,
-                                    textContent: "${value.event!.address}",
-                                  ),
-                                  EventInfoIcon(
-                                    icon: Icons.calendar_today,
-                                    textContent:
-                                        "${parseDate(value.event!.startDateTime)}",
-                                  ),
-                                  EventInfoIcon(
-                                    icon: Icons.corporate_fare_rounded,
-                                    textContent: "${value.event!.company}",
-                                  ),
-                                  EventInfoIcon(
-                                    icon: Icons.star_border_rounded,
-                                    textContent:
-                                        value.event!.eventCategory.name,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Card(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: ChangeNotifierProvider<
-                                      TicketCategoriesByEventProvider>(
-                                    create: (context) {
-                                      return TicketCategoriesByEventProvider();
-                                    },
-                                    child: EventDetailsCategoriesInfo(
-                                      thousendFormat: thousendFormat,
-                                      eventId: value.event!.id,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: ChangeNotifierProvider<
+                                        TicketCategoriesByEventProvider>(
+                                      create: (context) {
+                                        return TicketCategoriesByEventProvider();
+                                      },
+                                      child: EventDetailsCategoriesInfo(
+                                        eventId: value.event!.id,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            PromotersWidget(),
-                            SizedBox(height: 20),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: AspectRatio(
-                                aspectRatio: 3 / 2,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: AppMapView(),
+                              PromotersWidget(),
+                              SizedBox(height: 20),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AspectRatio(
+                                  aspectRatio: 3 / 2,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: AppMapView(),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 20),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ExpandableText(value.event!.description),
-                            ),
-                            SizedBox(height: 80)
-                          ]),
+                              SizedBox(height: 20),
+                              if (value.event!.description != null)
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child:
+                                      ExpandableText(value.event!.description),
+                                ),
+                              SizedBox(height: 80)
+                            ],
+                          ),
                         )
                       ],
                     );
@@ -306,7 +330,13 @@ class EventInfoIcon extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [Icon(icon), Text(textContent)],
+            children: [
+              Icon(icon),
+              Text(
+                textContent,
+                textAlign: TextAlign.center,
+              )
+            ],
           ),
         ),
         VerticalDivider(
@@ -320,17 +350,15 @@ class EventInfoIcon extends StatelessWidget {
 }
 
 class EventDetailsCategoriesInfo extends StatelessWidget {
-  const EventDetailsCategoriesInfo({
+  EventDetailsCategoriesInfo({
     Key? key,
-    required this.thousendFormat,
     required this.eventId,
   }) : super(key: key);
 
-  final NumberFormat thousendFormat;
   final String eventId;
 
   Future<void> _listTicketCateogires(BuildContext context) async {
-    await Provider.of<TicketCategoriesByEventProvider>(context)
+    await Provider.of<TicketCategoriesByEventProvider>(context, listen: false)
         .fetchTicketCategoriesByEventId(eventId);
   }
 
@@ -343,7 +371,6 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
           case ConnectionState.done:
             return Consumer<TicketCategoriesByEventProvider>(
               builder: (context, value, child) {
-                print(value.ticketCategories[0].color);
                 return Table(
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: value.ticketCategories.map(
@@ -366,7 +393,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             alignment: Alignment.center,
                             height: 50,
                             child: Text(
-                              "\$ ${thousendFormat.format(ticketCategory.price)}",
+                              "\$ ${formatNumber(ticketCategory.price)}",
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
@@ -377,8 +404,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             height: 5,
                             decoration: BoxDecoration(
-                              color: Color(
-                                  StringToHex.toColor(ticketCategory.color)),
+                              color: getColor(ticketCategory.color),
                               borderRadius: BorderRadius.circular(50),
                             ),
                           )

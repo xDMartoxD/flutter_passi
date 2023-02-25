@@ -24,7 +24,7 @@ class EventItem extends StatelessWidget {
           GestureDetector(
             onTap: () {
               final args = EventDetailScreenArgs(id: id);
-              context.goNamed(EventDetailsScreen.name, params: args.params());
+              context.pushNamed(EventDetailsScreen.name, params: args.params());
             },
             child: Container(
               height: 150,

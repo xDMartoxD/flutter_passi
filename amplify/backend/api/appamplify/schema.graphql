@@ -187,7 +187,11 @@ type User
   @model
   @auth(
     rules: [
-      { allow: owner, ownerField: "id", operations: [create, update, delete, read] }
+      {
+        allow: owner
+        ownerField: "id"
+        operations: [create, update, delete, read]
+      }
       { allow: private, operations: [read] }
       { allow: groups, groups: ["Admin"] }
       { allow: public, operations: [read] }
@@ -422,7 +426,7 @@ type TicketCategory
   id: ID! @primaryKey
   price: Float!
   name: String!
-  color: Int!
+  color: String!
   maxCapacity: Int!
   totalAssistants: Int!
   eventID: ID!

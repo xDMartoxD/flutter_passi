@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EventCheckoutScreen extends StatefulWidget {
-  static const route = "event-checkout";
+  static const path = "event-checkout";
   static const name = "event-checkout";
   final String id;
   EventCheckoutScreen({super.key, required this.id});

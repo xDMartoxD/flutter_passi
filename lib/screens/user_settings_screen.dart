@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   static const name = "user-settings";
-  static const route = "user-settings";
+  static const path = "user-settings";
   const UserSettingsScreen({super.key});
 
   @override

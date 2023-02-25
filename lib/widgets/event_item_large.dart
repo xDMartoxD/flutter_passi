@@ -1,5 +1,8 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import "package:go_router/go_router.dart";
+import 'package:intl/intl.dart';
+import 'package:passi_app/utils/flutter_utils.dart';
 
 import '../models/screen_args/event_detail_screen_args.dart';
 import '../screens/event_details_screen.dart';
@@ -7,12 +10,26 @@ import '../screens/event_details_screen.dart';
 class EventItemLarge extends StatelessWidget {
   final String id;
   final String imageUrl;
-  const EventItemLarge({super.key, required this.id, required this.imageUrl});
+  final String name;
+  final String? place;
+  final String address;
+  final double price;
+  final TemporalDateTime date;
+  const EventItemLarge({
+    super.key,
+    required this.id,
+    required this.imageUrl,
+    required this.name,
+    this.place,
+    required this.address,
+    required this.price,
+    required this.date,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.goNamed(
+      onTap: () => context.pushNamed(
         EventDetailsScreen.name,
         params: EventDetailScreenArgs(
           id: id,
@@ -40,22 +57,22 @@ class EventItemLarge extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              "Nombre del Evento",
+              name,
               style: TextStyle(fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
             Text(
-              "Luar",
+              "$address -$place",
               style: TextStyle(color: Colors.grey),
               textAlign: TextAlign.left,
             ),
             Text(
-              "Fecha",
+              "${parseDate(date)}",
               style: TextStyle(color: Colors.grey),
               textAlign: TextAlign.left,
             ),
             Text(
-              "\$Costo COP",
+              "\$${formatNumber(price)} COP",
               style: TextStyle(fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
