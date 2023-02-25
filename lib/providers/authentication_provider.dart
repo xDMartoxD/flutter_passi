@@ -9,7 +9,6 @@ import 'package:passi_app/utils/amplify_utils.dart';
 
 class AuthenticationProvider with ChangeNotifier {
   User? _user;
-  String? _userSub;
 
   User? get user {
     return _user;
@@ -18,23 +17,23 @@ class AuthenticationProvider with ChangeNotifier {
   Future<String?> _getUserIdFromAttributes() async {
     try {
       final result = await Amplify.Auth.fetchUserAttributes();
-      _userSub = result
+      final userSub = result
           .firstWhere(
             (element) => element.userAttributeKey.toString() == 'sub',
           )
           .value;
 
-      return _userSub;
+      return userSub;
     } catch (e) {
       safePrint("ERRROR _getUserIdFromAttributes ${e.toString()}");
       rethrow;
     }
   }
 
-  Future<String?> attemptAutoLogin() async {
+  Future<String?> _attemptAutoLogin() async {
     try {
-      final session = await Amplify.Auth.fetchAuthSession();
-      return session.isSignedIn ? _getUserIdFromAttributes() : null;
+      final isSignedIn = await isUserSignedIn();
+      return isSignedIn ? _getUserIdFromAttributes() : null;
     } catch (e) {
       safePrint("ERROR EN ATTEMPT AUTO LOGIN");
       rethrow;
@@ -45,7 +44,7 @@ class AuthenticationProvider with ChangeNotifier {
     final isSignedIn = await isUserSignedIn();
     if (isSignedIn) {
       try {
-        final id = await attemptAutoLogin();
+        final id = await _attemptAutoLogin();
         if (id != null) {
           final request = apiKeyRequest(ModelQueries.get(User.classType, id));
           final response = await Amplify.API.query(request: request).response;
@@ -117,7 +116,8 @@ class AuthenticationProvider with ChangeNotifier {
   }
 
   Future<void> _removeUserFromDB() async {
-    if (_userSub != null && _userSub != '' && user != null) {
+    final isLogedIn = await isUserSignedIn();
+    if (user != null && isLogedIn) {
       final request = cognitoRequest(ModelMutations.delete<User>(user!));
       final response = await Amplify.API.mutate(request: request).response;
       final data = response.data;

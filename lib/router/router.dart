@@ -62,9 +62,10 @@ class AppRouter {
               path: EventCategoriesOverviewScreen.path,
               name: EventCategoriesOverviewScreen.name,
               builder: (BuildContext context, GoRouterState state) {
-                final args = EventCategoriesOverviewScreenArgs.fromJson(state.params);
+                final args = EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
                 return EventCategoriesOverviewScreen(
                   id: args.id,
+                  categoryName: args.categoryName,
                 );
               },
             ),

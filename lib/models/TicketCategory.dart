@@ -32,7 +32,7 @@ class TicketCategory extends Model {
   final String id;
   final double? _price;
   final String? _name;
-  final int? _color;
+  final String? _color;
   final int? _maxCapacity;
   final int? _totalAssistants;
   final Event? _event;
@@ -75,7 +75,7 @@ class TicketCategory extends Model {
     }
   }
   
-  int get color {
+  String get color {
     try {
       return _color!;
     } catch(e) {
@@ -145,7 +145,7 @@ class TicketCategory extends Model {
   
   const TicketCategory._internal({required this.id, required price, required name, required color, required maxCapacity, required totalAssistants, required event, tickets, description, createdAt, updatedAt}): _price = price, _name = name, _color = color, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _event = event, _tickets = tickets, _description = description, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory TicketCategory({String? id, required double price, required String name, required int color, required int maxCapacity, required int totalAssistants, required Event event, List<Ticket>? tickets, String? description}) {
+  factory TicketCategory({String? id, required double price, required String name, required String color, required int maxCapacity, required int totalAssistants, required Event event, List<Ticket>? tickets, String? description}) {
     return TicketCategory._internal(
       id: id == null ? UUID.getUUID() : id,
       price: price,
@@ -188,7 +188,7 @@ class TicketCategory extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("price=" + (_price != null ? _price!.toString() : "null") + ", ");
     buffer.write("name=" + "$_name" + ", ");
-    buffer.write("color=" + (_color != null ? _color!.toString() : "null") + ", ");
+    buffer.write("color=" + "$_color" + ", ");
     buffer.write("maxCapacity=" + (_maxCapacity != null ? _maxCapacity!.toString() : "null") + ", ");
     buffer.write("totalAssistants=" + (_totalAssistants != null ? _totalAssistants!.toString() : "null") + ", ");
     buffer.write("event=" + (_event != null ? _event!.toString() : "null") + ", ");
@@ -200,7 +200,7 @@ class TicketCategory extends Model {
     return buffer.toString();
   }
   
-  TicketCategory copyWith({String? id, double? price, String? name, int? color, int? maxCapacity, int? totalAssistants, Event? event, List<Ticket>? tickets, String? description}) {
+  TicketCategory copyWith({String? id, double? price, String? name, String? color, int? maxCapacity, int? totalAssistants, Event? event, List<Ticket>? tickets, String? description}) {
     return TicketCategory._internal(
       id: id ?? this.id,
       price: price ?? this.price,
@@ -217,7 +217,7 @@ class TicketCategory extends Model {
     : id = json['id'],
       _price = (json['price'] as num?)?.toDouble(),
       _name = json['name'],
-      _color = (json['color'] as num?)?.toInt(),
+      _color = json['color'],
       _maxCapacity = (json['maxCapacity'] as num?)?.toInt(),
       _totalAssistants = (json['totalAssistants'] as num?)?.toInt(),
       _event = json['event']?['serializedData'] != null
@@ -304,7 +304,7 @@ class TicketCategory extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: TicketCategory.COLOR,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

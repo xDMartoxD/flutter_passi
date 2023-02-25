@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +8,6 @@ import 'package:passi_app/widgets/expandable_text.dart';
 import 'package:passi_app/widgets/app_map_view.dart';
 import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
-
-import '../models/User.dart';
 import '../utils/flutter_utils.dart';
 
 class EventDetailsScreen extends StatefulWidget {
@@ -109,25 +106,14 @@ class EventContent extends StatefulWidget {
 }
 
 class _EventContentState extends State<EventContent> {
-  late final NumberFormat thousendFormat;
-
   Future<void>? _setEvent;
   @override
   void initState() {
     super.initState();
-    thousendFormat = NumberFormat.decimalPattern('en_us');
 
     Future.delayed(Duration.zero).then((_) {
       _setEvent = Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
     });
-  }
-
-  String parseDate(TemporalDateTime date) {
-    return DateFormat('dd-MM-yy').format(DateTime.parse(date.toString()));
-  }
-
-  String parseTime(TemporalDateTime date) {
-    return DateFormat('HH:mm').format(DateTime.parse(date.toString()));
   }
 
   @override
@@ -206,7 +192,6 @@ class _EventContentState extends State<EventContent> {
                                         return TicketCategoriesByEventProvider();
                                       },
                                       child: EventDetailsCategoriesInfo(
-                                        thousendFormat: thousendFormat,
                                         eventId: value.event!.id,
                                       ),
                                     ),
@@ -353,13 +338,11 @@ class EventInfoIcon extends StatelessWidget {
 }
 
 class EventDetailsCategoriesInfo extends StatelessWidget {
-  const EventDetailsCategoriesInfo({
+  EventDetailsCategoriesInfo({
     Key? key,
-    required this.thousendFormat,
     required this.eventId,
   }) : super(key: key);
 
-  final NumberFormat thousendFormat;
   final String eventId;
 
   Future<void> _listTicketCateogires(BuildContext context) async {
@@ -376,7 +359,6 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
           case ConnectionState.done:
             return Consumer<TicketCategoriesByEventProvider>(
               builder: (context, value, child) {
-                print(value.ticketCategories[0].color);
                 return Table(
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: value.ticketCategories.map(
@@ -399,7 +381,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             alignment: Alignment.center,
                             height: 50,
                             child: Text(
-                              "\$ ${thousendFormat.format(ticketCategory.price)}",
+                              "\$ ${formatNumber(ticketCategory.price)}",
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
@@ -409,7 +391,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             height: 5,
                             decoration: BoxDecoration(
-                              color: Color(ticketCategory.color),
+                              color: getColor(ticketCategory.color),
                               borderRadius: BorderRadius.circular(50),
                             ),
                           )

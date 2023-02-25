@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
-import 'package:passi_app/screens/email_login_screen.dart';
-import 'package:passi_app/screens/email_register_screen.dart';
 import 'package:passi_app/utils/amplify_utils.dart';
+import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
-
 import '../utils/flutter_utils.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -24,16 +20,18 @@ class ProfileScreen extends StatelessWidget {
     return FutureBuilder(
         future: _getUser(context),
         builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
-            default:
-              return Consumer<AuthenticationProvider>(builder: (context, value, child) {
-                return value.user == null
-                    ? const UnAuth()
-                    : Auth(name: value.user?.name ?? "Hola?", avatar: value.user?.avatar);
-              });
-          }
+          return Consumer<AuthenticationProvider>(builder: (context, value, child) {
+            if (value.user == null) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Loading();
+                default:
+                  return UnAuth();
+              }
+            } else {
+              return Auth(name: value.user!.name, avatar: value.user!.avatar);
+            }
+          });
         });
   }
 }

@@ -1,6 +1,8 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../screens/email_login_screen.dart';
 import '../screens/email_register_screen.dart';
 
@@ -81,3 +83,23 @@ void bottomSheetAuthHandler({
 }
 
 Future<void> googleSignIn() async {}
+
+String parseDate(TemporalDateTime date) {
+  return DateFormat('dd-MM-yy').format(DateTime.parse(date.toString()));
+}
+
+String parseTime(TemporalDateTime date) {
+  return DateFormat('HH:mm').format(DateTime.parse(date.toString()));
+}
+
+String formatNumber(double number) {
+  final thousendFormat = NumberFormat.decimalPattern('en_us');
+  return thousendFormat.format(number);
+}
+
+Color getColor(String color) {
+  final r = int.parse(color.substring(0, 2), radix: 16);
+  final g = int.parse(color.substring(2, 4), radix: 16);
+  final b = int.parse(color.substring(4, 6), radix: 16);
+  return Color.fromRGBO(r, g, b, 1);
+}
