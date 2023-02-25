@@ -28,7 +28,12 @@ class AppRouter {
               path: EventDetailsScreen.path,
               name: EventDetailsScreen.name,
               builder: (BuildContext context, GoRouterState state) {
-                final args = EventDetailScreenArgs.fromJson(state.params);
+                debugPrint(
+                  state.params.toString(),
+                );
+                final args = EventDetailScreenArgs.fromJson(
+                  state.params,
+                );
                 return EventDetailsScreen(
                   id: args.id,
                 );
@@ -62,7 +67,8 @@ class AppRouter {
               path: EventCategoriesOverviewScreen.path,
               name: EventCategoriesOverviewScreen.name,
               builder: (BuildContext context, GoRouterState state) {
-                final args = EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
+                final args = EventCategoriesOverviewScreenArgs.fromJson(
+                    state.queryParams);
                 return EventCategoriesOverviewScreen(
                   id: args.id,
                   categoryName: args.categoryName,

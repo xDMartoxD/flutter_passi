@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.example.passi_app",
+      "package_name": "com.passiapp",
       "sha256_cert_fingerprints": [
-        "F1:1A:2B:3C:4D:5E:6F:7A:8B:9C:0D:1E:2F:3A:4B:5C:6D:7E:8F:9A"
+        "01:CD:23:0A:17:9F:A1:62:EA:07:D2:EF:71:9F:C4:14:F8:6D:A1:39:02:BC:AE:D8:57:F8:DC:92:38:1A:C8:E7"
       ]
     }
   }
