@@ -173,7 +173,7 @@ class EventsByCategoryContent extends StatelessWidget {
                               id: events[index].id,
                               imageUrl: events[index].primaryImage,
                               address: events[index].address,
-                              name: events[index].title,
+                              title: events[index].title,
                               place: events[index].place,
                               price: events[index].price,
                               date: events[index].startDateTime,

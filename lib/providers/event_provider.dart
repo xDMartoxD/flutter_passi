@@ -19,6 +19,7 @@ class EventProvider with ChangeNotifier {
         safePrint('errors: ${response.errors}');
         return;
       }
+
       event = eventResponse;
       notifyListeners();
     } on ApiException catch (e) {

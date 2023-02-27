@@ -52,7 +52,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   }
 
   void _goToCheckout(BuildContext context) {
-    print("HOLA");
     final args = EventCheckoutScreenArgs(id: widget.id);
     context.pushNamed(EventCheckoutScreen.name, params: args.params());
   }
@@ -64,7 +63,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   void pressedHandler(BuildContext context) {
     final user = _authenticationProvider?.user;
     if (user != null) {
-      print("HOLA");
       _goToCheckout(context);
     } else {
       _goToLogin(context);
