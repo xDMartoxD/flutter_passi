@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passi_app/providers/discount_code_provider.dart';
+import 'package:provider/provider.dart';
 import '../models/screen_args/email_confirmation_screen_args.dart';
 import '../models/screen_args/event_categories_screen_args.dart';
 import '../models/screen_args/event_detail_screen_args.dart';
@@ -28,14 +30,19 @@ class AppRouter {
             path: EventDetailsScreen.path,
             name: EventDetailsScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              debugPrint(
-                state.params.toString(),
-              );
+              if (state.queryParams.isNotEmpty &&
+                  state.queryParams.containsKey("promoterCode")) {
+                context.read<DiscountCodeProvider>().addDiscountCode(
+                    discountCode: state.queryParams["promoterCode"]!,
+                    eventId: state.params["id"]!);
+              }
+              state.params.addAll(state.queryParams);
               final args = EventDetailScreenArgs.fromJson(
                 state.params,
               );
               return EventDetailsScreen(
                 id: args.id,
+                promoterCode: args.promoterCode,
               );
             },
           ),
@@ -67,7 +74,8 @@ class AppRouter {
             path: EventCategoriesOverviewScreen.path,
             name: EventCategoriesOverviewScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              final args = EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
+              final args =
+                  EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
               return EventCategoriesOverviewScreen(
                 id: args.id,
                 categoryName: args.categoryName,
