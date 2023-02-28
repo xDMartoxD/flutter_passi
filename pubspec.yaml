@@ -85,6 +85,13 @@ flutter:
   assets:
     - assets/map_theme.json
     - assets/images/empty-profile.png
+    - assets/images/american_express.png
+    - assets/images/bancolombia.jpg
+    - assets/images/dinners_club.jpeg
+    - assets/images/mastercard.png
+    - assets/images/nequi.png
+    - assets/images/pse.png
+    - assets/images/visa.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

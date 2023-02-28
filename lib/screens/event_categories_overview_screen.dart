@@ -138,7 +138,7 @@ class EventsByCategoryContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        AppMapView(),
+        // AppMapView(),
         Positioned.fill(
           top: 0,
           child: DraggableScrollableSheet(

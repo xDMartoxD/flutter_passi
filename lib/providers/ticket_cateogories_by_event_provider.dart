@@ -37,6 +37,7 @@ class TicketCategoriesByEventProvider with ChangeNotifier {
         }
       }
       _ticketCategories = loadedTicketCategories;
+      notifyListeners();
     } on ApiException catch (e) {
       safePrint('Query failed: ${e.message}');
     }
