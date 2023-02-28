@@ -111,28 +111,28 @@ type Query {
     @auth(rules: [{ allow: private }])
 }
 type AcceptanceTokenResponse {
-  data: AcceptanceTokenData!
+  data: AcceptanceTokenData! @auth(rules: [{ allow: private }])
 }
 type AcceptanceTokenData {
-    id: Int!
-    name: String!
-    legal_name: String!
-    legal_id: String
-    legal_id_type: String!
-    phone_number: String!
-    active: Boolean!
-    logo_url: String!
-    email: String!
-    contact_name: String!!
-    accepted_payment_methods: [String!]
-    accepted_currencies: [String!]
-    presigned_acceptance: PresignedAcceptance!
+    id: Int! @auth(rules: [{ allow: private }])
+    name: String! @auth(rules: [{ allow: private }])
+    legal_name: String! @auth(rules: [{ allow: private }])
+    legal_id: String! @auth(rules: [{ allow: private }])
+    legal_id_type: String! @auth(rules: [{ allow: private }])
+    phone_number: String! @auth(rules: [{ allow: private }])
+    active: Boolean! @auth(rules: [{ allow: private }])
+    logo_url: String! @auth(rules: [{ allow: private }])
+    email: String! @auth(rules: [{ allow: private }])
+    contact_name: String! @auth(rules: [{ allow: private }])
+    accepted_payment_methods: [String!] @auth(rules: [{ allow: private }])
+    accepted_currencies: [String!] @auth(rules: [{ allow: private }])
+    presigned_acceptance: PresignedAcceptance! @auth(rules: [{ allow: private }])
 }
 
 type PresignedAcceptance {
-  acceptance_token: String!
-  permalink: String!
-  type: String!
+  acceptance_token: String! @auth(rules: [{ allow: private }])
+  permalink: String! @auth(rules: [{ allow: private }])
+  type: String! @auth(rules: [{ allow: private }])
 }
 
 type FinancialInstitutionResponse {
