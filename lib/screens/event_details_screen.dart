@@ -205,16 +205,16 @@ class _EventContentState extends State<EventContent> {
                               ),
                               PromotersWidget(),
                               SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: AspectRatio(
-                                  aspectRatio: 3 / 2,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: AppMapView(),
-                                  ),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.all(8.0),
+                              //   child: AspectRatio(
+                              //     aspectRatio: 3 / 2,
+                              //     child: ClipRRect(
+                              //       borderRadius: BorderRadius.circular(15),
+                              //       child: AppMapView(),
+                              //     ),
+                              //   ),
+                              // ),
                               SizedBox(height: 20),
                               if (value.event!.description != null)
                                 Padding(
