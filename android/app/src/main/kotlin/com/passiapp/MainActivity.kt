@@ -1,4 +1,4 @@
-package com.example.flutter_passi
+package com.passiapp
 
 import io.flutter.embedding.android.FlutterActivity
 
