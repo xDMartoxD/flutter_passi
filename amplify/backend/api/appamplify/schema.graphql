@@ -72,6 +72,12 @@ type Mutation {
 }
 
 type Query {
+  getAcceptanceToken: AcceptanceTokenResponse!
+  @http(
+    url: "https://production.wompi.co/v1/merchants/pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
+    method: GET
+  )
+  @auth(rules: [{ allow: private }])
   refreshTransactionStatus(ticketID: String!): Transaction!
     @function(name: "RefreshTransactionStatus-${env}")
     @auth(rules: [{ allow: private }])
@@ -90,6 +96,7 @@ type Query {
       method: GET
     )
     @auth(rules: [{ allow: private }])
+  
   financialInstitutions: FinancialInstitutionResponse
     @http(
       url: "https://production.wompi.co/v1/pse/financial_institutions"
@@ -103,6 +110,31 @@ type Query {
     )
     @auth(rules: [{ allow: private }])
 }
+type AcceptanceTokenResponse {
+  data: AcceptanceTokenData!
+}
+type AcceptanceTokenData {
+    id: Int!
+    name: String!
+    legal_name: String!
+    legal_id: String
+    legal_id_type: String!
+    phone_number: String!
+    active: Boolean!
+    logo_url: String!
+    email: String!
+    contact_name: String!!
+    accepted_payment_methods: [String!]
+    accepted_currencies: [String!]
+    presigned_acceptance: PresignedAcceptance!
+}
+
+type PresignedAcceptance {
+  acceptance_token: String!
+  permalink: String!
+  type: String!
+}
+
 type FinancialInstitutionResponse {
   data: [FinancialInstitution!] @auth(rules: [{ allow: private }])
 }

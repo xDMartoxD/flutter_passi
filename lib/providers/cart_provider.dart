@@ -11,7 +11,20 @@ class CartProvider with ChangeNotifier {
 
   CartProvider({required this.ticketCategory});
 
-  void add() {}
+  void add() {
+    if ((ticketCategory.maxBuyQuantity != null && ticketCategory.maxBuyQuantity! <= quantity) ||
+        quantity >= 10) {
+      return;
+    }
+    _quantity++;
+    notifyListeners();
+  }
 
-  void remove() {}
+  void remove() {
+    if (quantity <= 0) {
+      return;
+    }
+    _quantity--;
+    notifyListeners();
+  }
 }

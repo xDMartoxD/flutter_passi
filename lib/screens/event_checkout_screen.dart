@@ -1,4 +1,5 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/cart_provider.dart';
@@ -203,6 +204,28 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                               height: 15,
                             )
                           ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Text.rich(
+                          TextSpan(
+                            text: "He leido y acepto los ",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(
+                                text: "Terminos y condiciones ",
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                      color: Color.fromRGBO(26, 135, 244, 1),
+                                    ),
+                                recognizer: TapGestureRecognizer()..onTap = () {},
+                              ),
+                              TextSpan(
+                                text: "y las politicas de privacidad para hacer esta compra",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              )
+                            ],
+                          ),
                         ),
                       )
                     ],
