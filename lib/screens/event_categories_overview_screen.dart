@@ -210,9 +210,11 @@ class EventsByCategoryContent extends StatelessWidget {
                                   duration: Duration(milliseconds: 500),
                                   curve: Curves.fastOutSlowIn,
                                 );
-                                scrollController.animateTo(0,
-                                    duration: Duration(milliseconds: 300),
-                                    curve: Curves.fastOutSlowIn);
+                                scrollController.animateTo(
+                                  0,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.fastOutSlowIn,
+                                );
                               }
                             : null,
                       ),

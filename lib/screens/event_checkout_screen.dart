@@ -13,7 +13,8 @@ class EventCheckoutScreen extends StatelessWidget {
   static const path = "event-checkout/:id";
   static const name = "event-checkout";
   final String id;
-  EventCheckoutScreen({super.key, required this.id});
+  final String? discountCode;
+  EventCheckoutScreen({super.key, required this.id, this.discountCode});
 
   @override
   Widget build(BuildContext context) {
@@ -78,35 +79,170 @@ class EventCheckoutContent extends StatelessWidget {
                             date: eventProvider.event!.startDateTime,
                           ),
                         ),
-                      Column(children: [
-                        Row(
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
                           children: [
-                            Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: getColor("FF0000"),
-                              ),
-                            ),
-                            Column(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "Segunda Etapa",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                  textAlign: TextAlign.start,
+                                Wrap(
+                                  children: [
+                                    Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: getColor("FF0000"),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    SizedBox(
+                                      height: 100,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Segunda Etapa",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(color: Colors.grey),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                          SizedBox(height: 2),
+                                          Text(
+                                            "50,000 COP",
+                                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                            textAlign: TextAlign.start,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  "50,000 COP",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                  textAlign: TextAlign.start,
+                                Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.remove,
+                                          size: 18,
+                                        )),
+                                    Text("1"),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.add,
+                                          size: 18,
+                                        )),
+                                  ],
                                 )
                               ],
+                            ),
+                            Divider()
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).cardColor,
+                        ),
+                        margin: EdgeInsets.all(15),
+                        width: double.infinity,
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Codigo de descuento",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Cambiar",
+                                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                            // color: Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ))
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "MARTIN",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 15,
                             )
                           ],
                         ),
-                        Divider()
-                      ])
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).cardColor,
+                        ),
+                        margin: EdgeInsets.all(15),
+                        width: double.infinity,
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Metodo de pago",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Eliminar",
+                                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                            // color: Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ))
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "MARTIN",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            )
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 );

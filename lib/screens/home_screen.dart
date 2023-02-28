@@ -132,20 +132,20 @@ class EventCategoryTitle extends StatelessWidget {
             ),
           ),
         ),
-        TextButton(
-          onPressed: (() {
-            final args = EventCategoriesOverviewScreenArgs(id: id, categoryName: name);
-            context.pushNamed(
-              EventCategoriesOverviewScreen.name,
-              queryParams: args.queryParams(),
-            );
-          }),
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-            textStyle: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          child: Text("Ver Mas"),
-        )
+        // TextButton(
+        //   onPressed: (() {
+        //     final args = EventCategoriesOverviewScreenArgs(id: id, categoryName: name);
+        //     context.pushNamed(
+        //       EventCategoriesOverviewScreen.name,
+        //       queryParams: args.queryParams(),
+        //     );
+        //   }),
+        //   style: TextButton.styleFrom(
+        //     foregroundColor: Colors.white,
+        //     textStyle: TextStyle(fontWeight: FontWeight.bold),
+        //   ),
+        //   child: Text("Ver Mas"),
+        // )
       ],
     );
   }
