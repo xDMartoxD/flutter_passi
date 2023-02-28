@@ -38,6 +38,7 @@ class TicketCategory extends Model {
   final Event? _event;
   final List<Ticket>? _tickets;
   final String? _description;
+  final int? _maxBuyQuantity;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -135,6 +136,10 @@ class TicketCategory extends Model {
     return _description;
   }
   
+  int? get maxBuyQuantity {
+    return _maxBuyQuantity;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -143,9 +148,9 @@ class TicketCategory extends Model {
     return _updatedAt;
   }
   
-  const TicketCategory._internal({required this.id, required price, required name, required color, required maxCapacity, required totalAssistants, required event, tickets, description, createdAt, updatedAt}): _price = price, _name = name, _color = color, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _event = event, _tickets = tickets, _description = description, _createdAt = createdAt, _updatedAt = updatedAt;
+  const TicketCategory._internal({required this.id, required price, required name, required color, required maxCapacity, required totalAssistants, required event, tickets, description, maxBuyQuantity, createdAt, updatedAt}): _price = price, _name = name, _color = color, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _event = event, _tickets = tickets, _description = description, _maxBuyQuantity = maxBuyQuantity, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory TicketCategory({String? id, required double price, required String name, required String color, required int maxCapacity, required int totalAssistants, required Event event, List<Ticket>? tickets, String? description}) {
+  factory TicketCategory({String? id, required double price, required String name, required String color, required int maxCapacity, required int totalAssistants, required Event event, List<Ticket>? tickets, String? description, int? maxBuyQuantity}) {
     return TicketCategory._internal(
       id: id == null ? UUID.getUUID() : id,
       price: price,
@@ -155,7 +160,8 @@ class TicketCategory extends Model {
       totalAssistants: totalAssistants,
       event: event,
       tickets: tickets != null ? List<Ticket>.unmodifiable(tickets) : tickets,
-      description: description);
+      description: description,
+      maxBuyQuantity: maxBuyQuantity);
   }
   
   bool equals(Object other) {
@@ -174,7 +180,8 @@ class TicketCategory extends Model {
       _totalAssistants == other._totalAssistants &&
       _event == other._event &&
       DeepCollectionEquality().equals(_tickets, other._tickets) &&
-      _description == other._description;
+      _description == other._description &&
+      _maxBuyQuantity == other._maxBuyQuantity;
   }
   
   @override
@@ -193,6 +200,7 @@ class TicketCategory extends Model {
     buffer.write("totalAssistants=" + (_totalAssistants != null ? _totalAssistants!.toString() : "null") + ", ");
     buffer.write("event=" + (_event != null ? _event!.toString() : "null") + ", ");
     buffer.write("description=" + "$_description" + ", ");
+    buffer.write("maxBuyQuantity=" + (_maxBuyQuantity != null ? _maxBuyQuantity!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -200,7 +208,7 @@ class TicketCategory extends Model {
     return buffer.toString();
   }
   
-  TicketCategory copyWith({String? id, double? price, String? name, String? color, int? maxCapacity, int? totalAssistants, Event? event, List<Ticket>? tickets, String? description}) {
+  TicketCategory copyWith({String? id, double? price, String? name, String? color, int? maxCapacity, int? totalAssistants, Event? event, List<Ticket>? tickets, String? description, int? maxBuyQuantity}) {
     return TicketCategory._internal(
       id: id ?? this.id,
       price: price ?? this.price,
@@ -210,7 +218,8 @@ class TicketCategory extends Model {
       totalAssistants: totalAssistants ?? this.totalAssistants,
       event: event ?? this.event,
       tickets: tickets ?? this.tickets,
-      description: description ?? this.description);
+      description: description ?? this.description,
+      maxBuyQuantity: maxBuyQuantity ?? this.maxBuyQuantity);
   }
   
   TicketCategory.fromJson(Map<String, dynamic> json)  
@@ -230,15 +239,16 @@ class TicketCategory extends Model {
           .toList()
         : null,
       _description = json['description'],
+      _maxBuyQuantity = (json['maxBuyQuantity'] as num?)?.toInt(),
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'price': _price, 'name': _name, 'color': _color, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'event': _event?.toJson(), 'tickets': _tickets?.map((Ticket? e) => e?.toJson()).toList(), 'description': _description, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'price': _price, 'name': _name, 'color': _color, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'event': _event?.toJson(), 'tickets': _tickets?.map((Ticket? e) => e?.toJson()).toList(), 'description': _description, 'maxBuyQuantity': _maxBuyQuantity, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'price': _price, 'name': _name, 'color': _color, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'event': _event, 'tickets': _tickets, 'description': _description, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'price': _price, 'name': _name, 'color': _color, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'event': _event, 'tickets': _tickets, 'description': _description, 'maxBuyQuantity': _maxBuyQuantity, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryField ID = QueryField(fieldName: "id");
@@ -254,6 +264,7 @@ class TicketCategory extends Model {
     fieldName: "tickets",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
+  static final QueryField MAXBUYQUANTITY = QueryField(fieldName: "maxBuyQuantity");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "TicketCategory";
     modelSchemaDefinition.pluralName = "TicketCategories";
@@ -337,6 +348,12 @@ class TicketCategory extends Model {
       key: TicketCategory.DESCRIPTION,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: TicketCategory.MAXBUYQUANTITY,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.int)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

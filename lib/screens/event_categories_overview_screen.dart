@@ -12,16 +12,13 @@ class EventCategoriesOverviewScreen extends StatefulWidget {
   static const name = "event-categories";
   final String id;
   final String categoryName;
-  EventCategoriesOverviewScreen(
-      {super.key, required this.id, required this.categoryName});
+  EventCategoriesOverviewScreen({super.key, required this.id, required this.categoryName});
 
   @override
-  State<EventCategoriesOverviewScreen> createState() =>
-      _EventCategoriesOverviewScreenState();
+  State<EventCategoriesOverviewScreen> createState() => _EventCategoriesOverviewScreenState();
 }
 
-class _EventCategoriesOverviewScreenState
-    extends State<EventCategoriesOverviewScreen>
+class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewScreen>
     with SingleTickerProviderStateMixin {
   late DraggableScrollableController _scrollableController;
   late double _appBarElevation;
@@ -36,16 +33,15 @@ class _EventCategoriesOverviewScreenState
     _scrollableController = DraggableScrollableController();
     _scrollableController.addListener(_scrollableControllerListener);
     _appBarElevation = 5;
-    _animationController = AnimationController(
-        duration: const Duration(milliseconds: 300), vsync: this);
+    _animationController =
+        AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
     _mapButtonVisible = true;
 
     Future.delayed(Duration.zero).then((_) {
-      _appBarAnimation = ColorTween(
-              begin: Theme.of(context).appBarTheme.backgroundColor,
-              end: Colors.transparent)
-          .animate(_animationController)
-        ..addListener(animationListener);
+      _appBarAnimation =
+          ColorTween(begin: Theme.of(context).appBarTheme.backgroundColor, end: Colors.transparent)
+              .animate(_animationController)
+            ..addListener(animationListener);
     });
   }
 
@@ -86,8 +82,7 @@ class _EventCategoriesOverviewScreenState
   }
 
   Future<void> _fetchEventsByCategory(BuildContext context) async {
-    await Provider.of<EventsByCategoryProvider>(context)
-        .fetchEventsByCategory();
+    await Provider.of<EventsByCategoryProvider>(context).fetchEventsByCategory();
   }
 
   @override
@@ -143,6 +138,7 @@ class EventsByCategoryContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        // AppMapView(),
         Positioned.fill(
           top: 0,
           child: DraggableScrollableSheet(
