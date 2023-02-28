@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passi_app/models/screen_args/event_checkout_screen_args.dart';
-import 'package:passi_app/providers/authentication_provider.dart';
-import 'package:passi_app/providers/event_provider.dart';
-import '../providers/ticket_cateogories_by_event_provider.dart';
-import 'package:passi_app/screens/event_checkout_screen.dart';
-import 'package:passi_app/widgets/expandable_text.dart';
-import 'package:passi_app/widgets/app_map_view.dart';
-import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
+import '../models/screen_args/event_checkout_screen_args.dart';
+import '../providers/authentication_provider.dart';
+import '../providers/event_provider.dart';
+import '../providers/ticket_cateogories_by_event_provider.dart';
+import './event_checkout_screen.dart';
+import '../widgets/expandable_text.dart';
+// import '../widgets/app_map_view.dart';
+import '../widgets/loading.dart';
 import '../utils/flutter_utils.dart';
 
 class EventDetailsScreen extends StatefulWidget {
@@ -204,7 +204,7 @@ class _EventContentState extends State<EventContent> {
                                 ),
                               ),
                               PromotersWidget(),
-                              SizedBox(height: 20),
+                              // SizedBox(height: 20),
                               // Padding(
                               //   padding: const EdgeInsets.all(8.0),
                               //   child: AspectRatio(
@@ -215,7 +215,7 @@ class _EventContentState extends State<EventContent> {
                               //     ),
                               //   ),
                               // ),
-                              SizedBox(height: 20),
+                              // SizedBox(height: 20),
                               if (value.event!.description != null)
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),

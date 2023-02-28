@@ -438,6 +438,7 @@ type TicketCategory
   event: Event! @belongsTo(fields: ["eventID"])
   tickets: [Ticket!] @hasMany(indexName: "byTicketCategory", fields: ["id"])
   description: String
+  maxBuyQuantity: Int
 }
 
 type EventCategory

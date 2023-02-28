@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
+import 'package:passi_app/providers/cart_provider.dart';
 import 'package:passi_app/providers/event_provider.dart';
 import 'package:passi_app/utils/flutter_utils.dart';
 import 'package:passi_app/widgets/event_item_large.dart';
@@ -32,19 +33,28 @@ class EventCheckoutScreen extends StatelessWidget {
   }
 }
 
-class EventCheckoutContent extends StatelessWidget {
+class EventCheckoutContent extends StatefulWidget {
   final String id;
   const EventCheckoutContent({super.key, required this.id});
 
+  @override
+  State<EventCheckoutContent> createState() => _EventCheckoutContentState();
+}
+
+class _EventCheckoutContentState extends State<EventCheckoutContent> {
+  TicketCategoriesByEventProvider? _ticketCategoriesByEventProvider;
+
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
-      await Provider.of<EventProvider>(context, listen: false).setEventById(id);
-      await Provider.of<TicketCategoriesByEventProvider>(
+      await Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
+
+      _ticketCategoriesByEventProvider = Provider.of<TicketCategoriesByEventProvider>(
         context,
         listen: false,
-      ).fetchTicketCategoriesByEventId(id);
+      );
+      await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
     } catch (e) {
-      print(e.toString());
+      safePrint(e.toString());
     }
   }
 
@@ -80,73 +90,25 @@ class EventCheckoutContent extends StatelessWidget {
                           ),
                         ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Wrap(
-                                  children: [
-                                    Container(
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: getColor("FF0000"),
-                                      ),
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            children: [
+                              ...ticketCategoriesProvider.ticketCategories.map(
+                                (ticketCategory) {
+                                  return ChangeNotifierProvider(
+                                    create: (context) {
+                                      return CartProvider(ticketCategory: ticketCategory);
+                                    },
+                                    child: TicketCategoryContentWidget(
+                                      color: ticketCategory.color,
+                                      name: ticketCategory.name,
+                                      price: ticketCategory.price,
                                     ),
-                                    SizedBox(width: 5),
-                                    SizedBox(
-                                      height: 100,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Segunda Etapa",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .copyWith(color: Colors.grey),
-                                            textAlign: TextAlign.start,
-                                          ),
-                                          SizedBox(height: 2),
-                                          Text(
-                                            "50,000 COP",
-                                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                            textAlign: TextAlign.start,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          Icons.remove,
-                                          size: 18,
-                                        )),
-                                    Text("1"),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          Icons.add,
-                                          size: 18,
-                                        )),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Divider()
-                          ],
-                        ),
-                      ),
+                                  );
+                                },
+                              ).toList()
+                            ],
+                          )),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -251,6 +213,100 @@ class EventCheckoutContent extends StatelessWidget {
           default:
             return Loading();
         }
+      },
+    );
+  }
+}
+
+class TicketCategoryContentWidget extends StatelessWidget {
+  final String color;
+  final String name;
+  final double price;
+
+  const TicketCategoryContentWidget({
+    super.key,
+    required this.color,
+    required this.name,
+    required this.price,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Wrap(
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: getColor("FF0000"),
+                  ),
+                ),
+                SizedBox(width: 5),
+                SizedBox(
+                  height: 100,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        "${formatNumber(price)} COP",
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                        textAlign: TextAlign.start,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            addTicketToCartWidget()
+          ],
+        ),
+        Divider()
+      ],
+    );
+  }
+}
+
+class addTicketToCartWidget extends StatelessWidget {
+  const addTicketToCartWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CartProvider>(
+      builder: (context, cartProvider, child) {
+        return Row(
+          children: [
+            IconButton(
+                onPressed: cartProvider.remove,
+                icon: Icon(
+                  Icons.remove,
+                  size: 18,
+                )),
+            Text(cartProvider.quantity.toString()),
+            IconButton(
+                onPressed: cartProvider.add,
+                icon: Icon(
+                  Icons.add,
+                  size: 18,
+                )),
+          ],
+        );
       },
     );
   }
