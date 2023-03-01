@@ -36,7 +36,7 @@ class Ticket extends Model {
   final bool? _didAssist;
   final User? _user;
   final Job? _registeredBy;
-  final String? _code;
+  final DiscountCode? _discountCode;
   final Transaction? _transaction;
   final String? _seat;
   final TemporalDateTime? _createdAt;
@@ -119,8 +119,8 @@ class Ticket extends Model {
     return _registeredBy;
   }
   
-  String? get code {
-    return _code;
+  DiscountCode? get discountCode {
+    return _discountCode;
   }
   
   Transaction? get transaction {
@@ -157,9 +157,9 @@ class Ticket extends Model {
     }
   }
   
-  const Ticket._internal({required this.id, required event, required ticketCategory, inDateTime, outDateTime, required didAssist, required user, registeredBy, code, transaction, seat, required createdAt, required updatedAt}): _event = event, _ticketCategory = ticketCategory, _inDateTime = inDateTime, _outDateTime = outDateTime, _didAssist = didAssist, _user = user, _registeredBy = registeredBy, _code = code, _transaction = transaction, _seat = seat, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Ticket._internal({required this.id, required event, required ticketCategory, inDateTime, outDateTime, required didAssist, required user, registeredBy, discountCode, transaction, seat, required createdAt, required updatedAt}): _event = event, _ticketCategory = ticketCategory, _inDateTime = inDateTime, _outDateTime = outDateTime, _didAssist = didAssist, _user = user, _registeredBy = registeredBy, _discountCode = discountCode, _transaction = transaction, _seat = seat, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Ticket({String? id, required Event event, required TicketCategory ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, required bool didAssist, required User user, Job? registeredBy, String? code, Transaction? transaction, String? seat, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory Ticket({String? id, required Event event, required TicketCategory ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, required bool didAssist, required User user, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return Ticket._internal(
       id: id == null ? UUID.getUUID() : id,
       event: event,
@@ -169,7 +169,7 @@ class Ticket extends Model {
       didAssist: didAssist,
       user: user,
       registeredBy: registeredBy,
-      code: code,
+      discountCode: discountCode,
       transaction: transaction,
       seat: seat,
       createdAt: createdAt,
@@ -192,7 +192,7 @@ class Ticket extends Model {
       _didAssist == other._didAssist &&
       _user == other._user &&
       _registeredBy == other._registeredBy &&
-      _code == other._code &&
+      _discountCode == other._discountCode &&
       _transaction == other._transaction &&
       _seat == other._seat &&
       _createdAt == other._createdAt &&
@@ -215,7 +215,7 @@ class Ticket extends Model {
     buffer.write("didAssist=" + (_didAssist != null ? _didAssist!.toString() : "null") + ", ");
     buffer.write("user=" + (_user != null ? _user!.toString() : "null") + ", ");
     buffer.write("registeredBy=" + (_registeredBy != null ? _registeredBy!.toString() : "null") + ", ");
-    buffer.write("code=" + "$_code" + ", ");
+    buffer.write("discountCode=" + (_discountCode != null ? _discountCode!.toString() : "null") + ", ");
     buffer.write("transaction=" + (_transaction != null ? _transaction!.toString() : "null") + ", ");
     buffer.write("seat=" + "$_seat" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -225,7 +225,7 @@ class Ticket extends Model {
     return buffer.toString();
   }
   
-  Ticket copyWith({Event? event, TicketCategory? ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, bool? didAssist, User? user, Job? registeredBy, String? code, Transaction? transaction, String? seat, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  Ticket copyWith({Event? event, TicketCategory? ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, bool? didAssist, User? user, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return Ticket._internal(
       id: id,
       event: event ?? this.event,
@@ -235,7 +235,7 @@ class Ticket extends Model {
       didAssist: didAssist ?? this.didAssist,
       user: user ?? this.user,
       registeredBy: registeredBy ?? this.registeredBy,
-      code: code ?? this.code,
+      discountCode: discountCode ?? this.discountCode,
       transaction: transaction ?? this.transaction,
       seat: seat ?? this.seat,
       createdAt: createdAt ?? this.createdAt,
@@ -259,7 +259,9 @@ class Ticket extends Model {
       _registeredBy = json['registeredBy']?['serializedData'] != null
         ? Job.fromJson(new Map<String, dynamic>.from(json['registeredBy']['serializedData']))
         : null,
-      _code = json['code'],
+      _discountCode = json['discountCode']?['serializedData'] != null
+        ? DiscountCode.fromJson(new Map<String, dynamic>.from(json['discountCode']['serializedData']))
+        : null,
       _transaction = json['transaction']?['serializedData'] != null
         ? Transaction.fromJson(new Map<String, dynamic>.from(json['transaction']['serializedData']))
         : null,
@@ -268,11 +270,11 @@ class Ticket extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'event': _event?.toJson(), 'ticketCategory': _ticketCategory?.toJson(), 'inDateTime': _inDateTime?.format(), 'outDateTime': _outDateTime?.format(), 'didAssist': _didAssist, 'user': _user?.toJson(), 'registeredBy': _registeredBy?.toJson(), 'code': _code, 'transaction': _transaction?.toJson(), 'seat': _seat, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'event': _event?.toJson(), 'ticketCategory': _ticketCategory?.toJson(), 'inDateTime': _inDateTime?.format(), 'outDateTime': _outDateTime?.format(), 'didAssist': _didAssist, 'user': _user?.toJson(), 'registeredBy': _registeredBy?.toJson(), 'discountCode': _discountCode?.toJson(), 'transaction': _transaction?.toJson(), 'seat': _seat, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'event': _event, 'ticketCategory': _ticketCategory, 'inDateTime': _inDateTime, 'outDateTime': _outDateTime, 'didAssist': _didAssist, 'user': _user, 'registeredBy': _registeredBy, 'code': _code, 'transaction': _transaction, 'seat': _seat, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'event': _event, 'ticketCategory': _ticketCategory, 'inDateTime': _inDateTime, 'outDateTime': _outDateTime, 'didAssist': _didAssist, 'user': _user, 'registeredBy': _registeredBy, 'discountCode': _discountCode, 'transaction': _transaction, 'seat': _seat, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryModelIdentifier<TicketModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<TicketModelIdentifier>();
@@ -292,7 +294,9 @@ class Ticket extends Model {
   static final QueryField REGISTEREDBY = QueryField(
     fieldName: "registeredBy",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Job'));
-  static final QueryField CODE = QueryField(fieldName: "code");
+  static final QueryField DISCOUNTCODE = QueryField(
+    fieldName: "discountCode",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'DiscountCode'));
   static final QueryField TRANSACTION = QueryField(fieldName: "transaction");
   static final QueryField SEAT = QueryField(fieldName: "seat");
   static final QueryField CREATEDAT = QueryField(fieldName: "createdAt");
@@ -342,7 +346,7 @@ class Ticket extends Model {
       ModelIndex(fields: const ["ticketCategoryID"], name: "byTicketCategory"),
       ModelIndex(fields: const ["userID"], name: "byUser"),
       ModelIndex(fields: const ["jobID"], name: "byJob"),
-      ModelIndex(fields: const ["code", "eventID"], name: "byDiscountCode")
+      ModelIndex(fields: const ["discountCodeID"], name: "byDiscountCode")
     ];
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
@@ -393,10 +397,11 @@ class Ticket extends Model {
       ofModelName: 'Job'
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Ticket.CODE,
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+      key: Ticket.DISCOUNTCODE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      targetNames: ['discountCodeID'],
+      ofModelName: 'DiscountCode'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.embedded(

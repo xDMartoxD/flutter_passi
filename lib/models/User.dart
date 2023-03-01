@@ -35,6 +35,7 @@ class User extends Model {
   final S3Object? _avatar;
   final List<Ticket>? _tickets;
   final List<Job>? _jobs;
+  final List<DiscountCode>? _codes;
   final List<PaymentMethod>? _paymentMethods;
   final PaymentMethod? _selectedPaymentMethod;
   final TemporalDateTime? _createdAt;
@@ -92,6 +93,10 @@ class User extends Model {
     return _jobs;
   }
   
+  List<DiscountCode>? get codes {
+    return _codes;
+  }
+  
   List<PaymentMethod>? get paymentMethods {
     return _paymentMethods;
   }
@@ -130,9 +135,9 @@ class User extends Model {
     return _userSelectedPaymentMethodId;
   }
   
-  const User._internal({required this.id, required email, required name, avatar, tickets, jobs, paymentMethods, selectedPaymentMethod, required createdAt, required updatedAt, userSelectedPaymentMethodId}): _email = email, _name = name, _avatar = avatar, _tickets = tickets, _jobs = jobs, _paymentMethods = paymentMethods, _selectedPaymentMethod = selectedPaymentMethod, _createdAt = createdAt, _updatedAt = updatedAt, _userSelectedPaymentMethodId = userSelectedPaymentMethodId;
+  const User._internal({required this.id, required email, required name, avatar, tickets, jobs, codes, paymentMethods, selectedPaymentMethod, required createdAt, required updatedAt, userSelectedPaymentMethodId}): _email = email, _name = name, _avatar = avatar, _tickets = tickets, _jobs = jobs, _codes = codes, _paymentMethods = paymentMethods, _selectedPaymentMethod = selectedPaymentMethod, _createdAt = createdAt, _updatedAt = updatedAt, _userSelectedPaymentMethodId = userSelectedPaymentMethodId;
   
-  factory User({String? id, required String email, required String name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, String? userSelectedPaymentMethodId}) {
+  factory User({String? id, required String email, required String name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, String? userSelectedPaymentMethodId}) {
     return User._internal(
       id: id == null ? UUID.getUUID() : id,
       email: email,
@@ -140,6 +145,7 @@ class User extends Model {
       avatar: avatar,
       tickets: tickets != null ? List<Ticket>.unmodifiable(tickets) : tickets,
       jobs: jobs != null ? List<Job>.unmodifiable(jobs) : jobs,
+      codes: codes != null ? List<DiscountCode>.unmodifiable(codes) : codes,
       paymentMethods: paymentMethods != null ? List<PaymentMethod>.unmodifiable(paymentMethods) : paymentMethods,
       selectedPaymentMethod: selectedPaymentMethod,
       createdAt: createdAt,
@@ -161,6 +167,7 @@ class User extends Model {
       _avatar == other._avatar &&
       DeepCollectionEquality().equals(_tickets, other._tickets) &&
       DeepCollectionEquality().equals(_jobs, other._jobs) &&
+      DeepCollectionEquality().equals(_codes, other._codes) &&
       DeepCollectionEquality().equals(_paymentMethods, other._paymentMethods) &&
       _selectedPaymentMethod == other._selectedPaymentMethod &&
       _createdAt == other._createdAt &&
@@ -188,7 +195,7 @@ class User extends Model {
     return buffer.toString();
   }
   
-  User copyWith({String? email, String? name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, String? userSelectedPaymentMethodId}) {
+  User copyWith({String? email, String? name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, String? userSelectedPaymentMethodId}) {
     return User._internal(
       id: id,
       email: email ?? this.email,
@@ -196,6 +203,7 @@ class User extends Model {
       avatar: avatar ?? this.avatar,
       tickets: tickets ?? this.tickets,
       jobs: jobs ?? this.jobs,
+      codes: codes ?? this.codes,
       paymentMethods: paymentMethods ?? this.paymentMethods,
       selectedPaymentMethod: selectedPaymentMethod ?? this.selectedPaymentMethod,
       createdAt: createdAt ?? this.createdAt,
@@ -222,6 +230,12 @@ class User extends Model {
           .map((e) => Job.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
+      _codes = json['codes'] is List
+        ? (json['codes'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => DiscountCode.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
+        : null,
       _paymentMethods = json['paymentMethods'] is List
         ? (json['paymentMethods'] as List)
           .where((e) => e?['serializedData'] != null)
@@ -236,11 +250,11 @@ class User extends Model {
       _userSelectedPaymentMethodId = json['userSelectedPaymentMethodId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'email': _email, 'name': _name, 'avatar': _avatar?.toJson(), 'tickets': _tickets?.map((Ticket? e) => e?.toJson()).toList(), 'jobs': _jobs?.map((Job? e) => e?.toJson()).toList(), 'paymentMethods': _paymentMethods?.map((PaymentMethod? e) => e?.toJson()).toList(), 'selectedPaymentMethod': _selectedPaymentMethod?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'userSelectedPaymentMethodId': _userSelectedPaymentMethodId
+    'id': id, 'email': _email, 'name': _name, 'avatar': _avatar?.toJson(), 'tickets': _tickets?.map((Ticket? e) => e?.toJson()).toList(), 'jobs': _jobs?.map((Job? e) => e?.toJson()).toList(), 'codes': _codes?.map((DiscountCode? e) => e?.toJson()).toList(), 'paymentMethods': _paymentMethods?.map((PaymentMethod? e) => e?.toJson()).toList(), 'selectedPaymentMethod': _selectedPaymentMethod?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'userSelectedPaymentMethodId': _userSelectedPaymentMethodId
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'email': _email, 'name': _name, 'avatar': _avatar, 'tickets': _tickets, 'jobs': _jobs, 'paymentMethods': _paymentMethods, 'selectedPaymentMethod': _selectedPaymentMethod, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'userSelectedPaymentMethodId': _userSelectedPaymentMethodId
+    'id': id, 'email': _email, 'name': _name, 'avatar': _avatar, 'tickets': _tickets, 'jobs': _jobs, 'codes': _codes, 'paymentMethods': _paymentMethods, 'selectedPaymentMethod': _selectedPaymentMethod, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'userSelectedPaymentMethodId': _userSelectedPaymentMethodId
   };
 
   static final QueryModelIdentifier<UserModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<UserModelIdentifier>();
@@ -254,6 +268,9 @@ class User extends Model {
   static final QueryField JOBS = QueryField(
     fieldName: "jobs",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Job'));
+  static final QueryField CODES = QueryField(
+    fieldName: "codes",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'DiscountCode'));
   static final QueryField PAYMENTMETHODS = QueryField(
     fieldName: "paymentMethods",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'PaymentMethod'));
@@ -338,6 +355,13 @@ class User extends Model {
       isRequired: true,
       ofModelName: 'Job',
       associatedKey: Job.USER
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+      key: User.CODES,
+      isRequired: true,
+      ofModelName: 'DiscountCode',
+      associatedKey: DiscountCode.USER
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(

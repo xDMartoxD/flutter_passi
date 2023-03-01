@@ -212,7 +212,7 @@ type User
   avatar: S3Object
   tickets: [Ticket!] @hasMany(indexName: "byUser", fields: ["id"])
   jobs: [Job!] @hasMany(indexName: "byUser", fields: ["id"])
-  # codes: [DiscountCode!] @hasMany(indexName: "byUser", fields: ["id"])
+  codes: [DiscountCode!] @hasMany(indexName: "byUser", fields: ["id"])
   paymentMethods: [PaymentMethod!] @hasMany(indexName: "byUser", fields: ["id"])
   selectedPaymentMethod: PaymentMethod @hasOne
   createdAt: AWSDateTime!
@@ -329,13 +329,8 @@ type Ticket
       ]
     )
   registeredBy: Job @belongsTo(fields: ["jobID"])
-  code: String
-    @index(
-      name: "byDiscountCode"
-      sortKeyFields: ["eventID"]
-      queryField: "ticketsByDiscountCode"
-    )
-  # discountCode: DiscountCode @belongsTo(fields: ["code", "eventID"])
+  discountCodeID: ID @index(name: "byDiscountCode", queryField: "ticketsByDiscountCode")
+  discountCode: DiscountCode @belongsTo(fields: ["discountCodeID"])
   transaction: Transaction
   seat: String
   createdAt: AWSDateTime!
@@ -414,7 +409,7 @@ type Event
     )
   tickets: [Ticket!] @hasMany(indexName: "byEvent", fields: ["id"])
   Jobs: [Job!] @hasMany(indexName: "byEvent", fields: ["id"])
-  # discountCodes: [DiscountCode!] @hasMany(indexName: "byEvent", fields: ["id"])
+  discountCodes: [DiscountCode!] @hasMany(indexName: "byEvent", fields: ["id"])
   needsCode: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -466,27 +461,27 @@ type EventCategory
   updatedAt: AWSDateTime!
 }
 
-# type DiscountCode
-#   @model
-#   @auth(
-#     rules: [
-#       { allow: groups, groups: ["Admin"] }
-#       { allow: private, operations: [read] }
-#       { allow: public, operations: [read] }
-#     ]
-#   ) {
-#   id: ID! @primaryKey
-#   code: String! 
-#   maxUse: Int
-#   actualUse: Int!
-#   validUntil: AWSDateTime!
-#   discount: Float!
-#   eventID: ID! @index(name: "byEvent", queryField: "discountCodesByEvent")
-#   event: Event! @belongsTo(fields: ["eventID"])
-#   userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
-#   user: User @belongsTo(fields: ["userID"])
-#   tickets: [Ticket!]
-#     @hasMany(indexName: "byDiscountCode", fields: ["id"])
-#   createdAt: AWSDateTime!
-#   updatedAt: AWSDateTime!
-# }
+type DiscountCode
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Admin"] }
+      { allow: private, operations: [read] }
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  code: String! 
+  maxUse: Int
+  actualUse: Int!
+  validUntil: AWSDateTime!
+  discount: Float!
+  eventID: ID! @index(name: "byEvent", queryField: "discountCodesByEvent")
+  event: Event! @belongsTo(fields: ["eventID"])
+  userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
+  user: User @belongsTo(fields: ["userID"])
+  tickets: [Ticket!]
+    @hasMany(indexName: "byDiscountCode", fields: ["id"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}

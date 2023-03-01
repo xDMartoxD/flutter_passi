@@ -46,22 +46,12 @@ class DiscountCode extends Model {
   
   @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() => modelIdentifier.serializeAsString();
+  String getId() => id;
   
   DiscountCodeModelIdentifier get modelIdentifier {
-    try {
       return DiscountCodeModelIdentifier(
-        code: _code!,
-        eventID: _eventID!
+        id: id
       );
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
   }
   
   String get code {
@@ -228,10 +218,10 @@ class DiscountCode extends Model {
     return buffer.toString();
   }
   
-  DiscountCode copyWith({String? id, int? maxUse, int? actualUse, TemporalDateTime? validUntil, double? discount, Event? event, User? user, List<Ticket>? tickets, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  DiscountCode copyWith({String? code, int? maxUse, int? actualUse, TemporalDateTime? validUntil, double? discount, Event? event, User? user, List<Ticket>? tickets, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return DiscountCode._internal(
-      id: id ?? this.id,
-      code: code,
+      id: id,
+      code: code ?? this.code,
       maxUse: maxUse ?? this.maxUse,
       actualUse: actualUse ?? this.actualUse,
       validUntil: validUntil ?? this.validUntil,
@@ -320,7 +310,7 @@ class DiscountCode extends Model {
     ];
     
     modelSchemaDefinition.indexes = [
-      ModelIndex(fields: const ["code", "eventID"], name: null),
+      ModelIndex(fields: const ["id"], name: null),
       ModelIndex(fields: const ["eventID"], name: "byEvent"),
       ModelIndex(fields: const ["userID"], name: "byUser")
     ];
@@ -412,21 +402,15 @@ class _DiscountCodeModelType extends ModelType<DiscountCode> {
  */
 @immutable
 class DiscountCodeModelIdentifier implements ModelIdentifier<DiscountCode> {
-  final String code;
-  final String eventID;
+  final String id;
 
-  /**
-   * Create an instance of DiscountCodeModelIdentifier using [code] the primary key.
-   * And [eventID] the sort key.
-   */
+  /** Create an instance of DiscountCodeModelIdentifier using [id] the primary key. */
   const DiscountCodeModelIdentifier({
-    required this.code,
-    required this.eventID});
+    required this.id});
   
   @override
   Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
-    'code': code,
-    'eventID': eventID
+    'id': id
   });
   
   @override
@@ -439,7 +423,7 @@ class DiscountCodeModelIdentifier implements ModelIdentifier<DiscountCode> {
   String serializeAsString() => serializeAsMap().values.join('#');
   
   @override
-  String toString() => 'DiscountCodeModelIdentifier(code: $code, eventID: $eventID)';
+  String toString() => 'DiscountCodeModelIdentifier(id: $id)';
   
   @override
   bool operator ==(Object other) {
@@ -448,12 +432,10 @@ class DiscountCodeModelIdentifier implements ModelIdentifier<DiscountCode> {
     }
     
     return other is DiscountCodeModelIdentifier &&
-      code == other.code &&
-      eventID == other.eventID;
+      id == other.id;
   }
   
   @override
   int get hashCode =>
-    code.hashCode ^
-    eventID.hashCode;
+    id.hashCode;
 }
