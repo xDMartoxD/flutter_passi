@@ -72,12 +72,7 @@ type Mutation {
 }
 
 type Query {
-  getAcceptanceToken: AcceptanceTokenResponse!
-  @http(
-    url: "https://production.wompi.co/v1/merchants/pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
-    method: GET
-  )
-  @auth(rules: [{ allow: private }])
+
   refreshTransactionStatus(ticketID: String!): Transaction!
     @function(name: "RefreshTransactionStatus-${env}")
     @auth(rules: [{ allow: private }])
@@ -109,24 +104,6 @@ type Query {
       method: GET
     )
     @auth(rules: [{ allow: private }])
-}
-type AcceptanceTokenResponse {
-  data: AcceptanceTokenData! @auth(rules: [{ allow: private }])
-}
-type AcceptanceTokenData {
-    id: Int! @auth(rules: [{ allow: private }])
-    name: String! @auth(rules: [{ allow: private }])
-    legal_name: String! @auth(rules: [{ allow: private }])
-    legal_id: String! @auth(rules: [{ allow: private }])
-    legal_id_type: String! @auth(rules: [{ allow: private }])
-    phone_number: String! @auth(rules: [{ allow: private }])
-    active: Boolean! @auth(rules: [{ allow: private }])
-    logo_url: String! @auth(rules: [{ allow: private }])
-    email: String! @auth(rules: [{ allow: private }])
-    contact_name: String! @auth(rules: [{ allow: private }])
-    accepted_payment_methods: [String!] @auth(rules: [{ allow: private }])
-    accepted_currencies: [String!] @auth(rules: [{ allow: private }])
-    presigned_acceptance: PresignedAcceptance! @auth(rules: [{ allow: private }])
 }
 
 type PresignedAcceptance {
@@ -498,6 +475,7 @@ type DiscountCode
       { allow: public, operations: [read] }
     ]
   ) {
+  id: ID!
   code: String! @primaryKey(sortKeyFields: ["eventID"])
   maxUse: Int
   actualUse: Int!

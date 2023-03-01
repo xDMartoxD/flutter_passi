@@ -52,8 +52,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   }
 
   void _goToCheckout(BuildContext context) {
-    final args = EventCheckoutScreenArgs(id: widget.id);
-    context.pushNamed(EventCheckoutScreen.name, params: args.params());
+    final args = EventCheckoutScreenArgs(id: widget.id, discountCode: widget.promoterCode);
+    context.pushNamed(
+      EventCheckoutScreen.name,
+      params: args.params(),
+      queryParams: args.queryParams(),
+    );
   }
 
   void _goToLogin(BuildContext context) {

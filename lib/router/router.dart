@@ -30,11 +30,9 @@ class AppRouter {
             path: EventDetailsScreen.path,
             name: EventDetailsScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              if (state.queryParams.isNotEmpty &&
-                  state.queryParams.containsKey("promoterCode")) {
+              if (state.queryParams.isNotEmpty && state.queryParams.containsKey("promoterCode")) {
                 context.read<DiscountCodeProvider>().addDiscountCode(
-                    discountCode: state.queryParams["promoterCode"]!,
-                    eventId: state.params["id"]!);
+                    discountCode: state.queryParams["promoterCode"]!, eventId: state.params["id"]!);
               }
               state.params.addAll(state.queryParams);
               final args = EventDetailScreenArgs.fromJson(
@@ -50,9 +48,11 @@ class AppRouter {
             path: EventCheckoutScreen.path,
             name: EventCheckoutScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              final args = EventCheckoutScreenArgs.fromJson(state.params);
+              final args =
+                  EventCheckoutScreenArgs.fromJson({...state.params, ...state.queryParams});
               return EventCheckoutScreen(
                 id: args.id,
+                discountCode: args.discountCode,
               );
             },
           ),
@@ -74,8 +74,7 @@ class AppRouter {
             path: EventCategoriesOverviewScreen.path,
             name: EventCategoriesOverviewScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              final args =
-                  EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
+              final args = EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
               return EventCategoriesOverviewScreen(
                 id: args.id,
                 categoryName: args.categoryName,
