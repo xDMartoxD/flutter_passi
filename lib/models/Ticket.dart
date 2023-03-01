@@ -45,9 +45,14 @@ class Ticket extends Model {
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => id;
+  
+  TicketModelIdentifier get modelIdentifier {
+      return TicketModelIdentifier(
+        id: id
+      );
   }
   
   Event get event {
@@ -220,9 +225,9 @@ class Ticket extends Model {
     return buffer.toString();
   }
   
-  Ticket copyWith({String? id, Event? event, TicketCategory? ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, bool? didAssist, User? user, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  Ticket copyWith({Event? event, TicketCategory? ticketCategory, TemporalDateTime? inDateTime, TemporalDateTime? outDateTime, bool? didAssist, User? user, Job? registeredBy, DiscountCode? discountCode, Transaction? transaction, String? seat, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return Ticket._internal(
-      id: id ?? this.id,
+      id: id,
       event: event ?? this.event,
       ticketCategory: ticketCategory ?? this.ticketCategory,
       inDateTime: inDateTime ?? this.inDateTime,
@@ -272,6 +277,7 @@ class Ticket extends Model {
     'id': id, 'event': _event, 'ticketCategory': _ticketCategory, 'inDateTime': _inDateTime, 'outDateTime': _outDateTime, 'didAssist': _didAssist, 'user': _user, 'registeredBy': _registeredBy, 'discountCode': _discountCode, 'transaction': _transaction, 'seat': _seat, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
+  static final QueryModelIdentifier<TicketModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<TicketModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField EVENT = QueryField(
     fieldName: "event",
@@ -348,14 +354,14 @@ class Ticket extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Ticket.EVENT,
       isRequired: true,
-      targetName: 'eventID',
+      targetNames: ['eventID'],
       ofModelName: 'Event'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Ticket.TICKETCATEGORY,
       isRequired: true,
-      targetName: 'ticketCategoryID',
+      targetNames: ['ticketCategoryID'],
       ofModelName: 'TicketCategory'
     ));
     
@@ -380,21 +386,21 @@ class Ticket extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Ticket.USER,
       isRequired: true,
-      targetName: 'userID',
+      targetNames: ['userID'],
       ofModelName: 'User'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Ticket.REGISTEREDBY,
       isRequired: false,
-      targetName: 'jobID',
+      targetNames: ['jobID'],
       ofModelName: 'Job'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Ticket.DISCOUNTCODE,
       isRequired: false,
-      targetName: 'code',
+      targetNames: ['code', 'eventID'],
       ofModelName: 'DiscountCode'
     ));
     
@@ -436,4 +442,48 @@ class _TicketModelType extends ModelType<Ticket> {
   String modelName() {
     return 'Ticket';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [Ticket] in your schema.
+ */
+@immutable
+class TicketModelIdentifier implements ModelIdentifier<Ticket> {
+  final String id;
+
+  /** Create an instance of TicketModelIdentifier using [id] the primary key. */
+  const TicketModelIdentifier({
+    required this.id});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'TicketModelIdentifier(id: $id)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is TicketModelIdentifier &&
+      id == other.id;
+  }
+  
+  @override
+  int get hashCode =>
+    id.hashCode;
 }

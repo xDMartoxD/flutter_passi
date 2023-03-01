@@ -475,8 +475,8 @@ type DiscountCode
       { allow: public, operations: [read] }
     ]
   ) {
-  id: ID!
-  code: String! @primaryKey(sortKeyFields: ["eventID"])
+  id: ID! @primaryKey
+  code: String! 
   maxUse: Int
   actualUse: Int!
   validUntil: AWSDateTime!

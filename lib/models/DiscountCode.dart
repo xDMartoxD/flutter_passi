@@ -44,9 +44,24 @@ class DiscountCode extends Model {
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => modelIdentifier.serializeAsString();
+  
+  DiscountCodeModelIdentifier get modelIdentifier {
+    try {
+      return DiscountCodeModelIdentifier(
+        code: _code!,
+        eventID: _eventID!
+      );
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   String get code {
@@ -213,10 +228,10 @@ class DiscountCode extends Model {
     return buffer.toString();
   }
   
-  DiscountCode copyWith({String? id, String? code, int? maxUse, int? actualUse, TemporalDateTime? validUntil, double? discount, Event? event, User? user, List<Ticket>? tickets, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  DiscountCode copyWith({String? id, int? maxUse, int? actualUse, TemporalDateTime? validUntil, double? discount, Event? event, User? user, List<Ticket>? tickets, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return DiscountCode._internal(
       id: id ?? this.id,
-      code: code ?? this.code,
+      code: code,
       maxUse: maxUse ?? this.maxUse,
       actualUse: actualUse ?? this.actualUse,
       validUntil: validUntil ?? this.validUntil,
@@ -258,6 +273,7 @@ class DiscountCode extends Model {
     'id': id, 'code': _code, 'maxUse': _maxUse, 'actualUse': _actualUse, 'validUntil': _validUntil, 'discount': _discount, 'event': _event, 'user': _user, 'tickets': _tickets, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
+  static final QueryModelIdentifier<DiscountCodeModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<DiscountCodeModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField CODE = QueryField(fieldName: "code");
   static final QueryField MAXUSE = QueryField(fieldName: "maxUse");
@@ -344,14 +360,14 @@ class DiscountCode extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: DiscountCode.EVENT,
       isRequired: true,
-      targetName: 'eventID',
+      targetNames: ['eventID'],
       ofModelName: 'Event'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: DiscountCode.USER,
       isRequired: false,
-      targetName: 'userID',
+      targetNames: ['userID'],
       ofModelName: 'User'
     ));
     
@@ -388,4 +404,56 @@ class _DiscountCodeModelType extends ModelType<DiscountCode> {
   String modelName() {
     return 'DiscountCode';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [DiscountCode] in your schema.
+ */
+@immutable
+class DiscountCodeModelIdentifier implements ModelIdentifier<DiscountCode> {
+  final String code;
+  final String eventID;
+
+  /**
+   * Create an instance of DiscountCodeModelIdentifier using [code] the primary key.
+   * And [eventID] the sort key.
+   */
+  const DiscountCodeModelIdentifier({
+    required this.code,
+    required this.eventID});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'code': code,
+    'eventID': eventID
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'DiscountCodeModelIdentifier(code: $code, eventID: $eventID)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is DiscountCodeModelIdentifier &&
+      code == other.code &&
+      eventID == other.eventID;
+  }
+  
+  @override
+  int get hashCode =>
+    code.hashCode ^
+    eventID.hashCode;
 }

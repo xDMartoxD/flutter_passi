@@ -76,14 +76,15 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            return Consumer4<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
-                WompiProvider>(
+            return Consumer5<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
+                WompiProvider, DiscountCodeProvider>(
               builder: (
                 context,
                 eventProvider,
                 ticketCategoriesProvider,
                 authProvider,
                 wompiProvider,
+                discountCodeProvider,
                 child,
               ) {
                 return SingleChildScrollView(
@@ -100,6 +101,11 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                             price: eventProvider.event!.price,
                             date: eventProvider.event!.startDateTime,
                           ),
+                        ),
+                      if (discountCodeProvider.discountCode != null)
+                        Text(
+                          formatNumber(eventProvider.event!.price -
+                              discountCodeProvider.discountCode!.discount),
                         ),
                       Padding(
                           padding: EdgeInsets.symmetric(horizontal: 15),

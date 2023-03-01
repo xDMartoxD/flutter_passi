@@ -38,9 +38,14 @@ class EventCategory extends Model {
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => id;
+  
+  EventCategoryModelIdentifier get modelIdentifier {
+      return EventCategoryModelIdentifier(
+        id: id
+      );
   }
   
   String get name {
@@ -129,9 +134,9 @@ class EventCategory extends Model {
     return buffer.toString();
   }
   
-  EventCategory copyWith({String? id, String? name, List<Event>? events, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  EventCategory copyWith({String? name, List<Event>? events, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return EventCategory._internal(
-      id: id ?? this.id,
+      id: id,
       name: name ?? this.name,
       events: events ?? this.events,
       createdAt: createdAt ?? this.createdAt,
@@ -158,6 +163,7 @@ class EventCategory extends Model {
     'id': id, 'name': _name, 'events': _events, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
+  static final QueryModelIdentifier<EventCategoryModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<EventCategoryModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField EVENTS = QueryField(
@@ -238,4 +244,48 @@ class _EventCategoryModelType extends ModelType<EventCategory> {
   String modelName() {
     return 'EventCategory';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [EventCategory] in your schema.
+ */
+@immutable
+class EventCategoryModelIdentifier implements ModelIdentifier<EventCategory> {
+  final String id;
+
+  /** Create an instance of EventCategoryModelIdentifier using [id] the primary key. */
+  const EventCategoryModelIdentifier({
+    required this.id});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'EventCategoryModelIdentifier(id: $id)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is EventCategoryModelIdentifier &&
+      id == other.id;
+  }
+  
+  @override
+  int get hashCode =>
+    id.hashCode;
 }
