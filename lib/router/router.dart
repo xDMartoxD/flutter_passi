@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
+import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/screen_args/email_confirmation_screen_args.dart';
 import '../models/screen_args/event_categories_screen_args.dart';
@@ -99,6 +100,12 @@ class AppRouter {
                   email: args.email,
                   password: args.password,
                 );
+              }),
+          GoRoute(
+              path: PaymentMethodsScreen.path,
+              name: PaymentMethodsScreen.name,
+              builder: (context, state) {
+                return PaymentMethodsScreen();
               })
         ],
       ),

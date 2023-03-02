@@ -2,12 +2,16 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
 import 'package:passi_app/providers/user_payment_methods.provider.dart';
+import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/authentication_provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/event_provider.dart';
+import '../providers/payment_methods_by_user.dart';
 import '../providers/wompi_provider.dart';
 import '../utils/flutter_utils.dart';
 import '../widgets/event_item_large.dart';
@@ -24,7 +28,7 @@ class EventCheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text("checkout")),
       body: MultiProvider(providers: [
         ChangeNotifierProvider(
           create: (context) => TicketCategoriesByEventProvider(),
@@ -37,6 +41,12 @@ class EventCheckoutScreen extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) {
           return UserPaymentMethodsProvider();
+        }),
+        ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMehtodsByUserProvider>(
+            create: (context) {
+          return PaymentMehtodsByUserProvider();
+        }, update: (context, auth, previous) {
+          return PaymentMehtodsByUserProvider(authenticationProvider: auth);
         })
       ], child: EventCheckoutContent(id: id)),
     );
@@ -76,8 +86,8 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            return Consumer5<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
-                WompiProvider, DiscountCodeProvider>(
+            return Consumer6<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
+                WompiProvider, DiscountCodeProvider, PaymentMehtodsByUserProvider>(
               builder: (
                 context,
                 eventProvider,
@@ -85,6 +95,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                 authProvider,
                 wompiProvider,
                 discountCodeProvider,
+                paymentMethodsProvider,
                 child,
               ) {
                 return SingleChildScrollView(
@@ -150,7 +161,9 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      context.pushNamed(PaymentMethodsScreen.name);
+                                    },
                                     child: Text(
                                       "Cambiar",
                                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -163,13 +176,17 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                             SizedBox(
                               height: 5,
                             ),
-                            Text(
-                              "MARTIN",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
+                            if (paymentMethodsProvider.userSelectedPaymentMethod != null)
+                              Text(
+                                paymentMethodsProvider.userSelectedPaymentMethod!.type ==
+                                        PaymentMethodEnum.CARD
+                                    ? "${paymentMethodsProvider.userSelectedPaymentMethod!.data.last_four}"
+                                    : "${paymentMethodsProvider.userSelectedPaymentMethod!.data.phone_number}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
                             SizedBox(
                               height: 15,
                             )
