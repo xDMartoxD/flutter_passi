@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passi_app/models/screen_args/event_checkout_screen_args.dart';
-import 'package:passi_app/providers/authentication_provider.dart';
-import 'package:passi_app/providers/event_provider.dart';
-import '../providers/ticket_cateogories_by_event_provider.dart';
-import 'package:passi_app/screens/event_checkout_screen.dart';
-import 'package:passi_app/widgets/expandable_text.dart';
-import 'package:passi_app/widgets/app_map_view.dart';
-import 'package:passi_app/widgets/loading.dart';
+import 'package:passi_app/providers/jobs_by_event.dart';
 import 'package:provider/provider.dart';
+import '../models/screen_args/event_checkout_screen_args.dart';
+import '../providers/authentication_provider.dart';
+import '../providers/event_provider.dart';
+import '../providers/ticket_cateogories_by_event_provider.dart';
+import './event_checkout_screen.dart';
+import '../widgets/expandable_text.dart';
+// import '../widgets/app_map_view.dart';
+import '../widgets/loading.dart';
 import '../utils/flutter_utils.dart';
 
 class EventDetailsScreen extends StatefulWidget {
@@ -52,9 +53,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   }
 
   void _goToCheckout(BuildContext context) {
-    print("HOLA");
-    final args = EventCheckoutScreenArgs(id: widget.id);
-    context.pushNamed(EventCheckoutScreen.name, params: args.params());
+    final args = EventCheckoutScreenArgs(id: widget.id, discountCode: widget.promoterCode);
+    context.pushNamed(
+      EventCheckoutScreen.name,
+      params: args.params(),
+      queryParams: args.queryParams(),
+    );
   }
 
   void _goToLogin(BuildContext context) {
@@ -64,7 +68,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   void pressedHandler(BuildContext context) {
     final user = _authenticationProvider?.user;
     if (user != null) {
-      print("HOLA");
       _goToCheckout(context);
     } else {
       _goToLogin(context);
@@ -74,29 +77,35 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SizedBox(
-        height: 55,
-        width: MediaQuery.of(context).size.width * .8,
-        child: FloatingActionButton(
-          child: Text(
-            "Asistir",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: SizedBox(
+          height: 55,
+          width: MediaQuery.of(context).size.width * .8,
+          child: FloatingActionButton(
+            child: Text(
+              "Asistir",
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            onPressed: () => pressedHandler(context),
           ),
-          onPressed: () => pressedHandler(context),
         ),
-      ),
-      body: ChangeNotifierProvider<EventProvider>(
-        create: (context) {
-          return EventProvider();
-        },
-        child: EventContent(
-          id: widget.id,
-        ),
-      ),
-    );
+        body: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<EventProvider>(create: (context) {
+              return EventProvider();
+            }),
+            ChangeNotifierProxyProvider<EventProvider, JobsByEventProvider>(create: (context) {
+              return JobsByEventProvider();
+            }, update: (context, eventProvider, prev) {
+              return JobsByEventProvider();
+            })
+          ],
+          child: EventContent(
+            id: widget.id,
+          ),
+        ));
   }
 }
 
@@ -206,18 +215,18 @@ class _EventContentState extends State<EventContent> {
                                 ),
                               ),
                               PromotersWidget(),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: AspectRatio(
-                                  aspectRatio: 3 / 2,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: AppMapView(),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 20),
+                              // SizedBox(height: 20),
+                              // Padding(
+                              //   padding: const EdgeInsets.all(8.0),
+                              //   child: AspectRatio(
+                              //     aspectRatio: 3 / 2,
+                              //     child: ClipRRect(
+                              //       borderRadius: BorderRadius.circular(15),
+                              //       child: AppMapView(),
+                              //     ),
+                              //   ),
+                              // ),
+                              // SizedBox(height: 20),
                               if (value.event!.description != null)
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),

@@ -138,7 +138,7 @@ class EventsByCategoryContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        AppMapView(),
+        // AppMapView(),
         Positioned.fill(
           top: 0,
           child: DraggableScrollableSheet(
@@ -173,7 +173,7 @@ class EventsByCategoryContent extends StatelessWidget {
                               id: events[index].id,
                               imageUrl: events[index].primaryImage,
                               address: events[index].address,
-                              name: events[index].title,
+                              title: events[index].title,
                               place: events[index].place,
                               price: events[index].price,
                               date: events[index].startDateTime,
@@ -210,9 +210,11 @@ class EventsByCategoryContent extends StatelessWidget {
                                   duration: Duration(milliseconds: 500),
                                   curve: Curves.fastOutSlowIn,
                                 );
-                                scrollController.animateTo(0,
-                                    duration: Duration(milliseconds: 300),
-                                    curve: Curves.fastOutSlowIn);
+                                scrollController.animateTo(
+                                  0,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.fastOutSlowIn,
+                                );
                               }
                             : null,
                       ),

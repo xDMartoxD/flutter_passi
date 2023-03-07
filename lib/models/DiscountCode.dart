@@ -44,9 +44,14 @@ class DiscountCode extends Model {
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => id;
+  
+  DiscountCodeModelIdentifier get modelIdentifier {
+      return DiscountCodeModelIdentifier(
+        id: id
+      );
   }
   
   String get code {
@@ -213,9 +218,9 @@ class DiscountCode extends Model {
     return buffer.toString();
   }
   
-  DiscountCode copyWith({String? id, String? code, int? maxUse, int? actualUse, TemporalDateTime? validUntil, double? discount, Event? event, User? user, List<Ticket>? tickets, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  DiscountCode copyWith({String? code, int? maxUse, int? actualUse, TemporalDateTime? validUntil, double? discount, Event? event, User? user, List<Ticket>? tickets, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return DiscountCode._internal(
-      id: id ?? this.id,
+      id: id,
       code: code ?? this.code,
       maxUse: maxUse ?? this.maxUse,
       actualUse: actualUse ?? this.actualUse,
@@ -258,6 +263,7 @@ class DiscountCode extends Model {
     'id': id, 'code': _code, 'maxUse': _maxUse, 'actualUse': _actualUse, 'validUntil': _validUntil, 'discount': _discount, 'event': _event, 'user': _user, 'tickets': _tickets, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
+  static final QueryModelIdentifier<DiscountCodeModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<DiscountCodeModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField CODE = QueryField(fieldName: "code");
   static final QueryField MAXUSE = QueryField(fieldName: "maxUse");
@@ -304,7 +310,7 @@ class DiscountCode extends Model {
     ];
     
     modelSchemaDefinition.indexes = [
-      ModelIndex(fields: const ["code", "eventID"], name: null),
+      ModelIndex(fields: const ["id"], name: null),
       ModelIndex(fields: const ["eventID"], name: "byEvent"),
       ModelIndex(fields: const ["userID"], name: "byUser")
     ];
@@ -344,14 +350,14 @@ class DiscountCode extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: DiscountCode.EVENT,
       isRequired: true,
-      targetName: 'eventID',
+      targetNames: ['eventID'],
       ofModelName: 'Event'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: DiscountCode.USER,
       isRequired: false,
-      targetName: 'userID',
+      targetNames: ['userID'],
       ofModelName: 'User'
     ));
     
@@ -388,4 +394,48 @@ class _DiscountCodeModelType extends ModelType<DiscountCode> {
   String modelName() {
     return 'DiscountCode';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [DiscountCode] in your schema.
+ */
+@immutable
+class DiscountCodeModelIdentifier implements ModelIdentifier<DiscountCode> {
+  final String id;
+
+  /** Create an instance of DiscountCodeModelIdentifier using [id] the primary key. */
+  const DiscountCodeModelIdentifier({
+    required this.id});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'DiscountCodeModelIdentifier(id: $id)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is DiscountCodeModelIdentifier &&
+      id == other.id;
+  }
+  
+  @override
+  int get hashCode =>
+    id.hashCode;
 }

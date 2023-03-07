@@ -10,7 +10,7 @@ import '../screens/event_details_screen.dart';
 class EventItemLarge extends StatelessWidget {
   final String id;
   final String imageUrl;
-  final String name;
+  final String title;
   final String? place;
   final String address;
   final double price;
@@ -19,7 +19,7 @@ class EventItemLarge extends StatelessWidget {
     super.key,
     required this.id,
     required this.imageUrl,
-    required this.name,
+    required this.title,
     this.place,
     required this.address,
     required this.price,
@@ -57,12 +57,12 @@ class EventItemLarge extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              name,
+              title,
               style: TextStyle(fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
             Text(
-              "$address -$place",
+              "$address - $place",
               style: TextStyle(color: Colors.grey),
               textAlign: TextAlign.left,
             ),

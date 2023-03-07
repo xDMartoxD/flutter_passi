@@ -39,9 +39,14 @@ class Job extends Model {
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => id;
+  
+  JobModelIdentifier get modelIdentifier {
+      return JobModelIdentifier(
+        id: id
+      );
   }
   
   List<Ticket>? get registeredTickets {
@@ -146,9 +151,9 @@ class Job extends Model {
     return buffer.toString();
   }
   
-  Job copyWith({String? id, List<Ticket>? registeredTickets, Event? event, User? user, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  Job copyWith({List<Ticket>? registeredTickets, Event? event, User? user, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return Job._internal(
-      id: id ?? this.id,
+      id: id,
       registeredTickets: registeredTickets ?? this.registeredTickets,
       event: event ?? this.event,
       user: user ?? this.user,
@@ -181,6 +186,7 @@ class Job extends Model {
     'id': id, 'registeredTickets': _registeredTickets, 'event': _event, 'user': _user, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
+  static final QueryModelIdentifier<JobModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<JobModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField REGISTEREDTICKETS = QueryField(
     fieldName: "registeredTickets",
@@ -239,14 +245,14 @@ class Job extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Job.EVENT,
       isRequired: true,
-      targetName: 'eventID',
+      targetNames: ['eventID'],
       ofModelName: 'Event'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Job.USER,
       isRequired: true,
-      targetName: 'userID',
+      targetNames: ['userID'],
       ofModelName: 'User'
     ));
     
@@ -276,4 +282,48 @@ class _JobModelType extends ModelType<Job> {
   String modelName() {
     return 'Job';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [Job] in your schema.
+ */
+@immutable
+class JobModelIdentifier implements ModelIdentifier<Job> {
+  final String id;
+
+  /** Create an instance of JobModelIdentifier using [id] the primary key. */
+  const JobModelIdentifier({
+    required this.id});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'JobModelIdentifier(id: $id)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is JobModelIdentifier &&
+      id == other.id;
+  }
+  
+  @override
+  int get hashCode =>
+    id.hashCode;
 }

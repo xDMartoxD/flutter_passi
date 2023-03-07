@@ -3,8 +3,7 @@
     "details": [
       {
         "appIDs": [
-          "ABCDE12345.com.example.app",
-          "ABCDE12345.com.example.app2"
+          "1595696436.com.m.restrepom.passi"
         ],
         "components": [
           {
@@ -22,12 +21,7 @@
   },
   "webcredentials": {
     "apps": [
-      "ABCDE12345.com.example.app"
-    ]
-  },
-  "appclips": {
-    "apps": [
-      "ABCED12345.com.example.MyApp.Clip"
+      "1595696436.com.m.restrepom.passi"
     ]
   }
 }

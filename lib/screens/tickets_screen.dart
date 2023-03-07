@@ -15,23 +15,51 @@ class TicketsScreen extends StatefulWidget {
 }
 
 class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateMixin {
-  late final TabController _tabController1;
-  late final TabController _tabController2;
-  late final TabController _tabController3;
+  late final TabController _tabPageSelectorController1;
+  late final TabController _tabPageSelectorController2;
+  late final TabController _tabPageSelectorController3;
+  late final PageController _pageController1;
+  late final PageController _pageController2;
+  late final PageController _pageController3;
   @override
   void initState() {
     super.initState();
-    _tabController1 = TabController(length: 5, vsync: this);
-    _tabController2 = TabController(length: 5, vsync: this);
-    _tabController3 = TabController(length: 5, vsync: this);
+    _tabPageSelectorController1 = TabController(length: 5, vsync: this);
+    _tabPageSelectorController2 = TabController(length: 5, vsync: this);
+    _tabPageSelectorController3 = TabController(length: 5, vsync: this);
+    _pageController1 = PageController(keepPage: true);
+    _pageController2 = PageController(keepPage: true);
+    _pageController3 = PageController(keepPage: true);
+    widget.tabController.addListener(_tabChangeListener);
+  }
+
+  void _tabChangeListener() {
+    switch (widget.tabController.index) {
+      case 0:
+        _pageController1.animateToPage(_tabPageSelectorController1.index,
+            duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
+        break;
+      case 1:
+        _pageController2.animateToPage(_tabPageSelectorController2.index,
+            duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
+        break;
+      case 2:
+        _pageController3.animateToPage(_tabPageSelectorController3.index,
+            duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
+        break;
+      default:
+    }
   }
 
   @override
   void dispose() {
-    _tabController1.dispose();
-    _tabController2.dispose();
-    _tabController3.dispose();
-
+    _tabPageSelectorController1.dispose();
+    _tabPageSelectorController2.dispose();
+    _tabPageSelectorController3.dispose();
+    _pageController1.dispose();
+    _pageController2.dispose();
+    _pageController3.dispose();
+    widget.tabController.removeListener(_tabChangeListener);
     super.dispose();
   }
 
@@ -44,6 +72,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
           children: [
             Positioned.fill(
               child: PageView.builder(
+                controller: _pageController1,
                 scrollDirection: Axis.vertical,
                 itemCount: 5,
                 itemBuilder: (context, index) {
@@ -70,7 +99,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 },
                 onPageChanged: (value) {
                   setState(() {
-                    _tabController1.index = value;
+                    _tabPageSelectorController1.index = value;
                   });
                 },
               ),
@@ -82,7 +111,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 child: RotatedBox(
                   quarterTurns: 1,
                   child: TabPageSelector(
-                    controller: _tabController1,
+                    controller: _tabPageSelectorController1,
                     color: Colors.grey,
                     selectedColor: Colors.white,
                     borderStyle: BorderStyle.none,
@@ -97,6 +126,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
           children: [
             Positioned.fill(
               child: PageView.builder(
+                controller: _pageController2,
                 scrollDirection: Axis.vertical,
                 itemCount: 5,
                 itemBuilder: (context, index) {
@@ -128,7 +158,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 },
                 onPageChanged: (value) {
                   setState(() {
-                    _tabController2.index = value;
+                    _tabPageSelectorController2.index = value;
                   });
                 },
               ),
@@ -140,7 +170,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 child: RotatedBox(
                   quarterTurns: 1,
                   child: TabPageSelector(
-                    controller: _tabController2,
+                    controller: _tabPageSelectorController2,
                     color: Colors.grey,
                     selectedColor: Colors.white,
                     borderStyle: BorderStyle.none,
@@ -155,6 +185,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
           children: [
             Positioned.fill(
               child: PageView.builder(
+                controller: _pageController3,
                 scrollDirection: Axis.vertical,
                 itemCount: 5,
                 itemBuilder: (context, index) {
@@ -181,7 +212,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 },
                 onPageChanged: (value) {
                   setState(() {
-                    _tabController3.index = value;
+                    _tabPageSelectorController3.index = value;
                   });
                 },
               ),
@@ -193,7 +224,7 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
                 child: RotatedBox(
                   quarterTurns: 1,
                   child: TabPageSelector(
-                    controller: _tabController3,
+                    controller: _tabPageSelectorController3,
                     color: Colors.grey,
                     selectedColor: Colors.white,
                     borderStyle: BorderStyle.none,

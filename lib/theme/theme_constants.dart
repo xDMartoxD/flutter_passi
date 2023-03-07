@@ -18,6 +18,14 @@ IconThemeData navBarIconThemeData(Set<MaterialState> states) {
   }
 }
 
+Color checkBoxInnerColor(Set<MaterialState> states) {
+  if (states.contains(MaterialState.selected)) {
+    return Color.fromRGBO(26, 135, 244, 1);
+  } else {
+    return Color.fromARGB(16, 16, 16, 1);
+  }
+}
+
 final dark_theme = ThemeData(
   primaryColor: const Color.fromRGBO(255, 0, 255, 1),
   primarySwatch: primaryswatchcolor,
@@ -118,11 +126,11 @@ final dark_theme = ThemeData(
     labelColor: Colors.white,
     unselectedLabelColor: Colors.white,
   ),
-  checkboxTheme: const CheckboxThemeData(
-    side: BorderSide(
-      color: Colors.white,
-    ),
-  ),
+  checkboxTheme: CheckboxThemeData(
+      side: BorderSide(
+        color: Colors.white,
+      ),
+      fillColor: MaterialStateProperty.resolveWith(checkBoxInnerColor)),
   progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
   useMaterial3: true,
 );

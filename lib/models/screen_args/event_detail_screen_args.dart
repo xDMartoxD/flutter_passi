@@ -8,7 +8,9 @@ class EventDetailScreenArgs implements ScreenArgs {
 
   @override
   Map<String, dynamic> queryParams() {
-    final Map<String, dynamic> data = <String, dynamic>{'promoterCode': promoterCode ?? ''};
+    final Map<String, dynamic> data = <String, dynamic>{
+      'promoterCode': promoterCode ?? ''
+    };
     return data;
   }
 

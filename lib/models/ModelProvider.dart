@@ -34,6 +34,7 @@ import 'FinancialInstitution.dart';
 import 'FinancialInstitutionResponse.dart';
 import 'Merchant.dart';
 import 'PaymentMethodData.dart';
+import 'PresignedAcceptance.dart';
 import 'S3Object.dart';
 import 'TokenCardRes.dart';
 import 'TokenCardResData.dart';
@@ -55,6 +56,7 @@ export 'Merchant.dart';
 export 'PaymentMethod.dart';
 export 'PaymentMethodData.dart';
 export 'PaymentMethodEnum.dart';
+export 'PresignedAcceptance.dart';
 export 'S3Object.dart';
 export 'Ticket.dart';
 export 'TicketCategory.dart';
@@ -67,12 +69,12 @@ export 'User.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "82c2b22412a0c8e6d2651f025c599452";
+  String version = "bceb6ba544742fdbd4eeb2249f6cc6ee";
   @override
   List<ModelSchema> modelSchemas = [DiscountCode.schema, Event.schema, EventCategory.schema, Job.schema, PaymentMethod.schema, Ticket.schema, TicketCategory.schema, User.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
-  List<ModelSchema> customTypeSchemas = [Coordinates.schema, CreateEntranceResponse.schema, FinancialInstitution.schema, FinancialInstitutionResponse.schema, Merchant.schema, PaymentMethodData.schema, S3Object.schema, TokenCardRes.schema, TokenCardResData.schema, TokenNequiRes.schema, TokenNequiResData.schema, Transaction.schema];
+  List<ModelSchema> customTypeSchemas = [Coordinates.schema, CreateEntranceResponse.schema, FinancialInstitution.schema, FinancialInstitutionResponse.schema, Merchant.schema, PaymentMethodData.schema, PresignedAcceptance.schema, S3Object.schema, TokenCardRes.schema, TokenCardResData.schema, TokenNequiRes.schema, TokenNequiResData.schema, Transaction.schema];
 
   static ModelProvider get instance => _instance;
   

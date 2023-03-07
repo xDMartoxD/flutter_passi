@@ -5,12 +5,14 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passi_app/providers/authentication_provider.dart';
 
 import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
 import 'package:passi_app/screens/user_settings_screen.dart';
 import 'package:passi_app/widgets/loading.dart';
+import 'package:provider/provider.dart';
 
 import '../amplifyconfiguration.dart';
 import '../models/ModelProvider.dart';
@@ -47,13 +49,6 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    if (!Amplify.isConfigured) {
-      _configureAmplify();
-    } else {
-      setState(() {
-        _isAmplifyConfigured = true;
-      });
-    }
     _tabController = TabController(length: 3, vsync: this);
     _tabController.index = 1;
     _currenPageIndex = 0;
@@ -92,6 +87,17 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         ],
       }
     ];
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if (!Amplify.isConfigured) {
+        await _configureAmplify();
+      } else {
+        setState(() {
+          _isAmplifyConfigured = true;
+        });
+      }
+      await Provider.of<AuthenticationProvider>(context, listen: false).setUser();
+    });
   }
 
   @override
