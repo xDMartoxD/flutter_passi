@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passi_app/providers/jobs_by_event.dart';
 import 'package:provider/provider.dart';
 import '../models/screen_args/event_checkout_screen_args.dart';
 import '../providers/authentication_provider.dart';
@@ -52,8 +53,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   }
 
   void _goToCheckout(BuildContext context) {
-    final args = EventCheckoutScreenArgs(id: widget.id);
-    context.pushNamed(EventCheckoutScreen.name, params: args.params());
+    final args = EventCheckoutScreenArgs(id: widget.id, discountCode: widget.promoterCode);
+    context.pushNamed(
+      EventCheckoutScreen.name,
+      params: args.params(),
+      queryParams: args.queryParams(),
+    );
   }
 
   void _goToLogin(BuildContext context) {
@@ -72,29 +77,35 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SizedBox(
-        height: 55,
-        width: MediaQuery.of(context).size.width * .8,
-        child: FloatingActionButton(
-          child: Text(
-            "Asistir",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: SizedBox(
+          height: 55,
+          width: MediaQuery.of(context).size.width * .8,
+          child: FloatingActionButton(
+            child: Text(
+              "Asistir",
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            onPressed: () => pressedHandler(context),
           ),
-          onPressed: () => pressedHandler(context),
         ),
-      ),
-      body: ChangeNotifierProvider<EventProvider>(
-        create: (context) {
-          return EventProvider();
-        },
-        child: EventContent(
-          id: widget.id,
-        ),
-      ),
-    );
+        body: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<EventProvider>(create: (context) {
+              return EventProvider();
+            }),
+            ChangeNotifierProxyProvider<EventProvider, JobsByEventProvider>(create: (context) {
+              return JobsByEventProvider();
+            }, update: (context, eventProvider, prev) {
+              return JobsByEventProvider();
+            })
+          ],
+          child: EventContent(
+            id: widget.id,
+          ),
+        ));
   }
 }
 

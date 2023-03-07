@@ -1,14 +1,21 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:passi_app/providers/authentication_provider.dart';
-import 'package:passi_app/providers/cart_provider.dart';
-import 'package:passi_app/providers/event_provider.dart';
-import 'package:passi_app/utils/flutter_utils.dart';
-import 'package:passi_app/widgets/event_item_large.dart';
-import 'package:passi_app/widgets/loading.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:passi_app/models/ModelProvider.dart';
+import 'package:passi_app/providers/discount_code_provider.dart';
+import 'package:passi_app/providers/user_payment_methods.provider.dart';
+import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:provider/provider.dart';
-
+import '../providers/authentication_provider.dart';
+import '../providers/cart_provider.dart';
+import '../providers/event_provider.dart';
+import '../providers/payment_methods_by_user.dart';
+import '../providers/wompi_provider.dart';
+import '../utils/flutter_utils.dart';
+import '../widgets/event_item_large.dart';
+import '../widgets/loading.dart';
 import '../providers/ticket_cateogories_by_event_provider.dart';
 
 class EventCheckoutScreen extends StatelessWidget {
@@ -21,7 +28,7 @@ class EventCheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text("checkout")),
       body: MultiProvider(providers: [
         ChangeNotifierProvider(
           create: (context) => TicketCategoriesByEventProvider(),
@@ -29,6 +36,18 @@ class EventCheckoutScreen extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => EventProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => WompiProvider(),
+        ),
+        ChangeNotifierProvider(create: (context) {
+          return UserPaymentMethodsProvider();
+        }),
+        ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMehtodsByUserProvider>(
+            create: (context) {
+          return PaymentMehtodsByUserProvider();
+        }, update: (context, auth, previous) {
+          return PaymentMehtodsByUserProvider(authenticationProvider: auth);
+        })
       ], child: EventCheckoutContent(id: id)),
     );
   }
@@ -54,6 +73,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         listen: false,
       );
       await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
+      await Provider.of<WompiProvider>(context, listen: false).fetchTermsAndConditions();
     } catch (e) {
       safePrint(e.toString());
     }
@@ -66,13 +86,16 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            return Consumer3<EventProvider, TicketCategoriesByEventProvider,
-                AuthenticationProvider>(
+            return Consumer6<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
+                WompiProvider, DiscountCodeProvider, PaymentMehtodsByUserProvider>(
               builder: (
                 context,
                 eventProvider,
                 ticketCategoriesProvider,
                 authProvider,
+                wompiProvider,
+                discountCodeProvider,
+                paymentMethodsProvider,
                 child,
               ) {
                 return SingleChildScrollView(
@@ -89,6 +112,11 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                             price: eventProvider.event!.price,
                             date: eventProvider.event!.startDateTime,
                           ),
+                        ),
+                      if (discountCodeProvider.discountCode != null)
+                        Text(
+                          formatNumber(eventProvider.event!.price -
+                              discountCodeProvider.discountCode!.discount),
                         ),
                       Padding(
                           padding: EdgeInsets.symmetric(horizontal: 15),
@@ -110,54 +138,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                               ).toList()
                             ],
                           )),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
-                        margin: EdgeInsets.all(15),
-                        width: double.infinity,
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Codigo de descuento",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Cambiar",
-                                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                            // color: Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              "MARTIN",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            )
-                          ],
-                        ),
-                      ),
+                      DiscountCodeWidget(),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -180,9 +161,11 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      context.pushNamed(PaymentMethodsScreen.name);
+                                    },
                                     child: Text(
-                                      "Eliminar",
+                                      "Cambiar",
                                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                             // color: Theme.of(context).primaryColor,
                                             fontWeight: FontWeight.bold,
@@ -193,38 +176,35 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                             SizedBox(
                               height: 5,
                             ),
-                            Text(
-                              "MARTIN",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
+                            if (paymentMethodsProvider.userSelectedPaymentMethod != null)
+                              Text(
+                                paymentMethodsProvider.userSelectedPaymentMethod!.type ==
+                                        PaymentMethodEnum.CARD
+                                    ? "${paymentMethodsProvider.userSelectedPaymentMethod!.data.last_four}"
+                                    : "${paymentMethodsProvider.userSelectedPaymentMethod!.data.phone_number}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
                             SizedBox(
                               height: 15,
                             )
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Text.rich(
-                          TextSpan(
-                            text: "He leido y acepto los ",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(
-                                text: "Terminos y condiciones ",
-                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                      color: Color.fromRGBO(26, 135, 244, 1),
-                                    ),
-                                recognizer: TapGestureRecognizer()..onTap = () {},
-                              ),
-                              TextSpan(
-                                text: "y las politicas de privacidad para hacer esta compra",
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              )
-                            ],
+                      TermsAndConditionsWidget(),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .8,
+                        child: FloatingActionButton(
+                          backgroundColor: Colors.white,
+                          onPressed: wompiProvider.isChecked ? () {} : null,
+                          child: Text(
+                            "Comprar",
+                            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       )
@@ -236,6 +216,172 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
           default:
             return Loading();
         }
+      },
+    );
+  }
+}
+
+class DiscountCodeWidget extends StatefulWidget {
+  const DiscountCodeWidget({
+    super.key,
+  });
+
+  @override
+  State<DiscountCodeWidget> createState() => _DiscountCodeWidgetState();
+}
+
+class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
+  late final TextEditingController _textFieldControler;
+  @override
+  void initState() {
+    super.initState();
+    _textFieldControler = TextEditingController();
+  }
+
+  Future<void> _addDiscountCodeHandler(BuildContext context,
+      DiscountCodeProvider discountCodeProvider, EventProvider eventProvider) async {
+    showModalBottomSheet(
+        backgroundColor: Theme.of(context).cardColor,
+        context: context,
+        builder: (context) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+              color: Theme.of(context).cardColor,
+            ),
+            padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                TextField(
+                  controller: _textFieldControler,
+                  decoration: InputDecoration(labelText: "Codigo"),
+                ),
+                TextButton(
+                    onPressed: () {
+                      discountCodeProvider.fetchDiscountCode(
+                          eventProvider.event!.id, _textFieldControler.text);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Buscar"))
+              ],
+            ),
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer2<DiscountCodeProvider, EventProvider>(
+      builder: (context, discountCodeProvider, eventProvider, child) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Theme.of(context).cardColor,
+          ),
+          margin: const EdgeInsets.all(15),
+          width: double.infinity,
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Codigo de descuento",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        if (discountCodeProvider.discountCode != null) {
+                          discountCodeProvider.removeDiscountCode();
+                        } else {
+                          _addDiscountCodeHandler(context, discountCodeProvider, eventProvider);
+                        }
+                      },
+                      child: Text(
+                        discountCodeProvider.discountCode != null ? "Eliminar" : "Agregar",
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              // color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ))
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              if (discountCodeProvider.discountCode != null)
+                Text(
+                  discountCodeProvider.discountCode!.code,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+              SizedBox(
+                height: 15,
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class TermsAndConditionsWidget extends StatefulWidget {
+  const TermsAndConditionsWidget({
+    super.key,
+  });
+
+  @override
+  State<TermsAndConditionsWidget> createState() => _TermsAndConditionsWidgetState();
+}
+
+class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<WompiProvider>(
+      builder: (context, wompiProvider, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            children: [
+              Text.rich(
+                TextSpan(
+                  text: "He leido y acepto los ",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  children: [
+                    TextSpan(
+                      text: "Terminos y condiciones ",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Color.fromRGBO(26, 135, 244, 1),
+                          ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          wompiProvider.launchLink();
+                        },
+                    ),
+                    TextSpan(
+                      text: "y las politicas de privacidad para hacer esta compra.",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
+                  ],
+                ),
+              ),
+              Checkbox(
+                  value: wompiProvider.isChecked,
+                  onChanged: (value) {
+                    wompiProvider.toggleIsChecked(value ?? false);
+                  })
+            ],
+          ),
+        );
       },
     );
   }

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/PaymentMethod.dart';
 import '../utils/amplify_utils.dart';
 
-class UserPaymentMethods with ChangeNotifier {
+class UserPaymentMethodsProvider with ChangeNotifier {
   List<PaymentMethod> _paymentMethods = [];
 
   bool _hasNextResult = false;

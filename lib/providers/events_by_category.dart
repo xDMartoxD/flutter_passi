@@ -23,7 +23,11 @@ class EventsByCategoryProvider with ChangeNotifier {
       final request = apiKeyRequest(
         ModelQueries.list(
           Event.classType,
-          where: Event.EVENTCATEGORY.eq(categoryId),
+          where: Event.EVENTCATEGORY.eq(categoryId).and(
+                Event.FINISHDATETIME.gt(
+                  DateTime.now().toIso8601String(),
+                ),
+              ),
         ),
       );
       final response = await Amplify.API.query(request: request).response;

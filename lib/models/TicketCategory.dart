@@ -45,9 +45,14 @@ class TicketCategory extends Model {
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => id;
+  
+  TicketCategoryModelIdentifier get modelIdentifier {
+      return TicketCategoryModelIdentifier(
+        id: id
+      );
   }
   
   double get price {
@@ -208,9 +213,9 @@ class TicketCategory extends Model {
     return buffer.toString();
   }
   
-  TicketCategory copyWith({String? id, double? price, String? name, String? color, int? maxCapacity, int? totalAssistants, Event? event, List<Ticket>? tickets, String? description, int? maxBuyQuantity}) {
+  TicketCategory copyWith({double? price, String? name, String? color, int? maxCapacity, int? totalAssistants, Event? event, List<Ticket>? tickets, String? description, int? maxBuyQuantity}) {
     return TicketCategory._internal(
-      id: id ?? this.id,
+      id: id,
       price: price ?? this.price,
       name: name ?? this.name,
       color: color ?? this.color,
@@ -251,6 +256,7 @@ class TicketCategory extends Model {
     'id': id, 'price': _price, 'name': _name, 'color': _color, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'event': _event, 'tickets': _tickets, 'description': _description, 'maxBuyQuantity': _maxBuyQuantity, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
+  static final QueryModelIdentifier<TicketCategoryModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<TicketCategoryModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField PRICE = QueryField(fieldName: "price");
   static final QueryField NAME = QueryField(fieldName: "name");
@@ -333,7 +339,7 @@ class TicketCategory extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: TicketCategory.EVENT,
       isRequired: true,
-      targetName: 'eventID',
+      targetNames: ['eventID'],
       ofModelName: 'Event'
     ));
     
@@ -384,4 +390,48 @@ class _TicketCategoryModelType extends ModelType<TicketCategory> {
   String modelName() {
     return 'TicketCategory';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [TicketCategory] in your schema.
+ */
+@immutable
+class TicketCategoryModelIdentifier implements ModelIdentifier<TicketCategory> {
+  final String id;
+
+  /** Create an instance of TicketCategoryModelIdentifier using [id] the primary key. */
+  const TicketCategoryModelIdentifier({
+    required this.id});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'TicketCategoryModelIdentifier(id: $id)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is TicketCategoryModelIdentifier &&
+      id == other.id;
+  }
+  
+  @override
+  int get hashCode =>
+    id.hashCode;
 }

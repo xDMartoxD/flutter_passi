@@ -72,12 +72,7 @@ type Mutation {
 }
 
 type Query {
-  getAcceptanceToken: AcceptanceTokenResponse!
-  @http(
-    url: "https://production.wompi.co/v1/merchants/pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
-    method: GET
-  )
-  @auth(rules: [{ allow: private }])
+
   refreshTransactionStatus(ticketID: String!): Transaction!
     @function(name: "RefreshTransactionStatus-${env}")
     @auth(rules: [{ allow: private }])
@@ -109,24 +104,6 @@ type Query {
       method: GET
     )
     @auth(rules: [{ allow: private }])
-}
-type AcceptanceTokenResponse {
-  data: AcceptanceTokenData! @auth(rules: [{ allow: private }])
-}
-type AcceptanceTokenData {
-    id: Int! @auth(rules: [{ allow: private }])
-    name: String! @auth(rules: [{ allow: private }])
-    legal_name: String! @auth(rules: [{ allow: private }])
-    legal_id: String! @auth(rules: [{ allow: private }])
-    legal_id_type: String! @auth(rules: [{ allow: private }])
-    phone_number: String! @auth(rules: [{ allow: private }])
-    active: Boolean! @auth(rules: [{ allow: private }])
-    logo_url: String! @auth(rules: [{ allow: private }])
-    email: String! @auth(rules: [{ allow: private }])
-    contact_name: String! @auth(rules: [{ allow: private }])
-    accepted_payment_methods: [String!] @auth(rules: [{ allow: private }])
-    accepted_currencies: [String!] @auth(rules: [{ allow: private }])
-    presigned_acceptance: PresignedAcceptance! @auth(rules: [{ allow: private }])
 }
 
 type PresignedAcceptance {
@@ -201,12 +178,19 @@ type Job
         { allow: groups, groups: ["Admin"] }
       ]
     )
+  type: [JobTypeEnum!]
   event: Event! @belongsTo(fields: ["eventID"])
   eventID: ID! @index(name: "byEvent", queryField: "jobsByEvent")
   user: User! @belongsTo(fields: ["userID"])
   userID: ID! @index(name: "byUser", queryField: "jobsByUser")
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+}
+
+enum JobTypeEnum {
+  Promoter
+  Scanner
+  Admin
 }
 
 type S3Object {
@@ -352,13 +336,8 @@ type Ticket
       ]
     )
   registeredBy: Job @belongsTo(fields: ["jobID"])
-  code: String
-    @index(
-      name: "byDiscountCode"
-      sortKeyFields: ["eventID"]
-      queryField: "ticketsByDiscountCode"
-    )
-  discountCode: DiscountCode @belongsTo(fields: ["code", "eventID"])
+  discountCodeID: ID @index(name: "byDiscountCode", queryField: "ticketsByDiscountCode")
+  discountCode: DiscountCode @belongsTo(fields: ["discountCodeID"])
   transaction: Transaction
   seat: String
   createdAt: AWSDateTime!
@@ -498,7 +477,8 @@ type DiscountCode
       { allow: public, operations: [read] }
     ]
   ) {
-  code: String! @primaryKey(sortKeyFields: ["eventID"])
+  id: ID! @primaryKey
+  code: String! 
   maxUse: Int
   actualUse: Int!
   validUntil: AWSDateTime!
@@ -508,7 +488,7 @@ type DiscountCode
   userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
   user: User @belongsTo(fields: ["userID"])
   tickets: [Ticket!]
-    @hasMany(indexName: "byDiscountCode", fields: ["code", "eventID"])
+    @hasMany(indexName: "byDiscountCode", fields: ["id"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
