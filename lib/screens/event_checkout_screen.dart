@@ -47,7 +47,13 @@ class EventCheckoutScreen extends StatelessWidget {
           return PaymentMehtodsByUserProvider();
         }, update: (context, auth, previous) {
           return PaymentMehtodsByUserProvider(authenticationProvider: auth);
-        })
+        }),
+        ChangeNotifierProxyProvider<TicketCategoriesByEventProvider, CartProvider>(
+            create: (context) {
+          return CartProvider();
+        }, update: (context, ticketCategoryProvider, previous) {
+          return CartProvider(ticketCategoriesByEventProvider: ticketCategoryProvider);
+        }),
       ], child: EventCheckoutContent(id: id)),
     );
   }
@@ -63,7 +69,8 @@ class EventCheckoutContent extends StatefulWidget {
 
 class _EventCheckoutContentState extends State<EventCheckoutContent> {
   TicketCategoriesByEventProvider? _ticketCategoriesByEventProvider;
-
+  CartProvider? _cartProvider;
+  double totalAmount = 0;
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
       await Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
@@ -77,6 +84,28 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
     } catch (e) {
       safePrint(e.toString());
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero).then((_) {
+      _cartProvider = context.read<CartProvider>();
+      _cartProvider!.addListener(_cartProviderListener);
+    });
+  }
+
+  void _cartProviderListener() {
+    print(_cartProvider!.cart.length);
+    setState(() {
+      totalAmount = _cartProvider!.getTotal();
+    });
+  }
+
+  @override
+  void dispose() {
+    _cartProvider!.removeListener(_cartProviderListener);
+    super.dispose();
   }
 
   @override
@@ -113,27 +142,17 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                             date: eventProvider.event!.startDateTime,
                           ),
                         ),
-                      if (discountCodeProvider.discountCode != null)
-                        Text(
-                          formatNumber(eventProvider.event!.price -
-                              discountCodeProvider.discountCode!.discount),
-                        ),
                       Padding(
                           padding: EdgeInsets.symmetric(horizontal: 15),
                           child: Column(
                             children: [
                               ...ticketCategoriesProvider.ticketCategories.map(
                                 (ticketCategory) {
-                                  return ChangeNotifierProvider(
-                                    create: (context) {
-                                      return CartProvider(ticketCategory: ticketCategory);
-                                    },
-                                    child: TicketCategoryContentWidget(
+                                  return TicketCategoryContentWidget(
                                       color: ticketCategory.color,
                                       name: ticketCategory.name,
                                       price: ticketCategory.price,
-                                    ),
-                                  );
+                                      id: ticketCategory.id);
                                 },
                               ).toList()
                             ],
@@ -194,6 +213,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                         ),
                       ),
                       TermsAndConditionsWidget(),
+                      Text("Total: ${totalAmount}"),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .8,
                         child: FloatingActionButton(
@@ -358,7 +378,7 @@ class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   children: [
                     TextSpan(
-                      text: "Terminos y condiciones ",
+                      text: "Terminos y condiciones",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: Color.fromRGBO(26, 135, 244, 1),
                           ),
@@ -391,9 +411,11 @@ class TicketCategoryContentWidget extends StatelessWidget {
   final String color;
   final String name;
   final double price;
+  final String id;
 
   const TicketCategoryContentWidget({
     super.key,
+    required this.id,
     required this.color,
     required this.name,
     required this.price,
@@ -413,7 +435,7 @@ class TicketCategoryContentWidget extends StatelessWidget {
                   width: 100,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: getColor("FF0000"),
+                    color: getColor(color),
                   ),
                 ),
                 SizedBox(width: 5),
@@ -441,7 +463,7 @@ class TicketCategoryContentWidget extends StatelessWidget {
                 ),
               ],
             ),
-            addTicketToCartWidget()
+            addTicketToCartWidget(ticketCategoryId: id)
           ],
         ),
         Divider()
@@ -451,7 +473,9 @@ class TicketCategoryContentWidget extends StatelessWidget {
 }
 
 class addTicketToCartWidget extends StatelessWidget {
-  const addTicketToCartWidget({
+  String ticketCategoryId;
+  addTicketToCartWidget({
+    required this.ticketCategoryId,
     super.key,
   });
 
@@ -462,14 +486,14 @@ class addTicketToCartWidget extends StatelessWidget {
         return Row(
           children: [
             IconButton(
-                onPressed: cartProvider.remove,
+                onPressed: () => cartProvider.remove(ticketCategoryId),
                 icon: Icon(
                   Icons.remove,
                   size: 18,
                 )),
-            Text(cartProvider.quantity.toString()),
+            Text(cartProvider.cart[ticketCategoryId].toString()),
             IconButton(
-                onPressed: cartProvider.add,
+                onPressed: () => cartProvider.add(ticketCategoryId),
                 icon: Icon(
                   Icons.add,
                   size: 18,

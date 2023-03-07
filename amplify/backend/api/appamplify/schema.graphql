@@ -179,6 +179,7 @@ type Job
       ]
     )
   type: [JobTypeEnum!]
+  phoneNumber: String
   event: Event! @belongsTo(fields: ["eventID"])
   eventID: ID! @index(name: "byEvent", queryField: "jobsByEvent")
   user: User! @belongsTo(fields: ["userID"])
