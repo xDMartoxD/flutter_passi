@@ -15,9 +15,7 @@ class DiscountCodesByEventProvider with ChangeNotifier {
   DiscountCode? get discountCode => _discountCode;
   List<DiscountCode?> _fetchedDiscountCodes = [];
 
-  DiscountCodesByEventProvider({this.eventProvider}) {
-    fetchDiscountCodes();
-  }
+  DiscountCodesByEventProvider({this.eventProvider});
 
   void addDiscountCode({required String discountCode, required String eventId}) {
     if (_discountCodeExists(eventId) != null) {
@@ -50,7 +48,11 @@ class DiscountCodesByEventProvider with ChangeNotifier {
           safePrint('errors: ${response.errors}');
           return;
         }
-        _fetchedDiscountCodes = paginatedDiscountCodes.items;
+        List<DiscountCode?> loadedDiscountCodes = [];
+        for (var element in paginatedDiscountCodes.items) {
+          loadedDiscountCodes.add(element);
+        }
+        _fetchedDiscountCodes = loadedDiscountCodes;
         notifyListeners();
       } on ApiException catch (e) {
         safePrint('Query failed: $e');
@@ -62,10 +64,12 @@ class DiscountCodesByEventProvider with ChangeNotifier {
     _discountCode = _fetchedDiscountCodes.firstWhere(
       (discountCode) => discountCode?.code == code,
     );
+    notifyListeners();
   }
 
   void removeDiscountCode() {
     _discountCode = null;
+    notifyListeners();
   }
 }
 

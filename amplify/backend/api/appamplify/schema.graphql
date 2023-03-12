@@ -482,6 +482,7 @@ type DiscountCode
       { allow: public, operations: [read] }
     ]
   ) {
+  id: ID!
   code: String! @primaryKey(sortKeyFields: ["eventID"])
   maxUse: Int
   actualUse: Int!

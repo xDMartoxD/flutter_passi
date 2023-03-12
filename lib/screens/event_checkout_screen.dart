@@ -88,6 +88,10 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       );
       await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
       await Provider.of<PaymentProvider>(context, listen: false).fetchTermsAndConditions();
+      await Provider.of<DiscountCodesByEventProvider>(
+        context,
+        listen: false,
+      ).fetchDiscountCodes();
     } catch (e) {
       safePrint(e.toString());
     }
@@ -279,7 +283,6 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
                 TextButton(
                     onPressed: () {
                       discountCodeProvider.setDiscountCode(_textFieldControler.text);
-
                       Navigator.of(context).pop();
                     },
                     child: Text("Buscar"))
