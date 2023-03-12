@@ -51,6 +51,7 @@ class PaymentMethodsContent extends StatelessWidget {
     return FutureBuilder(
       future: _fethPaymentMehtods(context),
       builder: (context, snapshot) {
+        print(snapshot.connectionState);
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Consumer<PaymentMehtodsByUserProvider>(

@@ -69,7 +69,6 @@ class EventCheckoutContent extends StatefulWidget {
 
 class _EventCheckoutContentState extends State<EventCheckoutContent> {
   TicketCategoriesByEventProvider? _ticketCategoriesByEventProvider;
-  CartProvider? _cartProvider;
   double totalAmount = 0;
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
@@ -84,28 +83,6 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
     } catch (e) {
       safePrint(e.toString());
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero).then((_) {
-      _cartProvider = context.read<CartProvider>();
-      _cartProvider!.addListener(_cartProviderListener);
-    });
-  }
-
-  void _cartProviderListener() {
-    print(_cartProvider!.cart.length);
-    setState(() {
-      totalAmount = _cartProvider!.getTotal();
-    });
-  }
-
-  @override
-  void dispose() {
-    _cartProvider!.removeListener(_cartProviderListener);
-    super.dispose();
   }
 
   @override
@@ -213,19 +190,12 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                         ),
                       ),
                       TermsAndConditionsWidget(),
-                      Text("Total: ${totalAmount}"),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .8,
                         child: FloatingActionButton(
                           backgroundColor: Colors.white,
                           onPressed: wompiProvider.isChecked ? () {} : null,
-                          child: Text(
-                            "Comprar",
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
+                          child: BuyButtonChild(),
                         ),
                       )
                     ],
@@ -236,6 +206,27 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
           default:
             return Loading();
         }
+      },
+    );
+  }
+}
+
+class BuyButtonChild extends StatelessWidget {
+  const BuyButtonChild({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CartProvider>(
+      builder: (context, cartProvider, child) {
+        return Text(
+          "${cartProvider.total}",
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+        );
       },
     );
   }
@@ -378,7 +369,7 @@ class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   children: [
                     TextSpan(
-                      text: "Terminos y condiciones",
+                      text: "Terminos y condiciones ",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: Color.fromRGBO(26, 135, 244, 1),
                           ),

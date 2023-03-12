@@ -470,7 +470,7 @@ type EventCategory
 }
 
 type DiscountCode
-  @model
+  @model(queries: { get: null })
   @auth(
     rules: [
       { allow: groups, groups: ["Admin"] }
