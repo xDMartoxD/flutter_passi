@@ -75,15 +75,15 @@
         },
         "passiModelsLayer": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/passiModelsLayer-LambdaLayerVersion76d1929d-build.zip"
+          "s3Key": "amplify-builds/passiModelsLayer-LambdaLayerVersionf441bc3f-build.zip"
         },
         "passiWompiLayer": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/passiWompiLayer-LambdaLayerVersion913ea245-build.zip"
+          "s3Key": "amplify-builds/passiWompiLayer-LambdaLayerVersioncfd0730f-build.zip"
         },
         "passinodeModules": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/passinodeModules-LambdaLayerVersion4ec13336-build.zip"
+          "s3Key": "amplify-builds/passinodeModules-LambdaLayerVersionce5f96cd-build.zip"
         },
         "validateTicket": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
@@ -96,6 +96,10 @@
       },
       "storage": {
         "passiStorage": {}
+      },
+      "api": {
+        "appamplify": {},
+        "endpoints": {}
       }
     }
   }
