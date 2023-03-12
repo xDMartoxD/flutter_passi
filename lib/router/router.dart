@@ -32,7 +32,7 @@ class AppRouter {
             name: EventDetailsScreen.name,
             builder: (BuildContext context, GoRouterState state) {
               if (state.queryParams.isNotEmpty && state.queryParams.containsKey("promoterCode")) {
-                context.read<DiscountCodeProvider>().addDiscountCode(
+                context.read<DiscountCodesByEventProvider>().addDiscountCode(
                     discountCode: state.queryParams["promoterCode"]!, eventId: state.params["id"]!);
               }
               state.params.addAll(state.queryParams);

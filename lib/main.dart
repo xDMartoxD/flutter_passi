@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<EventCategoriesProvider>(
             create: (_) => EventCategoriesProvider(),
           ),
-          ChangeNotifierProvider<DiscountCodeProvider>(create: (_) {
-            return DiscountCodeProvider();
+          ChangeNotifierProvider<DiscountCodesByEventProvider>(create: (_) {
+            return DiscountCodesByEventProvider();
           }),
         ],
         child: MaterialApp.router(
