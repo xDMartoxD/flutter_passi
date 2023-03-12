@@ -31,8 +31,6 @@ class Job extends Model {
   static const classType = const _JobModelType();
   final String id;
   final List<Ticket>? _registeredTickets;
-  final List<JobTypeEnum>? _type;
-  final String? _phoneNumber;
   final Event? _event;
   final User? _user;
   final TemporalDateTime? _createdAt;
@@ -41,26 +39,13 @@ class Job extends Model {
   @override
   getInstanceType() => classType;
   
-  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() => id;
-  
-  JobModelIdentifier get modelIdentifier {
-      return JobModelIdentifier(
-        id: id
-      );
+  String getId() {
+    return id;
   }
   
   List<Ticket>? get registeredTickets {
     return _registeredTickets;
-  }
-  
-  List<JobTypeEnum>? get type {
-    return _type;
-  }
-  
-  String? get phoneNumber {
-    return _phoneNumber;
   }
   
   Event get event {
@@ -115,14 +100,12 @@ class Job extends Model {
     }
   }
   
-  const Job._internal({required this.id, registeredTickets, type, phoneNumber, required event, required user, required createdAt, required updatedAt}): _registeredTickets = registeredTickets, _type = type, _phoneNumber = phoneNumber, _event = event, _user = user, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Job._internal({required this.id, registeredTickets, required event, required user, required createdAt, required updatedAt}): _registeredTickets = registeredTickets, _event = event, _user = user, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Job({String? id, List<Ticket>? registeredTickets, List<JobTypeEnum>? type, String? phoneNumber, required Event event, required User user, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory Job({String? id, List<Ticket>? registeredTickets, required Event event, required User user, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return Job._internal(
       id: id == null ? UUID.getUUID() : id,
       registeredTickets: registeredTickets != null ? List<Ticket>.unmodifiable(registeredTickets) : registeredTickets,
-      type: type != null ? List<JobTypeEnum>.unmodifiable(type) : type,
-      phoneNumber: phoneNumber,
       event: event,
       user: user,
       createdAt: createdAt,
@@ -139,8 +122,6 @@ class Job extends Model {
     return other is Job &&
       id == other.id &&
       DeepCollectionEquality().equals(_registeredTickets, other._registeredTickets) &&
-      DeepCollectionEquality().equals(_type, other._type) &&
-      _phoneNumber == other._phoneNumber &&
       _event == other._event &&
       _user == other._user &&
       _createdAt == other._createdAt &&
@@ -156,8 +137,6 @@ class Job extends Model {
     
     buffer.write("Job {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("type=" + (_type != null ? _type!.map((e) => enumToString(e)).toString() : "null") + ", ");
-    buffer.write("phoneNumber=" + "$_phoneNumber" + ", ");
     buffer.write("event=" + (_event != null ? _event!.toString() : "null") + ", ");
     buffer.write("user=" + (_user != null ? _user!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -167,12 +146,10 @@ class Job extends Model {
     return buffer.toString();
   }
   
-  Job copyWith({List<Ticket>? registeredTickets, List<JobTypeEnum>? type, String? phoneNumber, Event? event, User? user, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  Job copyWith({String? id, List<Ticket>? registeredTickets, Event? event, User? user, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return Job._internal(
-      id: id,
+      id: id ?? this.id,
       registeredTickets: registeredTickets ?? this.registeredTickets,
-      type: type ?? this.type,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
       event: event ?? this.event,
       user: user ?? this.user,
       createdAt: createdAt ?? this.createdAt,
@@ -187,12 +164,6 @@ class Job extends Model {
           .map((e) => Ticket.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
-      _type = json['type'] is List
-        ? (json['type'] as List)
-          .map((e) => enumFromString<JobTypeEnum>(e, JobTypeEnum.values)!)
-          .toList()
-        : null,
-      _phoneNumber = json['phoneNumber'],
       _event = json['event']?['serializedData'] != null
         ? Event.fromJson(new Map<String, dynamic>.from(json['event']['serializedData']))
         : null,
@@ -203,20 +174,17 @@ class Job extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'registeredTickets': _registeredTickets?.map((Ticket? e) => e?.toJson()).toList(), 'type': _type?.map((e) => enumToString(e)).toList(), 'phoneNumber': _phoneNumber, 'event': _event?.toJson(), 'user': _user?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'registeredTickets': _registeredTickets?.map((Ticket? e) => e?.toJson()).toList(), 'event': _event?.toJson(), 'user': _user?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'registeredTickets': _registeredTickets, 'type': _type, 'phoneNumber': _phoneNumber, 'event': _event, 'user': _user, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'registeredTickets': _registeredTickets, 'event': _event, 'user': _user, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<JobModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<JobModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField REGISTEREDTICKETS = QueryField(
     fieldName: "registeredTickets",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
-  static final QueryField TYPE = QueryField(fieldName: "type");
-  static final QueryField PHONENUMBER = QueryField(fieldName: "phoneNumber");
   static final QueryField EVENT = QueryField(
     fieldName: "event",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Event'));
@@ -268,30 +236,17 @@ class Job extends Model {
       associatedKey: Ticket.REGISTEREDBY
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Job.TYPE,
-      isRequired: false,
-      isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.enumeration))
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Job.PHONENUMBER,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Job.EVENT,
       isRequired: true,
-      targetNames: ['eventID'],
+      targetName: 'eventID',
       ofModelName: 'Event'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Job.USER,
       isRequired: true,
-      targetNames: ['userID'],
+      targetName: 'userID',
       ofModelName: 'User'
     ));
     
@@ -321,48 +276,4 @@ class _JobModelType extends ModelType<Job> {
   String modelName() {
     return 'Job';
   }
-}
-
-/**
- * This is an auto generated class representing the model identifier
- * of [Job] in your schema.
- */
-@immutable
-class JobModelIdentifier implements ModelIdentifier<Job> {
-  final String id;
-
-  /** Create an instance of JobModelIdentifier using [id] the primary key. */
-  const JobModelIdentifier({
-    required this.id});
-  
-  @override
-  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
-    'id': id
-  });
-  
-  @override
-  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
-    .entries
-    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
-    .toList();
-  
-  @override
-  String serializeAsString() => serializeAsMap().values.join('#');
-  
-  @override
-  String toString() => 'JobModelIdentifier(id: $id)';
-  
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    
-    return other is JobModelIdentifier &&
-      id == other.id;
-  }
-  
-  @override
-  int get hashCode =>
-    id.hashCode;
 }

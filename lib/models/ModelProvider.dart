@@ -52,7 +52,6 @@ export 'EventCategory.dart';
 export 'FinancialInstitution.dart';
 export 'FinancialInstitutionResponse.dart';
 export 'Job.dart';
-export 'JobTypeEnum.dart';
 export 'Merchant.dart';
 export 'PaymentMethod.dart';
 export 'PaymentMethodData.dart';
@@ -70,7 +69,7 @@ export 'User.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "c1d1c1eb0c95cd27da0ae328ba91e482";
+  String version = "2d60720375cddf1c3a58585300dff9de";
   @override
   List<ModelSchema> modelSchemas = [DiscountCode.schema, Event.schema, EventCategory.schema, Job.schema, PaymentMethod.schema, Ticket.schema, TicketCategory.schema, User.schema];
   static final ModelProvider _instance = ModelProvider();

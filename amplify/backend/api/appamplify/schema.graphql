@@ -158,6 +158,12 @@ type TokenCardResData {
   expires_at: String! @auth(rules: [{ allow: private }])
 }
 
+enum JobType {
+  Promoter
+  Scanner
+  Admin
+}
+
 type Job
   @model
   @auth(
@@ -182,6 +188,7 @@ type Job
   eventID: ID! @index(name: "byEvent", queryField: "jobsByEvent")
   user: User! @belongsTo(fields: ["userID"])
   userID: ID! @index(name: "byUser", queryField: "jobsByUser")
+  type: [JobType]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
