@@ -20,7 +20,7 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersionc80a7c7a": {
+    "LambdaLayerVersion4ec13336": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": {
@@ -51,48 +51,13 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPublicc80a7c7a": {
-      "Type": "AWS::Lambda::LayerVersionPermission",
-      "Properties": {
-        "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": {
-          "Ref": "LambdaLayerVersionc80a7c7a"
-        },
-        "Principal": "*"
-      }
-    },
-    "LambdaLayerVersion4ec13336": {
-      "Type": "AWS::Lambda::LayerVersion",
-      "Properties": {
-        "CompatibleRuntimes": [
-          "nodejs14.x"
-        ],
-        "Content": {
-          "S3Bucket": {
-            "Ref": "deploymentBucketName"
-          },
-          "S3Key": "amplify-builds/passinodeModules-LambdaLayerVersion4ec13336-build.zip"
-        },
-        "Description": "Updated layer version 2023-03-01T14:14:38.010Z",
-        "LayerName": {
-          "Fn::Sub": [
-            "passinodeModules-${env}",
-            {
-              "env": {
-                "Ref": "env"
-              }
-            }
-          ]
-        }
-      },
-      "DeletionPolicy": "Delete",
-      "UpdateReplacePolicy": "Retain"
-    },
     "LambdaLayerPermissionPublic4ec13336": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:954573579519:layer:passinodeModules-devel:87",
+        "LayerVersionArn": {
+          "Ref": "LambdaLayerVersion4ec13336"
+        },
         "Principal": "*"
       }
     }
@@ -100,7 +65,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersionc80a7c7a"
+        "Ref": "LambdaLayerVersion4ec13336"
       }
     }
   }
