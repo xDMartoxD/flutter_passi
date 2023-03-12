@@ -230,15 +230,41 @@ class BuyButtonChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CartProvider>(
-      builder: (context, cartProvider, child) {
-        return Text(
-          "${formatNumber(cartProvider.total)} COP",
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-        );
+    return Consumer2<CartProvider, DiscountCodesByEventProvider>(
+      builder: (context, cartProvider, discountCodeProvider, child) {
+        return discountCodeProvider.discountCode != null
+            ? Text.rich(
+                TextSpan(
+                    text: "${formatNumber(cartProvider.total)}",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Colors.black,
+                          decorationThickness: 5,
+                        ),
+                    children: [
+                      TextSpan(
+                        text:
+                            " ${formatNumber(cartProvider.total - discountCodeProvider.discountCode!.discount)} COP",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      )
+                    ]),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              )
+            : Text(
+                "${formatNumber(cartProvider.total)} COP",
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              );
       },
     );
   }

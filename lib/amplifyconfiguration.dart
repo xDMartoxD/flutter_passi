@@ -1,4 +1,5 @@
-const amplifyconfig = ''' {
+const amplifyconfig =
+    ''' {
     "UserAgent": "aws-amplify-cli/2.0",
     "Version": "1.0",
     "api": {
@@ -10,6 +11,12 @@ const amplifyconfig = ''' {
                     "region": "us-east-1",
                     "authorizationType": "API_KEY",
                     "apiKey": "da2-okhzdhrykvdivpugfgmlux45ri"
+                },
+                "appamplifyWithUserPool": {
+                    "endpointType": "GraphQL",
+                    "endpoint": "https://qoonxe23evgfjmnpqlehsvetk4.appsync-api.us-east-1.amazonaws.com/graphql",
+                    "region": "us-east-1",
+                    "authorizationType": "AMAZON_COGNITO_USER_POOLS",
                 },
                 "endpoints": {
                     "endpointType": "REST",
