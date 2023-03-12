@@ -1,0 +1,15 @@
+{
+  "resourceName": "passiStorage",
+  "policyUUID": "199d1705",
+  "bucketName": "appamplifyfcc503d0e85e4571b2322c17f2563fbe",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

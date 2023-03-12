@@ -1,0 +1,875 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-passi-devel-143433-authRole",
+      "UnauthRoleArn": "arn:aws:iam::954573579519:role/amplify-passi-devel-143433-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::954573579519:role/amplify-passi-devel-143433-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-passi-devel-143433-deployment",
+      "UnauthRoleName": "amplify-passi-devel-143433-unauthRole",
+      "StackName": "amplify-passi-devel-143433",
+      "StackId": "arn:aws:cloudformation:us-east-1:954573579519:stack/amplify-passi-devel-143433/1dc405f0-aa43-11ed-a492-0a3b4282c6bf",
+      "AmplifyAppId": "d32iatki73wyls",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    }
+  },
+  "api": {
+    "appamplify": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "appamplify02fef6e8"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authappamplify02fef6e8"
+              }
+            }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDate": "2024-02-22T01:27:48.598Z",
+              "apiKeyExpirationDays": 365,
+              "description": "api key"
+            },
+            "authenticationType": "API_KEY"
+          }
+        },
+        "GraphQLAPIIdOutput": "3woiif2zwvdizmeyltwds462jy",
+        "GraphQLAPIEndpointOutput": "https://qoonxe23evgfjmnpqlehsvetk4.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-okhzdhrykvdivpugfgmlux45ri"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiappamplify"
+      },
+      "lastPushDirHash": "7yYQUQCcxtIRsLwV4+XHCR+k/hw="
+    },
+    "endpoints": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "validateTicket"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "verifyEvent"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "endpoints",
+        "RootUrl": "https://mggpgmus2m.execute-api.us-east-1.amazonaws.com/devel",
+        "ApiId": "mggpgmus2m"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/api/endpoints-cloudformation-template.json",
+        "logicalId": "apiendpoints"
+      },
+      "lastPushDirHash": "VwaR+JbbblggSD1C2QGtggB3QUE="
+    }
+  },
+  "auth": {
+    "appamplify02fef6e8": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "appamplify02fef6e8PostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL",
+          "NAME"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-east-1_J9vpQ8nbz",
+        "AppClientIDWeb": "13bvcs6f5gq6459sejv1k9d31g",
+        "AppClientID": "366cbdofr9p4f2t6488ot4jpol",
+        "IdentityPoolId": "us-east-1:c4cd84c0-8502-40c4-ae75-d532b5cc1f6c",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:954573579519:userpool/us-east-1_J9vpQ8nbz",
+        "IdentityPoolName": "appamplify02fef6e8_identitypool_02fef6e8__devel",
+        "UserPoolName": "appamplify02fef6e8_userpool_02fef6e8"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/auth/appamplify02fef6e8-cloudformation-template.json",
+        "logicalId": "authappamplify02fef6e8"
+      },
+      "lastPushDirHash": "dujsWvoU58DOQNqbGLm2idZY4Vg="
+    }
+  },
+  "function": {
+    "ConfirmNequiPayment": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRolebed2b3a8-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:ConfirmNequiPayment-devel",
+        "Name": "ConfirmNequiPayment-devel",
+        "LambdaExecutionRole": "passiLambdaRolebed2b3a8-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/ConfirmNequiPayment-cloudformation-template.json",
+        "logicalId": "functionConfirmNequiPayment"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/ConfirmNequiPayment-36484d7946464d636d30-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.241Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.106Z",
+      "distZipFilename": "ConfirmNequiPayment-36484d7946464d636d30-build.zip",
+      "lastPushDirHash": "eEdFepr36pbWFaJWdnvtZsHKvR0="
+    },
+    "CreateEntracePayment": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRole78a94fd8-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateEntracePayment-devel",
+        "Name": "CreateEntracePayment-devel",
+        "LambdaExecutionRole": "passiLambdaRole78a94fd8-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateEntracePayment-cloudformation-template.json",
+        "logicalId": "functionCreateEntracePayment"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateEntracePayment-62302b65672f67454237-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.243Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.115Z",
+      "distZipFilename": "CreateEntracePayment-62302b65672f67454237-build.zip",
+      "lastPushDirHash": "RRDm/+JFPXTyNYOf3A9VqzgpkwA="
+    },
+    "CreateEntrance": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiWompiLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/appamplifyLambdaRolea66ea330-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateEntrance-devel",
+        "Name": "CreateEntrance-devel",
+        "LambdaExecutionRole": "appamplifyLambdaRolea66ea330-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateEntrance-cloudformation-template.json",
+        "logicalId": "functionCreateEntrance"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateEntrance-74334f4d384f6b587233-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.245Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.464Z",
+      "distZipFilename": "CreateEntrance-74334f4d384f6b587233-build.zip",
+      "lastPushDirHash": "vGVNtaqQc6jHQYeBxDhRyrA3qqM="
+    },
+    "CreateEntranceBusinessLogic": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRole6a95bea8-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateEntranceBusinessLogic-devel",
+        "Name": "CreateEntranceBusinessLogic-devel",
+        "LambdaExecutionRole": "passiLambdaRole6a95bea8-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateEntranceBusinessLogic-cloudformation-template.json",
+        "logicalId": "functionCreateEntranceBusinessLogic"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateEntranceBusinessLogic-434161566657564b6434-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.246Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.241Z",
+      "distZipFilename": "CreateEntranceBusinessLogic-434161566657564b6434-build.zip",
+      "lastPushDirHash": "vw3RnCVB2EzJuZajZ/EMjQjo7u8="
+    },
+    "CreateEntranceDB": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRole6286d74a-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateEntranceDB-devel",
+        "Name": "CreateEntranceDB-devel",
+        "LambdaExecutionRole": "passiLambdaRole6286d74a-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateEntranceDB-cloudformation-template.json",
+        "logicalId": "functionCreateEntranceDB"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateEntranceDB-6f5732306f5353677550-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.253Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.244Z",
+      "distZipFilename": "CreateEntranceDB-6f5732306f5353677550-build.zip",
+      "lastPushDirHash": "CkwTQ5nrXo+tz5/RbTdAss8xj64="
+    },
+    "CreateEntranceNequiBusinessLogic": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRole9ca634a2-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateEntranceNequiBusinessLogic-devel",
+        "Name": "CreateEntranceNequiBusinessLogic-devel",
+        "LambdaExecutionRole": "passiLambdaRole9ca634a2-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateEntranceNequiBusinessLogic-cloudformation-template.json",
+        "logicalId": "functionCreateEntranceNequiBusinessLogic"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateEntranceNequiBusinessLogic-2f424c58484279627348-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.255Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.237Z",
+      "distZipFilename": "CreateEntranceNequiBusinessLogic-2f424c58484279627348-build.zip",
+      "lastPushDirHash": "zRRavcBx7CpcuTxFAZmlav57cpE="
+    },
+    "CreateEntranceNequiDB": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRole3f359b65-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateEntranceNequiDB-devel",
+        "Name": "CreateEntranceNequiDB-devel",
+        "LambdaExecutionRole": "passiLambdaRole3f359b65-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateEntranceNequiDB-cloudformation-template.json",
+        "logicalId": "functionCreateEntranceNequiDB"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateEntranceNequiDB-4d2b4871385238544355-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.257Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.247Z",
+      "distZipFilename": "CreateEntranceNequiDB-4d2b4871385238544355-build.zip",
+      "lastPushDirHash": "BkCuJMzcKNowBJDBX/SpRCSic24="
+    },
+    "CreateEntrancePSE": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/appamplifyLambdaRolef2917fdf-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateEntrancePSE-devel",
+        "Name": "CreateEntrancePSE-devel",
+        "LambdaExecutionRole": "appamplifyLambdaRolef2917fdf-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateEntrancePSE-cloudformation-template.json",
+        "logicalId": "functionCreateEntrancePSE"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateEntrancePSE-306f5a657578354c3764-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.259Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.258Z",
+      "distZipFilename": "CreateEntrancePSE-306f5a657578354c3764-build.zip",
+      "lastPushDirHash": "kIInz+DvlaotvKTnrp1WCSwFXlE="
+    },
+    "CreateFreeEntrance": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/appamplifyLambdaRole72d00088-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateFreeEntrance-devel",
+        "Name": "CreateFreeEntrance-devel",
+        "LambdaExecutionRole": "appamplifyLambdaRole72d00088-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateFreeEntrance-cloudformation-template.json",
+        "logicalId": "functionCreateFreeEntrance"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateFreeEntrance-4b4a2b543778696f3347-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.261Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.261Z",
+      "distZipFilename": "CreateFreeEntrance-4b4a2b543778696f3347-build.zip",
+      "lastPushDirHash": "TZPXwDO5AlIuphMY9qzKcf1ZCYg="
+    },
+    "CreatePaymentSource": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/appamplifyLambdaRolee33dd6e6-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreatePaymentSource-devel",
+        "Name": "CreatePaymentSource-devel",
+        "LambdaExecutionRole": "appamplifyLambdaRolee33dd6e6-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreatePaymentSource-cloudformation-template.json",
+        "logicalId": "functionCreatePaymentSource"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreatePaymentSource-7762642f553432756f68-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.262Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.125Z",
+      "distZipFilename": "CreatePaymentSource-7762642f553432756f68-build.zip",
+      "lastPushDirHash": "q6GGZkBaMgl7ymT8uAgb49wsYb0="
+    },
+    "CreateUserDynamo": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/appamplifyLambdaRole1fa756a7-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:CreateUserDynamo-devel",
+        "Name": "CreateUserDynamo-devel",
+        "LambdaExecutionRole": "appamplifyLambdaRole1fa756a7-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/CreateUserDynamo-cloudformation-template.json",
+        "logicalId": "functionCreateUserDynamo"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/CreateUserDynamo-763971636d4636737a57-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.264Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.758Z",
+      "distZipFilename": "CreateUserDynamo-763971636d4636737a57-build.zip",
+      "lastPushDirHash": "Hs0ZtJPhDChpnI0XmhncLvqAeAE="
+    },
+    "RefreshTransactionStatus": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/appamplifyLambdaRolec8210122-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:RefreshTransactionStatus-devel",
+        "Name": "RefreshTransactionStatus-devel",
+        "LambdaExecutionRole": "appamplifyLambdaRolec8210122-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/RefreshTransactionStatus-cloudformation-template.json",
+        "logicalId": "functionRefreshTransactionStatus"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/RefreshTransactionStatus-36774f6e6e2b5a44636a-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.266Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.131Z",
+      "distZipFilename": "RefreshTransactionStatus-36774f6e6e2b5a44636a-build.zip",
+      "lastPushDirHash": "Q4Pu17aksaO9tfoIwPdRKSb8YtI="
+    },
+    "appamplify02fef6e8PostConfirmation": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/appamplify02fef6e8PostConfirmation-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:appamplify02fef6e8PostConfirmation-devel",
+        "Name": "appamplify02fef6e8PostConfirmation-devel",
+        "LambdaExecutionRole": "appamplify02fef6e8PostConfirmation-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/appamplify02fef6e8PostConfirmation-cloudformation-template.json",
+        "logicalId": "functionappamplify02fef6e8PostConfirmation"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/appamplify02fef6e8PostConfirmation-7a4c4561424358417565-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.272Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.897Z",
+      "distZipFilename": "appamplify02fef6e8PostConfirmation-7a4c4561424358417565-build.zip",
+      "lastPushDirHash": "12dXnb/heZ7po54p+A3Fb6chPtw="
+    },
+    "createEvent": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRole91e64a48-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:createEvent-devel",
+        "Name": "createEvent-devel",
+        "LambdaExecutionRole": "passiLambdaRole91e64a48-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/createEvent-cloudformation-template.json",
+        "logicalId": "functioncreateEvent"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/createEvent-692b4868697358334f79-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.275Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.859Z",
+      "distZipFilename": "createEvent-692b4868697358334f79-build.zip",
+      "lastPushDirHash": "pCJZ4m2aQkC3ls615ZK2EEGTO3E="
+    },
+    "passiModelsLayer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "output": {
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:layer:passiModelsLayer-devel:88"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/passiModelsLayer-awscloudformation-template.json",
+        "logicalId": "functionpassiModelsLayer"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.277Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.208Z",
+      "distZipFilename": "passiModelsLayer-LambdaLayerVersion76d1929d-build.zip",
+      "latestPushedVersionHash": "491bf4448f92c6072278300de4bbf8f47a285b7fd390cccded6301a8dc4ad272",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/passiModelsLayer-LambdaLayerVersion76d1929d-build.zip"
+      }
+    },
+    "passiWompiLayer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "output": {
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:layer:passiWompiLayer-devel:88"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/passiWompiLayer-awscloudformation-template.json",
+        "logicalId": "functionpassiWompiLayer"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.279Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.964Z",
+      "distZipFilename": "passiWompiLayer-LambdaLayerVersion913ea245-build.zip",
+      "latestPushedVersionHash": "b625c5693ad7f0f2205c1fd9dc30619866f7719be887a79239622ea6aaeb67bf",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/passiWompiLayer-LambdaLayerVersion913ea245-build.zip"
+      }
+    },
+    "passinodeModules": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "output": {
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:layer:passinodeModules-devel:87"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/passinodeModules-awscloudformation-template.json",
+        "logicalId": "functionpassinodeModules"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.281Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:50.437Z",
+      "distZipFilename": "passinodeModules-LambdaLayerVersion4ec13336-build.zip",
+      "latestPushedVersionHash": "6d99dea6a59b21f0d03ec426ae835845d4b17efea73189b3947bc87dc6c363e7",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/passinodeModules-LambdaLayerVersion4ec13336-build.zip"
+      }
+    },
+    "validateTicket": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRolea30e8bb3-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:validateTicket-devel",
+        "Name": "validateTicket-devel",
+        "LambdaExecutionRole": "passiLambdaRolea30e8bb3-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/validateTicket-cloudformation-template.json",
+        "logicalId": "functionvalidateTicket"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/validateTicket-6d385457435447665a4c-build.zip"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.282Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:52.126Z",
+      "distZipFilename": "validateTicket-6d385457435447665a4c-build.zip",
+      "lastPushDirHash": "GtdjW1cczplj+fWJSn2E3t0bNgA="
+    },
+    "verifyEvent": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::954573579519:role/passiLambdaRole26ab22b0-devel",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:954573579519:function:verifyEvent-devel",
+        "Name": "verifyEvent-devel",
+        "LambdaExecutionRole": "passiLambdaRole26ab22b0-devel"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/function/verifyEvent-cloudformation-template.json",
+        "logicalId": "functionverifyEvent"
+      },
+      "lastBuildTimeStamp": "2023-03-01T14:14:48.284Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2023-03-01T14:14:49.868Z",
+      "distZipFilename": "verifyEvent-62654f5677524c624b57-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-passi-devel-143433-deployment",
+        "s3Key": "amplify-builds/verifyEvent-62654f5677524c624b57-build.zip"
+      },
+      "lastPushDirHash": "/JlRA3fY4/xY+8RwRuo4wP0704c="
+    }
+  },
+  "storage": {
+    "passiStorage": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
+      "output": {
+        "BucketName": "appamplifyfcc503d0e85e4571b2322c17f2563fbe143433-devel",
+        "Region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2023-03-01T14:22:30.809Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-passi-devel-143433-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storagepassiStorage"
+      },
+      "lastPushDirHash": "FjtE86IPfmH9ihW5e0M+U53ezVU="
+    }
+  }
+}
