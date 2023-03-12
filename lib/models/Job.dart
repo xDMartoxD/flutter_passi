@@ -33,6 +33,7 @@ class Job extends Model {
   final List<Ticket>? _registeredTickets;
   final Event? _event;
   final User? _user;
+  final List<JobType>? _type;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -74,6 +75,10 @@ class Job extends Model {
     }
   }
   
+  List<JobType>? get type {
+    return _type;
+  }
+  
   TemporalDateTime get createdAt {
     try {
       return _createdAt!;
@@ -100,14 +105,15 @@ class Job extends Model {
     }
   }
   
-  const Job._internal({required this.id, registeredTickets, required event, required user, required createdAt, required updatedAt}): _registeredTickets = registeredTickets, _event = event, _user = user, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Job._internal({required this.id, registeredTickets, required event, required user, type, required createdAt, required updatedAt}): _registeredTickets = registeredTickets, _event = event, _user = user, _type = type, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Job({String? id, List<Ticket>? registeredTickets, required Event event, required User user, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory Job({String? id, List<Ticket>? registeredTickets, required Event event, required User user, List<JobType>? type, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return Job._internal(
       id: id == null ? UUID.getUUID() : id,
       registeredTickets: registeredTickets != null ? List<Ticket>.unmodifiable(registeredTickets) : registeredTickets,
       event: event,
       user: user,
+      type: type != null ? List<JobType>.unmodifiable(type) : type,
       createdAt: createdAt,
       updatedAt: updatedAt);
   }
@@ -124,6 +130,7 @@ class Job extends Model {
       DeepCollectionEquality().equals(_registeredTickets, other._registeredTickets) &&
       _event == other._event &&
       _user == other._user &&
+      DeepCollectionEquality().equals(_type, other._type) &&
       _createdAt == other._createdAt &&
       _updatedAt == other._updatedAt;
   }
@@ -139,6 +146,7 @@ class Job extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("event=" + (_event != null ? _event!.toString() : "null") + ", ");
     buffer.write("user=" + (_user != null ? _user!.toString() : "null") + ", ");
+    buffer.write("type=" + (_type != null ? _type!.map((e) => enumToString(e)).toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -146,12 +154,13 @@ class Job extends Model {
     return buffer.toString();
   }
   
-  Job copyWith({String? id, List<Ticket>? registeredTickets, Event? event, User? user, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  Job copyWith({String? id, List<Ticket>? registeredTickets, Event? event, User? user, List<JobType>? type, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return Job._internal(
       id: id ?? this.id,
       registeredTickets: registeredTickets ?? this.registeredTickets,
       event: event ?? this.event,
       user: user ?? this.user,
+      type: type ?? this.type,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt);
   }
@@ -170,15 +179,20 @@ class Job extends Model {
       _user = json['user']?['serializedData'] != null
         ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
         : null,
+      _type = json['type'] is List
+        ? (json['type'] as List)
+          .map((e) => enumFromString<JobType>(e, JobType.values)!)
+          .toList()
+        : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'registeredTickets': _registeredTickets?.map((Ticket? e) => e?.toJson()).toList(), 'event': _event?.toJson(), 'user': _user?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'registeredTickets': _registeredTickets?.map((Ticket? e) => e?.toJson()).toList(), 'event': _event?.toJson(), 'user': _user?.toJson(), 'type': _type?.map((e) => enumToString(e)).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'registeredTickets': _registeredTickets, 'event': _event, 'user': _user, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'registeredTickets': _registeredTickets, 'event': _event, 'user': _user, 'type': _type, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryField ID = QueryField(fieldName: "id");
@@ -191,6 +205,7 @@ class Job extends Model {
   static final QueryField USER = QueryField(
     fieldName: "user",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'User'));
+  static final QueryField TYPE = QueryField(fieldName: "type");
   static final QueryField CREATEDAT = QueryField(fieldName: "createdAt");
   static final QueryField UPDATEDAT = QueryField(fieldName: "updatedAt");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -248,6 +263,13 @@ class Job extends Model {
       isRequired: true,
       targetName: 'userID',
       ofModelName: 'User'
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Job.TYPE,
+      isRequired: false,
+      isArray: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.enumeration))
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

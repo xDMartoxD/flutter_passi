@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:go_router/go_router.dart';
 import 'package:passi_app/constants/paymentMethodsLogos.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/payment_methods_by_user.dart';
+import 'package:passi_app/screens/add_card_screen.dart';
+import 'package:passi_app/screens/add_nequi_screen.dart';
 import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -100,14 +103,40 @@ class PaymentMethodsContent extends StatelessWidget {
 
   void _addPaymentMethodHandler(BuildContext context) {
     showModalBottomSheet(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 5,
+        isDismissible: true,
+        isScrollControlled: true,
         context: context,
         builder: (cotext) {
-          return Column(
-            children: [
-              GestureDetector(
-                child: ListTile(),
-              )
-            ],
+          return Container(
+            color: Theme.of(context).cardColor,
+            child: Wrap(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    context.pushNamed(AddCardScreen.name);
+                  },
+                  child: const ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: AssetImage('assets/images/mastercard.png'),
+                    ),
+                    title: Text("Tarjeta"),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.pushNamed(AddNequiScreen.name);
+                  },
+                  child: const ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: AssetImage('assets/images/nequi.png'),
+                    ),
+                    title: Text('Nequi'),
+                  ),
+                )
+              ],
+            ),
           );
         });
   }

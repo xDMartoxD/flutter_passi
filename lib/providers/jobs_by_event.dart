@@ -1,6 +1,7 @@
 import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:passi_app/models/JobTypeEnum.dart';
 import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/event_provider.dart';
 import 'package:passi_app/utils/amplify_utils.dart';
