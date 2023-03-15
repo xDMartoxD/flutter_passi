@@ -107,6 +107,20 @@ export type AmplifyDependentResourcesAttributes = {
             "LambdaExecutionRole": "string",
             "LambdaExecutionRoleArn": "string"
         },
+        "appamplify02fef6e8PostConfirmation": {
+            "Name": "string",
+            "Arn": "string",
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string",
+            "Region": "string"
+        },
+        "createEvent": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string",
+            "LambdaExecutionRoleArn": "string"
+        },
         "passiModelsLayer": {
             "Arn": "string"
         },
@@ -117,13 +131,6 @@ export type AmplifyDependentResourcesAttributes = {
             "Arn": "string"
         },
         "validateTicket": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string",
-            "LambdaExecutionRoleArn": "string"
-        },
-        "createEvent": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
