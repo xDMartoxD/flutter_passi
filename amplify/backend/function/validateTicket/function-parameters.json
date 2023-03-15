@@ -15,7 +15,8 @@
         "read"
       ],
       "TicketCategory:@model(appsync)": [
-        "read"
+        "read",
+        "update"
       ]
     }
   },

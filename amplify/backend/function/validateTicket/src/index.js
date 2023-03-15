@@ -24,13 +24,18 @@ export const handler = async (event) => {
   const query = `query MyQuery($id: ID!) {
   getTicket(id: $id) {
     eventID
+    didAssist
     ticketCategory {
       name
     }
   }
 }
 	`;
+
   const variables = { id: event.ticketId };
+  var mutation = `mutation MyMutation {
+  updateTicket(input: {id: "${event.ticketId}", didAssist: true})
+}`;
   console.log(`QUERY: ${query}`);
   const options = {
     method: "POST",
@@ -39,9 +44,17 @@ export const handler = async (event) => {
     },
     body: JSON.stringify({ query, variables }),
   };
+
+  const options2 = {
+    method: "POST",
+    headers: {
+      "x-api-key": GRAPHQL_API_KEY,
+    },
+    body: JSON.stringify({ mutation }),
+  };
   console.log(`OPTIONS: ${JSON.stringify(options)} `);
   const request = new Request(GRAPHQL_ENDPOINT, options);
-
+  const request2 = new Request(GRAPHQL_ENDPOINT, options2);
   let statusCode = 200;
   let body;
   let response;
@@ -68,12 +81,20 @@ export const handler = async (event) => {
     };
   }
   console.log("aca", body.data);
-  if (body.data.listEvents.items.length === 0)
+  if (
+    body.data.listEvents.items.length === 0 ||
+    body.data.listEvents.items[0].id !== event.eventId
+  )
     return {
       statusCode: 400,
       body: JSON.stringify("Ticket is not valid for this event"),
     };
-
+  if (body.data.getTicket.didAssist) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify("Ticket already validated"),
+    };
+  }
   return {
     statusCode: 200,
     //  Uncomment below to enable CORS requests

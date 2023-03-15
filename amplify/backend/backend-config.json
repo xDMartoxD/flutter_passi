@@ -383,20 +383,20 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "api",
+          "resourceName": "appamplify",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ]
+        },
+        {
           "attributes": [
             "Arn"
           ],
           "category": "function",
           "resourceName": "passinodeModules"
-        },
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
-          ],
-          "category": "api",
-          "resourceName": "appamplify"
         }
       ],
       "providerPlugin": "awscloudformation",
