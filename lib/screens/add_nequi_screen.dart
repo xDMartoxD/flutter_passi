@@ -1,5 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter/material.dart';
 
 class AddNequiScreen extends StatelessWidget {
   static const name = "add-nequi";
@@ -8,6 +7,9 @@ class AddNequiScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(),
+      body: Placeholder(),
+    );
   }
 }

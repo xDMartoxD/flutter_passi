@@ -110,9 +110,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         ),
         "appBarBottom": TabBar(
           tabs: [
-            Tab(text: "Pendientes"),
             Tab(text: "Proximas"),
-            Tab(text: "Anteriores"),
           ],
           controller: _tabController,
         ),

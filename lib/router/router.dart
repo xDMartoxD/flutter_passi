@@ -113,13 +113,13 @@ class AppRouter {
               path: AddCardScreen.path,
               name: AddCardScreen.name,
               builder: (context, state) {
-                return PaymentMethodsScreen();
+                return AddCardScreen();
               }),
           GoRoute(
               path: AddNequiScreen.path,
               name: AddNequiScreen.name,
               builder: (context, state) {
-                return PaymentMethodsScreen();
+                return AddNequiScreen();
               })
         ],
       ),
