@@ -52,4 +52,15 @@ class CartProvider with ChangeNotifier {
     }
     return total;
   }
+
+  bool get hasTickets {
+    bool has = false;
+    for (var element in _cart.values) {
+      if (element > 0) {
+        has = true;
+        break;
+      }
+    }
+    return has;
+  }
 }

@@ -5,13 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
+import 'package:passi_app/providers/tickets_provider.dart';
 import 'package:passi_app/screens/payment_methods_screen.dart';
+import 'package:passi_app/widgets/payment_method_content.dart';
 import 'package:provider/provider.dart';
 import '../providers/authentication_provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/event_provider.dart';
 import '../providers/payment_methods_by_user.dart';
-import '../providers/wompi_provider.dart';
 import '../utils/flutter_utils.dart';
 import '../widgets/event_item_large.dart';
 import '../widgets/loading.dart';
@@ -35,15 +36,12 @@ class EventCheckoutScreen extends StatelessWidget {
         ChangeNotifierProvider<EventProvider>(
           create: (context) => EventProvider(),
         ),
-        ChangeNotifierProvider<PaymentProvider>(
-          create: (context) => PaymentProvider(),
-        ),
-        ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMehtodsByUserProvider>(
+        ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMethodsByUserProvider>(
           create: (context) {
-            return PaymentMehtodsByUserProvider();
+            return PaymentMethodsByUserProvider();
           },
           update: (context, auth, previous) {
-            return PaymentMehtodsByUserProvider(authenticationProvider: auth);
+            return PaymentMethodsByUserProvider(authenticationProvider: auth);
           },
         ),
         ChangeNotifierProxyProvider<TicketCategoriesByEventProvider, CartProvider>(
@@ -60,6 +58,21 @@ class EventCheckoutScreen extends StatelessWidget {
           },
           update: (context, eventProvider, prev) {
             return DiscountCodesByEventProvider(eventProvider: eventProvider);
+          },
+        ),
+        ChangeNotifierProxyProvider4<EventProvider, AuthenticationProvider, CartProvider,
+            TicketCategoriesByEventProvider, TicketsProvider>(
+          create: (context) {
+            return TicketsProvider();
+          },
+          update: (context, eventProvider, authenticationProvider, cartProvider,
+              ticketCategoriesByEventProvider, prev) {
+            return TicketsProvider(
+              eventProvider: eventProvider,
+              authenticationProvider: authenticationProvider,
+              cartProvider: cartProvider,
+              ticketCategoriesProvider: ticketCategoriesByEventProvider,
+            );
           },
         )
       ], child: EventCheckoutContent(id: id)),
@@ -78,6 +91,8 @@ class EventCheckoutContent extends StatefulWidget {
 class _EventCheckoutContentState extends State<EventCheckoutContent> {
   TicketCategoriesByEventProvider? _ticketCategoriesByEventProvider;
   double totalAmount = 0;
+  bool _isLoading = false;
+
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
       await Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
@@ -87,13 +102,30 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         listen: false,
       );
       await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
-      await Provider.of<PaymentProvider>(context, listen: false).fetchTermsAndConditions();
+      final paymentMethodsProvider =
+          Provider.of<PaymentMethodsByUserProvider>(context, listen: false);
+      await paymentMethodsProvider.fetchTermsAndConditions();
+      await paymentMethodsProvider.getPaymentMethods();
       await Provider.of<DiscountCodesByEventProvider>(
         context,
         listen: false,
       ).fetchDiscountCodes();
     } catch (e) {
       safePrint(e.toString());
+    }
+  }
+
+  Future<void> _buyTicketsHandler() async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      await Provider.of<TicketsProvider>(context, listen: false).createTickets();
+      context.pop();
+      context.pop();
+    } catch (e) {
+    } finally {
+      _isLoading = false;
     }
   }
 
@@ -105,15 +137,15 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Consumer6<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
-                PaymentProvider, DiscountCodesByEventProvider, PaymentMehtodsByUserProvider>(
+                DiscountCodesByEventProvider, PaymentMethodsByUserProvider, CartProvider>(
               builder: (
                 context,
                 eventProvider,
                 ticketCategoriesProvider,
                 authProvider,
-                wompiProvider,
                 discountCodeProvider,
                 paymentMethodsProvider,
+                cartProvider,
                 child,
               ) {
                 return SingleChildScrollView(
@@ -146,70 +178,34 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                               ).toList()
                             ],
                           )),
-                      DiscountCodeWidget(),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
-                        margin: EdgeInsets.all(15),
-                        width: double.infinity,
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Metodo de pago",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                TextButton(
-                                    onPressed: () {
-                                      context.pushNamed(PaymentMethodsScreen.name);
-                                    },
-                                    child: Text(
-                                      "Cambiar",
-                                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                            // color: Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            if (paymentMethodsProvider.userSelectedPaymentMethod != null)
-                              Text(
-                                paymentMethodsProvider.userSelectedPaymentMethod!.type ==
-                                        PaymentMethodEnum.CARD
-                                    ? "${paymentMethodsProvider.userSelectedPaymentMethod!.data.last_four}"
-                                    : "${paymentMethodsProvider.userSelectedPaymentMethod!.data.phone_number}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .copyWith(fontWeight: FontWeight.bold),
+                      eventProvider.event!.price > 0 ? DiscountCodeWidget() : Container(),
+                      eventProvider.event!.price > 0
+                          ? Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Theme.of(context).cardColor,
                               ),
-                            SizedBox(
-                              height: 15,
+                              margin: EdgeInsets.all(15),
+                              width: double.infinity,
+                              padding: EdgeInsets.all(10),
+                              child: SelectedPaymentMethodContent(),
                             )
-                          ],
-                        ),
-                      ),
-                      TermsAndConditionsWidget(),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * .8,
-                        child: FloatingActionButton(
-                          backgroundColor: Colors.white,
-                          onPressed: wompiProvider.isChecked ? () {} : null,
-                          child: BuyButtonChild(),
-                        ),
-                      )
+                          : Container(),
+                      eventProvider.event!.price > 0 ? TermsAndConditionsWidget() : Container(),
+                      if (cartProvider.hasTickets)
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .8,
+                          child: FloatingActionButton(
+                            backgroundColor: Colors.white,
+                            onPressed: !_isLoading ? _buyTicketsHandler : null,
+                            child: _isLoading
+                                ? CircularProgressIndicator()
+                                : BuyButtonChild(
+                                    discountCodesProvider: discountCodeProvider,
+                                    cartProvider: cartProvider,
+                                  ),
+                          ),
+                        )
                     ],
                   ),
                 );
@@ -223,50 +219,97 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
   }
 }
 
-class BuyButtonChild extends StatelessWidget {
-  const BuyButtonChild({
+class SelectedPaymentMethodContent extends StatelessWidget {
+  const SelectedPaymentMethodContent({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<CartProvider, DiscountCodesByEventProvider>(
-      builder: (context, cartProvider, discountCodeProvider, child) {
-        return discountCodeProvider.discountCode != null
-            ? Text.rich(
-                TextSpan(
-                    text: "${formatNumber(cartProvider.total)}",
+    return Consumer<PaymentMethodsByUserProvider>(
+      builder: (context, paymentMethodsProvider, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Metodo de pago",
+                  style:
+                      Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.pushNamed(PaymentMethodsScreen.name);
+                  },
+                  child: Text(
+                    "Cambiar",
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          // color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            paymentMethodsProvider.selectedPaymentMethod != null
+                ? PaymentMethodContent(paymentMethod: paymentMethodsProvider.selectedPaymentMethod!)
+                : Container()
+          ],
+        );
+      },
+    );
+  }
+}
+
+class BuyButtonChild extends StatelessWidget {
+  final CartProvider cartProvider;
+  final DiscountCodesByEventProvider discountCodesProvider;
+  const BuyButtonChild({
+    required this.cartProvider,
+    required this.discountCodesProvider,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return discountCodesProvider.discountCode != null
+        ? Text.rich(
+            TextSpan(
+                text: "${formatNumber(cartProvider.total)}",
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: Colors.black,
+                      decorationThickness: 5,
+                    ),
+                children: [
+                  TextSpan(
+                    text:
+                        " ${formatNumber(cartProvider.total - discountCodesProvider.discountCode!.discount)} COP",
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.lineThrough,
-                          decorationColor: Colors.black,
-                          decorationThickness: 5,
                         ),
-                    children: [
-                      TextSpan(
-                        text:
-                            " ${formatNumber(cartProvider.total - discountCodeProvider.discountCode!.discount)} COP",
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      )
-                    ]),
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-              )
-            : Text(
-                "${formatNumber(cartProvider.total)} COP",
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-              );
-      },
-    );
+                  )
+                ]),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+          )
+        : Text(
+            "${cartProvider.total == 0 ? formatNumber(cartProvider.total) + " COP" : "Gratis"}",
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+          );
   }
 }
 
@@ -394,7 +437,7 @@ class TermsAndConditionsWidget extends StatefulWidget {
 class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<PaymentProvider>(
+    return Consumer<PaymentMethodsByUserProvider>(
       builder: (context, wompiProvider, child) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),

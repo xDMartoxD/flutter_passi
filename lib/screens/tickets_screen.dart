@@ -1,8 +1,7 @@
-import 'package:amplify_api/model_queries.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:passi_app/models/Event.dart';
-import 'package:passi_app/models/EventCategory.dart';
+import 'package:passi_app/providers/authentication_provider.dart';
+import 'package:passi_app/providers/tickets_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -16,20 +15,20 @@ class TicketsScreen extends StatefulWidget {
 
 class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateMixin {
   late final TabController _tabPageSelectorController1;
-  late final TabController _tabPageSelectorController2;
-  late final TabController _tabPageSelectorController3;
+  // late final TabController _tabPageSelectorController2;
+  // late final TabController _tabPageSelectorController3;
   late final PageController _pageController1;
-  late final PageController _pageController2;
-  late final PageController _pageController3;
+  // late final PageController _pageController2;
+  // late final PageController _pageController3;
   @override
   void initState() {
     super.initState();
     _tabPageSelectorController1 = TabController(length: 5, vsync: this);
-    _tabPageSelectorController2 = TabController(length: 5, vsync: this);
-    _tabPageSelectorController3 = TabController(length: 5, vsync: this);
+    // _tabPageSelectorController2 = TabController(length: 5, vsync: this);
+    // _tabPageSelectorController3 = TabController(length: 5, vsync: this);
     _pageController1 = PageController(keepPage: true);
-    _pageController2 = PageController(keepPage: true);
-    _pageController3 = PageController(keepPage: true);
+    // _pageController2 = PageController(keepPage: true);
+    // _pageController3 = PageController(keepPage: true);
     widget.tabController.addListener(_tabChangeListener);
   }
 
@@ -39,203 +38,182 @@ class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateM
         _pageController1.animateToPage(_tabPageSelectorController1.index,
             duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
         break;
-      case 1:
-        _pageController2.animateToPage(_tabPageSelectorController2.index,
-            duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
-        break;
-      case 2:
-        _pageController3.animateToPage(_tabPageSelectorController3.index,
-            duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
-        break;
-      default:
+      // case 1:
+      //   _pageController2.animateToPage(_tabPageSelectorController2.index,
+      //       duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
+      //   break;
+      // case 2:
+      //   _pageController3.animateToPage(_tabPageSelectorController3.index,
+      //       duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
+      //   break;
+      // default:
     }
   }
 
   @override
   void dispose() {
     _tabPageSelectorController1.dispose();
-    _tabPageSelectorController2.dispose();
-    _tabPageSelectorController3.dispose();
+    // _tabPageSelectorController2.dispose();
+    // _tabPageSelectorController3.dispose();
     _pageController1.dispose();
-    _pageController2.dispose();
-    _pageController3.dispose();
+    // _pageController2.dispose();
+    // _pageController3.dispose();
     widget.tabController.removeListener(_tabChangeListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return TabBarView(
-      controller: widget.tabController,
-      children: [
-        Stack(
-          children: [
-            Positioned.fill(
-              child: PageView.builder(
-                controller: _pageController1,
-                scrollDirection: Axis.vertical,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Image.network(
-                          "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned.fill(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProxyProvider<AuthenticationProvider, TicketsProvider>(
+          create: (context) {
+            return TicketsProvider();
+          },
+          update: (context, authenticationProvider, prev) {
+            return TicketsProvider(authenticationProvider: authenticationProvider);
+          },
+        )
+      ],
+      child: TabBarView(
+        controller: widget.tabController,
+        children: [
+          // Stack(
+          //   children: [
+
+          //     Positioned.fill(
+          //       right: 10,
+          //       child: Align(
+          //         alignment: Alignment.centerRight,
+          //         child: RotatedBox(
+          //           quarterTurns: 1,
+          //           child: TabPageSelector(
+          //             controller: _tabPageSelectorController1,
+          //             color: Colors.grey,
+          //             selectedColor: Colors.white,
+          //             borderStyle: BorderStyle.none,
+          //             indicatorSize: 10,
+          //           ),
+          //         ),
+          //       ),
+          //     )
+          //   ],
+          // ),
+          Stack(
+            children: [
+              Positioned.fill(
+                child: PageView.builder(
+                  controller: _pageController1,
+                  scrollDirection: Axis.vertical,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Stack(
+                      children: [
+                        Positioned.fill(
                           child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.transparent, Colors.black],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                        ),
-                      ))
-                    ],
-                  );
-                },
-                onPageChanged: (value) {
-                  setState(() {
-                    _tabPageSelectorController1.index = value;
-                  });
-                },
-              ),
-            ),
-            Positioned.fill(
-              right: 10,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: TabPageSelector(
-                    controller: _tabPageSelectorController1,
-                    color: Colors.grey,
-                    selectedColor: Colors.white,
-                    borderStyle: BorderStyle.none,
-                    indicatorSize: 10,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Positioned.fill(
-              child: PageView.builder(
-                controller: _pageController2,
-                scrollDirection: Axis.vertical,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Container(
-                          child: Image.network(
-                            "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Positioned.fill(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.transparent, Colors.black],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
+                            child: Image.network(
+                              "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          child: Ticket(),
                         ),
-                      )
-                    ],
-                  );
-                },
-                onPageChanged: (value) {
-                  setState(() {
-                    _tabPageSelectorController2.index = value;
-                  });
-                },
-              ),
-            ),
-            Positioned.fill(
-              right: 10,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: TabPageSelector(
-                    controller: _tabPageSelectorController2,
-                    color: Colors.grey,
-                    selectedColor: Colors.white,
-                    borderStyle: BorderStyle.none,
-                    indicatorSize: 10,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Positioned.fill(
-              child: PageView.builder(
-                controller: _pageController3,
-                scrollDirection: Axis.vertical,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Image.network(
-                          "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned.fill(
+                        Positioned.fill(
                           child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.transparent, Colors.black],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
+                            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Colors.transparent, Colors.black],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                            ),
+                            child: Ticket(),
                           ),
-                        ),
-                      ))
-                    ],
-                  );
-                },
-                onPageChanged: (value) {
-                  setState(() {
-                    _tabPageSelectorController3.index = value;
-                  });
-                },
-              ),
-            ),
-            Positioned.fill(
-              right: 10,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: TabPageSelector(
-                    controller: _tabPageSelectorController3,
-                    color: Colors.grey,
-                    selectedColor: Colors.white,
-                    borderStyle: BorderStyle.none,
-                    indicatorSize: 10,
-                  ),
+                        )
+                      ],
+                    );
+                  },
+                  onPageChanged: (value) {
+                    setState(() {
+                      _tabPageSelectorController1.index = value;
+                    });
+                  },
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+              Positioned.fill(
+                right: 10,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: RotatedBox(
+                    quarterTurns: 1,
+                    child: TabPageSelector(
+                      controller: _tabPageSelectorController1,
+                      color: Colors.grey,
+                      selectedColor: Colors.white,
+                      borderStyle: BorderStyle.none,
+                      indicatorSize: 10,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          // Stack(
+          //   children: [
+          //     Positioned.fill(
+          //       child: PageView.builder(
+          //         controller: _pageController3,
+          //         scrollDirection: Axis.vertical,
+          //         itemCount: 5,
+          //         itemBuilder: (context, index) {
+          //           return Stack(
+          //             children: [
+          //               Positioned.fill(
+          //                 child: Image.network(
+          //                   "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
+          //                   fit: BoxFit.cover,
+          //                 ),
+          //               ),
+          //               Positioned.fill(
+          //                   child: Container(
+          //                 decoration: const BoxDecoration(
+          //                   gradient: LinearGradient(
+          //                     colors: [Colors.transparent, Colors.black],
+          //                     begin: Alignment.topCenter,
+          //                     end: Alignment.bottomCenter,
+          //                   ),
+          //                 ),
+          //               ))
+          //             ],
+          //           );
+          //         },
+          //         onPageChanged: (value) {
+          //           setState(() {
+          //             _tabPageSelectorController3.index = value;
+          //           });
+          //         },
+          //       ),
+          //     ),
+          //     Positioned.fill(
+          //       right: 10,
+          //       child: Align(
+          //         alignment: Alignment.centerRight,
+          //         child: RotatedBox(
+          //           quarterTurns: 1,
+          //           child: TabPageSelector(
+          //             controller: _tabPageSelectorController3,
+          //             color: Colors.grey,
+          //             selectedColor: Colors.white,
+          //             borderStyle: BorderStyle.none,
+          //             indicatorSize: 10,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+        ],
+      ),
     );
   }
 }
