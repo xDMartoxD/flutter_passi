@@ -158,6 +158,12 @@ type TokenCardResData {
   expires_at: String! @auth(rules: [{ allow: private }])
 }
 
+enum JobType {
+  Promoter
+  Scanner
+  Admin
+}
+
 type Job
   @model
   @auth(
@@ -178,20 +184,13 @@ type Job
         { allow: groups, groups: ["Admin"] }
       ]
     )
-  type: [JobTypeEnum!]
-  phoneNumber: String
   event: Event! @belongsTo(fields: ["eventID"])
   eventID: ID! @index(name: "byEvent", queryField: "jobsByEvent")
   user: User! @belongsTo(fields: ["userID"])
   userID: ID! @index(name: "byUser", queryField: "jobsByUser")
+  type: [JobType]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-}
-
-enum JobTypeEnum {
-  Promoter
-  Scanner
-  Admin
 }
 
 type S3Object {
@@ -337,8 +336,13 @@ type Ticket
       ]
     )
   registeredBy: Job @belongsTo(fields: ["jobID"])
-  discountCodeID: ID @index(name: "byDiscountCode", queryField: "ticketsByDiscountCode")
-  discountCode: DiscountCode @belongsTo(fields: ["discountCodeID"])
+  code: String
+    @index(
+      name: "byDiscountCode"
+      sortKeyFields: ["eventID"]
+      queryField: "ticketsByDiscountCode"
+    )
+  discountCode: DiscountCode @belongsTo(fields: ["code", "eventID"])
   transaction: Transaction
   seat: String
   createdAt: AWSDateTime!
@@ -478,8 +482,8 @@ type DiscountCode
       { allow: public, operations: [read] }
     ]
   ) {
-  id: ID! @primaryKey
-  code: String! 
+  id: ID!
+  code: String! @primaryKey(sortKeyFields: ["eventID"])
   maxUse: Int
   actualUse: Int!
   validUntil: AWSDateTime!
@@ -489,7 +493,8 @@ type DiscountCode
   userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
   user: User @belongsTo(fields: ["userID"])
   tickets: [Ticket!]
-    @hasMany(indexName: "byDiscountCode", fields: ["id"])
+    @hasMany(indexName: "byDiscountCode", fields: ["code", "eventID"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
+ 

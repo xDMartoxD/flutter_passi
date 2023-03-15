@@ -59,14 +59,9 @@ class Event extends Model {
   @override
   getInstanceType() => classType;
   
-  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() => id;
-  
-  EventModelIdentifier get modelIdentifier {
-      return EventModelIdentifier(
-        id: id
-      );
+  String getId() {
+    return id;
   }
   
   String get title {
@@ -380,9 +375,9 @@ class Event extends Model {
     return buffer.toString();
   }
   
-  Event copyWith({String? title, String? description, String? company, String? companyUrl, TemporalDateTime? startDateTime, TemporalDateTime? finishDateTime, Coordinates? coords, String? address, String? place, int? minAge, double? price, int? maxCapacity, int? totalAssistants, String? primaryImage, String? contactNumber, List<String>? images, EventCategory? eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
+  Event copyWith({String? id, String? title, String? description, String? company, String? companyUrl, TemporalDateTime? startDateTime, TemporalDateTime? finishDateTime, Coordinates? coords, String? address, String? place, int? minAge, double? price, int? maxCapacity, int? totalAssistants, String? primaryImage, String? contactNumber, List<String>? images, EventCategory? eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
     return Event._internal(
-      id: id,
+      id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       company: company ?? this.company,
@@ -470,7 +465,6 @@ class Event extends Model {
     'id': id, 'title': _title, 'description': _description, 'company': _company, 'companyUrl': _companyUrl, 'startDateTime': _startDateTime, 'finishDateTime': _finishDateTime, 'coords': _coords, 'address': _address, 'place': _place, 'minAge': _minAge, 'price': _price, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'primaryImage': _primaryImage, 'contactNumber': _contactNumber, 'images': _images, 'eventCategory': _eventCategory, 'tickets': _tickets, 'Jobs': _Jobs, 'discountCodes': _discountCodes, 'needsCode': _needsCode, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'maxBuyQuantity': _maxBuyQuantity, 'ticketCategories': _ticketCategories
   };
 
-  static final QueryModelIdentifier<EventModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<EventModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField TITLE = QueryField(fieldName: "title");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
@@ -645,7 +639,7 @@ class Event extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Event.EVENTCATEGORY,
       isRequired: true,
-      targetNames: ['eventcategoryID'],
+      targetName: 'eventcategoryID',
       ofModelName: 'EventCategory'
     ));
     
@@ -715,48 +709,4 @@ class _EventModelType extends ModelType<Event> {
   String modelName() {
     return 'Event';
   }
-}
-
-/**
- * This is an auto generated class representing the model identifier
- * of [Event] in your schema.
- */
-@immutable
-class EventModelIdentifier implements ModelIdentifier<Event> {
-  final String id;
-
-  /** Create an instance of EventModelIdentifier using [id] the primary key. */
-  const EventModelIdentifier({
-    required this.id});
-  
-  @override
-  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
-    'id': id
-  });
-  
-  @override
-  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
-    .entries
-    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
-    .toList();
-  
-  @override
-  String serializeAsString() => serializeAsMap().values.join('#');
-  
-  @override
-  String toString() => 'EventModelIdentifier(id: $id)';
-  
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    
-    return other is EventModelIdentifier &&
-      id == other.id;
-  }
-  
-  @override
-  int get hashCode =>
-    id.hashCode;
 }

@@ -10,7 +10,7 @@ class Environment {
   Environment._internal();
 
   static final Environment _singleton = Environment._internal();
-  //Environment variable to set the environment run the app with --dart-define=env=[dev/prod]
+  //Environment variable to set the environment run the app with cd
   static const String dev = 'dev';
   static const String prod = 'prod';
 
@@ -25,7 +25,7 @@ class Environment {
       case Environment.prod:
         return ProdSetup();
       default:
-        return DevSetup();
+        return ProdSetup();
     }
   }
 }

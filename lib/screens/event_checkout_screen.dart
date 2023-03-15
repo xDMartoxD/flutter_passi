@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
-import 'package:passi_app/providers/user_payment_methods.provider.dart';
 import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/authentication_provider.dart';
@@ -30,30 +29,39 @@ class EventCheckoutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("checkout")),
       body: MultiProvider(providers: [
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<TicketCategoriesByEventProvider>(
           create: (context) => TicketCategoriesByEventProvider(),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<EventProvider>(
           create: (context) => EventProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => WompiProvider(),
+        ChangeNotifierProvider<PaymentProvider>(
+          create: (context) => PaymentProvider(),
         ),
-        ChangeNotifierProvider(create: (context) {
-          return UserPaymentMethodsProvider();
-        }),
         ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMehtodsByUserProvider>(
-            create: (context) {
-          return PaymentMehtodsByUserProvider();
-        }, update: (context, auth, previous) {
-          return PaymentMehtodsByUserProvider(authenticationProvider: auth);
-        }),
+          create: (context) {
+            return PaymentMehtodsByUserProvider();
+          },
+          update: (context, auth, previous) {
+            return PaymentMehtodsByUserProvider(authenticationProvider: auth);
+          },
+        ),
         ChangeNotifierProxyProvider<TicketCategoriesByEventProvider, CartProvider>(
-            create: (context) {
-          return CartProvider();
-        }, update: (context, ticketCategoryProvider, previous) {
-          return CartProvider(ticketCategoriesByEventProvider: ticketCategoryProvider);
-        }),
+          create: (context) {
+            return CartProvider();
+          },
+          update: (context, ticketCategoryProvider, previous) {
+            return CartProvider(ticketCategoriesByEventProvider: ticketCategoryProvider);
+          },
+        ),
+        ChangeNotifierProxyProvider<EventProvider, DiscountCodesByEventProvider>(
+          create: (context) {
+            return DiscountCodesByEventProvider();
+          },
+          update: (context, eventProvider, prev) {
+            return DiscountCodesByEventProvider(eventProvider: eventProvider);
+          },
+        )
       ], child: EventCheckoutContent(id: id)),
     );
   }
@@ -69,7 +77,6 @@ class EventCheckoutContent extends StatefulWidget {
 
 class _EventCheckoutContentState extends State<EventCheckoutContent> {
   TicketCategoriesByEventProvider? _ticketCategoriesByEventProvider;
-  CartProvider? _cartProvider;
   double totalAmount = 0;
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
@@ -80,32 +87,14 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         listen: false,
       );
       await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
-      await Provider.of<WompiProvider>(context, listen: false).fetchTermsAndConditions();
+      await Provider.of<PaymentProvider>(context, listen: false).fetchTermsAndConditions();
+      await Provider.of<DiscountCodesByEventProvider>(
+        context,
+        listen: false,
+      ).fetchDiscountCodes();
     } catch (e) {
       safePrint(e.toString());
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero).then((_) {
-      _cartProvider = context.read<CartProvider>();
-      _cartProvider!.addListener(_cartProviderListener);
-    });
-  }
-
-  void _cartProviderListener() {
-    print(_cartProvider!.cart.length);
-    setState(() {
-      totalAmount = _cartProvider!.getTotal();
-    });
-  }
-
-  @override
-  void dispose() {
-    _cartProvider!.removeListener(_cartProviderListener);
-    super.dispose();
   }
 
   @override
@@ -116,7 +105,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Consumer6<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
-                WompiProvider, DiscountCodeProvider, PaymentMehtodsByUserProvider>(
+                PaymentProvider, DiscountCodesByEventProvider, PaymentMehtodsByUserProvider>(
               builder: (
                 context,
                 eventProvider,
@@ -213,19 +202,12 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                         ),
                       ),
                       TermsAndConditionsWidget(),
-                      Text("Total: ${totalAmount}"),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .8,
                         child: FloatingActionButton(
                           backgroundColor: Colors.white,
                           onPressed: wompiProvider.isChecked ? () {} : null,
-                          child: Text(
-                            "Comprar",
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
+                          child: BuyButtonChild(),
                         ),
                       )
                     ],
@@ -236,6 +218,53 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
           default:
             return Loading();
         }
+      },
+    );
+  }
+}
+
+class BuyButtonChild extends StatelessWidget {
+  const BuyButtonChild({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer2<CartProvider, DiscountCodesByEventProvider>(
+      builder: (context, cartProvider, discountCodeProvider, child) {
+        return discountCodeProvider.discountCode != null
+            ? Text.rich(
+                TextSpan(
+                    text: "${formatNumber(cartProvider.total)}",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Colors.black,
+                          decorationThickness: 5,
+                        ),
+                    children: [
+                      TextSpan(
+                        text:
+                            " ${formatNumber(cartProvider.total - discountCodeProvider.discountCode!.discount)} COP",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      )
+                    ]),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              )
+            : Text(
+                "${formatNumber(cartProvider.total)} COP",
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              );
       },
     );
   }
@@ -259,7 +288,7 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
   }
 
   Future<void> _addDiscountCodeHandler(BuildContext context,
-      DiscountCodeProvider discountCodeProvider, EventProvider eventProvider) async {
+      DiscountCodesByEventProvider discountCodeProvider, EventProvider eventProvider) async {
     showModalBottomSheet(
         backgroundColor: Theme.of(context).cardColor,
         context: context,
@@ -279,8 +308,7 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
                 ),
                 TextButton(
                     onPressed: () {
-                      discountCodeProvider.fetchDiscountCode(
-                          eventProvider.event!.id, _textFieldControler.text);
+                      discountCodeProvider.setDiscountCode(_textFieldControler.text);
                       Navigator.of(context).pop();
                     },
                     child: Text("Buscar"))
@@ -292,7 +320,7 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<DiscountCodeProvider, EventProvider>(
+    return Consumer2<DiscountCodesByEventProvider, EventProvider>(
       builder: (context, discountCodeProvider, eventProvider, child) {
         return Container(
           decoration: BoxDecoration(
@@ -366,7 +394,7 @@ class TermsAndConditionsWidget extends StatefulWidget {
 class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<WompiProvider>(
+    return Consumer<PaymentProvider>(
       builder: (context, wompiProvider, child) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -378,7 +406,7 @@ class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   children: [
                     TextSpan(
-                      text: "Terminos y condiciones",
+                      text: "Terminos y condiciones ",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: Color.fromRGBO(26, 135, 244, 1),
                           ),

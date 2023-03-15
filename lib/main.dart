@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/event_categories_provider.dart';
-import 'package:passi_app/providers/internet.dart';
+import 'package:passi_app/providers/internet_provider.dart';
 import 'package:passi_app/router/router.dart';
 import 'package:passi_app/theme/theme_constants.dart';
 import 'package:provider/provider.dart';
@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<EventCategoriesProvider>(
             create: (_) => EventCategoriesProvider(),
           ),
-          ChangeNotifierProvider<DiscountCodeProvider>(create: (_) {
-            return DiscountCodeProvider();
+          ChangeNotifierProvider<DiscountCodesByEventProvider>(create: (_) {
+            return DiscountCodesByEventProvider();
           }),
         ],
         child: MaterialApp.router(

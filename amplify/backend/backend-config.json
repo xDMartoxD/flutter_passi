@@ -383,20 +383,20 @@
       "build": true,
       "dependsOn": [
         {
+          "category": "api",
+          "resourceName": "appamplify",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ]
+        },
+        {
           "attributes": [
             "Arn"
           ],
           "category": "function",
           "resourceName": "passinodeModules"
-        },
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
-          ],
-          "category": "api",
-          "resourceName": "appamplify"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -705,6 +705,22 @@
         {
           "category": "function",
           "resourceName": "validateTicket"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyEvent_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyEvent"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyEvent_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyEvent"
         }
       ]
     }

@@ -43,13 +43,12 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  double getTotal() {
+  double get total {
     double total = 0;
-    if (ticketCategoriesByEventProvider == null) {
-      return total;
-    }
-    for (var ticketCategory in ticketCategoriesByEventProvider!.ticketCategories) {
-      total += cart[ticketCategory]! * ticketCategory.price;
+    if (ticketCategoriesByEventProvider != null) {
+      for (var ticketCategory in ticketCategoriesByEventProvider!.ticketCategories) {
+        total += cart[ticketCategory.id]! * ticketCategory.price;
+      }
     }
     return total;
   }

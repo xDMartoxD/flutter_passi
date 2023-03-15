@@ -47,6 +47,7 @@ class _EventSetterState extends State<EventSetter> {
                     onPressed: () async {
                       String body =
                           await verifyEvent(eventId: _eventFormController.text);
+                      debugPrint(body);
                       if (body == "ERROR") {
                         return;
                       }
