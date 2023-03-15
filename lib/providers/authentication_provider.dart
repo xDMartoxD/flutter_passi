@@ -40,7 +40,12 @@ class AuthenticationProvider with ChangeNotifier {
     }
   }
 
-  Future<void> setUser() async {
+  Future<void> setUser({User? newUser}) async {
+    if (newUser != null) {
+      _user = newUser;
+      notifyListeners();
+      return;
+    }
     final isSignedIn = await isUserSignedIn();
     if (isSignedIn) {
       try {

@@ -26,6 +26,13 @@ Color checkBoxInnerColor(Set<MaterialState> states) {
   }
 }
 
+Color radioOuterColor(Set<MaterialState> states) {
+  if (states.contains(MaterialState.selected)) {
+    return Colors.white;
+  }
+  return Colors.white;
+}
+
 final dark_theme = ThemeData(
   primaryColor: const Color.fromRGBO(255, 0, 255, 1),
   primarySwatch: primaryswatchcolor,
@@ -132,6 +139,9 @@ final dark_theme = ThemeData(
       ),
       fillColor: MaterialStateProperty.resolveWith(checkBoxInnerColor)),
   progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
+  radioTheme: RadioThemeData(
+    fillColor: MaterialStateProperty.all(Colors.white),
+  ),
   useMaterial3: true,
 );
 const MaterialColor primaryswatchcolor =
