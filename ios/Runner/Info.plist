@@ -34,6 +34,8 @@
 		<string>Main</string>
 		<key>NSUserTrackingUsageDescription</key>
 <string>This identifier will be used to deliver personalized ads to you.</string>
+<key>NSCameraUsageDescription</key>
+<string>$(PRODUCT_NAME) would like to access the camera to view tickets</string>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
