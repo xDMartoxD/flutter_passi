@@ -42,4 +42,8 @@ class TicketCategoriesByEventProvider with ChangeNotifier {
       safePrint('Query failed: ${e.message}');
     }
   }
+
+  TicketCategory? getTicketCategoryById(String id) {
+    return _ticketCategories.firstWhere((tc) => tc.id == id);
+  }
 }

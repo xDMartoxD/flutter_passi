@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/amplify_utils.dart';
 
-class WompiProvider with ChangeNotifier {
+class PaymentProvider with ChangeNotifier {
   PresignedAcceptance? _presignedAcceptance;
   bool _isChecked = false;
   PresignedAcceptance? get presignedAcceptance {

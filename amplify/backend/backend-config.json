@@ -707,6 +707,22 @@
           "resourceName": "validateTicket"
         }
       ]
+    },
+    "AMPLIFY_function_verifyEvent_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyEvent"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyEvent_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyEvent"
+        }
+      ]
     }
   },
   "storage": {

@@ -1,42 +1,46 @@
+import 'package:amplify_api/model_queries.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:passi_app/models/JobTypeEnum.dart';
 import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/event_provider.dart';
+import 'package:passi_app/utils/amplify_utils.dart';
 
 class JobsByEventProvider with ChangeNotifier {
   EventProvider? eventProvider;
-  List<Job> _jobs = [];
+  List<Job> _promoters = [];
 
   JobsByEventProvider({this.eventProvider});
-  List<Job> get jobs => [..._jobs];
+  List<Job> get promoters => [..._promoters];
 
   Future<void> getPromotersByEvent() async {
     if (eventProvider == null) {
       return;
     }
     Future<void> getPaymentMethods() async {
-      if (authenticationProvider == null || authenticationProvider?.user == null) {
+      if (eventProvider == null || eventProvider?.event == null) {
         return;
       }
       try {
-        final request = cognitoRequest(
+        final request = apiKeyRequest(
           ModelQueries.list(
-            PaymentMethod.classType,
-            where: PaymentMethod.USER.eq(authenticationProvider!.user!.id),
+            Job.classType,
+            where: Job.EVENT.eq(eventProvider!.event!.id).and(Job.TYPE.eq(JobTypeEnum.Promoter)),
           ),
         );
         final response = await Amplify.API.query(request: request).response;
-        final paginatedPaymentMethods = response.data;
-        if (paginatedPaymentMethods == null) {
+        final paginatedJobsResponse = response.data;
+        if (paginatedJobsResponse == null) {
           print('errors: ${response.errors}');
           return;
         }
-        final List<PaymentMethod> loadedPaymentMethods = [];
-        for (var element in paginatedPaymentMethods.items) {
+        final List<Job> loadedJobs = [];
+        for (var element in paginatedJobsResponse.items) {
           if (element != null) {
-            loadedPaymentMethods.add(element);
+            loadedJobs.add(element);
           }
         }
-        _paymentMethods = loadedPaymentMethods;
+        _promoters = loadedJobs;
         notifyListeners();
       } on ApiException catch (e) {
         safePrint('Query failed: $e');

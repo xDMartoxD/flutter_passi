@@ -1,19 +1,24 @@
 import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:passi_app/providers/event_provider.dart';
 
 import '../models/DiscountCode.dart';
 import '../models/EventCategory.dart';
 import '../utils/amplify_utils.dart';
 
-class DiscountCodeProvider with ChangeNotifier {
+class DiscountCodesByEventProvider with ChangeNotifier {
+  EventProvider? eventProvider;
   List<_DiscountCode> _discountCodes = <_DiscountCode>[];
   DiscountCode? _discountCode;
   List<_DiscountCode> get discountCodes => [..._discountCodes];
   DiscountCode? get discountCode => _discountCode;
+  List<DiscountCode?> _fetchedDiscountCodes = [];
+
+  DiscountCodesByEventProvider({this.eventProvider});
 
   void addDiscountCode({required String discountCode, required String eventId}) {
-    if (discountCodeExists(eventId) != null) {
+    if (_discountCodeExists(eventId) != null) {
       return;
     }
     _discountCodes
@@ -21,7 +26,7 @@ class DiscountCodeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String? discountCodeExists(String eventId) {
+  String? _discountCodeExists(String eventId) {
     final discountCode = _discountCodes.firstWhere((element) => element.eventId == eventId,
         orElse: () => _DiscountCode(discountCode: '', eventId: ''));
     if (discountCode.discountCode == '') {
@@ -30,31 +35,41 @@ class DiscountCodeProvider with ChangeNotifier {
     return discountCode.discountCode;
   }
 
-  Future<void> fetchDiscountCode(String eventID, String code) async {
-    try {
-      final request = apiKeyRequest(
-        ModelQueries.list(
-          DiscountCode.classType,
-          where: DiscountCode.CODE.eq(code).and(
-                DiscountCode.EVENT.eq(eventID),
-              ),
-        ),
-      );
-      final response = await Amplify.API.query(request: request).response;
-      final paginatedDiscountCodes = response.data;
-      if (paginatedDiscountCodes == null) {
-        safePrint('errors: ${response.errors}');
-        return;
+  Future<void> fetchDiscountCodes() async {
+    if (eventProvider != null && eventProvider?.event != null) {
+      try {
+        final request = apiKeyRequest(
+          ModelQueries.list(DiscountCode.classType,
+              where: DiscountCode.EVENT.eq(eventProvider!.event!.id)),
+        );
+        final response = await Amplify.API.query(request: request).response;
+        final paginatedDiscountCodes = response.data;
+        if (paginatedDiscountCodes == null) {
+          safePrint('errors: ${response.errors}');
+          return;
+        }
+        List<DiscountCode?> loadedDiscountCodes = [];
+        for (var element in paginatedDiscountCodes.items) {
+          loadedDiscountCodes.add(element);
+        }
+        _fetchedDiscountCodes = loadedDiscountCodes;
+        notifyListeners();
+      } on ApiException catch (e) {
+        safePrint('Query failed: $e');
       }
-      _discountCode = paginatedDiscountCodes.items[0];
-      notifyListeners();
-    } on ApiException catch (e) {
-      safePrint('Query failed: $e');
     }
+  }
+
+  void setDiscountCode(String code) {
+    _discountCode = _fetchedDiscountCodes.firstWhere(
+      (discountCode) => discountCode?.code == code,
+    );
+    notifyListeners();
   }
 
   void removeDiscountCode() {
     _discountCode = null;
+    notifyListeners();
   }
 }
 

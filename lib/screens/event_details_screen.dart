@@ -35,7 +35,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     Future.delayed(Duration.zero).then(
       (value) {
         _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-
         // _authenticationProvider!.addListener(_authenticationListener);
       },
     );
@@ -141,14 +140,18 @@ class _EventContentState extends State<EventContent> {
           case ConnectionState.waiting:
             return Loading();
           default:
-            return Consumer<EventProvider>(builder: (context, value, child) {
-              return value.event == null
+            return Consumer2<EventProvider, JobsByEventProvider>(
+                builder: (context, eventProvider, jobsProvider, child) {
+              return eventProvider.event == null
                   ? Loading()
                   : CustomScrollView(
                       slivers: <Widget>[
                         EventDetailsAppBar(
                           id: widget.id,
-                          images: [value.event!.primaryImage, ...(value.event!.images ?? [])],
+                          images: [
+                            eventProvider.event!.primaryImage,
+                            ...(eventProvider.event!.images ?? [])
+                          ],
                         ),
                         SliverList(
                           delegate: SliverChildListDelegate(
@@ -156,7 +159,7 @@ class _EventContentState extends State<EventContent> {
                               Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Text(
-                                  value.event!.title,
+                                  eventProvider.event!.title,
                                   style: Theme.of(context).textTheme.displayLarge!.copyWith(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -176,24 +179,24 @@ class _EventContentState extends State<EventContent> {
                                     EventInfoIcon(
                                       icon: Icons.watch_later_outlined,
                                       textContent:
-                                          "${parseTime(value.event!.startDateTime)} - ${parseTime(value.event!.finishDateTime)}",
+                                          "${parseTime(eventProvider.event!.startDateTime)} - ${parseTime(eventProvider.event!.finishDateTime)}",
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.map,
-                                      textContent: "${value.event!.address}",
+                                      textContent: "${eventProvider.event!.address}",
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.calendar_today,
                                       textContent:
-                                          "${parseDate(value.event!.startDateTime)}\n${parseDate(value.event!.finishDateTime)}",
+                                          "${parseDate(eventProvider.event!.startDateTime)}\n${parseDate(eventProvider.event!.finishDateTime)}",
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.corporate_fare_rounded,
-                                      textContent: "${value.event!.company}",
+                                      textContent: "${eventProvider.event!.company}",
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.star_border_rounded,
-                                      textContent: value.event!.eventCategory.name,
+                                      textContent: eventProvider.event!.eventCategory.name,
                                     ),
                                   ],
                                 ),
@@ -208,13 +211,13 @@ class _EventContentState extends State<EventContent> {
                                         return TicketCategoriesByEventProvider();
                                       },
                                       child: EventDetailsCategoriesInfo(
-                                        eventId: value.event!.id,
+                                        eventId: eventProvider.event!.id,
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                              PromotersWidget(),
+                              if (!jobsProvider.promoters.isEmpty) PromotersWidget(),
                               // SizedBox(height: 20),
                               // Padding(
                               //   padding: const EdgeInsets.all(8.0),
@@ -227,10 +230,10 @@ class _EventContentState extends State<EventContent> {
                               //   ),
                               // ),
                               // SizedBox(height: 20),
-                              if (value.event!.description != null)
+                              if (eventProvider.event!.description != null)
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: ExpandableText(value.event!.description),
+                                  child: ExpandableText(eventProvider.event!.description),
                                 ),
                               SizedBox(height: 80)
                             ],

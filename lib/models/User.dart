@@ -45,14 +45,9 @@ class User extends Model {
   @override
   getInstanceType() => classType;
   
-  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() => id;
-  
-  UserModelIdentifier get modelIdentifier {
-      return UserModelIdentifier(
-        id: id
-      );
+  String getId() {
+    return id;
   }
   
   String get email {
@@ -195,9 +190,9 @@ class User extends Model {
     return buffer.toString();
   }
   
-  User copyWith({String? email, String? name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, String? userSelectedPaymentMethodId}) {
+  User copyWith({String? id, String? email, String? name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, String? userSelectedPaymentMethodId}) {
     return User._internal(
-      id: id,
+      id: id ?? this.id,
       email: email ?? this.email,
       name: name ?? this.name,
       avatar: avatar ?? this.avatar,
@@ -257,7 +252,6 @@ class User extends Model {
     'id': id, 'email': _email, 'name': _name, 'avatar': _avatar, 'tickets': _tickets, 'jobs': _jobs, 'codes': _codes, 'paymentMethods': _paymentMethods, 'selectedPaymentMethod': _selectedPaymentMethod, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'userSelectedPaymentMethodId': _userSelectedPaymentMethodId
   };
 
-  static final QueryModelIdentifier<UserModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<UserModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField EMAIL = QueryField(fieldName: "email");
   static final QueryField NAME = QueryField(fieldName: "name");
@@ -375,7 +369,7 @@ class User extends Model {
       key: User.SELECTEDPAYMENTMETHOD,
       isRequired: false,
       ofModelName: 'PaymentMethod',
-      associatedKey: PaymentMethod.USER
+      associatedKey: PaymentMethod.ID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
@@ -410,48 +404,4 @@ class _UserModelType extends ModelType<User> {
   String modelName() {
     return 'User';
   }
-}
-
-/**
- * This is an auto generated class representing the model identifier
- * of [User] in your schema.
- */
-@immutable
-class UserModelIdentifier implements ModelIdentifier<User> {
-  final String id;
-
-  /** Create an instance of UserModelIdentifier using [id] the primary key. */
-  const UserModelIdentifier({
-    required this.id});
-  
-  @override
-  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
-    'id': id
-  });
-  
-  @override
-  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
-    .entries
-    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
-    .toList();
-  
-  @override
-  String serializeAsString() => serializeAsMap().values.join('#');
-  
-  @override
-  String toString() => 'UserModelIdentifier(id: $id)';
-  
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    
-    return other is UserModelIdentifier &&
-      id == other.id;
-  }
-  
-  @override
-  int get hashCode =>
-    id.hashCode;
 }

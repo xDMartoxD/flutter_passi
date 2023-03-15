@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
-import 'package:passi_app/providers/user_payment_methods.provider.dart';
 import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/authentication_provider.dart';
@@ -30,24 +29,39 @@ class EventCheckoutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("checkout")),
       body: MultiProvider(providers: [
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<TicketCategoriesByEventProvider>(
           create: (context) => TicketCategoriesByEventProvider(),
         ),
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<EventProvider>(
           create: (context) => EventProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => WompiProvider(),
+        ChangeNotifierProvider<PaymentProvider>(
+          create: (context) => PaymentProvider(),
         ),
-        ChangeNotifierProvider(create: (context) {
-          return UserPaymentMethodsProvider();
-        }),
         ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMehtodsByUserProvider>(
-            create: (context) {
-          return PaymentMehtodsByUserProvider();
-        }, update: (context, auth, previous) {
-          return PaymentMehtodsByUserProvider(authenticationProvider: auth);
-        })
+          create: (context) {
+            return PaymentMehtodsByUserProvider();
+          },
+          update: (context, auth, previous) {
+            return PaymentMehtodsByUserProvider(authenticationProvider: auth);
+          },
+        ),
+        ChangeNotifierProxyProvider<TicketCategoriesByEventProvider, CartProvider>(
+          create: (context) {
+            return CartProvider();
+          },
+          update: (context, ticketCategoryProvider, previous) {
+            return CartProvider(ticketCategoriesByEventProvider: ticketCategoryProvider);
+          },
+        ),
+        ChangeNotifierProxyProvider<EventProvider, DiscountCodesByEventProvider>(
+          create: (context) {
+            return DiscountCodesByEventProvider();
+          },
+          update: (context, eventProvider, prev) {
+            return DiscountCodesByEventProvider(eventProvider: eventProvider);
+          },
+        )
       ], child: EventCheckoutContent(id: id)),
     );
   }
@@ -63,7 +77,7 @@ class EventCheckoutContent extends StatefulWidget {
 
 class _EventCheckoutContentState extends State<EventCheckoutContent> {
   TicketCategoriesByEventProvider? _ticketCategoriesByEventProvider;
-
+  double totalAmount = 0;
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
       await Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
@@ -73,7 +87,11 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         listen: false,
       );
       await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
-      await Provider.of<WompiProvider>(context, listen: false).fetchTermsAndConditions();
+      await Provider.of<PaymentProvider>(context, listen: false).fetchTermsAndConditions();
+      await Provider.of<DiscountCodesByEventProvider>(
+        context,
+        listen: false,
+      ).fetchDiscountCodes();
     } catch (e) {
       safePrint(e.toString());
     }
@@ -87,7 +105,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Consumer6<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
-                WompiProvider, DiscountCodeProvider, PaymentMehtodsByUserProvider>(
+                PaymentProvider, DiscountCodesByEventProvider, PaymentMehtodsByUserProvider>(
               builder: (
                 context,
                 eventProvider,
@@ -113,27 +131,17 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                             date: eventProvider.event!.startDateTime,
                           ),
                         ),
-                      if (discountCodeProvider.discountCode != null)
-                        Text(
-                          formatNumber(eventProvider.event!.price -
-                              discountCodeProvider.discountCode!.discount),
-                        ),
                       Padding(
                           padding: EdgeInsets.symmetric(horizontal: 15),
                           child: Column(
                             children: [
                               ...ticketCategoriesProvider.ticketCategories.map(
                                 (ticketCategory) {
-                                  return ChangeNotifierProvider(
-                                    create: (context) {
-                                      return CartProvider(ticketCategory: ticketCategory);
-                                    },
-                                    child: TicketCategoryContentWidget(
+                                  return TicketCategoryContentWidget(
                                       color: ticketCategory.color,
                                       name: ticketCategory.name,
                                       price: ticketCategory.price,
-                                    ),
-                                  );
+                                      id: ticketCategory.id);
                                 },
                               ).toList()
                             ],
@@ -199,13 +207,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                         child: FloatingActionButton(
                           backgroundColor: Colors.white,
                           onPressed: wompiProvider.isChecked ? () {} : null,
-                          child: Text(
-                            "Comprar",
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
+                          child: BuyButtonChild(),
                         ),
                       )
                     ],
@@ -216,6 +218,53 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
           default:
             return Loading();
         }
+      },
+    );
+  }
+}
+
+class BuyButtonChild extends StatelessWidget {
+  const BuyButtonChild({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer2<CartProvider, DiscountCodesByEventProvider>(
+      builder: (context, cartProvider, discountCodeProvider, child) {
+        return discountCodeProvider.discountCode != null
+            ? Text.rich(
+                TextSpan(
+                    text: "${formatNumber(cartProvider.total)}",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Colors.black,
+                          decorationThickness: 5,
+                        ),
+                    children: [
+                      TextSpan(
+                        text:
+                            " ${formatNumber(cartProvider.total - discountCodeProvider.discountCode!.discount)} COP",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      )
+                    ]),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              )
+            : Text(
+                "${formatNumber(cartProvider.total)} COP",
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              );
       },
     );
   }
@@ -239,7 +288,7 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
   }
 
   Future<void> _addDiscountCodeHandler(BuildContext context,
-      DiscountCodeProvider discountCodeProvider, EventProvider eventProvider) async {
+      DiscountCodesByEventProvider discountCodeProvider, EventProvider eventProvider) async {
     showModalBottomSheet(
         backgroundColor: Theme.of(context).cardColor,
         context: context,
@@ -259,8 +308,7 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
                 ),
                 TextButton(
                     onPressed: () {
-                      discountCodeProvider.fetchDiscountCode(
-                          eventProvider.event!.id, _textFieldControler.text);
+                      discountCodeProvider.setDiscountCode(_textFieldControler.text);
                       Navigator.of(context).pop();
                     },
                     child: Text("Buscar"))
@@ -272,7 +320,7 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<DiscountCodeProvider, EventProvider>(
+    return Consumer2<DiscountCodesByEventProvider, EventProvider>(
       builder: (context, discountCodeProvider, eventProvider, child) {
         return Container(
           decoration: BoxDecoration(
@@ -346,7 +394,7 @@ class TermsAndConditionsWidget extends StatefulWidget {
 class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<WompiProvider>(
+    return Consumer<PaymentProvider>(
       builder: (context, wompiProvider, child) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -391,9 +439,11 @@ class TicketCategoryContentWidget extends StatelessWidget {
   final String color;
   final String name;
   final double price;
+  final String id;
 
   const TicketCategoryContentWidget({
     super.key,
+    required this.id,
     required this.color,
     required this.name,
     required this.price,
@@ -413,7 +463,7 @@ class TicketCategoryContentWidget extends StatelessWidget {
                   width: 100,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: getColor("FF0000"),
+                    color: getColor(color),
                   ),
                 ),
                 SizedBox(width: 5),
@@ -441,7 +491,7 @@ class TicketCategoryContentWidget extends StatelessWidget {
                 ),
               ],
             ),
-            addTicketToCartWidget()
+            addTicketToCartWidget(ticketCategoryId: id)
           ],
         ),
         Divider()
@@ -451,7 +501,9 @@ class TicketCategoryContentWidget extends StatelessWidget {
 }
 
 class addTicketToCartWidget extends StatelessWidget {
-  const addTicketToCartWidget({
+  String ticketCategoryId;
+  addTicketToCartWidget({
+    required this.ticketCategoryId,
     super.key,
   });
 
@@ -462,14 +514,14 @@ class addTicketToCartWidget extends StatelessWidget {
         return Row(
           children: [
             IconButton(
-                onPressed: cartProvider.remove,
+                onPressed: () => cartProvider.remove(ticketCategoryId),
                 icon: Icon(
                   Icons.remove,
                   size: 18,
                 )),
-            Text(cartProvider.quantity.toString()),
+            Text(cartProvider.cart[ticketCategoryId].toString()),
             IconButton(
-                onPressed: cartProvider.add,
+                onPressed: () => cartProvider.add(ticketCategoryId),
                 icon: Icon(
                   Icons.add,
                   size: 18,

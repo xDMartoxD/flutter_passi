@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
+import 'package:passi_app/screens/add_card_screen.dart';
+import 'package:passi_app/screens/add_nequi_screen.dart';
 import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/screen_args/email_confirmation_screen_args.dart';
@@ -32,7 +34,7 @@ class AppRouter {
             name: EventDetailsScreen.name,
             builder: (BuildContext context, GoRouterState state) {
               if (state.queryParams.isNotEmpty && state.queryParams.containsKey("promoterCode")) {
-                context.read<DiscountCodeProvider>().addDiscountCode(
+                context.read<DiscountCodesByEventProvider>().addDiscountCode(
                     discountCode: state.queryParams["promoterCode"]!, eventId: state.params["id"]!);
               }
               state.params.addAll(state.queryParams);
@@ -104,6 +106,18 @@ class AppRouter {
           GoRoute(
               path: PaymentMethodsScreen.path,
               name: PaymentMethodsScreen.name,
+              builder: (context, state) {
+                return PaymentMethodsScreen();
+              }),
+          GoRoute(
+              path: AddCardScreen.path,
+              name: AddCardScreen.name,
+              builder: (context, state) {
+                return PaymentMethodsScreen();
+              }),
+          GoRoute(
+              path: AddNequiScreen.path,
+              name: AddNequiScreen.name,
               builder: (context, state) {
                 return PaymentMethodsScreen();
               })

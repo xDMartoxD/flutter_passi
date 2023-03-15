@@ -43,14 +43,9 @@ class PaymentMethod extends Model {
   @override
   getInstanceType() => classType;
   
-  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() => id;
-  
-  PaymentMethodModelIdentifier get modelIdentifier {
-      return PaymentMethodModelIdentifier(
-        id: id
-      );
+  String getId() {
+    return id;
   }
   
   User get user {
@@ -218,9 +213,9 @@ class PaymentMethod extends Model {
     return buffer.toString();
   }
   
-  PaymentMethod copyWith({User? user, PaymentMethodEnum? type, String? status, PaymentMethodData? data, String? token, String? customer_email, String? acceptance_token, int? paymentSourceID, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  PaymentMethod copyWith({String? id, User? user, PaymentMethodEnum? type, String? status, PaymentMethodData? data, String? token, String? customer_email, String? acceptance_token, int? paymentSourceID, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
     return PaymentMethod._internal(
-      id: id,
+      id: id ?? this.id,
       user: user ?? this.user,
       type: type ?? this.type,
       status: status ?? this.status,
@@ -258,7 +253,6 @@ class PaymentMethod extends Model {
     'id': id, 'user': _user, 'type': _type, 'status': _status, 'data': _data, 'token': _token, 'customer_email': _customer_email, 'acceptance_token': _acceptance_token, 'paymentSourceID': _paymentSourceID, 'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<PaymentMethodModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<PaymentMethodModelIdentifier>();
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField USER = QueryField(
     fieldName: "user",
@@ -320,7 +314,7 @@ class PaymentMethod extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: PaymentMethod.USER,
       isRequired: true,
-      targetNames: ['userID'],
+      targetName: 'userID',
       ofModelName: 'User'
     ));
     
@@ -392,48 +386,4 @@ class _PaymentMethodModelType extends ModelType<PaymentMethod> {
   String modelName() {
     return 'PaymentMethod';
   }
-}
-
-/**
- * This is an auto generated class representing the model identifier
- * of [PaymentMethod] in your schema.
- */
-@immutable
-class PaymentMethodModelIdentifier implements ModelIdentifier<PaymentMethod> {
-  final String id;
-
-  /** Create an instance of PaymentMethodModelIdentifier using [id] the primary key. */
-  const PaymentMethodModelIdentifier({
-    required this.id});
-  
-  @override
-  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
-    'id': id
-  });
-  
-  @override
-  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
-    .entries
-    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
-    .toList();
-  
-  @override
-  String serializeAsString() => serializeAsMap().values.join('#');
-  
-  @override
-  String toString() => 'PaymentMethodModelIdentifier(id: $id)';
-  
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    
-    return other is PaymentMethodModelIdentifier &&
-      id == other.id;
-  }
-  
-  @override
-  int get hashCode =>
-    id.hashCode;
 }
