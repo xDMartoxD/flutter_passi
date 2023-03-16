@@ -1,11 +1,24 @@
+import 'package:amplify_api/amplify_api.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:passi_app/providers/authentication_provider.dart';
+
 import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
+import 'package:passi_app/screens/user_settings_screen.dart';
+import 'package:passi_app/widgets/loading.dart';
+import 'package:provider/provider.dart';
+
+import '../amplifyconfiguration.dart';
+import '../models/ModelProvider.dart';
 
 class AppTabs extends StatefulWidget {
-  static const route = "/";
+  static const path = "/";
   static const name = "tabs";
   const AppTabs({super.key});
 
@@ -16,13 +29,30 @@ class AppTabs extends StatefulWidget {
 class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
   late final List<Map<String, Object?>> _screens;
   late int _currenPageIndex;
-  late final TabController _tabController;
+  // late final TabController _tabController;
+  bool _isAmplifyConfigured = false;
+  Future<void> _configureAmplify() async {
+    final authPlugin = AmplifyAuthCognito();
+    final api = AmplifyAPI(modelProvider: ModelProvider.instance);
+    final storage = AmplifyStorageS3();
+    await Amplify.addPlugins([api, authPlugin, storage]);
+    setState(() {
+      _isAmplifyConfigured = true;
+    });
+    try {
+      await Amplify.configure(amplifyconfig);
+    } on AmplifyAlreadyConfiguredException {
+      safePrint("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.index = 1;
+    // _tabController = TabController(length: 3, vsync: this);
+    // _tabController.index = 1;
     _currenPageIndex = 0;
+
     _screens = [
       {
         "title": "home",
@@ -32,31 +62,47 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
       },
       {
         "title": "Tickets",
-        "screen": TicketsScreen(
-          tabController: _tabController,
-        ),
-        "appBarBottom": TabBar(
-          tabs: [
-            Tab(text: "Pendientes"),
-            Tab(text: "Proximas"),
-            Tab(text: "Anteriores"),
-          ],
-          controller: _tabController,
-        ),
+        "screen": TicketsScreen(),
+        "appBarBottom": null
+        // TabBar(
+        //   tabs: [
+        //     Tab(text: "Pendientes"),
+        //     Tab(text: "Proximas"),
+        //     Tab(text: "Anteriores"),
+        //   ],
+        //   controller: _tabController,
+        // )
+        ,
         "appBarActions": []
       },
       {
         "title": "Perfil",
         "screen": ProfileScreen(),
         "appBarBottom": null,
-        "appBarActions": [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
+        "appBarActions": [
+          IconButton(
+            onPressed: () => {context.pushNamed(UserSettingsScreen.name)},
+            icon: Icon(Icons.settings),
+          )
+        ],
       }
     ];
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if (!Amplify.isConfigured) {
+        await _configureAmplify();
+      } else {
+        setState(() {
+          _isAmplifyConfigured = true;
+        });
+      }
+      await Provider.of<AuthenticationProvider>(context, listen: false).setUser();
+    });
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    // _tabController.dispose();
     super.dispose();
   }
 
@@ -83,7 +129,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
           NavigationDestination(
             icon: Icon(
               Icons.person,
-              size: 28,
+              size: 32,
             ),
             label: "Profile",
           )
@@ -94,7 +140,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         }),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
-      body: _screens[_currenPageIndex]["screen"] as Widget,
+      body: _isAmplifyConfigured ? _screens[_currenPageIndex]["screen"] as Widget : Loading(),
     );
   }
 }

@@ -1,6 +1,15 @@
 {
   "api": {
     "appamplify": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "appamplify02fef6e8"
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
@@ -13,7 +22,7 @@
           ],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDate": "2023-02-17T01:54:00.349Z",
+              "apiKeyExpirationDate": "2024-02-22T01:27:48.598Z",
               "apiKeyExpirationDays": 365,
               "description": "api key"
             },
@@ -23,12 +32,44 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
+    },
+    "endpoints": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "validateTicket"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "verifyEvent"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "auth": {
     "appamplify02fef6e8": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "appamplify02fef6e8PostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
         "mfaTypes": [
@@ -57,12 +98,29 @@
   "function": {
     "ConfirmNequiPayment": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
     "CreateEntracePayment": {
       "build": true,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -82,6 +140,13 @@
           ],
           "category": "function",
           "resourceName": "passiWompiLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -96,6 +161,13 @@
           ],
           "category": "function",
           "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -110,6 +182,13 @@
           ],
           "category": "function",
           "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -124,6 +203,13 @@
           ],
           "category": "function",
           "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -138,6 +224,13 @@
           ],
           "category": "function",
           "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -152,6 +245,13 @@
           ],
           "category": "function",
           "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -166,6 +266,13 @@
           ],
           "category": "function",
           "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -173,6 +280,15 @@
     },
     "CreatePaymentSource": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -185,6 +301,13 @@
           ],
           "category": "function",
           "resourceName": "passiModelsLayer"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -192,6 +315,52 @@
     },
     "RefreshTransactionStatus": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "appamplify02fef6e8PostConfirmation": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passiModelsLayer"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "createEvent": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -204,6 +373,50 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
+    },
+    "passinodeModules": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    },
+    "validateTicket": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "verifyEvent": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -223,6 +436,134 @@
         }
       ]
     },
+    "AMPLIFY_function_CreateEntracePayment_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntracePayment"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntracePayment_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntracePayment"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceBusinessLogic_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceBusinessLogic"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceBusinessLogic_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceBusinessLogic"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceDB_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceDB"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceDB_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceDB"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceNequiBusinessLogic_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceNequiBusinessLogic"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceNequiBusinessLogic_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceNequiBusinessLogic"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceNequiDB_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceNequiDB"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntranceNequiDB_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntranceNequiDB"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntrancePSE_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntrancePSE"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntrancePSE_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntrancePSE"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntrance_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntrance"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateEntrance_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateEntrance"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateFreeEntrance_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateFreeEntrance"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateFreeEntrance_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateFreeEntrance"
+        }
+      ]
+    },
     "AMPLIFY_function_CreatePaymentSource_deploymentBucketName": {
       "usedBy": [
         {
@@ -239,6 +580,22 @@
         }
       ]
     },
+    "AMPLIFY_function_CreateUserDynamo_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateUserDynamo"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreateUserDynamo_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreateUserDynamo"
+        }
+      ]
+    },
     "AMPLIFY_function_RefreshTransactionStatus_deploymentBucketName": {
       "usedBy": [
         {
@@ -252,6 +609,38 @@
         {
           "category": "function",
           "resourceName": "RefreshTransactionStatus"
+        }
+      ]
+    },
+    "AMPLIFY_function_appamplify02fef6e8PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "appamplify02fef6e8PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_appamplify02fef6e8PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "appamplify02fef6e8PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_createEvent_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createEvent"
+        }
+      ]
+    },
+    "AMPLIFY_function_createEvent_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createEvent"
         }
       ]
     },
@@ -284,6 +673,54 @@
         {
           "category": "function",
           "resourceName": "passiWompiLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_passinodeModules_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ]
+    },
+    "AMPLIFY_function_passinodeModules_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "passinodeModules"
+        }
+      ]
+    },
+    "AMPLIFY_function_validateTicket_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "validateTicket"
+        }
+      ]
+    },
+    "AMPLIFY_function_validateTicket_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "validateTicket"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyEvent_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyEvent"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyEvent_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyEvent"
         }
       ]
     }

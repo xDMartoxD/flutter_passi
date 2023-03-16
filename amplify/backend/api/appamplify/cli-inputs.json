@@ -3,11 +3,10 @@
   "serviceConfiguration": {
     "apiName": "appamplify",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/home/martin/Proyectos/app-amplify/amplify/backend/api/appamplify/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "expirationTime": 365,
-      "apiKeyExpirationDate": "2023-02-17T01:54:00.349Z",
+      "apiKeyExpirationDate": "2024-02-22T01:27:48.598Z",
       "keyDescription": "api key"
     },
     "additionalAuthTypes": [
@@ -15,6 +14,7 @@
         "mode": "AMAZON_COGNITO_USER_POOLS",
         "cognitoUserPoolId": "authappamplify02fef6e8"
       }
-    ]
+    ],
+    "conflictResolution": {}
   }
 }

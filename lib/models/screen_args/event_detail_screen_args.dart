@@ -2,25 +2,27 @@ import 'package:passi_app/models/screen_args/screen_args.dart';
 
 class EventDetailScreenArgs implements ScreenArgs {
   late final String id;
-  late final String imageUrl;
+  late final String? promoterCode;
 
-  EventDetailScreenArgs({required this.id, required this.imageUrl});
+  EventDetailScreenArgs({required this.id, this.promoterCode});
 
   @override
   Map<String, dynamic> queryParams() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['imageUrl'] = imageUrl;
-    data["id"] = id;
+    final Map<String, dynamic> data = <String, dynamic>{
+      'promoterCode': promoterCode ?? ''
+    };
     return data;
   }
 
   EventDetailScreenArgs.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    imageUrl = json['imageUrl'];
+    promoterCode = json['promoterCode'];
   }
 
   @override
   Map<String, String> params() {
-    return {};
+    return {
+      'id': id,
+    };
   }
 }

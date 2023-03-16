@@ -18,6 +18,21 @@ IconThemeData navBarIconThemeData(Set<MaterialState> states) {
   }
 }
 
+Color checkBoxInnerColor(Set<MaterialState> states) {
+  if (states.contains(MaterialState.selected)) {
+    return Color.fromRGBO(26, 135, 244, 1);
+  } else {
+    return Color.fromARGB(16, 16, 16, 1);
+  }
+}
+
+Color radioOuterColor(Set<MaterialState> states) {
+  if (states.contains(MaterialState.selected)) {
+    return Colors.white;
+  }
+  return Colors.white;
+}
+
 final dark_theme = ThemeData(
   primaryColor: const Color.fromRGBO(255, 0, 255, 1),
   primarySwatch: primaryswatchcolor,
@@ -100,7 +115,7 @@ final dark_theme = ThemeData(
     errorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color.fromRGBO(237, 67, 55, 1)),
     ),
-    contentPadding: EdgeInsets.all(16),
+    contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
     floatingLabelBehavior: FloatingLabelBehavior.always,
     hintStyle: TextStyle(color: Colors.grey),
     errorStyle: TextStyle(color: Color.fromRGBO(237, 67, 55, 1)),
@@ -118,10 +133,14 @@ final dark_theme = ThemeData(
     labelColor: Colors.white,
     unselectedLabelColor: Colors.white,
   ),
-  checkboxTheme: const CheckboxThemeData(
-    side: BorderSide(
-      color: Colors.white,
-    ),
+  checkboxTheme: CheckboxThemeData(
+      side: BorderSide(
+        color: Colors.white,
+      ),
+      fillColor: MaterialStateProperty.resolveWith(checkBoxInnerColor)),
+  progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.white),
+  radioTheme: RadioThemeData(
+    fillColor: MaterialStateProperty.all(Colors.white),
   ),
   useMaterial3: true,
 );

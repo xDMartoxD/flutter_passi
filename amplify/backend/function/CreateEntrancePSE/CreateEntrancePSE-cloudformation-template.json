@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.22\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"9.1.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -19,6 +19,10 @@
     "functionpassiModelsLayerArn": {
       "Type": "String",
       "Default": "functionpassiModelsLayerArn"
+    },
+    "functionpassinodeModulesArn": {
+      "Type": "String",
+      "Default": "functionpassinodeModulesArn"
     }
   },
   "Conditions": {
@@ -86,6 +90,9 @@
         "Layers": [
           {
             "Ref": "functionpassiModelsLayerArn"
+          },
+          {
+            "Ref": "functionpassinodeModulesArn"
           }
         ],
         "Timeout": 25
@@ -196,6 +203,14 @@
     "LambdaExecutionRole": {
       "Value": {
         "Ref": "LambdaExecutionRole"
+      }
+    },
+    "LambdaExecutionRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaExecutionRole",
+          "Arn"
+        ]
       }
     }
   }

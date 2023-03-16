@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/validate": {
+      "name": "/validate",
+      "lambdaFunction": "validateTicket",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/validateEvent": {
+      "name": "/validateEvent",
+      "lambdaFunction": "verifyEvent",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

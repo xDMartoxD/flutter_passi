@@ -1,4 +1,4 @@
-import '../models/event_category.dart';
+import '../models/my_models/event_category.dart';
 import 'json_data.dart';
 
 List<Event> events = data.map((e) => Event.fromJson(e)).toList();

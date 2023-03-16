@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "api": {
+      "appamplify": [
+        "Query",
+        "Mutation"
+      ]
+    },
+    "storage": {
+      "Event:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

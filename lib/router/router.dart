@@ -1,59 +1,136 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passi_app/models/screen_args/event_categories_screen_args.dart';
-import 'package:passi_app/models/screen_args/event_detail_screen_args.dart';
-import 'package:passi_app/screens/error_screen.dart';
-import 'package:passi_app/screens/event_categories_overview_screen.dart';
-import 'package:passi_app/screens/event_checkout_screen.dart';
+import 'package:passi_app/providers/discount_code_provider.dart';
+import 'package:passi_app/screens/add_card_screen.dart';
+import 'package:passi_app/screens/add_nequi_screen.dart';
+import 'package:passi_app/screens/payment_methods_screen.dart';
+import 'package:provider/provider.dart';
+import '../models/screen_args/email_confirmation_screen_args.dart';
+import '../models/screen_args/event_categories_screen_args.dart';
+import '../models/screen_args/event_detail_screen_args.dart';
+import '../screens/email_login_screen.dart';
+import '../screens/email_register_screen.dart';
+import '../screens/error_screen.dart';
+import '../screens/event_categories_overview_screen.dart';
+import '../screens/event_checkout_screen.dart';
+import '../screens/user_settings_screen.dart';
 import '../models/screen_args/event_checkout_screen_args.dart';
+import '../screens/email_confirmation_screen.dart';
 import '../screens/event_details_screen.dart';
 import '../screens/app_tabs.dart';
 
 class AppRouter {
   late final GoRouter router = GoRouter(
-      routes: <RouteBase>[
-        GoRoute(
-          path: AppTabs.route,
-          name: AppTabs.name,
-          builder: (BuildContext context, GoRouterState state) {
-            return AppTabs();
-          },
-          routes: <RouteBase>[
-            GoRoute(
-              path: EventDetailsScreen.route,
-              name: EventDetailsScreen.name,
-              routes: [],
-              builder: (BuildContext context, GoRouterState state) {
-                final EventDetailScreenArgs args =
-                    EventDetailScreenArgs.fromJson(state.queryParams);
-                return EventDetailsScreen(
-                  id: args.id,
-                  imageUrl: args.imageUrl,
+    routes: [
+      GoRoute(
+        path: AppTabs.path,
+        name: AppTabs.name,
+        builder: (BuildContext context, GoRouterState state) {
+          return AppTabs();
+        },
+        routes: [
+          GoRoute(
+            path: EventDetailsScreen.path,
+            name: EventDetailsScreen.name,
+            builder: (BuildContext context, GoRouterState state) {
+              if (state.queryParams.isNotEmpty && state.queryParams.containsKey("promoterCode")) {
+                context.read<DiscountCodesByEventProvider>().addDiscountCode(
+                    discountCode: state.queryParams["promoterCode"]!, eventId: state.params["id"]!);
+              }
+              state.params.addAll(state.queryParams);
+              final args = EventDetailScreenArgs.fromJson(
+                state.params,
+              );
+              return EventDetailsScreen(
+                id: args.id,
+                promoterCode: args.promoterCode,
+              );
+            },
+          ),
+          GoRoute(
+            path: EventCheckoutScreen.path,
+            name: EventCheckoutScreen.name,
+            builder: (BuildContext context, GoRouterState state) {
+              final args =
+                  EventCheckoutScreenArgs.fromJson({...state.params, ...state.queryParams});
+              return EventCheckoutScreen(
+                id: args.id,
+                discountCode: args.discountCode,
+              );
+            },
+          ),
+          GoRoute(
+            path: EmailLoginScreen.path,
+            name: EmailLoginScreen.name,
+            builder: (context, state) {
+              return EmailLoginScreen();
+            },
+          ),
+          GoRoute(
+            path: UserSettingsScreen.path,
+            name: UserSettingsScreen.name,
+            builder: (context, state) {
+              return UserSettingsScreen();
+            },
+          ),
+          GoRoute(
+            path: EventCategoriesOverviewScreen.path,
+            name: EventCategoriesOverviewScreen.name,
+            builder: (BuildContext context, GoRouterState state) {
+              final args = EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
+              return EventCategoriesOverviewScreen(
+                id: args.id,
+                categoryName: args.categoryName,
+              );
+            },
+          ),
+          GoRoute(
+            path: EmailRegisterScreen.path,
+            name: EmailRegisterScreen.name,
+            builder: (BuildContext context, GoRouterState state) {
+              return EmailRegisterScreen();
+            },
+          ),
+          GoRoute(
+              path: EmailConfirmationScreen.path,
+              name: EmailConfirmationScreen.name,
+              builder: (context, state) {
+                final args = EmailConfirmationScreenArgs.fromJson(
+                  state.queryParams,
                 );
-              },
-            ),
-            GoRoute(
-              path: EventCategoriesOverviewScreen.route,
-              name: EventCategoriesOverviewScreen.name,
-              builder: (BuildContext context, GoRouterState state) {
-                final args = EventCategoriesOverviewScreenArgs.fromJson(state.params);
-                return EventCategoriesOverviewScreen(
-                  id: args.id,
+                return EmailConfirmationScreen(
+                  email: args.email,
+                  password: args.password,
                 );
-              },
-            ),
-            GoRoute(
-              path: EventCheckoutScreen.route,
-              name: EventCheckoutScreen.name,
-              builder: (BuildContext context, GoRouterState state) {
-                final args = EventCheckoutScreenArgs.fromJson(state.params);
-                return EventCheckoutScreen(id: args.id);
-              },
-            )
-          ],
+              }),
+          GoRoute(
+              path: PaymentMethodsScreen.path,
+              name: PaymentMethodsScreen.name,
+              builder: (context, state) {
+                return PaymentMethodsScreen();
+              }),
+          GoRoute(
+              path: AddCardScreen.path,
+              name: AddCardScreen.name,
+              builder: (context, state) {
+                return AddCardScreen();
+              }),
+          GoRoute(
+              path: AddNequiScreen.path,
+              name: AddNequiScreen.name,
+              builder: (context, state) {
+                return AddNequiScreen();
+              })
+        ],
+      ),
+    ],
+    errorPageBuilder: (context, state) {
+      return MaterialPage(
+        key: state.pageKey,
+        child: ErrorScreen(
+          error: state.error.toString(),
         ),
-      ],
-      errorPageBuilder: (context, state) {
-        return MaterialPage(child: ErrorScreen());
-      });
+      );
+    },
+  );
 }
