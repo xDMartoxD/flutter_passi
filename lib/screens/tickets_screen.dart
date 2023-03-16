@@ -1,226 +1,433 @@
+// import 'package:amplify_api/model_queries.dart';
+// import 'package:amplify_flutter/amplify_flutter.dart';
+// import 'package:flutter/material.dart';
+// import 'package:passi_app/models/Event.dart';
+// import 'package:passi_app/models/EventCategory.dart';
+// import 'package:passi_app/providers/authentication_provider.dart';
+// import 'package:passi_app/providers/event_provider.dart';
+// import 'package:passi_app/providers/tickets_provider.dart';
+// import 'package:passi_app/widgets/loading.dart';
+// import 'package:provider/provider.dart';
+
+// import 'package:qr_flutter/qr_flutter.dart';
+
+// class TicketsScreen extends StatelessWidget {
+//   final TabController tabController;
+//   const TicketsScreen({super.key, required this.tabController});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiProvider(
+//         providers: [
+//           ChangeNotifierProvider<EventProvider>(
+//             create: (context) {
+//               return EventProvider();
+//             },
+//           ),
+//           ChangeNotifierProxyProvider<AuthenticationProvider, TicketsProvider>(create: (context) {
+//             return TicketsProvider();
+//           }, update: (context, authenticationProvider, prev) {
+//             return TicketsProvider(authenticationProvider: authenticationProvider);
+//           })
+//         ],
+//         child: TicketsContent(
+//           tabController: tabController,
+//         ));
+//   }
+// }
+
+// class TicketsContent extends StatefulWidget {
+//   final TabController tabController;
+//   const TicketsContent({super.key, required this.tabController});
+
+//   @override
+//   State<TicketsContent> createState() => _TicketsContentState();
+// }
+
+// class _TicketsContentState extends State<TicketsContent> with TickerProviderStateMixin {
+//   late final TabController _tabPageSelectorController1;
+//   late final TabController _tabPageSelectorController2;
+//   late final TabController _tabPageSelectorController3;
+//   late final PageController _pageController1;
+//   late final PageController _pageController2;
+//   late final PageController _pageController3;
+//   @override
+//   void initState() {
+//     super.initState();
+//     _tabPageSelectorController1 = TabController(length: 5, vsync: this);
+//     _tabPageSelectorController2 = TabController(length: 5, vsync: this);
+//     _tabPageSelectorController3 = TabController(length: 5, vsync: this);
+//     _pageController1 = PageController(keepPage: true);
+//     _pageController2 = PageController(keepPage: true);
+//     _pageController3 = PageController(keepPage: true);
+//     widget.tabController.addListener(_tabChangeListener);
+//   }
+
+//   void _tabChangeListener() {
+//     switch (widget.tabController.index) {
+//       case 0:
+//         _pageController1.animateToPage(_tabPageSelectorController1.index,
+//             duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
+//         break;
+//       case 1:
+//         _pageController2.animateToPage(_tabPageSelectorController2.index,
+//             duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
+//         break;
+//       case 2:
+//         _pageController3.animateToPage(_tabPageSelectorController3.index,
+//             duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
+//         break;
+//       default:
+//     }
+//   }
+
+//   @override
+//   void dispose() {
+//     _tabPageSelectorController1.dispose();
+//     _tabPageSelectorController2.dispose();
+//     _tabPageSelectorController3.dispose();
+//     _pageController1.dispose();
+//     _pageController2.dispose();
+//     _pageController3.dispose();
+//     widget.tabController.removeListener(_tabChangeListener);
+//     super.dispose();
+//   }
+
+//   Future<void> getTickets() async {
+//     await Provider.of<TicketsProvider>(context, listen: false).getTickets();
+//   }
+
+//   Future<void> _setEvent(String id) async {
+//     await Provider.of<EventProvider>(context, listen: false).setEventById(id);
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder(
+//       future: getTickets(),
+//       builder: (BuildContext context, AsyncSnapshot snapshot) {
+//         switch (snapshot.connectionState) {
+//           case ConnectionState.done:
+//             return Consumer<TicketsProvider>(
+//               builder: (context, ticketsProvider, child) {
+//                 return TabBarView(
+//                   controller: widget.tabController,
+//                   children: [
+//                     Stack(
+//                       children: [
+//                         Positioned.fill(
+//                           child: PageView.builder(
+//                             controller: _pageController1,
+//                             scrollDirection: Axis.vertical,
+//                             itemCount: ticketsProvider.tickets.length,
+//                             itemBuilder: (context, index) {
+//                               return Stack(
+//                                 children: [
+//                                   Positioned.fill(
+//                                       child: FutureBuilder(
+//                                     future: _setEvent(ticketsProvider.tickets[index].event.id),
+//                                     builder: (BuildContext context, AsyncSnapshot snapshot) {
+//                                       return Consumer<EventProvider>(
+//                                         builder: (context, eventProvider, child) {
+//                                           return eventProvider.event != null
+//                                               ? Image.network(
+//                                                   eventProvider.event!.primaryImage,
+//                                                   fit: BoxFit.cover,
+//                                                 )
+//                                               : Container();
+//                                         },
+//                                       );
+//                                     },
+//                                   )),
+//                                   Positioned.fill(
+//                                       child: Container(
+//                                     decoration: const BoxDecoration(
+//                                       gradient: LinearGradient(
+//                                         colors: [Colors.transparent, Colors.black],
+//                                         begin: Alignment.topCenter,
+//                                         end: Alignment.bottomCenter,
+//                                       ),
+//                                     ),
+//                                   ))
+//                                 ],
+//                               );
+//                             },
+//                             onPageChanged: (value) {
+//                               setState(() {
+//                                 _tabPageSelectorController1.index = value;
+//                               });
+//                             },
+//                           ),
+//                         ),
+//                         Positioned.fill(
+//                           right: 10,
+//                           child: Align(
+//                             alignment: Alignment.centerRight,
+//                             child: RotatedBox(
+//                               quarterTurns: 1,
+//                               child: TabPageSelector(
+//                                 controller: _tabPageSelectorController1,
+//                                 color: Colors.grey,
+//                                 selectedColor: Colors.white,
+//                                 borderStyle: BorderStyle.none,
+//                                 indicatorSize: 10,
+//                               ),
+//                             ),
+//                           ),
+//                         )
+//                       ],
+//                     ),
+//                     Stack(
+//                       children: [
+//                         Positioned.fill(
+//                           child: PageView.builder(
+//                             controller: _pageController2,
+//                             scrollDirection: Axis.vertical,
+//                             itemCount: 5,
+//                             itemBuilder: (context, index) {
+//                               return Stack(
+//                                 children: [
+//                                   Positioned.fill(
+//                                     child: Container(
+//                                       child: Image.network(
+//                                         "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
+//                                         fit: BoxFit.cover,
+//                                       ),
+//                                     ),
+//                                   ),
+//                                   Positioned.fill(
+//                                     child: Container(
+//                                       padding:
+//                                           const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
+//                                       decoration: const BoxDecoration(
+//                                         gradient: LinearGradient(
+//                                           colors: [Colors.transparent, Colors.black],
+//                                           begin: Alignment.topCenter,
+//                                           end: Alignment.bottomCenter,
+//                                         ),
+//                                       ),
+//                                       child: Ticket(),
+//                                     ),
+//                                   )
+//                                 ],
+//                               );
+//                             },
+//                             onPageChanged: (value) {
+//                               setState(() {
+//                                 _tabPageSelectorController2.index = value;
+//                               });
+//                             },
+//                           ),
+//                         ),
+//                         Positioned.fill(
+//                           right: 10,
+//                           child: Align(
+//                             alignment: Alignment.centerRight,
+//                             child: RotatedBox(
+//                               quarterTurns: 1,
+//                               child: TabPageSelector(
+//                                 controller: _tabPageSelectorController2,
+//                                 color: Colors.grey,
+//                                 selectedColor: Colors.white,
+//                                 borderStyle: BorderStyle.none,
+//                                 indicatorSize: 10,
+//                               ),
+//                             ),
+//                           ),
+//                         )
+//                       ],
+//                     ),
+//                     Stack(
+//                       children: [
+//                         Positioned.fill(
+//                           child: PageView.builder(
+//                             controller: _pageController3,
+//                             scrollDirection: Axis.vertical,
+//                             itemCount: 5,
+//                             itemBuilder: (context, index) {
+//                               return Stack(
+//                                 children: [
+//                                   Positioned.fill(
+//                                     child: Image.network(
+//                                       "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
+//                                       fit: BoxFit.cover,
+//                                     ),
+//                                   ),
+//                                   Positioned.fill(
+//                                       child: Container(
+//                                     decoration: const BoxDecoration(
+//                                       gradient: LinearGradient(
+//                                         colors: [Colors.transparent, Colors.black],
+//                                         begin: Alignment.topCenter,
+//                                         end: Alignment.bottomCenter,
+//                                       ),
+//                                     ),
+//                                   ))
+//                                 ],
+//                               );
+//                             },
+//                             onPageChanged: (value) {
+//                               setState(() {
+//                                 _tabPageSelectorController3.index = value;
+//                               });
+//                             },
+//                           ),
+//                         ),
+//                         Positioned.fill(
+//                           right: 10,
+//                           child: Align(
+//                             alignment: Alignment.centerRight,
+//                             child: RotatedBox(
+//                               quarterTurns: 1,
+//                               child: TabPageSelector(
+//                                 controller: _tabPageSelectorController3,
+//                                 color: Colors.grey,
+//                                 selectedColor: Colors.white,
+//                                 borderStyle: BorderStyle.none,
+//                                 indicatorSize: 10,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 );
+//               },
+//             );
+//           default:
+//             return Loading();
+//         }
+//       },
+//     );
+//   }
+// }
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/tickets_provider.dart';
+import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
-
 import 'package:qr_flutter/qr_flutter.dart';
 
-class TicketsScreen extends StatefulWidget {
-  final TabController tabController;
-  const TicketsScreen({super.key, required this.tabController});
-
+class TicketsScreen extends StatelessWidget {
+  const TicketsScreen({super.key});
+  Future<void> fetchTickets() async {}
   @override
-  State<TicketsScreen> createState() => _TicketsScreenState();
+  Widget build(BuildContext context) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProxyProvider<AuthenticationProvider, TicketsProvider>(
+            create: (context) {
+              return TicketsProvider();
+            },
+            update: (context, authenticationProvider, prev) {
+              return TicketsProvider(authenticationProvider: authenticationProvider);
+            },
+          )
+        ],
+        child: FutureBuilder(
+          future: fetchTickets(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return TicketsContent();
+          },
+        ));
+  }
 }
 
-class _TicketsScreenState extends State<TicketsScreen> with TickerProviderStateMixin {
-  late final TabController _tabPageSelectorController1;
-  // late final TabController _tabPageSelectorController2;
-  // late final TabController _tabPageSelectorController3;
-  late final PageController _pageController1;
-  // late final PageController _pageController2;
-  // late final PageController _pageController3;
-  @override
-  void initState() {
-    super.initState();
-    _tabPageSelectorController1 = TabController(length: 5, vsync: this);
-    // _tabPageSelectorController2 = TabController(length: 5, vsync: this);
-    // _tabPageSelectorController3 = TabController(length: 5, vsync: this);
-    _pageController1 = PageController(keepPage: true);
-    // _pageController2 = PageController(keepPage: true);
-    // _pageController3 = PageController(keepPage: true);
-    widget.tabController.addListener(_tabChangeListener);
-  }
+class TicketsContent extends StatelessWidget {
+  const TicketsContent({
+    super.key,
+  });
 
-  void _tabChangeListener() {
-    switch (widget.tabController.index) {
-      case 0:
-        _pageController1.animateToPage(_tabPageSelectorController1.index,
-            duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
-        break;
-      // case 1:
-      //   _pageController2.animateToPage(_tabPageSelectorController2.index,
-      //       duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
-      //   break;
-      // case 2:
-      //   _pageController3.animateToPage(_tabPageSelectorController3.index,
-      //       duration: Duration(microseconds: 1), curve: Curves.fastOutSlowIn);
-      //   break;
-      // default:
+  Future<void> getTickets(BuildContext context) async {
+    try {
+      await Provider.of<TicketsProvider>(context, listen: false).getTickets();
+    } catch (e) {
+      print(e);
     }
   }
 
   @override
-  void dispose() {
-    _tabPageSelectorController1.dispose();
-    // _tabPageSelectorController2.dispose();
-    // _tabPageSelectorController3.dispose();
-    _pageController1.dispose();
-    // _pageController2.dispose();
-    // _pageController3.dispose();
-    widget.tabController.removeListener(_tabChangeListener);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProxyProvider<AuthenticationProvider, TicketsProvider>(
-          create: (context) {
-            return TicketsProvider();
-          },
-          update: (context, authenticationProvider, prev) {
-            return TicketsProvider(authenticationProvider: authenticationProvider);
-          },
-        )
-      ],
-      child: TabBarView(
-        controller: widget.tabController,
-        children: [
-          // Stack(
-          //   children: [
-
-          //     Positioned.fill(
-          //       right: 10,
-          //       child: Align(
-          //         alignment: Alignment.centerRight,
-          //         child: RotatedBox(
-          //           quarterTurns: 1,
-          //           child: TabPageSelector(
-          //             controller: _tabPageSelectorController1,
-          //             color: Colors.grey,
-          //             selectedColor: Colors.white,
-          //             borderStyle: BorderStyle.none,
-          //             indicatorSize: 10,
-          //           ),
-          //         ),
-          //       ),
-          //     )
-          //   ],
-          // ),
-          Stack(
-            children: [
-              Positioned.fill(
-                child: PageView.builder(
-                  controller: _pageController1,
+    return FutureBuilder(
+      future: getTickets(context),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return Consumer<TicketsProvider>(
+              builder: (context, ticketProvider, child) {
+                return PageView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: 5,
+                  itemCount: ticketProvider.tickets.length,
                   itemBuilder: (context, index) {
-                    return Stack(
-                      children: [
-                        Positioned.fill(
-                          child: Container(
-                            child: Image.network(
-                              "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
-                              fit: BoxFit.cover,
+                    return Stack(children: [
+                      Positioned.fill(
+                        child: Image.network(
+                          ticketProvider.tickets[index].event.primaryImage,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.transparent, Colors.black],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
                             ),
+                          ),
+                          padding: EdgeInsets.all(40),
+                          child: TicketWidget(
+                            didAssit: ticketProvider.tickets[index].didAssist,
+                            eventMaxAge: ticketProvider.tickets[index].event.minAge,
+                            eventAddress: ticketProvider.tickets[index].event.address,
+                            eventCompany: ticketProvider.tickets[index].event.company,
+                            eventPlace: ticketProvider.tickets[index].event.place,
+                            eventStartDate:
+                                ticketProvider.tickets[index].event.startDateTime.toString(),
+                            id: ticketProvider.tickets[index].id,
+                            eventTitle: ticketProvider.tickets[index].event.title,
+                            ticketCategoryName: ticketProvider.tickets[index].ticketCategory.name,
                           ),
                         ),
-                        Positioned.fill(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.transparent, Colors.black],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                            ),
-                            child: Ticket(),
-                          ),
-                        )
-                      ],
-                    );
+                      ),
+                    ]);
                   },
-                  onPageChanged: (value) {
-                    setState(() {
-                      _tabPageSelectorController1.index = value;
-                    });
-                  },
-                ),
-              ),
-              Positioned.fill(
-                right: 10,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: RotatedBox(
-                    quarterTurns: 1,
-                    child: TabPageSelector(
-                      controller: _tabPageSelectorController1,
-                      color: Colors.grey,
-                      selectedColor: Colors.white,
-                      borderStyle: BorderStyle.none,
-                      indicatorSize: 10,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-          // Stack(
-          //   children: [
-          //     Positioned.fill(
-          //       child: PageView.builder(
-          //         controller: _pageController3,
-          //         scrollDirection: Axis.vertical,
-          //         itemCount: 5,
-          //         itemBuilder: (context, index) {
-          //           return Stack(
-          //             children: [
-          //               Positioned.fill(
-          //                 child: Image.network(
-          //                   "https://res.cloudinary.com/eventboost/image/upload/v1594282851/website/wp/eventboost-twitter-card-home.jpg",
-          //                   fit: BoxFit.cover,
-          //                 ),
-          //               ),
-          //               Positioned.fill(
-          //                   child: Container(
-          //                 decoration: const BoxDecoration(
-          //                   gradient: LinearGradient(
-          //                     colors: [Colors.transparent, Colors.black],
-          //                     begin: Alignment.topCenter,
-          //                     end: Alignment.bottomCenter,
-          //                   ),
-          //                 ),
-          //               ))
-          //             ],
-          //           );
-          //         },
-          //         onPageChanged: (value) {
-          //           setState(() {
-          //             _tabPageSelectorController3.index = value;
-          //           });
-          //         },
-          //       ),
-          //     ),
-          //     Positioned.fill(
-          //       right: 10,
-          //       child: Align(
-          //         alignment: Alignment.centerRight,
-          //         child: RotatedBox(
-          //           quarterTurns: 1,
-          //           child: TabPageSelector(
-          //             controller: _tabPageSelectorController3,
-          //             color: Colors.grey,
-          //             selectedColor: Colors.white,
-          //             borderStyle: BorderStyle.none,
-          //             indicatorSize: 10,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        ],
-      ),
+                );
+              },
+            );
+
+          default:
+            return Loading();
+        }
+      },
     );
   }
 }
 
-class Ticket extends StatelessWidget {
-  const Ticket({
+class TicketWidget extends StatelessWidget {
+  final String id;
+  final String eventCompany;
+  final String eventStartDate;
+  final int? eventMaxAge;
+  final String eventTitle;
+  final bool didAssit;
+  final String? eventPlace;
+  final String eventAddress;
+  final String ticketCategoryName;
+  const TicketWidget({
     super.key,
+    required this.id,
+    required this.eventCompany,
+    required this.eventStartDate,
+    this.eventMaxAge,
+    required this.eventTitle,
+    required this.didAssit,
+    this.eventPlace,
+    required this.eventAddress,
+    required this.ticketCategoryName,
   });
 
   showQr(BuildContext context) {
@@ -230,7 +437,7 @@ class Ticket extends StatelessWidget {
         builder: (context) {
           return Center(
             child: QrImage(
-              data: "1234567890",
+              data: id,
               version: QrVersions.auto,
               size: MediaQuery.of(context).size.width * .8,
               foregroundColor: Colors.black,
@@ -244,7 +451,9 @@ class Ticket extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Card(
-        child: Padding(
+        color: Theme.of(context).cardColor,
+        surfaceTintColor: Theme.of(context).cardColor,
+        child: Container(
           padding: const EdgeInsets.symmetric(
             vertical: 12.0,
             horizontal: 20.0,
@@ -259,13 +468,13 @@ class Ticket extends StatelessWidget {
                   SizedBox(
                     width: 100,
                     child: Text(
-                      "Iggy's-SAVAGE",
+                      eventCompany,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Text(
-                    "7:00 PM",
+                    DateFormat('hh:mm').format(DateTime.parse(eventStartDate)),
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[400],
@@ -276,14 +485,16 @@ class Ticket extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  eventMaxAge != null
+                      ? Text(
+                          "+${eventMaxAge}",
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                color: Colors.grey,
+                              ),
+                        )
+                      : Container(),
                   Text(
-                    "+18",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Colors.grey,
-                        ),
-                  ),
-                  Text(
-                    "2022-04-06",
+                    DateFormat('yyyy-MM-dd').format(DateTime.parse(eventStartDate)),
                     style: Theme.of(context)
                         .textTheme
                         .titleSmall!
@@ -302,7 +513,7 @@ class Ticket extends StatelessWidget {
                     ),
               ),
               Text(
-                "Nombre del Evento",
+                eventTitle,
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -318,7 +529,7 @@ class Ticket extends StatelessWidget {
                     ),
               ),
               Text(
-                "Direccion del Evento",
+                "$eventAddress - $eventPlace",
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -335,7 +546,7 @@ class Ticket extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  Checkbox(value: false, onChanged: (value) {})
+                  Checkbox(value: didAssit, onChanged: (value) {})
                 ],
               ),
               SizedBox(
@@ -345,12 +556,24 @@ class Ticket extends StatelessWidget {
                 onTap: () => showQr(context),
                 child: Center(
                     child: QrImage(
-                  data: "1234567890",
+                  data: id,
                   version: QrVersions.auto,
                   size: 120.0,
                   foregroundColor: Colors.black,
                   backgroundColor: Colors.white,
                 )),
+              ),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    ticketCategoryName,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               )
             ],
           ),

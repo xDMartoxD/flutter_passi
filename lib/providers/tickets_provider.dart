@@ -15,8 +15,9 @@ class TicketsProvider with ChangeNotifier {
   final EventProvider? eventProvider;
   final CartProvider? cartProvider;
   final TicketCategoriesByEventProvider? ticketCategoriesProvider;
-  final List<Ticket> _tickets = [];
+  List<Ticket> _tickets = [];
   List<Ticket> get tickets => [..._tickets];
+
   TicketsProvider(
       {this.ticketCategoriesProvider,
       this.authenticationProvider,
@@ -66,11 +67,19 @@ class TicketsProvider with ChangeNotifier {
               where: Ticket.USER.eq(authenticationProvider!.user!.id)),
         );
         final response = await Amplify.API.query(request: request).response;
-        final paymentMethod = response.data;
-        if (paymentMethod == null) {
+        final paginatedEventCategories = response.data;
+        if (paginatedEventCategories == null) {
           print('errors: ${response.errors}');
           return;
         }
+
+        final List<Ticket> loadedTickets = [];
+        for (var ticket in paginatedEventCategories.items) {
+          if (ticket != null) {
+            loadedTickets.add(ticket);
+          }
+        }
+        _tickets = loadedTickets;
         notifyListeners();
       } on ApiException catch (e) {
         safePrint('Query failed: $e');
