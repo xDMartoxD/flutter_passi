@@ -24,7 +24,7 @@ const query = `query MyQuery($id: ID!) {
   }
 }`;
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   const variables = { id: event.eventId };
   const options = {
