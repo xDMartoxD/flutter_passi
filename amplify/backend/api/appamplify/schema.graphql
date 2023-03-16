@@ -185,9 +185,9 @@ type Job
       ]
     )
   event: Event! @belongsTo(fields: ["eventID"])
-  eventID: ID! @index(name: "byEvent", queryField: "jobsByEvent")
+  eventId: ID! @index(name: "byEvent", queryField: "jobsByEvent")
   user: User! @belongsTo(fields: ["userID"])
-  userID: ID! @index(name: "byUser", queryField: "jobsByUser")
+  userId: ID! @index(name: "byUser", queryField: "jobsByUser")
   type: [JobType]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -237,7 +237,7 @@ type PaymentMethod
     ]
   ) {
   id: ID! @primaryKey
-  userID: ID! @index(name: "byUser", queryField: "paymentMethodsByUser")
+  userId: ID! @index(name: "byUser", queryField: "paymentMethodsByUser")
   user: User! @belongsTo(fields: ["userID"])
   type: PaymentMethodEnum!
   status: String
@@ -245,7 +245,7 @@ type PaymentMethod
   token: String!
   customer_email: String!
   acceptance_token: String
-  paymentSourceID: Int
+  paymentSourceId: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -296,9 +296,9 @@ type Ticket
       ]
     )
   event: Event! @belongsTo(fields: ["eventID"])
-  eventID: ID! @index(name: "byEvent", queryField: "ticketsByEvent")
+  eventId: ID! @index(name: "byEvent", queryField: "ticketsByEvent")
   ticketCategory: TicketCategory! @belongsTo(fields: ["ticketCategoryID"])
-  ticketCategoryID: ID!
+  ticketCategoryId: ID!
     @index(name: "byTicketCategory", queryField: "ticketsByTiketCategory")
   inDateTime: AWSDateTime
     @auth(
@@ -324,9 +324,9 @@ type Ticket
         { allow: public, operations: [read] }
       ]
     )
-  userID: ID! @index(name: "byUser", queryField: "ticketsByUser")
+  userId: ID! @index(name: "byUser", queryField: "ticketsByUser")
   user: User! @belongsTo(fields: ["userID"])
-  jobID: ID
+  jobId: ID
     @index(name: "byJob", queryField: "ticketByJob")
     @auth(
       rules: [
@@ -413,7 +413,7 @@ type Event
   contactNumber: String
   images: [AWSURL!]
   eventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
-  eventcategoryID: ID
+  eventcategoryId: ID
     @index(
       name: "byEventCategory"
       sortKeyFields: ["startDateTime"]
@@ -488,9 +488,9 @@ type DiscountCode
   actualUse: Int!
   validUntil: AWSDateTime!
   discount: Float!
-  eventID: ID! @index(name: "byEvent", queryField: "discountCodesByEvent")
+  eventId: ID! @index(name: "byEvent", queryField: "discountCodesByEvent")
   event: Event! @belongsTo(fields: ["eventID"])
-  userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
+  userId: ID @index(name: "byUser", queryField: "discountCodesByUser")
   user: User @belongsTo(fields: ["userID"])
   tickets: [Ticket!]
     @hasMany(indexName: "byDiscountCode", fields: ["code", "eventID"])

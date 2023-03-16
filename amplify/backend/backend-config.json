@@ -383,13 +383,13 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "api",
-          "resourceName": "appamplify",
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput",
             "GraphQLAPIKeyOutput"
-          ]
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
         },
         {
           "attributes": [
