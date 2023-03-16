@@ -17,8 +17,7 @@ class TicketsProvider with ChangeNotifier {
   final TicketCategoriesByEventProvider? ticketCategoriesProvider;
   List<Ticket> _tickets = [];
   List<Ticket> get tickets => [..._tickets];
-  List<Event> _events = [];
-  List<Event> get events => [...events];
+
   TicketsProvider(
       {this.ticketCategoriesProvider,
       this.authenticationProvider,
@@ -78,36 +77,12 @@ class TicketsProvider with ChangeNotifier {
         for (var ticket in paginatedEventCategories.items) {
           if (ticket != null) {
             loadedTickets.add(ticket);
-            _fetchAndAddEvent(ticket.id);
           }
         }
         _tickets = loadedTickets;
         notifyListeners();
       } on ApiException catch (e) {
         safePrint('Query failed: $e');
-      }
-    }
-  }
-
-  Future<void> _fetchAndAddEvent(String ticketId) async {
-    if (authenticationProvider != null && authenticationProvider?.user != null) {
-      try {
-        final request = cognitoRequest(
-          ModelQueries.list(Event.classType, where: Event.TICKETS.contains(ticketId)),
-        );
-        final response = await Amplify.API.query(request: request).response;
-        final paginatedEvents = response.data;
-        if (paginatedEvents == null) {
-          print('errors: ${response.errors}');
-          return;
-        }
-        if (paginatedEvents.items[0] == null) {
-          return;
-        }
-        _events.add(paginatedEvents.items[0]!);
-        notifyListeners();
-      } catch (e) {
-        rethrow;
       }
     }
   }
