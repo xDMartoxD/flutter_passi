@@ -87,7 +87,7 @@
         },
         "validateTicket": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/validateTicket-6d385457435447665a4c-build.zip"
+          "s3Key": "amplify-builds/validateTicket-75427342675778712b48-build.zip"
         },
         "verifyEvent": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
@@ -100,6 +100,13 @@
       "api": {
         "appamplify": {},
         "endpoints": {}
+      }
+    }
+  },
+  "prod": {
+    "categories": {
+      "auth": {
+        "appamplify02fef6e8": {}
       }
     }
   }

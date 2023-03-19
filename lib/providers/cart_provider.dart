@@ -53,6 +53,17 @@ class CartProvider with ChangeNotifier {
     return total;
   }
 
+  List<String> get transformCart {
+    List<String> ticketCategoriesID = [];
+    for (var entrie in _cart.entries) {
+      for (var i = 0; i < entrie.value; i++) {
+        ticketCategoriesID.add(entrie.key);
+      }
+    }
+    print(ticketCategoriesID.toString());
+    return ticketCategoriesID;
+  }
+
   bool get hasTickets {
     bool has = false;
     for (var element in _cart.values) {

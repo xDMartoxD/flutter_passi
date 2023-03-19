@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
 import 'package:passi_app/providers/tickets_provider.dart';
+import 'package:passi_app/screens/app_tabs.dart';
 import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:passi_app/widgets/payment_method_content.dart';
 import 'package:provider/provider.dart';
@@ -60,18 +61,32 @@ class EventCheckoutScreen extends StatelessWidget {
             return DiscountCodesByEventProvider(eventProvider: eventProvider);
           },
         ),
-        ChangeNotifierProxyProvider4<EventProvider, AuthenticationProvider, CartProvider,
-            TicketCategoriesByEventProvider, TicketsProvider>(
+        ChangeNotifierProxyProvider6<
+            EventProvider,
+            AuthenticationProvider,
+            CartProvider,
+            TicketCategoriesByEventProvider,
+            PaymentMethodsByUserProvider,
+            DiscountCodesByEventProvider,
+            TicketsProvider>(
           create: (context) {
             return TicketsProvider();
           },
-          update: (context, eventProvider, authenticationProvider, cartProvider,
-              ticketCategoriesByEventProvider, prev) {
+          update: (context,
+              eventProvider,
+              authenticationProvider,
+              cartProvider,
+              ticketCategoriesByEventProvider,
+              paymentMethodsByUserProvider,
+              discountCodesByEventProvider,
+              prev) {
             return TicketsProvider(
               eventProvider: eventProvider,
               authenticationProvider: authenticationProvider,
               cartProvider: cartProvider,
               ticketCategoriesProvider: ticketCategoriesByEventProvider,
+              paymentMethodsByUserProvider: paymentMethodsByUserProvider,
+              discountCodesByEventProvider: discountCodesByEventProvider,
             );
           },
         )
@@ -95,35 +110,42 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
 
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
-      await Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
-
-      _ticketCategoriesByEventProvider = Provider.of<TicketCategoriesByEventProvider>(
-        context,
-        listen: false,
-      );
-      await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
-      final paymentMethodsProvider =
-          Provider.of<PaymentMethodsByUserProvider>(context, listen: false);
-      await paymentMethodsProvider.fetchTermsAndConditions();
-      await paymentMethodsProvider.getPaymentMethods();
-      await Provider.of<DiscountCodesByEventProvider>(
-        context,
-        listen: false,
-      ).fetchDiscountCodes();
+      if (context.mounted) {
+        await Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
+      }
+      if (context.mounted) {
+        _ticketCategoriesByEventProvider = Provider.of<TicketCategoriesByEventProvider>(
+          context,
+          listen: false,
+        );
+        await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
+      }
+      if (context.mounted) {
+        final paymentMethodsProvider =
+            Provider.of<PaymentMethodsByUserProvider>(context, listen: false);
+        await paymentMethodsProvider.fetchTermsAndConditions();
+        await paymentMethodsProvider.getPaymentMethods();
+      }
+      if (context.mounted) {
+        await Provider.of<DiscountCodesByEventProvider>(
+          context,
+          listen: false,
+        ).fetchDiscountCodes();
+      }
     } catch (e) {
       safePrint(e.toString());
     }
   }
 
+  errorMessage() {}
   Future<void> _buyTicketsHandler() async {
     try {
       setState(() {
         _isLoading = true;
       });
       await Provider.of<TicketsProvider>(context, listen: false).createTickets();
-      context.pop();
-      context.pop();
     } catch (e) {
+      errorMessage();
     } finally {
       _isLoading = false;
     }
@@ -198,12 +220,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                           child: FloatingActionButton(
                             backgroundColor: Colors.white,
                             onPressed: !_isLoading ? _buyTicketsHandler : null,
-                            child: _isLoading
-                                ? CircularProgressIndicator()
-                                : BuyButtonChild(
-                                    discountCodesProvider: discountCodeProvider,
-                                    cartProvider: cartProvider,
-                                  ),
+                            child: _isLoading ? CircularProgressIndicator() : BuyButtonChild(),
                           ),
                         )
                     ],
@@ -257,7 +274,10 @@ class SelectedPaymentMethodContent extends StatelessWidget {
               height: 5,
             ),
             paymentMethodsProvider.selectedPaymentMethod != null
-                ? PaymentMethodContent(paymentMethod: paymentMethodsProvider.selectedPaymentMethod!)
+                ? PaymentMethodContent(
+                    paymentMethod: paymentMethodsProvider.selectedPaymentMethod!,
+                    showTrailing: false,
+                  )
                 : Container()
           ],
         );
@@ -267,49 +287,49 @@ class SelectedPaymentMethodContent extends StatelessWidget {
 }
 
 class BuyButtonChild extends StatelessWidget {
-  final CartProvider cartProvider;
-  final DiscountCodesByEventProvider discountCodesProvider;
   const BuyButtonChild({
-    required this.cartProvider,
-    required this.discountCodesProvider,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return discountCodesProvider.discountCode != null
-        ? Text.rich(
-            TextSpan(
-                text: "${formatNumber(cartProvider.total)}",
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.lineThrough,
-                      decorationColor: Colors.black,
-                      decorationThickness: 5,
-                    ),
-                children: [
-                  TextSpan(
-                    text:
-                        " ${formatNumber(cartProvider.total - discountCodesProvider.discountCode!.discount)} COP",
+    return Consumer2<CartProvider, DiscountCodesByEventProvider>(
+      builder: (context, cartProvider, discountCodesProvider, child) {
+        return discountCodesProvider.discountCode != null
+            ? Text.rich(
+                TextSpan(
+                    text: "${formatNumber(cartProvider.total)}",
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Colors.black,
+                          decorationThickness: 5,
                         ),
-                  )
-                ]),
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-          )
-        : Text(
-            "${cartProvider.total == 0 ? formatNumber(cartProvider.total) + " COP" : "Gratis"}",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-          );
+                    children: [
+                      TextSpan(
+                        text:
+                            " ${formatNumber(cartProvider.total - discountCodesProvider.discountCode!.discount)} COP",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      )
+                    ]),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              )
+            : Text(
+                "${cartProvider.total > 0 ? formatNumber(cartProvider.total) + " COP" : "Gratis"}",
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              );
+      },
+    );
   }
 }
 

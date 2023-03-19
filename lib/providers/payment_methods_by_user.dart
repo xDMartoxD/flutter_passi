@@ -11,15 +11,16 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/my_models/card_token.dart';
+import '../models/my_models/presigned_acceptance.dart';
 
 class PaymentMethodsByUserProvider with ChangeNotifier {
   final AuthenticationProvider? authenticationProvider;
   List<PaymentMethod> _paymentMethods = [];
   PaymentMethod? _userSelectedPaymentMethod;
-  PresignedAcceptance? _presignedAcceptance;
+  PresignedAcceptanceModel? _presignedAcceptance;
   bool _isChecked = false;
   PaymentMethod? _selectedPaymentMethod = null;
-  PresignedAcceptance? get presignedAcceptance {
+  PresignedAcceptanceModel? get presignedAcceptance {
     return _presignedAcceptance;
   }
 
@@ -101,7 +102,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
           "production.wompi.co", "/v1/merchants/pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo");
       final response = await http.get(uri);
       final json = jsonDecode(response.body);
-      _presignedAcceptance = PresignedAcceptance.fromJson(json);
+      _presignedAcceptance = PresignedAcceptanceModel.fromJson(json);
       notifyListeners();
     } catch (e) {
       safePrint('Query failed: ${e.toString()}');
@@ -112,7 +113,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     if (_presignedAcceptance == null) {
       return;
     }
-    final url = Uri.parse(_presignedAcceptance!.permalink);
+    final url = Uri.parse(_presignedAcceptance!.link);
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
