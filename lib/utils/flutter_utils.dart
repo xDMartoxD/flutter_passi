@@ -18,7 +18,7 @@ void bottomSheetAuthHandler({
       builder: (context) {
         return Wrap(
           children: [
-            SizedBox(height: 200, child: Placeholder()),
+            const SizedBox(height: 200, child: Placeholder()),
             Center(
               child: Text(
                 "Tus eventos favoritos. \n Al instante.",

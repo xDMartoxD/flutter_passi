@@ -86,7 +86,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Ajustes")),
+      appBar: AppBar(title: const Text("Ajustes")),
       body: SingleChildScrollView(
         child: _isLoading
             ? const Center(

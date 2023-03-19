@@ -17,7 +17,7 @@ class JobsByEventProvider with ChangeNotifier {
     if (eventProvider == null) {
       return;
     }
-    Future<void> getPaymentMethods() async {
+    Future<void> getPromoters() async {
       if (eventProvider == null || eventProvider?.event == null) {
         return;
       }

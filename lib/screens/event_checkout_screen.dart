@@ -35,7 +35,7 @@ class EventCheckoutScreen extends StatelessWidget {
           create: (context) => TicketCategoriesByEventProvider(),
         ),
         ChangeNotifierProvider<EventProvider>(
-          create: (context) => EventProvider(),
+          create: (context) => EventProvider(eventId: id),
         ),
         ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMethodsByUserProvider>(
           create: (context) {
@@ -111,7 +111,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
       if (context.mounted) {
-        await Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
+        await Provider.of<EventProvider>(context, listen: false).setEvent();
       }
       if (context.mounted) {
         _ticketCategoriesByEventProvider = Provider.of<TicketCategoriesByEventProvider>(

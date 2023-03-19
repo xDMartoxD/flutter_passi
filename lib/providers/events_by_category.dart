@@ -33,7 +33,7 @@ class EventsByCategoryProvider with ChangeNotifier {
       final response = await Amplify.API.query(request: request).response;
       final paginatedEventCategories = response.data;
       if (paginatedEventCategories == null) {
-        print('errors: ${response.errors}');
+        safePrint('errors: ${response.errors}');
         return;
       }
       _requestForNextToken = paginatedEventCategories.requestForNextResult;
@@ -66,5 +66,6 @@ class EventsByCategoryProvider with ChangeNotifier {
     } on ApiException catch (e) {
       safePrint('Query failed: $e');
     }
+    return null;
   }
 }

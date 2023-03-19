@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,7 @@ class _PaymentMethodContentState extends State<PaymentMethodContent> {
       await Provider.of<PaymentMethodsByUserProvider>(context, listen: false)
           .changeUserSelectedPaymentMethod(paymentMethod);
     } on Exception catch (e) {
-      print(e);
+      safePrint(e);
     } finally {
       setState(() {
         _isLoading = false;

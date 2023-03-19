@@ -7,5 +7,12 @@
       "version": "Always choose latest version",
       "isLatestVersionSelected": true
     }
-  ]
+  ],
+  "permissions": {
+    "storage": {
+      "PaymentMethod:@model(appsync)": [
+        "update"
+      ]
+    }
+  }
 }

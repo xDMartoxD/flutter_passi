@@ -20,7 +20,7 @@ class EventDetailsScreen extends StatefulWidget {
   final String id;
   final String? promoterCode;
 
-  EventDetailsScreen({super.key, required this.id, this.promoterCode});
+  const EventDetailsScreen({super.key, required this.id, this.promoterCode});
 
   @override
   State<EventDetailsScreen> createState() => _EventDetailsScreenState();
@@ -93,7 +93,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         body: MultiProvider(
           providers: [
             ChangeNotifierProvider<EventProvider>(create: (context) {
-              return EventProvider();
+              return EventProvider(eventId: widget.id);
             }),
             ChangeNotifierProxyProvider<EventProvider, JobsByEventProvider>(create: (context) {
               return JobsByEventProvider();
@@ -111,7 +111,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 class EventContent extends StatefulWidget {
   final String id;
 
-  EventContent({
+  const EventContent({
     super.key,
     required this.id,
   });
@@ -121,29 +121,23 @@ class EventContent extends StatefulWidget {
 }
 
 class _EventContentState extends State<EventContent> {
-  Future<void>? _setEvent;
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(Duration.zero).then((_) {
-      _setEvent = Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
-    });
+  Future<void> _setEvent() async {
+    await Provider.of<EventProvider>(context, listen: false).setEvent();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _setEvent,
+      future: _setEvent(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Loading();
+            return const Loading();
           default:
             return Consumer2<EventProvider, JobsByEventProvider>(
                 builder: (context, eventProvider, jobsProvider, child) {
               return eventProvider.event == null
-                  ? Loading()
+                  ? const Loading()
                   : CustomScrollView(
                       slivers: <Widget>[
                         EventDetailsAppBar(
@@ -166,13 +160,13 @@ class _EventContentState extends State<EventContent> {
                                   softWrap: true,
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 color: Colors.white,
                                 height: 8,
                               ),
                               Container(
                                 height: 100,
-                                decoration: BoxDecoration(border: Border.symmetric()),
+                                decoration: const BoxDecoration(border: Border.symmetric()),
                                 child: ListView(
                                   scrollDirection: Axis.horizontal,
                                   children: [
@@ -183,7 +177,7 @@ class _EventContentState extends State<EventContent> {
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.map,
-                                      textContent: "${eventProvider.event!.address}",
+                                      textContent: eventProvider.event!.address,
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.calendar_today,
@@ -192,7 +186,7 @@ class _EventContentState extends State<EventContent> {
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.corporate_fare_rounded,
-                                      textContent: "${eventProvider.event!.company}",
+                                      textContent: eventProvider.event!.company,
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.star_border_rounded,
@@ -205,7 +199,7 @@ class _EventContentState extends State<EventContent> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Card(
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
                                     child: ChangeNotifierProvider<TicketCategoriesByEventProvider>(
                                       create: (context) {
                                         return TicketCategoriesByEventProvider();
@@ -217,7 +211,7 @@ class _EventContentState extends State<EventContent> {
                                   ),
                                 ),
                               ),
-                              if (!jobsProvider.promoters.isEmpty) PromotersWidget(),
+                              if (jobsProvider.promoters.isNotEmpty) const PromotersWidget(),
                               // SizedBox(height: 20),
                               // Padding(
                               //   padding: const EdgeInsets.all(8.0),

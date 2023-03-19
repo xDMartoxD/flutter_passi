@@ -1,9 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import "package:go_router/go_router.dart";
-import 'package:intl/intl.dart';
-import 'package:passi_app/utils/flutter_utils.dart';
-
+import '../utils/flutter_utils.dart';
 import '../models/screen_args/event_detail_screen_args.dart';
 import '../screens/event_details_screen.dart';
 
@@ -36,13 +34,13 @@ class EventItemLarge extends StatelessWidget {
         ).params(),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 15,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: double.infinity,
               child: AspectRatio(
                 aspectRatio: 1,
@@ -55,32 +53,31 @@ class EventItemLarge extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               title,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
             Text(
               "$address - $place",
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
               textAlign: TextAlign.left,
             ),
             Text(
-              "${parseDate(date)}",
-              style: TextStyle(color: Colors.grey),
+              parseDate(date),
+              style: const TextStyle(color: Colors.grey),
               textAlign: TextAlign.left,
             ),
             Text(
               "\$${formatNumber(price)} COP",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
           ],
         ),
       ),
     );
-    ;
   }
 }

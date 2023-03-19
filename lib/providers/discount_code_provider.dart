@@ -4,12 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:passi_app/providers/event_provider.dart';
 
 import '../models/DiscountCode.dart';
-import '../models/EventCategory.dart';
 import '../utils/amplify_utils.dart';
 
 class DiscountCodesByEventProvider with ChangeNotifier {
   EventProvider? eventProvider;
-  List<_DiscountCode> _discountCodes = <_DiscountCode>[];
+  final List<_DiscountCode> _discountCodes = <_DiscountCode>[];
   DiscountCode? _discountCode;
   List<_DiscountCode> get discountCodes => [..._discountCodes];
   DiscountCode? get discountCode => _discountCode;

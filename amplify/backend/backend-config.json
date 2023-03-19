@@ -50,6 +50,22 @@
           ],
           "category": "function",
           "resourceName": "verifyEvent"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "CreatePaymentSource"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "CreateEntrance"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -302,6 +318,13 @@
     "CreatePaymentSource": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
         {
           "attributes": [
             "Arn"

@@ -1,4 +1,10 @@
-const AWS = require('aws-sdk')
+/* Amplify Params - DO NOT EDIT
+	API_APPAMPLIFY_GRAPHQLAPIIDOUTPUT
+	API_APPAMPLIFY_PAYMENTMETHODTABLE_ARN
+	API_APPAMPLIFY_PAYMENTMETHODTABLE_NAME
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */const AWS = require('aws-sdk')
 const axios = require('axios')
 
 const fetchTransaction = async (body) => {
@@ -19,7 +25,7 @@ const updatePaymentMethod = async (docClient, data, id) => {
 	const { id: paymentSourceID, token, type, status, customer_email } = data
 	return docClient
 		.update({
-			TableName: process.env.PAYMENTMETHODTABLE,
+			TableName: process.env.API_APPAMPLIFY_PAYMENTMETHODTABLE_NAME,
 			Key: {
 				id,
 			},

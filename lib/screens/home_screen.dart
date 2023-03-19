@@ -83,7 +83,7 @@ class EventsByCategoryList extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator(color: Colors.white));
+              return const Center(child: CircularProgressIndicator(color: Colors.white));
             default:
               return Consumer<EventsByCategoryProvider>(
                 builder: (context, value, _) {
@@ -126,7 +126,7 @@ class EventCategoryTitle extends StatelessWidget {
           margin: EdgeInsets.all(8),
           child: Text(
             name,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),

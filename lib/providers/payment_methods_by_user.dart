@@ -125,19 +125,45 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
   }
 
   Future<String?> saveNewCard(Map<String, String> data) async {
-    if (authenticationProvider != null && authenticationProvider?.user != null) {
+    if (authenticationProvider != null &&
+        authenticationProvider?.user != null &&
+        presignedAcceptance != null) {
       try {
         final uri = Uri.https("production.wompi.co", "/v1/tokens/cards");
         final headers = {'Authorization': "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"};
         final wompiResponse = await http.post(uri, headers: headers, body: json.encode(data));
         if (wompiResponse.statusCode == 201) {
           final json = jsonDecode(wompiResponse.body);
-          final paymentMethod = await _createPaymentMethod(json);
-          if (paymentMethod == null) {
+          final createdPaymentMethod = await _createPaymentMethod(json);
+          if (createdPaymentMethod == null) {
             return "Error al crear metodo de pago";
           }
+          const createPaymentSource = 'createPaymentSource';
+          const graphQLDocument =
+              '''mutation CreatePaymentSource(\$acceptance_token: String!, \$customer_email: String!, \$id: ID!,   \$token: String!, \$type: PaymentMethodEnum!!) {
+            $createPaymentSource(acceptance_token: \$acceptance_token, customer_email: \$customer_email, id: \$id, token: \$token, type: \$type) ''';
+
+          final variables = {
+            'acceptance_token': presignedAcceptance!.acceptanceToken,
+            'customer_email': authenticationProvider!.user!.email,
+            'id': createdPaymentMethod.id,
+            'token': createdPaymentMethod.token,
+            'type': createdPaymentMethod.type
+          };
+
+          final createEntranceRequest = cognitoRequest(
+            GraphQLRequest<String>(
+              document: graphQLDocument,
+              variables: variables,
+              decodePath: createPaymentSource,
+            ),
+          );
+          final response = await Amplify.API.mutate(request: createEntranceRequest).response;
+          if (response.data == null) {
+            print(response.errors);
+          }
           final didChangedUserSelectedPaymentMethod =
-              await changeUserSelectedPaymentMethod(paymentMethod);
+              await changeUserSelectedPaymentMethod(createdPaymentMethod);
           if (!didChangedUserSelectedPaymentMethod) {
             return "Error al actualizar al usuario";
           }

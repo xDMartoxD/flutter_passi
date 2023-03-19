@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           // showSemanticsDebugger: true,
           debugShowCheckedModeBanner: false,
           title: 'Passi',
-          theme: dark_theme,
+          theme: darkTheme,
           routerConfig: AppRouter().router,
         ));
   }

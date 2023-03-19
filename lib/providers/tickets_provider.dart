@@ -54,7 +54,7 @@ class TicketsProvider with ChangeNotifier {
           'acceptanceToken': paymentMethodsByUserProvider!.presignedAcceptance!.acceptanceToken,
           'installments': 1
         };
-        print(variables);
+
         final createEntranceRequest = cognitoRequest(
           GraphQLRequest<CreateEntranceResponse>(
             document: graphQLDocument,

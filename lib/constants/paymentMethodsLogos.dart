@@ -1,5 +1,4 @@
-import 'package:passi_app/models/BrandEnum.dart';
-import 'package:passi_app/models/ModelProvider.dart';
+import '../models/ModelProvider.dart';
 
 const Map<BrandEnum, String> _paymentMethodCardsLogos = {
   BrandEnum.VISA: "assets/images/visa.jpeg",
