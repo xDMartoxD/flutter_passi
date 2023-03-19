@@ -115,6 +115,13 @@
       "dependsOn": [
         {
           "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
+        {
+          "attributes": [
             "Arn"
           ],
           "category": "function",
@@ -183,6 +190,13 @@
     "CreateEntranceDB": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
         {
           "attributes": [
             "Arn"
