@@ -46,17 +46,16 @@ const cancelTransaction = async (transactionID) => {
       }
     })
 }
-exports.handler = async (appSyncEvent) => {
-  const {
-    event,
-    ticketCategories,
-    discountCode,
-    payed,
-    paymentData,
-    totalCost,
-    ticketCategoriesObject,
-    user,
-  } = appSyncEvent.prev.result
+const db = async ({
+  event,
+  ticketCategories,
+  discountCode,
+  payed,
+  paymentData,
+  totalCost,
+  ticketCategoriesObject,
+  user,
+}) => {
   try {
     console.log('Total cost', totalCost)
     console.log('Event', event)
@@ -66,9 +65,7 @@ exports.handler = async (appSyncEvent) => {
     console.log('Payment data', paymentData)
     console.log('TicketCategoriesObject', ticketCategoriesObject)
     console.log('User', user)
-    if (appSyncEvent.prev.result.errors) {
-      throw new Error(appSyncEvent.prev.result.errors)
-    }
+
     if (paymentData?.payment_method_type === 'NEQUI') {
       return { data: paymentData.id }
     } else if (totalCost <= 0) {
@@ -100,8 +97,10 @@ exports.handler = async (appSyncEvent) => {
   } catch (err) {
     console.log('Error ', err)
     if (payed) {
-      cancelTransaction(appSyncEvent.prev.result.paymentData.id)
+      cancelTransaction(paymentData.id)
     }
     return { errors: err.message }
   }
 }
+
+exports.db = db;

@@ -18,8 +18,13 @@
 	API_APPAMPLIFY_USERTABLE_NAME
 	ENV
 	REGION
-Amplify Params - DO NOT EDIT */const AWS = require('aws-sdk')
+Amplify Params - DO NOT EDIT */
+
+const AWS = require('aws-sdk')
 const { v4: uuidv4 } = require('uuid')
+const { businessLogic } = require("./businessLogic.js")
+const { payment } = require("./payment.js")
+const { db } = require("./db.js")
 const {
 	getEvent,
 	createTicket,
@@ -33,10 +38,53 @@ const {
 const { initPayment } = require('/opt/wompi')
 const env = process.env.ENV
 
-exports.handler = async ({ body: args, requestContext: { identity } }, context) => {
-	console.log("ARGS =>", args)
-	console.log("IDENTIDY => ", identity)
+exports.handler = async ({ body, requestContext: { identity } }, context) => {
+	const args = JSON.parse(body)
+	let code = null;
+	if (args.code !== 'null') {
+		code = args.code
+	}
+	const blResponse = await businessLogic(args.eventID, args.ticketCategoriesID, identity, args.userID, code)
+	if (blResponse) {
+		const { event, ticketCategoriesObject, ticketCategories, userTickets, eventDiscountCodes, discountCode, user, selectedPaymentMethod } = blResponse
+		const paymentResponse = await payment({
+			event,
+			ticketCategoriesObject,
+			ticketCategories,
+			userTickets,
+			eventDiscountCodes,
+			discountCode,
+			user,
+			selectedPaymentMethod,
+			acceptanceToken: args.acceptanceToken,
+			installments: args.installments
+		})
+		if (paymentResponse) {
+			const { payed, paymentData, totalCost } = paymentResponse
+			const dbResponse = await db({
+				event,
+				ticketCategories,
+				discountCode,
+				payed,
+				paymentData,
+				totalCost,
+				ticketCategoriesObject,
+				user,
+			});
+			if (dbResponse) {
+				console.log("DB RESPONSE ", dbResponse)
+				return {
+					statusCode: 200,
+					headers: {
+						"Access-Control-Allow-Origin": "*",
+						"Access-Control-Allow-Headers": "*",
 
-
-	return 'SUCCESS'
+					},
+					body: JSON.stringify({ "data": "ok" }),
+				};
+			}
+		}
+	}
 }
+
+

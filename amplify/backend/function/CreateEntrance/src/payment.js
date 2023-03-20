@@ -70,27 +70,20 @@ const subscribe = async (id) => {
   }
 }
 
-exports.handler = async (appSyncEvent, context) => {
+const payment = async ({
+  event,
+  ticketCategoriesObject,
+  ticketCategories,
+  userTickets,
+  eventDiscountCodes,
+  discountCode,
+  user,
+  selectedPaymentMethod,
+  acceptanceToken,
+  installments
+}) => {
   let payed = false
   try {
-    if (appSyncEvent.prev.result.errors) {
-      return { errors: appSyncEvent.prev.errors }
-    }
-    const {
-      prev: {
-        result: {
-          event,
-          ticketCategoriesObject,
-          ticketCategories,
-          userTickets,
-          eventDiscountCodes,
-          discountCode,
-          user,
-          selectedPaymentMethod,
-        },
-      },
-      arguments: args,
-    } = appSyncEvent
 
     const price = ticketCategories.reduce(
       (accumalator, tc) => accumalator + tc.price,
@@ -105,12 +98,12 @@ exports.handler = async (appSyncEvent, context) => {
       let body = {}
       if (selectedPaymentMethod.type === 'CARD') {
         body = {
-          acceptance_token: args.acceptanceToken,
+          acceptance_token: acceptanceToken,
           amount_in_cents: (price - discount) * 100,
           currency: 'COP',
           customer_email: user.email,
           payment_method: {
-            installments: args.installments,
+            installments: installments,
             token: selectedPaymentMethod.token,
             type: selectedPaymentMethod.type,
           },
@@ -119,7 +112,7 @@ exports.handler = async (appSyncEvent, context) => {
         }
       } else {
         body = {
-          acceptance_token: args.acceptanceToken,
+          acceptance_token: acceptanceToken,
           amount_in_cents: (price - discount) * 100,
           currency: 'COP',
           customer_email: user.email,
@@ -128,7 +121,7 @@ exports.handler = async (appSyncEvent, context) => {
             phone_number: selectedPaymentMethod.data.phone_number,
           },
           reference: uuidv4(),
-          payment_source_id: args.payment_source_id,
+          payment_source_id: selectedPaymentMethod.datapayment_source_id,
         }
       }
       const response = await initPayment(body)
@@ -191,3 +184,4 @@ exports.handler = async (appSyncEvent, context) => {
     return { errors: err.message, payed }
   }
 }
+exports.payment = payment;
