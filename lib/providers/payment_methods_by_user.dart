@@ -140,7 +140,11 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
           if (createdPaymentMethod == null) {
             return "Error al crear metodo de pago";
           }
-          _createPaymentSource(createdPaymentMethod.id, createdPaymentMethod.token);
+          _createPaymentSource(
+            createdPaymentMethod.id,
+            createdPaymentMethod.token,
+            createdPaymentMethod.status!,
+          );
           final didChangedUserSelectedPaymentMethod =
               await changeUserSelectedPaymentMethod(createdPaymentMethod);
           if (!didChangedUserSelectedPaymentMethod) {
@@ -158,11 +162,17 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     return "No hay usaurio";
   }
 
-  Future<void> _createPaymentSource(String id, String token) async {
+  Future<void> _createPaymentSource(
+    String id,
+    String token,
+    String status,
+  ) async {
     try {
       final options = RestOptions(
         path: '/create-payment-source',
-        body: Uint8List.fromList('{\'id\':\'$id\', \'token\': \'$token\'}'.codeUnits),
+        body: Uint8List.fromList(
+            "{\"id\":\"$id\", \"token\": \"$token\" ,\"type\": \"CARD\", \"status\": \"status\", \"customer_email\": \"${authenticationProvider!.user!.email}\"}"
+                .codeUnits),
       );
       final response = await Amplify.API.post(restOptions: options).response;
       safePrint(response);
