@@ -140,11 +140,14 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
           if (createdPaymentMethod == null) {
             return "Error al crear metodo de pago";
           }
-          _createPaymentSource(
+          final createPaymentSourceData = await _createPaymentSource(
             createdPaymentMethod.id,
             createdPaymentMethod.token,
             createdPaymentMethod.status!,
           );
+          if (createPaymentSourceData != 'ok') {
+            return "No se pudo crear el payment source";
+          }
           final didChangedUserSelectedPaymentMethod =
               await changeUserSelectedPaymentMethod(createdPaymentMethod);
           if (!didChangedUserSelectedPaymentMethod) {
@@ -162,7 +165,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     return "No hay usaurio";
   }
 
-  Future<void> _createPaymentSource(
+  Future<String> _createPaymentSource(
     String id,
     String token,
     String status,
@@ -175,43 +178,48 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
                 .codeUnits),
       );
       final response = await Amplify.API.post(restOptions: options).response;
-      safePrint(response);
+      final body = json.decode(response.body);
+      return body["data"] as String;
     } on ApiException catch (e) {
       safePrint('POST call failed: $e');
+      rethrow;
     }
   }
 
   Future<bool> changeUserSelectedPaymentMethod(PaymentMethod paymentMethod) async {
-    if (authenticationProvider == null ||
-        authenticationProvider?.user == null ||
-        authenticationProvider?.user?.userSelectedPaymentMethodId == null) {
+    if (authenticationProvider == null || authenticationProvider?.user == null) {
       return false;
     }
     {
       if (paymentMethod.id == authenticationProvider?.user?.userSelectedPaymentMethodId) {
         return true;
       }
-      final userWithNewSelectedPaymentMethod = authenticationProvider!.user!.copyWith(
-        userSelectedPaymentMethodId: paymentMethod.id,
-      );
+      try {
+        final userWithNewSelectedPaymentMethod = authenticationProvider!.user!.copyWith(
+          userSelectedPaymentMethodId: paymentMethod.id,
+        );
 
-      final updatedUserRequest =
-          cognitoRequest(ModelMutations.update(userWithNewSelectedPaymentMethod));
-      final updatedUserResponse = await Amplify.API
-          .mutate(
-            request: updatedUserRequest,
-          )
-          .response;
-      if (updatedUserResponse.data == null) {
-        safePrint("errors: ${updatedUserResponse.errors}");
-        return false;
+        final updatedUserRequest =
+            cognitoRequest(ModelMutations.update(userWithNewSelectedPaymentMethod));
+        final updatedUserResponse = await Amplify.API
+            .mutate(
+              request: updatedUserRequest,
+            )
+            .response;
+        if (updatedUserResponse.data == null) {
+          safePrint("errors: ${updatedUserResponse.errors}");
+          return false;
+        }
+
+        await authenticationProvider!.setUser(newUser: updatedUserResponse.data);
+        _selectedPaymentMethod = paymentMethod;
+        notifyListeners();
+
+        return true;
+      } on Exception catch (e) {
+        safePrint("BOTO EXCEPCION");
+        rethrow;
       }
-
-      await authenticationProvider!.setUser(newUser: updatedUserResponse.data);
-      _selectedPaymentMethod = paymentMethod;
-      notifyListeners();
-
-      return true;
     }
   }
 

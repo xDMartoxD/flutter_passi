@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
@@ -39,31 +42,19 @@ class TicketsProvider with ChangeNotifier {
         paymentMethodsByUserProvider != null &&
         paymentMethodsByUserProvider!.presignedAcceptance != null) {
       if (paymentMethodsByUserProvider!.presignedAcceptance!.acceptanceToken.isNotEmpty) {
-        const createEntrance = 'createEntrance';
-        const graphQLDocument =
-            '''mutation CreateEntrance(\$eventID: ID!, \$ticketCategoriesID: ID!, \$code: String,   \$acceptanceToken: String!, \$installments: Int!) {
-            $createEntrance(eventID: \$eventID, ticketCategoriesID: \$ticketCategoriesID, code: \$code, acceptanceToken: \$acceptanceToken, installments: \$installments) {
-              data
-            }''';
-
-        final variables = {
-          'eventID': eventProvider!.event!.id,
-          'ticketCategoriesID': cartProvider!.transformCart,
-          'code': discountCodesByEventProvider?.discountCode?.code,
-          'acceptanceToken': paymentMethodsByUserProvider!.presignedAcceptance!.acceptanceToken,
-          'installments': 1
-        };
-
-        final createEntranceRequest = cognitoRequest(
-          GraphQLRequest<CreateEntranceResponse>(
-            document: graphQLDocument,
-            variables: variables,
-            decodePath: createEntrance,
-          ),
-        );
-
-        final response = await Amplify.API.mutate(request: createEntranceRequest).response;
-        safePrint(response.data!.data);
+        try {
+          final options = RestOptions(
+            path: '/create-entrance',
+            body: Uint8List.fromList(
+                "{\"acceptanceToken\":\"${paymentMethodsByUserProvider!.presignedAcceptance!.acceptanceToken}\", \"installments\": 1 ,\"eventID\": \"${eventProvider!.event!.id}\",  \"code\": \"${discountCodesByEventProvider?.discountCode?.code}\", \"ticketCategoriesID\": ${cartProvider!.transformCart}}"
+                    .codeUnits),
+          );
+          final response = await Amplify.API.post(restOptions: options).response;
+          final body = json.decode(response.body);
+        } on ApiException catch (e) {
+          safePrint('POST call failed: $e');
+          rethrow;
+        }
       } else {
         safePrint("Falta el acceptance Token");
       }

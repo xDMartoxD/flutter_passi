@@ -56,7 +56,7 @@ class CartProvider with ChangeNotifier {
     List<String> ticketCategoriesID = [];
     for (var entrie in _cart.entries) {
       for (var i = 0; i < entrie.value; i++) {
-        ticketCategoriesID.add(entrie.key);
+        ticketCategoriesID.add("\"${entrie.key}\"");
       }
     }
     return ticketCategoriesID;
