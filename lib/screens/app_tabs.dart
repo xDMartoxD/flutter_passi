@@ -56,13 +56,13 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
     _screens = [
       {
         "title": "home",
-        "screen": HomeScreen(),
+        "screen": const HomeScreen(),
         "appBarBottom": null,
         "appBarActions": [],
       },
       {
         "title": "Tickets",
-        "screen": TicketsScreen(),
+        "screen": const TicketsScreen(),
         "appBarBottom": null
         // TabBar(
         //   tabs: [
@@ -77,12 +77,12 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
       },
       {
         "title": "Perfil",
-        "screen": ProfileScreen(),
+        "screen": const ProfileScreen(),
         "appBarBottom": null,
         "appBarActions": [
           IconButton(
             onPressed: () => {context.pushNamed(UserSettingsScreen.name)},
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
           )
         ],
       }
@@ -96,7 +96,9 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
           _isAmplifyConfigured = true;
         });
       }
-      await Provider.of<AuthenticationProvider>(context, listen: false).setUser();
+      if (context.mounted) {
+        await Provider.of<AuthenticationProvider>(context, listen: false).setUser();
+      }
     });
   }
 
@@ -140,7 +142,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         }),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
-      body: _isAmplifyConfigured ? _screens[_currenPageIndex]["screen"] as Widget : Loading(),
+      body: _isAmplifyConfigured ? _screens[_currenPageIndex]["screen"] as Widget : const Loading(),
     );
   }
 }

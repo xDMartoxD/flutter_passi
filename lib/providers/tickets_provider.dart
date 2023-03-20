@@ -1,13 +1,12 @@
-import 'package:amplify_api/model_mutations.dart';
 import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:passi_app/models/ModelProvider.dart';
-import 'package:passi_app/providers/authentication_provider.dart';
-import 'package:passi_app/providers/cart_provider.dart';
-import 'package:passi_app/providers/discount_code_provider.dart';
-import 'package:passi_app/providers/payment_methods_by_user.dart';
-import 'package:passi_app/providers/ticket_cateogories_by_event_provider.dart';
+import '../providers/authentication_provider.dart';
+import '../providers/cart_provider.dart';
+import '../providers/discount_code_provider.dart';
+import '../providers/payment_methods_by_user.dart';
+import '../providers/ticket_cateogories_by_event_provider.dart';
 
 import '../utils/amplify_utils.dart';
 import 'event_provider.dart';
@@ -64,12 +63,12 @@ class TicketsProvider with ChangeNotifier {
         );
 
         final response = await Amplify.API.mutate(request: createEntranceRequest).response;
-        print(response.data!.data);
+        safePrint(response.data!.data);
       } else {
-        print("Falta el acceptance Token");
+        safePrint("Falta el acceptance Token");
       }
     } else {
-      print("Falta todo lo demas");
+      safePrint("Falta todo lo demas");
     }
   }
 
@@ -83,7 +82,7 @@ class TicketsProvider with ChangeNotifier {
         final response = await Amplify.API.query(request: request).response;
         final paginatedEventCategories = response.data;
         if (paginatedEventCategories == null) {
-          print('errors: ${response.errors}');
+          safePrint('errors: ${response.errors}');
           return;
         }
 

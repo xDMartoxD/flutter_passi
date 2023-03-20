@@ -55,7 +55,8 @@
         },
         "CreatePaymentSource": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",
-          "s3Key": "amplify-builds/CreatePaymentSource-7762642f553432756f68-build.zip"
+          "s3Key": "amplify-builds/CreatePaymentSource-7762642f553432756f68-build.zip",
+          "auth": "prv_prod_vVJbmNcIBeZv4Sdp608GjnlY45YErrHx"
         },
         "CreateUserDynamo": {
           "deploymentBucketName": "amplify-passi-devel-143433-deployment",

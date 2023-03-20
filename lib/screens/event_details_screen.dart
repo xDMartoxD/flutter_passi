@@ -229,7 +229,7 @@ class _EventContentState extends State<EventContent> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ExpandableText(eventProvider.event!.description),
                                 ),
-                              SizedBox(height: 80)
+                              const SizedBox(height: 80)
                             ],
                           ),
                         )
@@ -258,14 +258,14 @@ class PromotersWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.whatsapp,
               color: Colors.white,
             ),
             onPressed: () {},
           ),
         ),
-        Divider(
+        const Divider(
           endIndent: 8,
           indent: 8,
           color: Colors.grey,
@@ -277,14 +277,14 @@ class PromotersWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.whatsapp,
               color: Colors.white,
             ),
             onPressed: () {},
           ),
         ),
-        Divider(
+        const Divider(
           endIndent: 8,
           indent: 8,
           color: Colors.grey,
@@ -296,14 +296,14 @@ class PromotersWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.whatsapp,
               color: Colors.white,
             ),
             onPressed: () {},
           ),
         ),
-        Divider(
+        const Divider(
           endIndent: 8,
           indent: 8,
           color: Colors.grey,
@@ -314,9 +314,9 @@ class PromotersWidget extends StatelessWidget {
 }
 
 class EventInfoIcon extends StatelessWidget {
-  IconData icon;
-  String textContent;
-  EventInfoIcon({
+  final IconData icon;
+  final String textContent;
+  const EventInfoIcon({
     Key? key,
     required this.icon,
     required this.textContent,
@@ -328,7 +328,7 @@ class EventInfoIcon extends StatelessWidget {
       children: [
         Container(
           width: 100,
-          padding: EdgeInsets.symmetric(vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -340,7 +340,7 @@ class EventInfoIcon extends StatelessWidget {
             ],
           ),
         ),
-        VerticalDivider(
+        const VerticalDivider(
           color: Colors.grey,
           indent: 5,
           endIndent: 5,
@@ -351,7 +351,7 @@ class EventInfoIcon extends StatelessWidget {
 }
 
 class EventDetailsCategoriesInfo extends StatelessWidget {
-  EventDetailsCategoriesInfo({
+  const EventDetailsCategoriesInfo({
     Key? key,
     required this.eventId,
   }) : super(key: key);
@@ -383,7 +383,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             height: 50,
                             child: Text(
                               ticketCategory.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -395,13 +395,13 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             height: 50,
                             child: Text(
                               "\$ ${formatNumber(ticketCategory.price)}",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           ),
                           Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
                             height: 5,
                             decoration: BoxDecoration(
                               color: getColor(ticketCategory.color),
@@ -416,7 +416,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
               },
             );
           default:
-            return Loading();
+            return const Loading();
         }
       },
     );
@@ -505,7 +505,7 @@ class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProv
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.ios_share),
+          icon: const Icon(Icons.ios_share),
         )
       ],
     );

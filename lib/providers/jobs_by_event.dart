@@ -17,34 +17,32 @@ class JobsByEventProvider with ChangeNotifier {
     if (eventProvider == null) {
       return;
     }
-    Future<void> getPromoters() async {
-      if (eventProvider == null || eventProvider?.event == null) {
+    if (eventProvider == null || eventProvider?.event == null) {
+      return;
+    }
+    try {
+      final request = apiKeyRequest(
+        ModelQueries.list(
+          Job.classType,
+          where: Job.EVENT.eq(eventProvider!.event!.id).and(Job.TYPE.eq(JobTypeEnum.Promoter)),
+        ),
+      );
+      final response = await Amplify.API.query(request: request).response;
+      final paginatedJobsResponse = response.data;
+      if (paginatedJobsResponse == null) {
+        safePrint('errors: ${response.errors}');
         return;
       }
-      try {
-        final request = apiKeyRequest(
-          ModelQueries.list(
-            Job.classType,
-            where: Job.EVENT.eq(eventProvider!.event!.id).and(Job.TYPE.eq(JobTypeEnum.Promoter)),
-          ),
-        );
-        final response = await Amplify.API.query(request: request).response;
-        final paginatedJobsResponse = response.data;
-        if (paginatedJobsResponse == null) {
-          print('errors: ${response.errors}');
-          return;
+      final List<Job> loadedJobs = [];
+      for (var element in paginatedJobsResponse.items) {
+        if (element != null) {
+          loadedJobs.add(element);
         }
-        final List<Job> loadedJobs = [];
-        for (var element in paginatedJobsResponse.items) {
-          if (element != null) {
-            loadedJobs.add(element);
-          }
-        }
-        _promoters = loadedJobs;
-        notifyListeners();
-      } on ApiException catch (e) {
-        safePrint('Query failed: $e');
       }
+      _promoters = loadedJobs;
+      notifyListeners();
+    } on ApiException catch (e) {
+      safePrint('Query failed: $e');
     }
   }
 }

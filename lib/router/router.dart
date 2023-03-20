@@ -26,7 +26,7 @@ class AppRouter {
         path: AppTabs.path,
         name: AppTabs.name,
         builder: (BuildContext context, GoRouterState state) {
-          return AppTabs();
+          return const AppTabs();
         },
         routes: [
           GoRoute(
@@ -63,14 +63,14 @@ class AppRouter {
             path: EmailLoginScreen.path,
             name: EmailLoginScreen.name,
             builder: (context, state) {
-              return EmailLoginScreen();
+              return const EmailLoginScreen();
             },
           ),
           GoRoute(
             path: UserSettingsScreen.path,
             name: UserSettingsScreen.name,
             builder: (context, state) {
-              return UserSettingsScreen();
+              return const UserSettingsScreen();
             },
           ),
           GoRoute(
@@ -88,7 +88,7 @@ class AppRouter {
             path: EmailRegisterScreen.path,
             name: EmailRegisterScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              return EmailRegisterScreen();
+              return const EmailRegisterScreen();
             },
           ),
           GoRoute(
@@ -113,13 +113,13 @@ class AppRouter {
               path: AddCardScreen.path,
               name: AddCardScreen.name,
               builder: (context, state) {
-                return AddCardScreen();
+                return const AddCardScreen();
               }),
           GoRoute(
               path: AddNequiScreen.path,
               name: AddNequiScreen.name,
               builder: (context, state) {
-                return AddNequiScreen();
+                return const AddNequiScreen();
               })
         ],
       ),

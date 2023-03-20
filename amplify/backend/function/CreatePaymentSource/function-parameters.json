@@ -14,5 +14,11 @@
         "update"
       ]
     }
-  }
+  },
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "auth",
+      "environmentVariableName": "AUTH"
+    }
+  ]
 }

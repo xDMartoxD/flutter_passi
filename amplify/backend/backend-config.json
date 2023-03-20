@@ -608,6 +608,14 @@
         }
       ]
     },
+    "AMPLIFY_function_CreatePaymentSource_auth": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreatePaymentSource"
+        }
+      ]
+    },
     "AMPLIFY_function_CreatePaymentSource_deploymentBucketName": {
       "usedBy": [
         {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/payment_methods_by_user.dart';
@@ -44,52 +45,34 @@ class PaymentMethodsContent extends StatelessWidget {
     await Provider.of<PaymentMethodsByUserProvider>(context, listen: false).getPaymentMethods();
   }
 
-  Future<dynamic> _addPaymentMethodHandler(BuildContext context) {
-    return showModalBottomSheet<dynamic>(
+  void _addPaymentMethodHandler({
+    required BuildContext context,
+  }) {
+    showModalBottomSheet<dynamic>(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 5,
         isDismissible: true,
         isScrollControlled: true,
         context: context,
-        builder: (cotext) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(10),
-              ),
-              color: Theme.of(context).cardColor,
-            ),
-            child: Wrap(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    if (context.mounted) {
-                      context.pushNamed(AddCardScreen.name);
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/mastercard.png'),
-                    ),
-                    title: Text("Tarjeta"),
-                  ),
+        builder: (context) {
+          return Wrap(
+            children: [
+              ListTile(
+                onTap: () {
+                  context.pushNamed(AddCardScreen.name);
+                },
+                leading: const CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/mastercard.png'),
                 ),
-                // GestureDetector(
-                //   onTap: () {
-                //     if (context.mounted) {
-                //       context.pushNamed(AddNequiScreen.name);
-                //     }
-                //   },
-                //   child: const ListTile(
-                //     leading: CircleAvatar(
-                //       backgroundImage: AssetImage('assets/images/nequi.png'),
-                //     ),
-                //     title: Text('Nequi'),
-                //   ),
-                // )
-              ],
-            ),
+                title: Text(
+                  "Tarjeta de credito",
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+              const SizedBox(
+                height: 80,
+              ),
+            ],
           );
         });
   }
@@ -123,8 +106,7 @@ class PaymentMethodsContent extends StatelessWidget {
                       ),
                       FloatingActionButton(
                         backgroundColor: Colors.white,
-                        onPressed: () =>
-                            _addPaymentMethodHandler(scaffoldKey.currentContext ?? context),
+                        onPressed: () => _addPaymentMethodHandler(context: context),
                         child: Text(
                           "Agregar metodo de pago",
                           style: Theme.of(context).textTheme.titleMedium!.copyWith(

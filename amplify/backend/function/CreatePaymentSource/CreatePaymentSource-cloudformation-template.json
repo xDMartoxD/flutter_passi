@@ -23,6 +23,9 @@
     "apiappamplifyGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apiappamplifyGraphQLAPIIdOutput"
+    },
+    "auth": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -106,6 +109,9 @@
             },
             "API_APPAMPLIFY_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apiappamplifyGraphQLAPIIdOutput"
+            },
+            "AUTH": {
+              "Ref": "auth"
             }
           }
         },

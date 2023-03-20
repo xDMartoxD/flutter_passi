@@ -50,10 +50,9 @@ class _EventSetterState extends State<EventSetter> {
                       if (body == "ERROR") {
                         return;
                       }
-                      if (!context.mounted) {
-                        return;
+                      if (context.mounted) {
+                        auxMethod(context, body);
                       }
-                      auxMethod(context, body);
                     },
                     child: const Text("Aceptar"))
               ],
