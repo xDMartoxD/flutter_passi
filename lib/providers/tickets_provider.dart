@@ -51,7 +51,9 @@ class TicketsProvider with ChangeNotifier {
           );
           final response = await Amplify.API.post(restOptions: options).response;
           final body = json.decode(response.body);
-          print(body);
+          if (body['data'] != 'ok') {
+            throw Exception("PAILA");
+          }
         } on ApiException catch (e) {
           safePrint('POST call failed: $e');
           rethrow;

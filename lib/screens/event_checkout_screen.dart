@@ -2,6 +2,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passi_app/screens/app_tabs.dart';
 import '../providers/discount_code_provider.dart';
 import '../providers/tickets_provider.dart';
 import '../screens/payment_methods_screen.dart';
@@ -141,6 +142,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         _isLoading = true;
       });
       await Provider.of<TicketsProvider>(context, listen: false).createTickets();
+      context.goNamed(AppTabs.name);
     } catch (e) {
       errorMessage();
     } finally {

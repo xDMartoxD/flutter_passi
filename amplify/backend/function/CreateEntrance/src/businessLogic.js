@@ -1,3 +1,4 @@
+
 /* Amplify Params - DO NOT EDIT
   API_APPAMPLIFY_DISCOUNTCODETABLE_ARN
   API_APPAMPLIFY_DISCOUNTCODETABLE_NAME
@@ -31,22 +32,18 @@ const {
   getPaymentMethod,
 } = require('/opt/models')
 const env = process.env.ENV
-exports.handler = async (event, context) => {
+const businessLogic = async (eventID, ticketCategoriesID, identity, code) => {
   try {
-    const { typeName, arguments: args, identity } = event
-    if (typeName !== 'Mutation') {
-      console.log('el tipo de request de ve ser Mutation')
-      throw new Error('el tipo de request de ve ser Mutation')
-    }
-    if (!args.eventID) {
+
+    if (!eventID) {
       console.log('Se requiere un evento')
       throw new Error('Se requiere un evento')
     }
-    if (!args.ticketCategoriesID || args.ticketCategoriesID.length === 0) {
+    if (!ticketCategoriesID || ticketCategoriesID.length === 0) {
       console.log('Se requiere una Categoria de Entrada')
       throw new Error('Se requiere una Categoria de Entrada')
     }
-    if (args.ticketCategoriesID.length > 20) {
+    if (ticketCategoriesID.length > 20) {
       console.log(
         'La cantidad maxima permitida de compra de cualquier evento es 20'
       )
@@ -59,14 +56,14 @@ exports.handler = async (event, context) => {
       throw new Error('Se debe estar autenticado')
     } else {
       const ticketCategoriesObject = {}
-      args.ticketCategoriesID.forEach((tcID) => {
+      ticketCategoriesID.forEach((tcID) => {
         if (ticketCategoriesObject[tcID] !== undefined) {
           ticketCategoriesObject[tcID] = ticketCategoriesObject[tcID] + 1
         } else {
           ticketCategoriesObject[tcID] = 1
         }
       })
-      const event = await getEvent(args.eventID, env)
+      const event = await getEvent(eventID, env)
       if (!event) {
         throw new Error('No se ha encontrado informacion del evento')
       }
@@ -75,7 +72,7 @@ exports.handler = async (event, context) => {
         throw new Error('No se ha encontrado informacion del usuario')
       }
       const ticketCategories = []
-      args.ticketCategoriesID.forEach(async (id) => {
+      ticketCategoriesID.forEach(async (id) => {
         const Item = await getTicketCategory(id, env)
         if (!Item) {
           throw new Error('No se ha encontrado la categoria de la entrada')
@@ -84,12 +81,12 @@ exports.handler = async (event, context) => {
       })
       const userTickets = await getTicketsByUser(identity.username, env)
       const eventDiscountCodes = await getDiscountCodesByEvent(
-        args.eventID,
+        eventID,
         env
       )
 
-      const discountCode = args.code
-        ? await getDiscountCode(args.code, args.eventID, env)
+      const discountCode = code
+        ? await getDiscountCode(code, eventID, env)
         : null
       let selectedPaymentMethod = null
       if (user.userSelectedPaymentMethodId) {
@@ -123,7 +120,7 @@ exports.handler = async (event, context) => {
       if (
         event.maxBuyQuantity &&
         event.maxBuyQuantity <
-        args.ticketCategoriesID.length +
+        ticketCategoriesID.length +
         userTickets.filter((t) => t.eventID === event.id).length
       ) {
         console.log(
@@ -138,8 +135,8 @@ exports.handler = async (event, context) => {
         throw new Error('El evento ya ha ocurrido')
       } else if (
         event.needsCode &&
-        (!args.code ||
-          eventDiscountCodes.map((c) => c.code).indexOf(args.code) === -1)
+        (!code ||
+          eventDiscountCodes.map((c) => c.code).indexOf(code) === -1)
       ) {
         console.log('Se necesita un codigo valido')
         throw new Error('Se necesita un codigo valido')
@@ -189,3 +186,5 @@ exports.handler = async (event, context) => {
     return { errors: err.message }
   }
 }
+
+exports.businessLogic = businessLogic;
