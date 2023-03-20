@@ -171,7 +171,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
       final options = RestOptions(
         path: '/create-payment-source',
         body: Uint8List.fromList(
-            "{\"id\":\"$id\", \"token\": \"$token\" ,\"type\": \"CARD\", \"status\": \"status\", \"customer_email\": \"${authenticationProvider!.user!.email}\"}"
+            "{\"id\":\"$id\", \"token\": \"$token\" ,\"type\": \"CARD\",  \"customer_email\": \"${authenticationProvider!.user!.email}\", \"acceptance_token\": \"${_presignedAcceptance!.acceptanceToken}\"}"
                 .codeUnits),
       );
       final response = await Amplify.API.post(restOptions: options).response;
