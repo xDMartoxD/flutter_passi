@@ -32,7 +32,7 @@ const {
   getPaymentMethod,
 } = require('/opt/models')
 const env = process.env.ENV
-const businessLogic = async (eventID, ticketCategoriesID, identity, code) => {
+const businessLogic = async (eventID, ticketCategoriesID, identity, userID, code) => {
   try {
 
     if (!eventID) {
@@ -67,7 +67,7 @@ const businessLogic = async (eventID, ticketCategoriesID, identity, code) => {
       if (!event) {
         throw new Error('No se ha encontrado informacion del evento')
       }
-      const user = await getUser(identity.username, env)
+      const user = await getUser(userID, env)
       if (!user) {
         throw new Error('No se ha encontrado informacion del usuario')
       }
@@ -79,7 +79,7 @@ const businessLogic = async (eventID, ticketCategoriesID, identity, code) => {
         }
         ticketCategories.push(Item)
       })
-      const userTickets = await getTicketsByUser(identity.username, env)
+      const userTickets = await getTicketsByUser(userID, env)
       const eventDiscountCodes = await getDiscountCodesByEvent(
         eventID,
         env
