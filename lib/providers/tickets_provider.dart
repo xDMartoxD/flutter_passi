@@ -46,11 +46,12 @@ class TicketsProvider with ChangeNotifier {
           final options = RestOptions(
             path: '/create-entrance',
             body: Uint8List.fromList(
-                "{\"acceptanceToken\":\"${paymentMethodsByUserProvider!.presignedAcceptance!.acceptanceToken}\", \"installments\": 1 ,\"eventID\": \"${eventProvider!.event!.id}\",  \"code\": \"${discountCodesByEventProvider?.discountCode?.code}\", \"ticketCategoriesID\": ${cartProvider!.transformCart}}"
+                "{\"acceptanceToken\":\"${paymentMethodsByUserProvider!.presignedAcceptance!.acceptanceToken}\", \"installments\": 1 ,\"eventID\": \"${eventProvider!.event!.id}\",  \"code\": \"${discountCodesByEventProvider?.discountCode?.code}\", \"ticketCategoriesID\": ${cartProvider!.transformCart}, \"userID\":\"${authenticationProvider!.user!.id}\"}"
                     .codeUnits),
           );
           final response = await Amplify.API.post(restOptions: options).response;
           final body = json.decode(response.body);
+          print(body);
         } on ApiException catch (e) {
           safePrint('POST call failed: $e');
           rethrow;
