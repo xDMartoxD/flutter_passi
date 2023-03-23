@@ -379,7 +379,10 @@ class TicketsContent extends StatelessWidget {
                               end: Alignment.bottomCenter,
                             ),
                           ),
-                          padding: const EdgeInsets.all(40),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 50,
+                            horizontal: 60,
+                          ),
                           child: TicketWidget(
                             didAssit: ticketProvider.tickets[index].didAssist,
                             eventMaxAge: ticketProvider.tickets[index].event.minAge,
