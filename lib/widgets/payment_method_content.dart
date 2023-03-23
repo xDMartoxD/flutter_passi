@@ -1,5 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/paymentMethodsLogos.dart';
@@ -33,6 +34,7 @@ class _PaymentMethodContentState extends State<PaymentMethodContent> {
     } on Exception catch (e) {
       safePrint(e);
     } finally {
+      context.pop();
       setState(() {
         _isLoading = false;
       });

@@ -306,11 +306,14 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:passi_app/screens/profile_screen.dart';
 import '../providers/authentication_provider.dart';
 import '../providers/tickets_provider.dart';
 import '../widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
+import '../widgets/unauth.dart';
 
 class TicketsScreen extends StatelessWidget {
   const TicketsScreen({super.key});
@@ -318,22 +321,26 @@ class TicketsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProxyProvider<AuthenticationProvider, TicketsProvider>(
-            create: (context) {
-              return TicketsProvider();
-            },
-            update: (context, authenticationProvider, prev) {
-              return TicketsProvider(authenticationProvider: authenticationProvider);
-            },
-          )
-        ],
-        child: FutureBuilder(
-          future: fetchTickets(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return const TicketsContent();
+      providers: [
+        ChangeNotifierProxyProvider<AuthenticationProvider, TicketsProvider>(
+          create: (context) {
+            return TicketsProvider();
           },
-        ));
+          update: (context, authenticationProvider, prev) {
+            return TicketsProvider(authenticationProvider: authenticationProvider);
+          },
+        )
+      ],
+      child: Consumer<AuthenticationProvider>(
+        builder: (
+          context,
+          authenticationProvider,
+          child,
+        ) {
+          return authenticationProvider.user != null ? TicketsContent() : Center(child: UnAuth());
+        },
+      ),
+    );
   }
 }
 

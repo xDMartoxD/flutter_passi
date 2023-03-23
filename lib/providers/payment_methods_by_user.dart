@@ -217,7 +217,6 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
 
         return true;
       } on Exception catch (e) {
-        safePrint("BOTO EXCEPCION");
         rethrow;
       }
     }
