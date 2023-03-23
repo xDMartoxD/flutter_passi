@@ -41,7 +41,7 @@ const initPayment = (body) => {
       return response.data
     })
     .catch((err) => {
-      return { errors: err.message }
+      return { error: err.message }
     })
 }
 
@@ -59,7 +59,7 @@ const subscribe = async (id) => {
     )
     .then((res) => res.data.data)
     .catch((err) => {
-      console.log(JSON.stringify(err))
+      return { error: err }
     })
 
   if (data.status == 'PENDING') {
@@ -92,7 +92,7 @@ const payment = async ({
     const discount = discountCode ? discountCode.discount : 0
     if (price - discount > 0) {
       if (price - discount < 1500) {
-        throw new Error('La transaccion minima posible es de 1500 COP')
+        return { error: 'La transaccion minima posible es de 1500 COP' }
       }
 
       let body = {}
@@ -125,11 +125,9 @@ const payment = async ({
         }
       }
       const response = await initPayment(body)
-      console.log(response.data)
       const { id, payment_method_type } = response.data
       if (payment_method_type === 'CARD') {
         const data = await subscribe(id)
-        console.log(data)
         if (data.status === 'APPROVED') {
           payed = true
           return {
@@ -147,7 +145,7 @@ const payment = async ({
             totalCost: price - discount,
           }
         } else {
-          throw new Error('La transaccion no fue aprovada ' + data.status)
+          return { error: 'La transaccion no fue aprovada ' + data.status }
         }
       } else {
         return {
@@ -178,10 +176,7 @@ const payment = async ({
       }
     }
   } catch (err) {
-    console.log(err.message)
-    if (payed) {
-    }
-    return { errors: err.message, payed }
+    return { error: err.message, payed }
   }
 }
 exports.payment = payment;

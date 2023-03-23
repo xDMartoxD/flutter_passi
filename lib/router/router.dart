@@ -6,13 +6,15 @@ import 'package:passi_app/screens/add_nequi_screen.dart';
 import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/screen_args/email_confirmation_screen_args.dart';
+import '../models/screen_args/errors_screen_args.dart';
 import '../models/screen_args/event_categories_screen_args.dart';
 import '../models/screen_args/event_detail_screen_args.dart';
 import '../screens/email_login_screen.dart';
 import '../screens/email_register_screen.dart';
-import '../screens/error_screen.dart';
+import '../screens/errors_screen.dart';
 import '../screens/event_categories_overview_screen.dart';
 import '../screens/event_checkout_screen.dart';
+import '../screens/success_screen.dart';
 import '../screens/user_settings_screen.dart';
 import '../models/screen_args/event_checkout_screen_args.dart';
 import '../screens/email_confirmation_screen.dart';
@@ -120,6 +122,21 @@ class AppRouter {
               name: AddNequiScreen.name,
               builder: (context, state) {
                 return const AddNequiScreen();
+              }),
+          GoRoute(
+              path: ErrorsScreen.path,
+              name: ErrorsScreen.name,
+              builder: (context, state) {
+                final args = ErrorsScreenArgs.fromJson(
+                  state.queryParams,
+                );
+                return ErrorsScreen(error: args.error);
+              }),
+          GoRoute(
+              path: SuccessScreen.path,
+              name: SuccessScreen.name,
+              builder: (context, state) {
+                return const SuccessScreen();
               })
         ],
       ),
@@ -127,7 +144,7 @@ class AppRouter {
     errorPageBuilder: (context, state) {
       return MaterialPage(
         key: state.pageKey,
-        child: ErrorScreen(
+        child: ErrorsScreen(
           error: state.error.toString(),
         ),
       );

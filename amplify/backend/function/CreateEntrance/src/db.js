@@ -40,9 +40,8 @@ const cancelTransaction = async (transactionID) => {
     })
     .catch((err) => {
       return {
-        errors:
-          'No hemos podido cancelar tu transaccion por favor comunicate con nosotros. Error: ' +
-          err.message,
+        error:
+          'No hemos podido cancelar tu transaccion por favor comunicate con nosotros. Error: ' + err.message,
       }
     })
 }
@@ -57,15 +56,6 @@ const db = async ({
   user,
 }) => {
   try {
-    console.log('Total cost', totalCost)
-    console.log('Event', event)
-    console.log('ticketCategories', ticketCategories)
-    console.log('Discount Code', discountCode)
-    console.log('Payed', payed)
-    console.log('Payment data', paymentData)
-    console.log('TicketCategoriesObject', ticketCategoriesObject)
-    console.log('User', user)
-
     if (paymentData?.payment_method_type === 'NEQUI') {
       return { data: paymentData.id }
     } else if (totalCost <= 0) {
@@ -99,7 +89,7 @@ const db = async ({
     if (payed) {
       cancelTransaction(paymentData.id)
     }
-    return { errors: err.message }
+    return { error: err.message }
   }
 }
 

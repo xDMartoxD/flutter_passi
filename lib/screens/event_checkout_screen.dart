@@ -2,7 +2,10 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passi_app/models/screen_args/errors_screen_args.dart';
 import 'package:passi_app/screens/app_tabs.dart';
+import 'package:passi_app/screens/errors_screen.dart';
+import 'package:passi_app/screens/success_screen.dart';
 import '../providers/discount_code_provider.dart';
 import '../providers/tickets_provider.dart';
 import '../screens/payment_methods_screen.dart';
@@ -141,12 +144,23 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       setState(() {
         _isLoading = true;
       });
-      await Provider.of<TicketsProvider>(context, listen: false).createTickets();
-      context.goNamed(AppTabs.name);
+      final error = await Provider.of<TicketsProvider>(context, listen: false).createTickets();
+      if (error == null) {
+        if (context.mounted) {
+          context.pushNamed(SuccessScreen.name);
+        }
+      } else {
+        final params = ErrorsScreenArgs(error: error);
+        if (context.mounted) {
+          context.pushNamed(ErrorsScreen.name, queryParams: params.queryParams());
+        }
+      }
     } catch (e) {
       errorMessage();
     } finally {
-      _isLoading = false;
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

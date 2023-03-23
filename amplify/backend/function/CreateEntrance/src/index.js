@@ -20,23 +20,9 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const AWS = require('aws-sdk')
-const { v4: uuidv4 } = require('uuid')
 const { businessLogic } = require("./businessLogic.js")
 const { payment } = require("./payment.js")
 const { db } = require("./db.js")
-const {
-	getEvent,
-	createTicket,
-	getTicketCategory,
-	incrementTotalAssistantsTicketCategory,
-	getDiscountCodesByEvent,
-	getTicketsByUser,
-	incrementDiscountCodeUse,
-	getDiscountCode,
-} = require('/opt/models')
-const { initPayment } = require('/opt/wompi')
-const env = process.env.ENV
 
 exports.handler = async ({ body, requestContext: { identity } }, context) => {
 	const args = JSON.parse(body)
@@ -44,47 +30,73 @@ exports.handler = async ({ body, requestContext: { identity } }, context) => {
 	if (args.code !== 'null') {
 		code = args.code
 	}
-	const blResponse = await businessLogic(args.eventID, args.ticketCategoriesID, identity, args.userID, code)
-	if (blResponse) {
-		const { event, ticketCategoriesObject, ticketCategories, userTickets, eventDiscountCodes, discountCode, user, selectedPaymentMethod } = blResponse
-		const paymentResponse = await payment({
-			event,
-			ticketCategoriesObject,
-			ticketCategories,
-			userTickets,
-			eventDiscountCodes,
-			discountCode,
-			user,
-			selectedPaymentMethod,
-			acceptanceToken: args.acceptanceToken,
-			installments: args.installments
-		})
-		if (paymentResponse) {
-			const { payed, paymentData, totalCost } = paymentResponse
-			const dbResponse = await db({
-				event,
-				ticketCategories,
-				discountCode,
-				payed,
-				paymentData,
-				totalCost,
-				ticketCategoriesObject,
-				user,
-			});
-			if (dbResponse) {
-				console.log("DB RESPONSE ", dbResponse)
-				return {
-					statusCode: 200,
-					headers: {
-						"Access-Control-Allow-Origin": "*",
-						"Access-Control-Allow-Headers": "*",
+	const { event, ticketCategoriesObject, ticketCategories, userTickets, eventDiscountCodes, discountCode, user, selectedPaymentMethod, error: blError } = await businessLogic(args.eventID, args.ticketCategoriesID, identity, args.userID, code)
+	if (blError) {
+		return {
+			statusCode: 401,
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "*",
 
-					},
-					body: JSON.stringify({ "data": "ok" }),
-				};
-			}
-		}
+			},
+			body: JSON.stringify({ "data": blError }),
+		};
 	}
+	const { payed, paymentData, totalCost, error: paymentError } = await payment({
+		event,
+		ticketCategoriesObject,
+		ticketCategories,
+		userTickets,
+		eventDiscountCodes,
+		discountCode,
+		user,
+		selectedPaymentMethod,
+		acceptanceToken: args.acceptanceToken,
+		installments: args.installments
+	})
+	if (paymentError) {
+		return {
+			statusCode: 401,
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "*",
+
+			},
+			body: JSON.stringify({ "data": paymentError }),
+		};
+	}
+	const { error: dbError } = await db({
+		event,
+		ticketCategories,
+		discountCode,
+		payed,
+		paymentData,
+		totalCost,
+		ticketCategoriesObject,
+		user,
+	});
+	if (dbError) {
+		return {
+			statusCode: 401,
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "*",
+
+			},
+			body: JSON.stringify({ "data": dbError }),
+		};
+	}
+	return {
+		statusCode: 200,
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Headers": "*",
+
+		},
+		body: JSON.stringify({ "data": "ok" }),
+	};
 }
+
+
 
 

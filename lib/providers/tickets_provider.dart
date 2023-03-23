@@ -33,7 +33,7 @@ class TicketsProvider with ChangeNotifier {
     this.paymentMethodsByUserProvider,
   });
 
-  Future<void> createTickets() async {
+  Future<String?> createTickets() async {
     if (cartProvider != null &&
         authenticationProvider != null &&
         eventProvider != null &&
@@ -51,18 +51,19 @@ class TicketsProvider with ChangeNotifier {
           );
           final response = await Amplify.API.post(restOptions: options).response;
           final body = json.decode(response.body);
-          if (body['data'] != 'ok') {
-            throw Exception("PAILA");
+          if (response.statusCode == 401) {
+            return body["data"];
           }
+          return null;
         } on ApiException catch (e) {
           safePrint('POST call failed: $e');
           rethrow;
         }
       } else {
-        safePrint("Falta el acceptance Token");
+        return "Falta el acceptance Token";
       }
     } else {
-      safePrint("Falta todo lo demas");
+      return "ERROR FATAL";
     }
   }
 
