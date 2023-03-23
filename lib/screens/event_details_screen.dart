@@ -20,7 +20,7 @@ class EventDetailsScreen extends StatefulWidget {
   final String id;
   final String? promoterCode;
 
-  EventDetailsScreen({super.key, required this.id, this.promoterCode});
+  const EventDetailsScreen({super.key, required this.id, this.promoterCode});
 
   @override
   State<EventDetailsScreen> createState() => _EventDetailsScreenState();
@@ -93,7 +93,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         body: MultiProvider(
           providers: [
             ChangeNotifierProvider<EventProvider>(create: (context) {
-              return EventProvider();
+              return EventProvider(eventId: widget.id);
             }),
             ChangeNotifierProxyProvider<EventProvider, JobsByEventProvider>(create: (context) {
               return JobsByEventProvider();
@@ -111,7 +111,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 class EventContent extends StatefulWidget {
   final String id;
 
-  EventContent({
+  const EventContent({
     super.key,
     required this.id,
   });
@@ -121,29 +121,23 @@ class EventContent extends StatefulWidget {
 }
 
 class _EventContentState extends State<EventContent> {
-  Future<void>? _setEvent;
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(Duration.zero).then((_) {
-      _setEvent = Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
-    });
+  Future<void> _setEvent() async {
+    await Provider.of<EventProvider>(context, listen: false).setEvent();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _setEvent,
+      future: _setEvent(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Loading();
+            return const Loading();
           default:
             return Consumer2<EventProvider, JobsByEventProvider>(
                 builder: (context, eventProvider, jobsProvider, child) {
               return eventProvider.event == null
-                  ? Loading()
+                  ? const Loading()
                   : CustomScrollView(
                       slivers: <Widget>[
                         EventDetailsAppBar(
@@ -166,13 +160,13 @@ class _EventContentState extends State<EventContent> {
                                   softWrap: true,
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 color: Colors.white,
                                 height: 8,
                               ),
                               Container(
                                 height: 100,
-                                decoration: BoxDecoration(border: Border.symmetric()),
+                                decoration: const BoxDecoration(border: Border.symmetric()),
                                 child: ListView(
                                   scrollDirection: Axis.horizontal,
                                   children: [
@@ -183,7 +177,7 @@ class _EventContentState extends State<EventContent> {
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.map,
-                                      textContent: "${eventProvider.event!.address}",
+                                      textContent: eventProvider.event!.address,
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.calendar_today,
@@ -192,7 +186,7 @@ class _EventContentState extends State<EventContent> {
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.corporate_fare_rounded,
-                                      textContent: "${eventProvider.event!.company}",
+                                      textContent: eventProvider.event!.company,
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.star_border_rounded,
@@ -205,7 +199,7 @@ class _EventContentState extends State<EventContent> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Card(
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
                                     child: ChangeNotifierProvider<TicketCategoriesByEventProvider>(
                                       create: (context) {
                                         return TicketCategoriesByEventProvider();
@@ -217,7 +211,7 @@ class _EventContentState extends State<EventContent> {
                                   ),
                                 ),
                               ),
-                              if (!jobsProvider.promoters.isEmpty) PromotersWidget(),
+                              if (jobsProvider.promoters.isNotEmpty) const PromotersWidget(),
                               // SizedBox(height: 20),
                               // Padding(
                               //   padding: const EdgeInsets.all(8.0),
@@ -235,7 +229,7 @@ class _EventContentState extends State<EventContent> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ExpandableText(eventProvider.event!.description),
                                 ),
-                              SizedBox(height: 80)
+                              const SizedBox(height: 80)
                             ],
                           ),
                         )
@@ -264,14 +258,14 @@ class PromotersWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.whatsapp,
               color: Colors.white,
             ),
             onPressed: () {},
           ),
         ),
-        Divider(
+        const Divider(
           endIndent: 8,
           indent: 8,
           color: Colors.grey,
@@ -283,14 +277,14 @@ class PromotersWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.whatsapp,
               color: Colors.white,
             ),
             onPressed: () {},
           ),
         ),
-        Divider(
+        const Divider(
           endIndent: 8,
           indent: 8,
           color: Colors.grey,
@@ -302,14 +296,14 @@ class PromotersWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.whatsapp,
               color: Colors.white,
             ),
             onPressed: () {},
           ),
         ),
-        Divider(
+        const Divider(
           endIndent: 8,
           indent: 8,
           color: Colors.grey,
@@ -320,9 +314,9 @@ class PromotersWidget extends StatelessWidget {
 }
 
 class EventInfoIcon extends StatelessWidget {
-  IconData icon;
-  String textContent;
-  EventInfoIcon({
+  final IconData icon;
+  final String textContent;
+  const EventInfoIcon({
     Key? key,
     required this.icon,
     required this.textContent,
@@ -334,7 +328,7 @@ class EventInfoIcon extends StatelessWidget {
       children: [
         Container(
           width: 100,
-          padding: EdgeInsets.symmetric(vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -346,7 +340,7 @@ class EventInfoIcon extends StatelessWidget {
             ],
           ),
         ),
-        VerticalDivider(
+        const VerticalDivider(
           color: Colors.grey,
           indent: 5,
           endIndent: 5,
@@ -357,7 +351,7 @@ class EventInfoIcon extends StatelessWidget {
 }
 
 class EventDetailsCategoriesInfo extends StatelessWidget {
-  EventDetailsCategoriesInfo({
+  const EventDetailsCategoriesInfo({
     Key? key,
     required this.eventId,
   }) : super(key: key);
@@ -389,7 +383,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             height: 50,
                             child: Text(
                               ticketCategory.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -401,13 +395,13 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             height: 50,
                             child: Text(
                               "\$ ${formatNumber(ticketCategory.price)}",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           ),
                           Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
                             height: 5,
                             decoration: BoxDecoration(
                               color: getColor(ticketCategory.color),
@@ -422,7 +416,7 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
               },
             );
           default:
-            return Loading();
+            return const Loading();
         }
       },
     );
@@ -511,7 +505,7 @@ class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProv
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.ios_share),
+          icon: const Icon(Icons.ios_share),
         )
       ],
     );

@@ -1,7 +1,6 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart' show AuthException;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passi_app/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart' show isEmail;
 import '../providers/authentication_provider.dart';
@@ -20,7 +19,7 @@ class EmailLoginScreen extends StatefulWidget {
 class _EmailLoginScreenState extends State<EmailLoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _isLoading = false;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
@@ -57,14 +56,14 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: Text("Ocurrio un error"),
+            title: const Text("Ocurrio un error"),
             content: Text(message),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("Cerrar"))
+                  child: const Text("Cerrar"))
             ],
           )),
     );
@@ -82,12 +81,12 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
                 TextFormField(
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(
                     labelText: 'Correo',
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -101,10 +100,10 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                     _authData['email'] = value!;
                   },
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 TextFormField(
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(
                     labelText: 'Contraseña',
                   ),
                   keyboardType: TextInputType.visiblePassword,
@@ -119,14 +118,14 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                     _authData['password'] = value!;
                   },
                 ),
-                SizedBox(height: 30),
-                Container(
+                const SizedBox(height: 30),
+                SizedBox(
                   width: MediaQuery.of(context).size.width * .8,
                   child: FloatingActionButton(
                     backgroundColor: Colors.white,
                     onPressed: _isLoading ? null : _submit,
                     child: _isLoading
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(color: Colors.black),
                           )
                         : Text(

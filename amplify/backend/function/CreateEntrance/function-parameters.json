@@ -21,5 +21,57 @@
       "version": "Always choose latest version",
       "isLatestVersionSelected": true
     }
-  ]
+  ],
+  "permissions": {
+    "storage": {
+      "Job:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "User:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "PaymentMethod:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Ticket:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Event:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "TicketCategory:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "EventCategory:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "DiscountCode:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
 }

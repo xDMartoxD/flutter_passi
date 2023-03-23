@@ -21,7 +21,8 @@ class EventsProvider with ChangeNotifier {
       }
       return event;
     } on ApiException catch (e) {
-      print('Query failed: ${e.message}');
+      safePrint('Query failed: ${e.message}');
     }
+    return null;
   }
 }

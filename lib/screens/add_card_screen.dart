@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/payment_methods_by_user.dart';
-import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 class AddCardScreen extends StatelessWidget {
@@ -21,7 +20,7 @@ class AddCardScreen extends StatelessWidget {
       update: (context, authenticationProvider, prev) {
         return PaymentMethodsByUserProvider(authenticationProvider: authenticationProvider);
       },
-      child: CardForm(),
+      child: const CardForm(),
     );
   }
 }
@@ -82,7 +81,9 @@ class _CardFormState extends State<CardForm> {
       final cardSaved = await Provider.of<PaymentMethodsByUserProvider>(context, listen: false)
           .saveNewCard(_cardData);
       if (cardSaved == null) {
-        context.pop();
+        if (context.mounted) {
+          context.pop();
+        }
       } else {
         _showErrorDialog(cardSaved);
       }
@@ -196,14 +197,14 @@ class _CardFormState extends State<CardForm> {
                   ],
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               SizedBox(
                 width: MediaQuery.of(context).size.width * .8,
                 child: FloatingActionButton(
                   backgroundColor: Colors.white,
                   onPressed: () => _addCardHandler(context),
                   child: _isLoading
-                      ? CircularProgressIndicator(
+                      ? const CircularProgressIndicator(
                           color: Colors.black,
                         )
                       : Text(

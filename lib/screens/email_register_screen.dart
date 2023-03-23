@@ -2,7 +2,6 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart' show AuthExcepti
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/screen_args/email_confirmation_screen_args.dart';
-import 'package:passi_app/models/screen_args/event_detail_screen_args.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart' show isEmail;
 
@@ -71,14 +70,14 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
     showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: Text("Ocurrio un error"),
+            title: const Text("Ocurrio un error"),
             content: Text(message),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("Cerrar"))
+                  child: const Text("Cerrar"))
             ],
           )),
     );
@@ -96,12 +95,12 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
                 TextFormField(
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(labelText: 'Nombre completo'),
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(labelText: 'Nombre completo'),
                   textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.name,
                   validator: (value) {
@@ -114,12 +113,12 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                     _authData['name'] = value!;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 TextFormField(
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(labelText: 'Email'),
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || !isEmail(value)) {
@@ -131,12 +130,12 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                     _authData['email'] = value!;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 TextFormField(
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(labelText: 'Contraseña'),
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(labelText: 'Contraseña'),
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
                   validator: (value) {
@@ -149,12 +148,12 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                     _authData['password'] = value!;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 TextFormField(
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(labelText: 'Confirma tu contraseña'),
+                  style: const TextStyle(fontSize: 20),
+                  decoration: const InputDecoration(labelText: 'Confirma tu contraseña'),
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
                   validator: (value) {
@@ -164,14 +163,14 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 30),
-                Container(
+                const SizedBox(height: 30),
+                SizedBox(
                   width: MediaQuery.of(context).size.width * .8,
                   child: FloatingActionButton(
                     backgroundColor: Colors.white,
                     onPressed: _isLoading ? null : _submit,
                     child: _isLoading
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(color: Colors.black),
                           )
                         : Text(

@@ -24,9 +24,9 @@ class ProfileScreen extends StatelessWidget {
             if (value.user == null) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  return Loading();
+                  return const Loading();
                 default:
-                  return UnAuth();
+                  return const UnAuth();
               }
             } else {
               return Auth(name: value.user!.name, avatar: value.user!.avatar);
@@ -60,7 +60,7 @@ class _AuthState extends State<Auth> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -72,12 +72,12 @@ class _AuthState extends State<Auth> {
               height: 100,
               width: 100,
               child: FittedBox(
-                child: ClipOval(child: Image.asset('assets/images/empty-profile.png')),
                 fit: BoxFit.contain,
+                child: ClipOval(child: Image.asset('assets/images/empty-profile.png')),
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             widget.name,
             textAlign: TextAlign.center,
@@ -102,7 +102,7 @@ class UnAuth extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.person_outlined,
             color: Colors.grey,
             size: 120,
@@ -110,7 +110,7 @@ class UnAuth extends StatelessWidget {
           SizedBox(
               width: 240,
               child: FloatingActionButton(
-                  shape: StadiumBorder(),
+                  shape: const StadiumBorder(),
                   onPressed: () => bottomSheetAuthHandler(
                         context: context,
                       ),

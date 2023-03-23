@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:passi_app/models/EventCategory.dart';
-import 'package:passi_app/models/screen_args/event_categories_screen_args.dart';
-import 'package:passi_app/providers/event_categories_provider.dart';
-import 'package:passi_app/providers/events_by_category.dart';
-import 'package:passi_app/screens/event_categories_overview_screen.dart';
-import 'package:passi_app/widgets/event_item.dart';
-import 'package:go_router/go_router.dart';
-import 'package:passi_app/widgets/loading.dart';
+import '../models/EventCategory.dart';
+
+import '../providers/event_categories_provider.dart';
+import '../providers/events_by_category.dart';
+
+import '../widgets/event_item.dart';
+
+import '../widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         return Consumer<EventCategoriesProvider>(
           builder: ((context, value, _) {
             if (value.eventCategroies.isEmpty) {
-              return Loading();
+              return const Loading();
             } else {
               return EventsContent(eventCategories: value.eventCategroies);
             }
@@ -42,7 +42,7 @@ class EventsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       itemCount: eventCategories.length,
       itemBuilder: (BuildContext context, int index) {
         return Column(
@@ -56,7 +56,7 @@ class EventsContent extends StatelessWidget {
               create: (context) {
                 return EventsByCategoryProvider(categoryId: eventCategories[index].id);
               },
-              child: EventsByCategoryList(),
+              child: const EventsByCategoryList(),
             ),
           ],
         );
@@ -72,18 +72,18 @@ class EventsByCategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _fetchEventsByCategory(BuildContext context) async {
+    Future<void> fetchEventsByCategory(BuildContext context) async {
       Provider.of<EventsByCategoryProvider>(context, listen: false).fetchEventsByCategory();
     }
 
     return SizedBox(
       height: 200,
       child: FutureBuilder(
-        future: _fetchEventsByCategory(context),
+        future: fetchEventsByCategory(context),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator(color: Colors.white));
+              return const Center(child: CircularProgressIndicator(color: Colors.white));
             default:
               return Consumer<EventsByCategoryProvider>(
                 builder: (context, value, _) {
@@ -123,10 +123,10 @@ class EventCategoryTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          margin: EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
           child: Text(
             name,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),

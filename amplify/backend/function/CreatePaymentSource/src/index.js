@@ -1,4 +1,10 @@
-const AWS = require('aws-sdk')
+/* Amplify Params - DO NOT EDIT
+	API_APPAMPLIFY_GRAPHQLAPIIDOUTPUT
+	API_APPAMPLIFY_PAYMENTMETHODTABLE_ARN
+	API_APPAMPLIFY_PAYMENTMETHODTABLE_NAME
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */const AWS = require('aws-sdk')
 const axios = require('axios')
 
 const fetchTransaction = async (body) => {
@@ -8,9 +14,9 @@ const fetchTransaction = async (body) => {
 				Authorization: process.env.AUTH,
 			},
 		})
-		.then((response) => response.data)
+		.then((response) => response.data
+		)
 		.catch((err) => {
-			console.log(err)
 			return new Error('error al comunicarse con wompi')
 		})
 }
@@ -19,7 +25,7 @@ const updatePaymentMethod = async (docClient, data, id) => {
 	const { id: paymentSourceID, token, type, status, customer_email } = data
 	return docClient
 		.update({
-			TableName: process.env.PAYMENTMETHODTABLE,
+			TableName: process.env.API_APPAMPLIFY_PAYMENTMETHODTABLE_NAME,
 			Key: {
 				id,
 			},
@@ -48,11 +54,20 @@ const updatePaymentMethod = async (docClient, data, id) => {
  */
 exports.handler = async (event) => {
 	const docClient = new AWS.DynamoDB.DocumentClient()
-	const { arguments: args } = event
+	const { body } = event
 	try {
+		const args = await JSON.parse(body)
 		const { data } = await fetchTransaction(args)
 		const { Attributes } = await updatePaymentMethod(docClient, data, args.id)
-		return 'OK'
+		return {
+			statusCode: 200,
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "*",
+
+			},
+			body: JSON.stringify({ "data": "ok" }),
+		};
 	} catch (err) {
 		console.log('ERROR', err)
 		return new Error('Ocurrio un error en la base de datos')

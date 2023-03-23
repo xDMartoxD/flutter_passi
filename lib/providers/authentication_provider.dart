@@ -55,7 +55,7 @@ class AuthenticationProvider with ChangeNotifier {
           final response = await Amplify.API.query(request: request).response;
           final data = response.data;
           if (data == null) {
-            print('errors: ${response.errors}');
+            safePrint('errors: ${response.errors}');
             return;
           }
           _user = data;
@@ -98,8 +98,7 @@ class AuthenticationProvider with ChangeNotifier {
 
   Future<void> confirmUser(String username, String confirmationCode) async {
     try {
-      final result =
-          await Amplify.Auth.confirmSignUp(username: username, confirmationCode: confirmationCode);
+      await Amplify.Auth.confirmSignUp(username: username, confirmationCode: confirmationCode);
     } on AuthException catch (e) {
       safePrint(e.message);
       rethrow;
@@ -127,7 +126,7 @@ class AuthenticationProvider with ChangeNotifier {
       final response = await Amplify.API.mutate(request: request).response;
       final data = response.data;
       if (data == null) {
-        print('errors: ${response.errors}');
+        safePrint('errors: ${response.errors}');
         return;
       }
       _user = data;
@@ -158,7 +157,7 @@ class AuthenticationProvider with ChangeNotifier {
 
   Future<void> resetPassword(String username) async {
     try {
-      final result = await Amplify.Auth.resetPassword(
+      await Amplify.Auth.resetPassword(
         username: username,
       );
     } on AmplifyException catch (e) {

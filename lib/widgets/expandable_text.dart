@@ -16,7 +16,7 @@ class ExpandableText extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.orange,
                 shape: BoxShape.rectangle,
               ),
@@ -29,7 +29,7 @@ class ExpandableText extends StatelessWidget {
                     headerAlignment: ExpandablePanelHeaderAlignment.center,
                     tapBodyToCollapse: true,
                     iconColor: Colors.white),
-                header: Padding(
+                header: const Padding(
                   padding: EdgeInsets.all(10),
                 ),
                 collapsed: Text(
@@ -39,7 +39,7 @@ class ExpandableText extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 expanded: Padding(
-                    padding: EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       content ?? "",
                       softWrap: true,
@@ -47,7 +47,7 @@ class ExpandableText extends StatelessWidget {
                     )),
                 builder: (_, collapsed, expanded) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                    padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                     child: Expandable(
                       collapsed: collapsed,
                       expanded: expanded,

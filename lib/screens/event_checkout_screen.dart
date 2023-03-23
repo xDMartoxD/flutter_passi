@@ -1,13 +1,15 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:passi_app/models/ModelProvider.dart';
-import 'package:passi_app/providers/discount_code_provider.dart';
-import 'package:passi_app/providers/tickets_provider.dart';
-import 'package:passi_app/screens/payment_methods_screen.dart';
-import 'package:passi_app/widgets/payment_method_content.dart';
+import 'package:passi_app/models/screen_args/errors_screen_args.dart';
+import 'package:passi_app/screens/app_tabs.dart';
+import 'package:passi_app/screens/errors_screen.dart';
+import 'package:passi_app/screens/success_screen.dart';
+import '../providers/discount_code_provider.dart';
+import '../providers/tickets_provider.dart';
+import '../screens/payment_methods_screen.dart';
+import '../widgets/payment_method_content.dart';
 import 'package:provider/provider.dart';
 import '../providers/authentication_provider.dart';
 import '../providers/cart_provider.dart';
@@ -23,18 +25,18 @@ class EventCheckoutScreen extends StatelessWidget {
   static const name = "event-checkout";
   final String id;
   final String? discountCode;
-  EventCheckoutScreen({super.key, required this.id, this.discountCode});
+  const EventCheckoutScreen({super.key, required this.id, this.discountCode});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("checkout")),
+      appBar: AppBar(title: const Text("checkout")),
       body: MultiProvider(providers: [
         ChangeNotifierProvider<TicketCategoriesByEventProvider>(
           create: (context) => TicketCategoriesByEventProvider(),
         ),
         ChangeNotifierProvider<EventProvider>(
-          create: (context) => EventProvider(),
+          create: (context) => EventProvider(eventId: id),
         ),
         ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMethodsByUserProvider>(
           create: (context) {
@@ -60,18 +62,32 @@ class EventCheckoutScreen extends StatelessWidget {
             return DiscountCodesByEventProvider(eventProvider: eventProvider);
           },
         ),
-        ChangeNotifierProxyProvider4<EventProvider, AuthenticationProvider, CartProvider,
-            TicketCategoriesByEventProvider, TicketsProvider>(
+        ChangeNotifierProxyProvider6<
+            EventProvider,
+            AuthenticationProvider,
+            CartProvider,
+            TicketCategoriesByEventProvider,
+            PaymentMethodsByUserProvider,
+            DiscountCodesByEventProvider,
+            TicketsProvider>(
           create: (context) {
             return TicketsProvider();
           },
-          update: (context, eventProvider, authenticationProvider, cartProvider,
-              ticketCategoriesByEventProvider, prev) {
+          update: (context,
+              eventProvider,
+              authenticationProvider,
+              cartProvider,
+              ticketCategoriesByEventProvider,
+              paymentMethodsByUserProvider,
+              discountCodesByEventProvider,
+              prev) {
             return TicketsProvider(
               eventProvider: eventProvider,
               authenticationProvider: authenticationProvider,
               cartProvider: cartProvider,
               ticketCategoriesProvider: ticketCategoriesByEventProvider,
+              paymentMethodsByUserProvider: paymentMethodsByUserProvider,
+              discountCodesByEventProvider: discountCodesByEventProvider,
             );
           },
         )
@@ -95,37 +111,56 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
 
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
-      await Provider.of<EventProvider>(context, listen: false).setEventById(widget.id);
-
-      _ticketCategoriesByEventProvider = Provider.of<TicketCategoriesByEventProvider>(
-        context,
-        listen: false,
-      );
-      await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
-      final paymentMethodsProvider =
-          Provider.of<PaymentMethodsByUserProvider>(context, listen: false);
-      await paymentMethodsProvider.fetchTermsAndConditions();
-      await paymentMethodsProvider.getPaymentMethods();
-      await Provider.of<DiscountCodesByEventProvider>(
-        context,
-        listen: false,
-      ).fetchDiscountCodes();
+      if (context.mounted) {
+        await Provider.of<EventProvider>(context, listen: false).setEvent();
+      }
+      if (context.mounted) {
+        _ticketCategoriesByEventProvider = Provider.of<TicketCategoriesByEventProvider>(
+          context,
+          listen: false,
+        );
+        await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
+      }
+      if (context.mounted) {
+        final paymentMethodsProvider =
+            Provider.of<PaymentMethodsByUserProvider>(context, listen: false);
+        await paymentMethodsProvider.fetchTermsAndConditions();
+        await paymentMethodsProvider.getPaymentMethods();
+      }
+      if (context.mounted) {
+        await Provider.of<DiscountCodesByEventProvider>(
+          context,
+          listen: false,
+        ).fetchDiscountCodes();
+      }
     } catch (e) {
       safePrint(e.toString());
     }
   }
 
+  errorMessage() {}
   Future<void> _buyTicketsHandler() async {
     try {
       setState(() {
         _isLoading = true;
       });
-      await Provider.of<TicketsProvider>(context, listen: false).createTickets();
-      context.pop();
-      context.pop();
+      final error = await Provider.of<TicketsProvider>(context, listen: false).createTickets();
+      if (error == null) {
+        if (context.mounted) {
+          context.pushNamed(SuccessScreen.name);
+        }
+      } else {
+        final params = ErrorsScreenArgs(error: error);
+        if (context.mounted) {
+          context.pushNamed(ErrorsScreen.name, queryParams: params.queryParams());
+        }
+      }
     } catch (e) {
+      errorMessage();
     } finally {
-      _isLoading = false;
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -149,7 +184,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                 child,
               ) {
                 return SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   child: Column(
                     children: [
                       if (eventProvider.event != null)
@@ -164,7 +199,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                           ),
                         ),
                       Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Column(
                             children: [
                               ...ticketCategoriesProvider.ticketCategories.map(
@@ -178,20 +213,22 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                               ).toList()
                             ],
                           )),
-                      eventProvider.event!.price > 0 ? DiscountCodeWidget() : Container(),
+                      eventProvider.event!.price > 0 ? const DiscountCodeWidget() : Container(),
                       eventProvider.event!.price > 0
                           ? Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Theme.of(context).cardColor,
                               ),
-                              margin: EdgeInsets.all(15),
+                              margin: const EdgeInsets.all(15),
                               width: double.infinity,
-                              padding: EdgeInsets.all(10),
-                              child: SelectedPaymentMethodContent(),
+                              padding: const EdgeInsets.all(10),
+                              child: const SelectedPaymentMethodContent(),
                             )
                           : Container(),
-                      eventProvider.event!.price > 0 ? TermsAndConditionsWidget() : Container(),
+                      eventProvider.event!.price > 0
+                          ? const TermsAndConditionsWidget()
+                          : Container(),
                       if (cartProvider.hasTickets)
                         SizedBox(
                           width: MediaQuery.of(context).size.width * .8,
@@ -199,11 +236,8 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                             backgroundColor: Colors.white,
                             onPressed: !_isLoading ? _buyTicketsHandler : null,
                             child: _isLoading
-                                ? CircularProgressIndicator()
-                                : BuyButtonChild(
-                                    discountCodesProvider: discountCodeProvider,
-                                    cartProvider: cartProvider,
-                                  ),
+                                ? const CircularProgressIndicator()
+                                : const BuyButtonChild(),
                           ),
                         )
                     ],
@@ -212,7 +246,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
               },
             );
           default:
-            return Loading();
+            return const Loading();
         }
       },
     );
@@ -253,11 +287,14 @@ class SelectedPaymentMethodContent extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             paymentMethodsProvider.selectedPaymentMethod != null
-                ? PaymentMethodContent(paymentMethod: paymentMethodsProvider.selectedPaymentMethod!)
+                ? PaymentMethodContent(
+                    paymentMethod: paymentMethodsProvider.selectedPaymentMethod!,
+                    showTrailing: false,
+                  )
                 : Container()
           ],
         );
@@ -267,49 +304,49 @@ class SelectedPaymentMethodContent extends StatelessWidget {
 }
 
 class BuyButtonChild extends StatelessWidget {
-  final CartProvider cartProvider;
-  final DiscountCodesByEventProvider discountCodesProvider;
   const BuyButtonChild({
-    required this.cartProvider,
-    required this.discountCodesProvider,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return discountCodesProvider.discountCode != null
-        ? Text.rich(
-            TextSpan(
-                text: "${formatNumber(cartProvider.total)}",
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.lineThrough,
-                      decorationColor: Colors.black,
-                      decorationThickness: 5,
-                    ),
-                children: [
-                  TextSpan(
-                    text:
-                        " ${formatNumber(cartProvider.total - discountCodesProvider.discountCode!.discount)} COP",
+    return Consumer2<CartProvider, DiscountCodesByEventProvider>(
+      builder: (context, cartProvider, discountCodesProvider, child) {
+        return discountCodesProvider.discountCode != null
+            ? Text.rich(
+                TextSpan(
+                    text: formatNumber(cartProvider.total),
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Colors.black,
+                          decorationThickness: 5,
                         ),
-                  )
-                ]),
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-          )
-        : Text(
-            "${cartProvider.total == 0 ? formatNumber(cartProvider.total) + " COP" : "Gratis"}",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-          );
+                    children: [
+                      TextSpan(
+                        text:
+                            " ${formatNumber(cartProvider.total - discountCodesProvider.discountCode!.discount)} COP",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      )
+                    ]),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              )
+            : Text(
+                cartProvider.total > 0 ? "${formatNumber(cartProvider.total)} COP" : "Gratis",
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              );
+      },
+    );
   }
 }
 
@@ -338,23 +375,23 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
         builder: (context) {
           return Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
               color: Theme.of(context).cardColor,
             ),
-            padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 TextField(
                   controller: _textFieldControler,
-                  decoration: InputDecoration(labelText: "Codigo"),
+                  decoration: const InputDecoration(labelText: "Codigo"),
                 ),
                 TextButton(
                     onPressed: () {
                       discountCodeProvider.setDiscountCode(_textFieldControler.text);
                       Navigator.of(context).pop();
                     },
-                    child: Text("Buscar"))
+                    child: const Text("Buscar"))
               ],
             ),
           );
@@ -414,7 +451,7 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
                       .headlineSmall!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               )
             ],
@@ -451,7 +488,7 @@ class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
                     TextSpan(
                       text: "Terminos y condiciones ",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Color.fromRGBO(26, 135, 244, 1),
+                            color: const Color.fromRGBO(26, 135, 244, 1),
                           ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
@@ -509,7 +546,7 @@ class TicketCategoryContentWidget extends StatelessWidget {
                     color: getColor(color),
                   ),
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 SizedBox(
                   height: 100,
                   child: Column(
@@ -521,7 +558,7 @@ class TicketCategoryContentWidget extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey),
                         textAlign: TextAlign.start,
                       ),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Text(
                         "${formatNumber(price)} COP",
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -534,18 +571,18 @@ class TicketCategoryContentWidget extends StatelessWidget {
                 ),
               ],
             ),
-            addTicketToCartWidget(ticketCategoryId: id)
+            AddTicketToCartWidget(ticketCategoryId: id)
           ],
         ),
-        Divider()
+        const Divider()
       ],
     );
   }
 }
 
-class addTicketToCartWidget extends StatelessWidget {
-  String ticketCategoryId;
-  addTicketToCartWidget({
+class AddTicketToCartWidget extends StatelessWidget {
+  final String ticketCategoryId;
+  const AddTicketToCartWidget({
     required this.ticketCategoryId,
     super.key,
   });
@@ -558,14 +595,14 @@ class addTicketToCartWidget extends StatelessWidget {
           children: [
             IconButton(
                 onPressed: () => cartProvider.remove(ticketCategoryId),
-                icon: Icon(
+                icon: const Icon(
                   Icons.remove,
                   size: 18,
                 )),
             Text(cartProvider.cart[ticketCategoryId].toString()),
             IconButton(
                 onPressed: () => cartProvider.add(ticketCategoryId),
-                icon: Icon(
+                icon: const Icon(
                   Icons.add,
                   size: 18,
                 )),

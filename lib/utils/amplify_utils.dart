@@ -1,7 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'package:intl/intl.dart';
-import 'package:passi_app/constants/amplify_api_names.dart';
+import '../constants/amplify_api_names.dart';
 
 Future<String?> getUrl(String key) async {
   try {
@@ -10,7 +9,7 @@ Future<String?> getUrl(String key) async {
     GetUrlResult result = await Amplify.Storage.getUrl(key: key, options: options);
     return result.url;
   } on StorageException catch (storeError) {
-    print('Storage failed - ${storeError.message}');
+    safePrint('Storage failed - ${storeError.message}');
     return '';
   }
 }

@@ -6,12 +6,15 @@ import 'package:passi_app/models/ModelProvider.dart';
 import '../utils/amplify_utils.dart';
 
 class EventProvider with ChangeNotifier {
+  final String eventId;
+
+  EventProvider({required this.eventId});
   Event? event;
 
-  Future<void> setEventById(String id) async {
+  Future<void> setEvent() async {
     try {
       final request = apiKeyRequest(
-        ModelQueries.get(Event.classType, id),
+        ModelQueries.get(Event.classType, eventId),
       );
       final response = await Amplify.API.query(request: request).response;
       final eventResponse = response.data;
@@ -40,7 +43,7 @@ class EventProvider with ChangeNotifier {
         event = refreshedEvent;
         notifyListeners();
       } on ApiException catch (e) {
-        print('Query failed: ${e.message}');
+        safePrint('Query failed: ${e.message}');
       }
     }
   }

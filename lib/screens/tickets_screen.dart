@@ -302,12 +302,13 @@
 //     );
 //   }
 // }
-import 'package:flutter/cupertino.dart';
+
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:passi_app/providers/authentication_provider.dart';
-import 'package:passi_app/providers/tickets_provider.dart';
-import 'package:passi_app/widgets/loading.dart';
+import '../providers/authentication_provider.dart';
+import '../providers/tickets_provider.dart';
+import '../widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -330,7 +331,7 @@ class TicketsScreen extends StatelessWidget {
         child: FutureBuilder(
           future: fetchTickets(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return TicketsContent();
+            return const TicketsContent();
           },
         ));
   }
@@ -345,7 +346,7 @@ class TicketsContent extends StatelessWidget {
     try {
       await Provider.of<TicketsProvider>(context, listen: false).getTickets();
     } catch (e) {
-      print(e);
+      safePrint(e);
     }
   }
 
@@ -378,7 +379,10 @@ class TicketsContent extends StatelessWidget {
                               end: Alignment.bottomCenter,
                             ),
                           ),
-                          padding: EdgeInsets.all(40),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 50,
+                            horizontal: 60,
+                          ),
                           child: TicketWidget(
                             didAssit: ticketProvider.tickets[index].didAssist,
                             eventMaxAge: ticketProvider.tickets[index].event.minAge,
@@ -400,7 +404,7 @@ class TicketsContent extends StatelessWidget {
             );
 
           default:
-            return Loading();
+            return const Loading();
         }
       },
     );
@@ -461,7 +465,7 @@ class TicketWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -487,7 +491,7 @@ class TicketWidget extends StatelessWidget {
                 children: [
                   eventMaxAge != null
                       ? Text(
-                          "+${eventMaxAge}",
+                          "+$eventMaxAge",
                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                 color: Colors.grey,
                               ),
@@ -502,7 +506,7 @@ class TicketWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               Text(
@@ -518,7 +522,7 @@ class TicketWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               Text(
@@ -534,7 +538,7 @@ class TicketWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               Row(
@@ -549,7 +553,7 @@ class TicketWidget extends StatelessWidget {
                   Checkbox(value: didAssit, onChanged: (value) {})
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               InkWell(

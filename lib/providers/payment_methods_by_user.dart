@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:amplify_api/model_mutations.dart';
 import 'package:amplify_api/model_queries.dart';
@@ -11,15 +12,16 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/my_models/card_token.dart';
+import '../models/my_models/presigned_acceptance.dart';
 
 class PaymentMethodsByUserProvider with ChangeNotifier {
   final AuthenticationProvider? authenticationProvider;
   List<PaymentMethod> _paymentMethods = [];
   PaymentMethod? _userSelectedPaymentMethod;
-  PresignedAcceptance? _presignedAcceptance;
+  PresignedAcceptanceModel? _presignedAcceptance;
   bool _isChecked = false;
-  PaymentMethod? _selectedPaymentMethod = null;
-  PresignedAcceptance? get presignedAcceptance {
+  PaymentMethod? _selectedPaymentMethod;
+  PresignedAcceptanceModel? get presignedAcceptance {
     return _presignedAcceptance;
   }
 
@@ -51,7 +53,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
       final response = await Amplify.API.query(request: request).response;
       final paginatedPaymentMethods = response.data;
       if (paginatedPaymentMethods == null) {
-        print('errors: ${response.errors}');
+        safePrint('errors: ${response.errors}');
         return;
       }
       final List<PaymentMethod> loadedPaymentMethods = [];
@@ -86,7 +88,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
       final response = await Amplify.API.query(request: request).response;
       final paymentMethod = response.data;
       if (paymentMethod == null) {
-        print('errors: ${response.errors}');
+        safePrint('errors: ${response.errors}');
         return;
       }
       notifyListeners();
@@ -101,7 +103,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
           "production.wompi.co", "/v1/merchants/pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo");
       final response = await http.get(uri);
       final json = jsonDecode(response.body);
-      _presignedAcceptance = PresignedAcceptance.fromJson(json);
+      _presignedAcceptance = PresignedAcceptanceModel.fromJson(json);
       notifyListeners();
     } catch (e) {
       safePrint('Query failed: ${e.toString()}');
@@ -112,7 +114,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     if (_presignedAcceptance == null) {
       return;
     }
-    final url = Uri.parse(_presignedAcceptance!.permalink);
+    final url = Uri.parse(_presignedAcceptance!.link);
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
@@ -124,19 +126,30 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
   }
 
   Future<String?> saveNewCard(Map<String, String> data) async {
-    if (authenticationProvider != null && authenticationProvider?.user != null) {
+    await fetchTermsAndConditions();
+    if (authenticationProvider != null &&
+        authenticationProvider?.user != null &&
+        presignedAcceptance != null) {
       try {
         final uri = Uri.https("production.wompi.co", "/v1/tokens/cards");
         final headers = {'Authorization': "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"};
         final wompiResponse = await http.post(uri, headers: headers, body: json.encode(data));
         if (wompiResponse.statusCode == 201) {
           final json = jsonDecode(wompiResponse.body);
-          final paymentMethod = await _createPaymentMethod(json);
-          if (paymentMethod == null) {
+          final createdPaymentMethod = await _createPaymentMethod(json);
+          if (createdPaymentMethod == null) {
             return "Error al crear metodo de pago";
           }
+          final createPaymentSourceData = await _createPaymentSource(
+            createdPaymentMethod.id,
+            createdPaymentMethod.token,
+            createdPaymentMethod.status!,
+          );
+          if (createPaymentSourceData != 'ok') {
+            return "No se pudo crear el payment source";
+          }
           final didChangedUserSelectedPaymentMethod =
-              await changeUserSelectedPaymentMethod(paymentMethod);
+              await changeUserSelectedPaymentMethod(createdPaymentMethod);
           if (!didChangedUserSelectedPaymentMethod) {
             return "Error al actualizar al usuario";
           }
@@ -152,35 +165,62 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     return "No hay usaurio";
   }
 
-  Future<bool> changeUserSelectedPaymentMethod(PaymentMethod paymentMethod) async {
-    if (authenticationProvider != null &&
-        authenticationProvider?.user != null &&
-        authenticationProvider?.user?.userSelectedPaymentMethodId != null) if (paymentMethod
-            .id ==
-        authenticationProvider?.user?.userSelectedPaymentMethodId) {
-      return true;
+  Future<String> _createPaymentSource(
+    String id,
+    String token,
+    String status,
+  ) async {
+    try {
+      final options = RestOptions(
+        path: '/create-payment-source',
+        body: Uint8List.fromList(
+            "{\"id\":\"$id\", \"token\": \"$token\" ,\"type\": \"CARD\",  \"customer_email\": \"${authenticationProvider!.user!.email}\", \"acceptance_token\": \"${_presignedAcceptance!.acceptanceToken}\"}"
+                .codeUnits),
+      );
+      final response = await Amplify.API.post(restOptions: options).response;
+      final body = json.decode(response.body);
+      return body["data"] as String;
+    } on ApiException catch (e) {
+      safePrint('POST call failed: $e');
+      rethrow;
     }
-    final userWithNewSelectedPaymentMethod = authenticationProvider!.user!.copyWith(
-      userSelectedPaymentMethodId: paymentMethod.id,
-    );
+  }
 
-    final updatedUserRequest =
-        cognitoRequest(ModelMutations.update(userWithNewSelectedPaymentMethod));
-    final updatedUserResponse = await Amplify.API
-        .mutate(
-          request: updatedUserRequest,
-        )
-        .response;
-    if (updatedUserResponse.data == null) {
-      safePrint("errors: ${updatedUserResponse.errors}");
+  Future<bool> changeUserSelectedPaymentMethod(PaymentMethod paymentMethod) async {
+    if (authenticationProvider == null || authenticationProvider?.user == null) {
       return false;
     }
+    {
+      if (paymentMethod.id == authenticationProvider?.user?.userSelectedPaymentMethodId) {
+        return true;
+      }
+      try {
+        final userWithNewSelectedPaymentMethod = authenticationProvider!.user!.copyWith(
+          userSelectedPaymentMethodId: paymentMethod.id,
+        );
 
-    await authenticationProvider!.setUser(newUser: updatedUserResponse.data);
-    _selectedPaymentMethod = paymentMethod;
-    notifyListeners();
+        final updatedUserRequest =
+            cognitoRequest(ModelMutations.update(userWithNewSelectedPaymentMethod));
+        final updatedUserResponse = await Amplify.API
+            .mutate(
+              request: updatedUserRequest,
+            )
+            .response;
+        if (updatedUserResponse.data == null) {
+          safePrint("errors: ${updatedUserResponse.errors}");
+          return false;
+        }
 
-    return true;
+        await authenticationProvider!.setUser(newUser: updatedUserResponse.data);
+        _selectedPaymentMethod = paymentMethod;
+        notifyListeners();
+
+        return true;
+      } on Exception catch (e) {
+        safePrint("BOTO EXCEPCION");
+        rethrow;
+      }
+    }
   }
 
   Future<PaymentMethod?> _createPaymentMethod(Map<String, dynamic> json) async {

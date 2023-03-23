@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:passi_app/models/ModelProvider.dart';
-import 'package:passi_app/providers/ticket_cateogories_by_event_provider.dart';
+import '../providers/ticket_cateogories_by_event_provider.dart';
 
 class CartProvider with ChangeNotifier {
   final TicketCategoriesByEventProvider? ticketCategoriesByEventProvider;
@@ -23,7 +22,7 @@ class CartProvider with ChangeNotifier {
   }
 
   void add(String ticketCategoryId) {
-    final ticketCategory = ticketCategoriesByEventProvider?.getTicketCategoryById(ticketCategoryId);
+    ticketCategoriesByEventProvider?.getTicketCategoryById(ticketCategoryId);
     if (_cart[ticketCategoryId] == null || currentTicketsInCartQuantity >= 10) {
       return;
     }
@@ -51,6 +50,16 @@ class CartProvider with ChangeNotifier {
       }
     }
     return total;
+  }
+
+  List<String> get transformCart {
+    List<String> ticketCategoriesID = [];
+    for (var entrie in _cart.entries) {
+      for (var i = 0; i < entrie.value; i++) {
+        ticketCategoriesID.add("\"${entrie.key}\"");
+      }
+    }
+    return ticketCategoriesID;
   }
 
   bool get hasTickets {

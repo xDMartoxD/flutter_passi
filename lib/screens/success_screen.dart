@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+
+class SuccessScreen extends StatelessWidget {
+  static const path = 'success';
+  static const name = 'success';
+  const SuccessScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.check_circle_outline,
+                size: 48,
+                color: Colors.green,
+              ),
+              Text(
+                "Entrada creada correctamente",
+                style: Theme.of(context).textTheme.displayMedium,
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                "Entra a la pestaña de tiquetes y revisa que tus entradas hayan sido creadas correctamente. En caso de que haya ocurrido un error no dudes contactanos por WhatsApp a este numero +57 313 3286794.",
+                style: Theme.of(context).textTheme.titleSmall,
+                textAlign: TextAlign.center,
+              )
+            ]),
+      ),
+    );
+  }
+}

@@ -54,8 +54,10 @@
           "s3Key": "amplify-builds/CreateFreeEntrance-4b4a2b543778696f3347-build.zip"
         },
         "CreatePaymentSource": {
+
           "deploymentBucketName": "amplify-passi-prod-143527-deployment",
           "s3Key": "amplify-builds/CreatePaymentSource-7762642f553432756f68-build.zip"
+
         },
         "CreateUserDynamo": {
           "deploymentBucketName": "amplify-passi-prod-143527-deployment",
@@ -86,7 +88,9 @@
           "s3Key": "amplify-builds/passinodeModules-LambdaLayerVersionb0b8dd30-build.zip"
         },
         "validateTicket": {
+
           "deploymentBucketName": "amplify-passi-prod-143527-deployment",
+
           "s3Key": "amplify-builds/validateTicket-75427342675778712b48-build.zip"
         },
         "verifyEvent": {
@@ -96,6 +100,13 @@
       },
       "storage": {
         "passiStorage": {}
+      }
+    }
+  },
+  "prod": {
+    "categories": {
+      "auth": {
+        "appamplify02fef6e8": {}
       }
     }
   }

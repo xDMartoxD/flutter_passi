@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:passi_app/providers/events_by_category.dart';
-
-import 'package:passi_app/widgets/event_item_large.dart';
-import 'package:passi_app/widgets/loading.dart';
+import '../providers/events_by_category.dart';
+import '../widgets/event_item_large.dart';
+import '../widgets/loading.dart';
 import 'package:provider/provider.dart';
 import '../models/Event.dart';
-import '../widgets/app_map_view.dart';
 
 class EventCategoriesOverviewScreen extends StatefulWidget {
   static const path = "event-categories";
   static const name = "event-categories";
   final String id;
   final String categoryName;
-  EventCategoriesOverviewScreen({super.key, required this.id, required this.categoryName});
+  const EventCategoriesOverviewScreen({super.key, required this.id, required this.categoryName});
 
   @override
   State<EventCategoriesOverviewScreen> createState() => _EventCategoriesOverviewScreenState();
@@ -50,7 +48,7 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
       _animationController.reverse();
       _listViewController?.animateTo(
         0,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn,
       );
       setState(() {
@@ -113,7 +111,7 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
                     },
                   );
                 default:
-                  return Loading();
+                  return const Loading();
               }
             },
           )),
@@ -151,14 +149,14 @@ class EventsByCategoryContent extends StatelessWidget {
               return Stack(children: [
                 Material(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
                   elevation: 5,
                   child: Column(
                     children: [
                       Container(
                         width: 50,
                         height: 5,
-                        margin: EdgeInsets.only(top: 10),
+                        margin: const EdgeInsets.only(top: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.grey,
@@ -191,14 +189,14 @@ class EventsByCategoryContent extends StatelessWidget {
                     child: AnimatedOpacity(
                       opacity: _mapButtonVisible ? 1 : 0,
                       curve: Curves.fastOutSlowIn,
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       child: FloatingActionButton.extended(
-                        label: Text(
+                        label: const Text(
                           'Map',
                           style: TextStyle(color: Colors.black),
                         ),
                         backgroundColor: Colors.white,
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.map_rounded,
                           size: 24.0,
                           color: Colors.black,
@@ -207,12 +205,12 @@ class EventsByCategoryContent extends StatelessWidget {
                             ? () {
                                 _scrollableController.animateTo(
                                   .1,
-                                  duration: Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   curve: Curves.fastOutSlowIn,
                                 );
                                 scrollController.animateTo(
                                   0,
-                                  duration: Duration(milliseconds: 300),
+                                  duration: const Duration(milliseconds: 300),
                                   curve: Curves.fastOutSlowIn,
                                 );
                               }

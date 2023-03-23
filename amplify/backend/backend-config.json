@@ -50,6 +50,22 @@
           ],
           "category": "function",
           "resourceName": "verifyEvent"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "CreatePaymentSource"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "CreateEntrance"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -115,6 +131,13 @@
       "dependsOn": [
         {
           "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
+        {
+          "attributes": [
             "Arn"
           ],
           "category": "function",
@@ -127,6 +150,13 @@
     "CreateEntrance": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
         {
           "attributes": [
             "Arn"
@@ -157,6 +187,13 @@
       "dependsOn": [
         {
           "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
+        {
+          "attributes": [
             "Arn"
           ],
           "category": "function",
@@ -176,6 +213,13 @@
     "CreateEntranceDB": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
         {
           "attributes": [
             "Arn"
@@ -281,6 +325,13 @@
     "CreatePaymentSource": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
+        },
         {
           "attributes": [
             "Arn"
@@ -561,6 +612,14 @@
         {
           "category": "function",
           "resourceName": "CreateFreeEntrance"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreatePaymentSource_auth": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreatePaymentSource"
         }
       ]
     },
