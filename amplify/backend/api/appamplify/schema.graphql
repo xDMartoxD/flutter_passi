@@ -283,7 +283,7 @@ type Ticket
       { allow: owner, operations: [read], ownerField: "userID" }
       { allow: groups, groups: ["Admin"] }
       { allow: public }
-      { allow: private }
+      { allow: private, operations: [read] }
     ]
   ) {
   id: ID!
