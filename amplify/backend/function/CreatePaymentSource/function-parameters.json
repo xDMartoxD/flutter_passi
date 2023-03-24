@@ -8,14 +8,11 @@
       "isLatestVersionSelected": true
     }
   ],
-  "permissions": {
-    "storage": {
-      "PaymentMethod:@model(appsync)": [
-        "update"
-      ]
-    }
-  },
   "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "auth",
+      "environmentVariableName": "AUTH"
+    },
     {
       "cloudFormationParameterName": "auth",
       "environmentVariableName": "AUTH"
