@@ -32,19 +32,19 @@ void bottomSheetAuthHandler({
             const SizedBox(
               height: 80,
             ),
-            Center(
-              child: ElevatedButton.icon(
-                onPressed: googleSignIn,
-                icon: const FaIcon(
-                  FontAwesomeIcons.google,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  "Registrate con Google",
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ),
-            ),
+            // Center(
+            //   child: ElevatedButton.icon(
+            //     onPressed: googleSignIn,
+            //     icon: const FaIcon(
+            //       FontAwesomeIcons.google,
+            //       color: Colors.white,
+            //     ),
+            //     label: Text(
+            //       "Registrate con Google",
+            //       style: Theme.of(context).textTheme.titleSmall,
+            //     ),
+            //   ),
+            // ),
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {

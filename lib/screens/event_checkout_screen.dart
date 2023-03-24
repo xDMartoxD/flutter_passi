@@ -149,7 +149,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
     }
     if ((authProvider.user!.userSelectedPaymentMethodId == null ||
             authProvider.user!.userSelectedPaymentMethodId!.isEmpty) &&
-        cartProvider.total == 0) {
+        cartProvider.total > 0) {
       errorMessage(context,
           "Se necesita un metodo de pago seleccionado para las entradas que tienen un costo");
       return;

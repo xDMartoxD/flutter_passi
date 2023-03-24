@@ -503,10 +503,10 @@ class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProv
         ]),
       ),
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.ios_share),
-        )
+        // IconButton(
+        //   onPressed: () {},
+        //   icon: const Icon(Icons.ios_share),
+        // )
       ],
     );
   }
