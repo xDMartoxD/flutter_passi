@@ -56,8 +56,7 @@ class TicketsProvider with ChangeNotifier {
           }
           return null;
         } on ApiException catch (e) {
-          safePrint('POST call failed: $e');
-          rethrow;
+          return e.message;
         }
       } else {
         return "Falta el acceptance Token";

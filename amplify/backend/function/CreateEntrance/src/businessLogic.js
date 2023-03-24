@@ -33,8 +33,10 @@ const {
 } = require('/opt/models')
 const env = process.env.ENV
 const businessLogic = async (eventID, ticketCategoriesID, identity, userID, code) => {
+
   try {
     if (!eventID) {
+
       return { error: "Se requiere un evento" }
     }
     if (!ticketCategoriesID || ticketCategoriesID.length === 0) {
@@ -55,30 +57,36 @@ const businessLogic = async (eventID, ticketCategoriesID, identity, userID, code
         }
       })
       const event = await getEvent(eventID, env)
+      console.log("EVENT ", event)
       if (!event) {
         return { error: "No se encontro el evento" }
       }
       const user = await getUser(userID, env)
+      console.log("USER ", user)
       if (!user) {
         return { error: "No se encontro el usuario" }
       }
       const ticketCategories = []
       ticketCategoriesID.forEach(async (id) => {
         const Item = await getTicketCategory(id, env)
+
         if (!Item) {
           return { error: 'No se ha encontrado la categoria de la entrada' }
         }
         ticketCategories.push(Item)
       })
+      console.log("ticketCategories ", ticketCategories)
       const userTickets = await getTicketsByUser(userID, env)
+      console.log("userTickets ", userTickets)
       const eventDiscountCodes = await getDiscountCodesByEvent(
         eventID,
         env
       )
-
+      console.log("eventDiscountCodes ", eventDiscountCodes)
       const discountCode = code
         ? await getDiscountCode(code, eventID, env)
         : null
+      console.log("discountCode ", discountCode)
       let selectedPaymentMethod = null
       if (user.userSelectedPaymentMethodId) {
         selectedPaymentMethod = await getPaymentMethod(
@@ -86,13 +94,18 @@ const businessLogic = async (eventID, ticketCategoriesID, identity, userID, code
           env
         )
       }
+      console.log("selectedPaymentMethod ", selectedPaymentMethod)
       const price = ticketCategories.reduce(
         (accumalator, tc) => accumalator + tc.price,
         0
       )
-      if (!selectedPaymentMethod && price - discountCode.discount > 0) {
+      console.log("price ", price)
+      const discount = discountCode ? discountCode.discount : 0
+      console.log("discount ", discount)
+      if (!selectedPaymentMethod && price - discount > 0) {
+        console.log("MAL 9")
         return {
-          error: 'No tienes un metodo de pago seleccionado pero tus entradas tienen un costo de ' + price - discountCode.discount
+          error: 'No tienes un metodo de pago seleccionado pero tus entradas tienen un costo mayor a 0'
         }
 
       }
@@ -103,6 +116,7 @@ const businessLogic = async (eventID, ticketCategoriesID, identity, userID, code
           selectedPaymentMethod.type === 'CARD'
         )
       ) {
+        console.log("MAL 7")
         return { error: "Solo NEQUI O Trajeta" }
       }
       if (
@@ -111,32 +125,39 @@ const businessLogic = async (eventID, ticketCategoriesID, identity, userID, code
         ticketCategoriesID.length +
         userTickets.filter((t) => t.eventID === event.id).length
       ) {
+        console.log("MAL 6")
         return { error: `Estas comprando mas entradas de las permitidas. Cantidad de entrdas permititdas: ${event.maxBuyQuantity}` }
       }
       if (new Date(event.finishDateTime) < new Date()) {
+        console.log("MAL 5")
         return { error: 'El evento ya ha ocurrido' }
       } else if (
         event.needsCode &&
         (!code ||
           eventDiscountCodes.map((c) => c.code).indexOf(code) === -1)
       ) {
+        console.log("MAL 4")
         return { error: 'Se necesita un codigo valido' }
       }
       ticketCategories.forEach((ticketCategory) => {
         if (ticketCategory.eventID !== event.id) {
+          console.log("MAL 3")
           return { error: `La Categoria con el identificador ${ticketCategory.id} no concuerda con el evento ${event.id}` }
         } else if (
           ticketCategory.maxCapacity <= ticketCategory.totalAssistants
         ) {
+          console.log("MAL 2")
           return { error: `Las entradas de la categoria ${ticketCategory.name} se encuentran agotadas` }
         } else if (
           ticketCategory.totalAssistants +
           ticketCategoriesObject[ticketCategory.id] >
           ticketCategory.maxCapacity
         ) {
+          console.log("MAL 1")
           return { error: `Las entradas de la categoria ${ticketCategory.name} se encuentran agotadas` }
         }
       })
+      console.log("BIEN ")
       return {
         event,
         ticketCategoriesObject,

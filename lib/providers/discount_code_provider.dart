@@ -48,9 +48,11 @@ class DiscountCodesByEventProvider with ChangeNotifier {
           return;
         }
         List<DiscountCode?> loadedDiscountCodes = [];
+
         for (var element in paginatedDiscountCodes.items) {
           loadedDiscountCodes.add(element);
         }
+
         _fetchedDiscountCodes = loadedDiscountCodes;
         notifyListeners();
       } on ApiException catch (e) {

@@ -380,8 +380,8 @@ class TicketsContent extends StatelessWidget {
                             ),
                           ),
                           padding: const EdgeInsets.symmetric(
-                            vertical: 50,
-                            horizontal: 60,
+                            vertical: 40,
+                            horizontal: 50,
                           ),
                           child: TicketWidget(
                             didAssit: ticketProvider.tickets[index].didAssist,

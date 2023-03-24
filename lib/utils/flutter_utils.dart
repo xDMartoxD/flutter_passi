@@ -103,3 +103,20 @@ Color getColor(String color) {
   final b = int.parse(color.substring(4, 6), radix: 16);
   return Color.fromRGBO(r, g, b, 1);
 }
+
+errorMessage(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      duration: Duration(seconds: 4),
+      backgroundColor: Colors.red,
+    ),
+  );
+}
