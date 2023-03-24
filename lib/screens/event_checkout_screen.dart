@@ -193,10 +193,6 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       }
     } catch (e) {
       errorMessage(context, e.toString());
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
