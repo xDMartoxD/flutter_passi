@@ -12,10 +12,16 @@
     {
       "cloudFormationParameterName": "auth",
       "environmentVariableName": "AUTH"
-    },
-    {
-      "cloudFormationParameterName": "auth",
-      "environmentVariableName": "AUTH"
     }
-  ]
+  ],
+  "permissions": {
+    "storage": {
+      "PaymentMethod:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
 }

@@ -36,20 +36,36 @@
     "endpoints": {
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "validateTicket",
           "attributes": [
             "Name",
             "Arn"
-          ],
-          "category": "function",
-          "resourceName": "validateTicket"
+          ]
         },
         {
+          "category": "function",
+          "resourceName": "verifyEvent",
           "attributes": [
             "Name",
             "Arn"
-          ],
+          ]
+        },
+        {
           "category": "function",
-          "resourceName": "verifyEvent"
+          "resourceName": "CreatePaymentSource",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "CreateEntrance",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -288,6 +304,13 @@
     "CreatePaymentSource": {
       "build": true,
       "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "appamplify",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
         {
           "attributes": [
             "Arn"
