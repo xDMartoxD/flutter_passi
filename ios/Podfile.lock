@@ -1,18 +1,18 @@
 PODS:
-  - Amplify (1.28.3):
-    - Amplify/Default (= 1.28.3)
-  - Amplify/Default (1.28.3)
+  - Amplify (1.29.1):
+    - Amplify/Default (= 1.29.1)
+  - Amplify/Default (1.29.1)
   - amplify_api_ios (0.0.1):
-    - Amplify (= 1.28.3)
+    - Amplify (= 1.29.1)
     - amplify_core
-    - AmplifyPlugins/AWSAPIPlugin (= 1.28.3)
+    - AmplifyPlugins/AWSAPIPlugin (= 1.29.1)
     - Flutter
     - SwiftFormat/CLI
     - SwiftLint (= 0.48.0)
   - amplify_auth_cognito_ios (0.0.1):
-    - Amplify (= 1.28.3)
+    - Amplify (= 1.29.1)
     - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.28.3)
+    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.29.1)
     - Flutter
     - ObjectMapper
   - amplify_core (0.0.1):
@@ -20,53 +20,55 @@ PODS:
     - SwiftFormat/CLI
     - SwiftLint (= 0.48.0)
   - amplify_flutter_ios (0.0.1):
-    - Amplify (= 1.28.3)
+    - Amplify (= 1.29.1)
     - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.28.3)
-    - AWSPluginsCore (= 1.28.3)
+    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.29.1)
+    - AWSPluginsCore (= 1.29.1)
     - Flutter
     - SwiftFormat/CLI
     - SwiftLint (= 0.48.0)
   - amplify_storage_s3_ios (0.0.1):
-    - Amplify (= 1.28.3)
+    - Amplify (= 1.29.1)
     - amplify_core
-    - AmplifyPlugins/AWSS3StoragePlugin (= 1.28.3)
+    - AmplifyPlugins/AWSS3StoragePlugin (= 1.29.1)
     - Flutter
-  - AmplifyPlugins/AWSAPIPlugin (1.28.3):
-    - AppSyncRealTimeClient (~> 2.0)
-    - AWSCore (~> 2.28.0)
-    - AWSPluginsCore (= 1.28.3)
-  - AmplifyPlugins/AWSCognitoAuthPlugin (1.28.3):
-    - AWSAuthCore (~> 2.28.0)
-    - AWSCognitoIdentityProvider (~> 2.28.0)
-    - AWSCognitoIdentityProviderASF (~> 2.28.0)
-    - AWSCore (~> 2.28.0)
-    - AWSMobileClient (~> 2.28.0)
-    - AWSPluginsCore (= 1.28.3)
-  - AmplifyPlugins/AWSS3StoragePlugin (1.28.3):
-    - AWSCore (~> 2.28.0)
-    - AWSPluginsCore (= 1.28.3)
-    - AWSS3 (~> 2.28.0)
-  - AppSyncRealTimeClient (2.1.1):
+  - AmplifyPlugins/AWSAPIPlugin (1.29.1):
+    - AppSyncRealTimeClient (~> 3.0)
+    - AWSCore (~> 2.30.1)
+    - AWSPluginsCore (= 1.29.1)
+  - AmplifyPlugins/AWSCognitoAuthPlugin (1.29.1):
+    - AWSAuthCore (~> 2.30.1)
+    - AWSCognitoIdentityProvider (~> 2.30.1)
+    - AWSCognitoIdentityProviderASF (~> 2.30.1)
+    - AWSCore (~> 2.30.1)
+    - AWSMobileClient (~> 2.30.1)
+    - AWSPluginsCore (= 1.29.1)
+  - AmplifyPlugins/AWSS3StoragePlugin (1.29.1):
+    - AWSCore (~> 2.30.1)
+    - AWSPluginsCore (= 1.29.1)
+    - AWSS3 (~> 2.30.1)
+  - app_tracking_transparency (0.0.1):
+    - Flutter
+  - AppSyncRealTimeClient (3.0.0):
     - Starscream (~> 4.0.4)
-  - AWSAuthCore (2.28.5):
-    - AWSCore (= 2.28.5)
-  - AWSCognitoIdentityProvider (2.28.5):
-    - AWSCognitoIdentityProviderASF (= 2.28.5)
-    - AWSCore (= 2.28.5)
-  - AWSCognitoIdentityProviderASF (2.28.5):
-    - AWSCore (= 2.28.5)
-  - AWSCore (2.28.5)
-  - AWSMobileClient (2.28.5):
-    - AWSAuthCore (= 2.28.5)
-    - AWSCognitoIdentityProvider (= 2.28.5)
-    - AWSCognitoIdentityProviderASF (= 2.28.5)
-    - AWSCore (= 2.28.5)
-  - AWSPluginsCore (1.28.3):
-    - Amplify (= 1.28.3)
-    - AWSCore (~> 2.28.0)
-  - AWSS3 (2.28.5):
-    - AWSCore (= 2.28.5)
+  - AWSAuthCore (2.30.4):
+    - AWSCore (= 2.30.4)
+  - AWSCognitoIdentityProvider (2.30.4):
+    - AWSCognitoIdentityProviderASF (= 2.30.4)
+    - AWSCore (= 2.30.4)
+  - AWSCognitoIdentityProviderASF (2.30.4):
+    - AWSCore (= 2.30.4)
+  - AWSCore (2.30.4)
+  - AWSMobileClient (2.30.4):
+    - AWSAuthCore (= 2.30.4)
+    - AWSCognitoIdentityProvider (= 2.30.4)
+    - AWSCognitoIdentityProviderASF (= 2.30.4)
+    - AWSCore (= 2.30.4)
+  - AWSPluginsCore (1.29.1):
+    - Amplify (= 1.29.1)
+    - AWSCore (~> 2.30.1)
+  - AWSS3 (2.30.4):
+    - AWSCore (= 2.30.4)
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
@@ -138,7 +140,7 @@ PODS:
     - Flutter
     - FlutterMacOS
   - PromisesObjC (2.2.0)
-  - Protobuf (3.22.0)
+  - Protobuf (3.22.1)
   - ReachabilitySwift (5.0.0)
   - shared_preferences_foundation (0.0.1):
     - Flutter
@@ -146,7 +148,7 @@ PODS:
   - sign_in_with_apple (0.0.1):
     - Flutter
   - Starscream (4.0.4)
-  - SwiftFormat/CLI (0.50.9)
+  - SwiftFormat/CLI (0.51.2)
   - SwiftLint (0.48.0)
   - url_launcher_ios (0.0.1):
     - Flutter
@@ -157,6 +159,7 @@ DEPENDENCIES:
   - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
   - amplify_flutter_ios (from `.symlinks/plugins/amplify_flutter_ios/ios`)
   - amplify_storage_s3_ios (from `.symlinks/plugins/amplify_storage_s3_ios/ios`)
+  - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -209,6 +212,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/amplify_flutter_ios/ios"
   amplify_storage_s3_ios:
     :path: ".symlinks/plugins/amplify_storage_s3_ios/ios"
+  app_tracking_transparency:
+    :path: ".symlinks/plugins/app_tracking_transparency/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
@@ -229,21 +234,22 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  Amplify: e89b493fc2fe840ac044bd4ddf71ad9828f8c364
-  amplify_api_ios: bbeacce5a151958bfedbd2e95fe6ab12599fd25d
-  amplify_auth_cognito_ios: e532d70387aa0fe6f456855afe78ea275d58fe4b
+  Amplify: b72bc02515114147a7be8c4f76ef4ecc41350a23
+  amplify_api_ios: 76d1a6ee60fa6133c5386179f313c3a8fa47d585
+  amplify_auth_cognito_ios: 5260aed8aaa4e6c5a08a49695077c1b6f8d75251
   amplify_core: 0876b2fbbcec7619f5b58b20c59ecc0118f65a47
-  amplify_flutter_ios: 8943b5e5fb995a7aa3eb5c5238a6822756703584
-  amplify_storage_s3_ios: 4742284f7820a0f5c87e0592bc4e1678cf5041ae
-  AmplifyPlugins: 98bcd23f2c13179f75c733b887e80dd06243be5e
-  AppSyncRealTimeClient: 937360221f2b664c4c33ae142a60643e64f480cd
-  AWSAuthCore: e728d73a2b4eed9e826506a1f0fcc58171537267
-  AWSCognitoIdentityProvider: 261fac98d461e9e398bf3c1e18c3cd90578b33ca
-  AWSCognitoIdentityProviderASF: 8e35d6414d9ee2443e9167414ef5e839a58e1e72
-  AWSCore: 4bad3f0eb17393b4926a9491e32b835991c56382
-  AWSMobileClient: c898658a4d15e64e07d39c7dc6354fd3ea3055a9
-  AWSPluginsCore: 93f813579479fa4c5bfff58817df89e0e10f9f3b
-  AWSS3: 4bc7118f373a6c25543d99e67c55b409eaf769fd
+  amplify_flutter_ios: b215a2d52f8beeb9d30e29a99152c71fadc6730a
+  amplify_storage_s3_ios: 6e8ff166371b95568e2ea6f0997531c4f027b6fc
+  AmplifyPlugins: f8fa63aafd782a44cf48abef656e759dcab3eb71
+  app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
+  AppSyncRealTimeClient: ec19a24f635611b193eb98a2da573abcf98b793b
+  AWSAuthCore: 42e2d4927d94e5e323b63b2ae885f287c51b5889
+  AWSCognitoIdentityProvider: 2331f5f4c8c1775c6a228bb2dae2d353198401e8
+  AWSCognitoIdentityProviderASF: d905c2acab3d2e7016b643d53ba553d5217fa929
+  AWSCore: 19b8233fe2d0ed3ccf5cff833a615814282cdc90
+  AWSMobileClient: 7d9c81e47ef27c6b5604858477006548eb1db342
+  AWSPluginsCore: d2c3685072cf896a05f09b55686af476db7c0596
+  AWSS3: 1c5540cbe98d8ae5e24f44dcca25796ddba16058
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
@@ -263,12 +269,12 @@ SPEC CHECKSUMS:
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
-  Protobuf: 5e6cbc143d02fe08585d86b0098f8b755d2caaab
+  Protobuf: d7f7c8329edf5eb8af65547a8ba3e9c1cee927d5
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
-  SwiftFormat: 823c799054862ecd9143ff00de06997f5e68967c
+  SwiftFormat: 8904869cd98b67b351c3ab5dea605d00db320e14
   SwiftLint: 284cea64b6187c5d6bd83e9a548a64104d546447
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
 
