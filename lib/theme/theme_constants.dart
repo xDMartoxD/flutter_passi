@@ -39,7 +39,7 @@ final darkTheme = ThemeData(
   colorScheme: ColorScheme.fromSwatch(
     backgroundColor: const Color.fromRGBO(16, 16, 16, 1),
     primarySwatch: primaryswatchcolor,
-    cardColor: const Color.fromRGBO(33, 33, 33, 1),
+    cardColor: const Color.fromRGBO(30, 30, 30, 1),
     errorColor: const Color.fromARGB(237, 67, 55, 1),
   ),
   fontFamily: "Nunito",
@@ -64,8 +64,10 @@ final darkTheme = ThemeData(
     style: ElevatedButton.styleFrom(
       disabledBackgroundColor: Colors.grey[700],
       disabledForegroundColor: const Color.fromRGBO(16, 16, 16, 1),
+      backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
+      surfaceTintColor: Colors.transparent,
       shape: const StadiumBorder(),
-      textStyle: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
+      textStyle: const TextStyle(fontWeight: FontWeight.w600),
     ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(

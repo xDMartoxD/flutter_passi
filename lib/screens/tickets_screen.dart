@@ -306,7 +306,10 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:passi_app/providers/ticket_category_provider.dart';
+import 'package:passi_app/screens/profile_screen.dart';
 import '../providers/authentication_provider.dart';
+import '../providers/event_provider.dart';
 import '../providers/tickets_provider.dart';
 import '../widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -319,12 +322,28 @@ class TicketsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProxyProvider<AuthenticationProvider, TicketsProvider>(
+          ChangeNotifierProvider(create: (context) {
+            return EventProvider(eventId: '');
+          }),
+          ChangeNotifierProvider(create: (context) {
+            return TicketCategoryProvider();
+          }),
+          ChangeNotifierProxyProvider3<AuthenticationProvider, EventProvider,
+              TicketCategoryProvider, TicketsProvider>(
             create: (context) {
               return TicketsProvider();
             },
-            update: (context, authenticationProvider, prev) {
-              return TicketsProvider(authenticationProvider: authenticationProvider);
+            update: (
+              context,
+              authenticationProvider,
+              eventProvider,
+              ticketCategory,
+              prev,
+            ) {
+              return TicketsProvider(
+                  authenticationProvider: authenticationProvider,
+                  eventProvider: eventProvider,
+                  ticketCategoryProvider: ticketCategory);
             },
           )
         ],
@@ -352,59 +371,75 @@ class TicketsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getTickets(context),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.done:
-            return Consumer<TicketsProvider>(
-              builder: (context, ticketProvider, child) {
-                return PageView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: ticketProvider.tickets.length,
-                  itemBuilder: (context, index) {
-                    return Stack(children: [
-                      Positioned.fill(
-                        child: Image.network(
-                          ticketProvider.tickets[index].event.primaryImage,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned.fill(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.transparent, Colors.black],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
+    return Consumer<AuthenticationProvider>(
+      builder: (conext, authenticationProvider, child) {
+        if (authenticationProvider.user == null) {
+          return const UnAuth();
+        } else {
+          return FutureBuilder(
+            future: getTickets(context),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.done:
+                  return Consumer<TicketsProvider>(
+                    builder: (context, ticketProvider, child) {
+                      return PageView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: ticketProvider.tickets.length,
+                        itemBuilder: (context, index) {
+                          return Stack(children: [
+                            ticketProvider.tickets[index] != null &&
+                                    ticketProvider.tickets[index]?.event != null
+                                ? Positioned.fill(
+                                    child: Image.network(
+                                      ticketProvider.tickets[index]!.event!.primaryImage,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : Container(),
+                            Positioned.fill(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Colors.transparent, Colors.black],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 40,
+                                  horizontal: 50,
+                                ),
+                                child: ticketProvider.tickets[index] != null &&
+                                        ticketProvider.tickets[index]?.event != null
+                                    ? TicketWidget(
+                                        didAssit: ticketProvider.tickets[index]!.didAssist,
+                                        eventMaxAge: ticketProvider.tickets[index]!.event!.minAge,
+                                        eventAddress: ticketProvider.tickets[index]!.event!.address,
+                                        eventCompany: ticketProvider.tickets[index]!.event!.company,
+                                        eventPlace: ticketProvider.tickets[index]!.event!.place,
+                                        eventStartDate: ticketProvider
+                                            .tickets[index]!.event!.startDateTime
+                                            .toString(),
+                                        id: ticketProvider.tickets[index]!.id,
+                                        eventTitle: ticketProvider.tickets[index]!.event!.title,
+                                        ticketCategoryName:
+                                            ticketProvider.tickets[index]!.ticketCategory!.name,
+                                      )
+                                    : Container(),
+                              ),
                             ),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 40,
-                            horizontal: 50,
-                          ),
-                          child: TicketWidget(
-                            didAssit: ticketProvider.tickets[index].didAssist,
-                            eventMaxAge: ticketProvider.tickets[index].event.minAge,
-                            eventAddress: ticketProvider.tickets[index].event.address,
-                            eventCompany: ticketProvider.tickets[index].event.company,
-                            eventPlace: ticketProvider.tickets[index].event.place,
-                            eventStartDate:
-                                ticketProvider.tickets[index].event.startDateTime.toString(),
-                            id: ticketProvider.tickets[index].id,
-                            eventTitle: ticketProvider.tickets[index].event.title,
-                            ticketCategoryName: ticketProvider.tickets[index].ticketCategory.name,
-                          ),
-                        ),
-                      ),
-                    ]);
-                  },
-                );
-              },
-            );
+                          ]);
+                        },
+                      );
+                    },
+                  );
 
-          default:
-            return const Loading();
+                default:
+                  return const Loading();
+              }
+            },
+          );
         }
       },
     );

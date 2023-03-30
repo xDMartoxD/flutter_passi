@@ -8,11 +8,10 @@ class EventCategoriesOverviewScreenArgs implements ScreenArgs {
 
   @override
   Map<String, dynamic> queryParams() {
-    final Map<String, dynamic> data = <String, dynamic>{
+    return {
       'id': id,
       'categoryName': categoryName,
     };
-    return data;
   }
 
   EventCategoriesOverviewScreenArgs.fromJson(Map<String, dynamic> json) {

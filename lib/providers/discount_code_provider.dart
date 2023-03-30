@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:passi_app/providers/event_provider.dart';
@@ -67,13 +66,13 @@ query DiscountCodesByEvent(\$eventID: ID!) {
         ));
         final responseGraphQLDocument =
             await Amplify.API.query(request: discountCodesByEventRequest).response;
-        if (responseGraphQLDocument == null) {
+        if (responseGraphQLDocument.data == null) {
           safePrint('errors: ${responseGraphQLDocument.errors}');
           return;
         }
         final data = jsonDecode(responseGraphQLDocument.data);
         final discountCodesMap =
-            List<Map<String, dynamic>>.from(data['discountCodesByEvent']['items']);
+            List<Map<String, dynamic>>.from(data[discountCodesByEvent]['items']);
         List<DiscountCode?> loadedDiscountCodes = [];
         for (var discountCodeMap in discountCodesMap) {
           final discountCode = DiscountCode(

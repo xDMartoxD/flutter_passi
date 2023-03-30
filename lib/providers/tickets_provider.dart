@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:passi_app/models/ModelProvider.dart';
+import 'package:passi_app/providers/ticket_category_provider.dart';
 import '../providers/authentication_provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/discount_code_provider.dart';
@@ -21,10 +21,12 @@ class TicketsProvider with ChangeNotifier {
   final TicketCategoriesByEventProvider? ticketCategoriesProvider;
   final PaymentMethodsByUserProvider? paymentMethodsByUserProvider;
   final DiscountCodesByEventProvider? discountCodesByEventProvider;
-  List<Ticket> _tickets = [];
-  List<Ticket> get tickets => [..._tickets];
+  final TicketCategoryProvider? ticketCategoryProvider;
+  List<Ticket?> _tickets = [];
+  List<Ticket?> get tickets => [..._tickets];
 
   TicketsProvider({
+    this.ticketCategoryProvider,
     this.discountCodesByEventProvider,
     this.ticketCategoriesProvider,
     this.authenticationProvider,
@@ -67,24 +69,67 @@ class TicketsProvider with ChangeNotifier {
   }
 
   Future<void> getTickets() async {
-    if (authenticationProvider != null && authenticationProvider?.user != null) {
+    if (authenticationProvider != null &&
+        authenticationProvider?.user != null &&
+        eventProvider != null &&
+        ticketCategoryProvider != null) {
       try {
-        final request = cognitoRequest(
-          ModelQueries.list(Ticket.classType,
-              where: Ticket.USER.eq(authenticationProvider!.user!.id)),
+        const ticketsByUser = 'ticketsByUser';
+        String graphQLDocument = '''
+query TicketsByUser(\$userID: ID!) {
+  $ticketsByUser(userID: \$userID) {
+    items {
+      id
+      code
+      createdAt
+      didAssist
+      eventID
+      inDateTime
+      jobID
+      outDateTime
+      seat
+      ticketCategoryID
+      updatedAt
+      userID
+      eventID
+      ticketCategoryID
+    }
+  }
+}
+
+''';
+
+        final ticketsByUserRequest = cognitoRequest(
+          GraphQLRequest(
+            document: graphQLDocument,
+            variables: <String, String>{'userID': authenticationProvider!.user!.id},
+            decodePath: ticketsByUser,
+          ),
         );
-        final response = await Amplify.API.query(request: request).response;
-        final paginatedEventCategories = response.data;
-        if (paginatedEventCategories == null) {
-          safePrint('errors: ${response.errors}');
+        final responseGraphQLDocument =
+            await Amplify.API.query(request: ticketsByUserRequest).response;
+        if (responseGraphQLDocument.data == null) {
+          safePrint('errors: ${responseGraphQLDocument.errors}');
           return;
         }
-
-        final List<Ticket> loadedTickets = [];
-        for (var ticket in paginatedEventCategories.items) {
-          if (ticket != null) {
-            loadedTickets.add(ticket);
-          }
+        final data = jsonDecode(responseGraphQLDocument.data);
+        final ticketsMap = List<Map<String, dynamic>>.from(data[ticketsByUser]['items']);
+        List<Ticket?> loadedTickets = [];
+        for (var ticketMap in ticketsMap) {
+          final event = await eventProvider!.getEventById(ticketMap['eventID']);
+          final ticketCategory =
+              await ticketCategoryProvider!.getTicketCategoryById(ticketMap['ticketCategoryID']);
+          final ticket = Ticket(
+            user: authenticationProvider!.user,
+            didAssist: ticketMap['didAssist'],
+            event: event,
+            id: ticketMap['id'],
+            seat: ticketMap['seat'],
+            ticketCategory: ticketCategory,
+            createdAt: TemporalDateTime.fromString(ticketMap['createdAt']),
+            updatedAt: TemporalDateTime.fromString(ticketMap['updatedAt']),
+          );
+          loadedTickets.add(ticket);
         }
         _tickets = loadedTickets;
         notifyListeners();

@@ -105,17 +105,8 @@ class DiscountCode extends Model {
     }
   }
   
-  Event get event {
-    try {
-      return _event!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  Event? get event {
+    return _event;
   }
   
   User? get user {
@@ -152,9 +143,9 @@ class DiscountCode extends Model {
     }
   }
   
-  const DiscountCode._internal({required this.id, required code, maxUse, required actualUse, required validUntil, required discount, required event, user, tickets, required createdAt, required updatedAt}): _code = code, _maxUse = maxUse, _actualUse = actualUse, _validUntil = validUntil, _discount = discount, _event = event, _user = user, _tickets = tickets, _createdAt = createdAt, _updatedAt = updatedAt;
+  const DiscountCode._internal({required this.id, required code, maxUse, required actualUse, required validUntil, required discount, event, user, tickets, required createdAt, required updatedAt}): _code = code, _maxUse = maxUse, _actualUse = actualUse, _validUntil = validUntil, _discount = discount, _event = event, _user = user, _tickets = tickets, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory DiscountCode({String? id, required String code, int? maxUse, required int actualUse, required TemporalDateTime validUntil, required double discount, required Event event, User? user, List<Ticket>? tickets, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory DiscountCode({String? id, required String code, int? maxUse, required int actualUse, required TemporalDateTime validUntil, required double discount, Event? event, User? user, List<Ticket>? tickets, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return DiscountCode._internal(
       id: id == null ? UUID.getUUID() : id,
       code: code,
@@ -343,7 +334,7 @@ class DiscountCode extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: DiscountCode.EVENT,
-      isRequired: true,
+      isRequired: false,
       targetName: 'eventID',
       ofModelName: 'Event'
     ));
@@ -357,7 +348,7 @@ class DiscountCode extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: DiscountCode.TICKETS,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'Ticket',
       associatedKey: Ticket.DISCOUNTCODE
     ));

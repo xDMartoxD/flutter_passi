@@ -10,15 +10,34 @@ void bottomSheetAuthHandler({
   required BuildContext context,
 }) {
   showModalBottomSheet<dynamic>(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      elevation: 5,
-      isDismissible: true,
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return Wrap(
+    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    elevation: 5,
+    isDismissible: true,
+    isScrollControlled: true,
+    context: context,
+    builder: (context) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(15),
+          ),
+          color: Theme.of(context).cardColor,
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Wrap(
           children: [
-            const SizedBox(height: 200, child: Placeholder()),
+            const SizedBox(height: 50),
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                "PASSI",
+                style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 60),
             Center(
               child: Text(
                 "Tus eventos favoritos. \n Al instante.",
@@ -29,34 +48,99 @@ void bottomSheetAuthHandler({
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(
-              height: 80,
-            ),
+            // const SizedBox(height: 80),
             // Center(
-            //   child: ElevatedButton.icon(
-            //     onPressed: googleSignIn,
-            //     icon: const FaIcon(
-            //       FontAwesomeIcons.google,
-            //       color: Colors.white,
+            //   child: ElevatedButton(
+            //     style: ElevatedButton.styleFrom(
+            //       alignment: Alignment.centerLeft,
+            //       fixedSize: Size(MediaQuery.of(context).size.width * .9, 50),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(5), // <-- Radius
+            //       ),
             //     ),
-            //     label: Text(
-            //       "Registrate con Google",
-            //       style: Theme.of(context).textTheme.titleSmall,
+            //     onPressed: () {
+            //       context.pushNamed(EmailRegisterScreen.name);
+            //     },
+            //     child: Stack(
+            //       children: <Widget>[
+            //         Align(
+            //             alignment: Alignment.centerLeft,
+            //             child: const FaIcon(
+            //               FontAwesomeIcons.google,
+            //               color: Colors.white,
+            //             )),
+            //         Align(
+            //             alignment: Alignment.center,
+            //             child: Text(
+            //               "Registrate con google",
+            //               style: Theme.of(context).textTheme.titleSmall,
+            //               textAlign: TextAlign.center,
+            //             ))
+            //       ],
             //     ),
             //   ),
             // ),
+            // SizedBox(height: 60),
+            // Center(
+            //   child: ElevatedButton(
+            //     style: ElevatedButton.styleFrom(
+            //       alignment: Alignment.centerLeft,
+            //       fixedSize: Size(MediaQuery.of(context).size.width * .9, 50),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(5), // <-- Radius
+            //       ),
+            //     ),
+            //     onPressed: () {
+            //       context.pushNamed(EmailRegisterScreen.name);
+            //     },
+            //     child: Stack(
+            //       children: <Widget>[
+            //         Align(
+            //             alignment: Alignment.centerLeft,
+            //             child: const Icon(
+            //               Icons.apple,
+            //               color: Colors.white,
+            //             )),
+            //         Align(
+            //             alignment: Alignment.center,
+            //             child: Text(
+            //               "Registrate con Apple",
+            //               style: Theme.of(context).textTheme.titleSmall,
+            //               textAlign: TextAlign.center,
+            //             ))
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            const SizedBox(height: 60),
             Center(
-              child: ElevatedButton.icon(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  alignment: Alignment.centerLeft,
+                  fixedSize: Size(MediaQuery.of(context).size.width * .9, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5), // <-- Radius
+                  ),
+                ),
                 onPressed: () {
                   context.pushNamed(EmailRegisterScreen.name);
                 },
-                icon: const FaIcon(
-                  FontAwesomeIcons.envelope,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  "Registrate con tu correo",
-                  style: Theme.of(context).textTheme.titleSmall,
+                child: Stack(
+                  children: <Widget>[
+                    const Align(
+                        alignment: Alignment.centerLeft,
+                        child: FaIcon(
+                          FontAwesomeIcons.envelope,
+                          color: Colors.white,
+                        )),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Registrate con tu correo",
+                          style: Theme.of(context).textTheme.titleSmall,
+                          textAlign: TextAlign.center,
+                        ))
+                  ],
                 ),
               ),
             ),
@@ -78,8 +162,10 @@ void bottomSheetAuthHandler({
               height: 80,
             ),
           ],
-        );
-      });
+        ),
+      );
+    },
+  );
 }
 
 Future<void> googleSignIn() async {}

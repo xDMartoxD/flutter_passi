@@ -7,11 +7,10 @@ class EmailConfirmationScreenArgs implements ScreenArgs {
 
   @override
   Map<String, dynamic> queryParams() {
-    final Map<String, dynamic> data = <String, dynamic>{
+    return {
       'email': email,
       'password': password,
     };
-    return data;
   }
 
   EmailConfirmationScreenArgs.fromJson(Map<String, dynamic> json) {

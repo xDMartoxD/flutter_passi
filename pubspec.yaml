@@ -1,5 +1,5 @@
 name: passi_app
-description: A new Flutter project.
+description: Aplicacion de passi.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -59,6 +59,7 @@ dependencies:
   validators: ^3.0.0
   string_to_hex: ^0.2.2
   json_annotation: ^4.8.0
+  flutter_launcher_icons: ^0.12.0
 
 dev_dependencies:
   flutter_test:
@@ -71,9 +72,14 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/passi_logo_dark.jpg"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+flutter_native_splash:
+  image: assets/images/passi_logo_dark.jpg
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is
@@ -92,6 +98,9 @@ flutter:
     - assets/images/nequi.png
     - assets/images/pse.png
     - assets/images/visa.jpeg
+    - assets/images/passi_logo_dark.jpg
+    - assets/images/passi_logo_pink.jpg
+    - assets/images/passi_pet.JPG
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

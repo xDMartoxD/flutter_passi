@@ -22,6 +22,7 @@
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
+
 /** This is an auto generated class representing the PresignedAcceptance type in your schema. */
 @immutable
 class PresignedAcceptance {
@@ -32,113 +33,120 @@ class PresignedAcceptance {
   String get acceptance_token {
     try {
       return _acceptance_token!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-              AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
+  
   String get permalink {
     try {
       return _permalink!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-              AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
+  
   String get type {
     try {
       return _type!;
-    } catch (e) {
+    } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-              AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString());
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
-
-  const PresignedAcceptance._internal(
-      {required acceptance_token, required permalink, required type})
-      : _acceptance_token = acceptance_token,
-        _permalink = permalink,
-        _type = type;
-
-  factory PresignedAcceptance(
-      {required String acceptance_token, required String permalink, required String type}) {
+  
+  const PresignedAcceptance._internal({required acceptance_token, required permalink, required type}): _acceptance_token = acceptance_token, _permalink = permalink, _type = type;
+  
+  factory PresignedAcceptance({required String acceptance_token, required String permalink, required String type}) {
     return PresignedAcceptance._internal(
-        acceptance_token: acceptance_token, permalink: permalink, type: type);
+      acceptance_token: acceptance_token,
+      permalink: permalink,
+      type: type);
   }
-
+  
   bool equals(Object other) {
     return this == other;
   }
-
+  
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is PresignedAcceptance &&
-        _acceptance_token == other._acceptance_token &&
-        _permalink == other._permalink &&
-        _type == other._type;
+      _acceptance_token == other._acceptance_token &&
+      _permalink == other._permalink &&
+      _type == other._type;
   }
-
+  
   @override
   int get hashCode => toString().hashCode;
-
+  
   @override
   String toString() {
     var buffer = new StringBuffer();
-
+    
     buffer.write("PresignedAcceptance {");
     buffer.write("acceptance_token=" + "$_acceptance_token" + ", ");
     buffer.write("permalink=" + "$_permalink" + ", ");
     buffer.write("type=" + "$_type");
     buffer.write("}");
-
+    
     return buffer.toString();
   }
-
+  
   PresignedAcceptance copyWith({String? acceptance_token, String? permalink, String? type}) {
     return PresignedAcceptance._internal(
-        acceptance_token: acceptance_token ?? this.acceptance_token,
-        permalink: permalink ?? this.permalink,
-        type: type ?? this.type);
+      acceptance_token: acceptance_token ?? this.acceptance_token,
+      permalink: permalink ?? this.permalink,
+      type: type ?? this.type);
   }
-
-  PresignedAcceptance.fromJson(Map<String, dynamic> json)
-      : _acceptance_token = json['acceptance_token'],
-        _permalink = json['permalink'],
-        _type = json['type'];
-
-  Map<String, dynamic> toJson() =>
-      {'acceptance_token': _acceptance_token, 'permalink': _permalink, 'type': _type};
-
-  Map<String, Object?> toMap() =>
-      {'acceptance_token': _acceptance_token, 'permalink': _permalink, 'type': _type};
+  
+  PresignedAcceptance.fromJson(Map<String, dynamic> json)  
+    : _acceptance_token = json['acceptance_token'],
+      _permalink = json['permalink'],
+      _type = json['type'];
+  
+  Map<String, dynamic> toJson() => {
+    'acceptance_token': _acceptance_token, 'permalink': _permalink, 'type': _type
+  };
+  
+  Map<String, Object?> toMap() => {
+    'acceptance_token': _acceptance_token, 'permalink': _permalink, 'type': _type
+  };
 
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "PresignedAcceptance";
     modelSchemaDefinition.pluralName = "PresignedAcceptances";
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-        fieldName: 'acceptance_token',
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      fieldName: 'acceptance_token',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-        fieldName: 'permalink',
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      fieldName: 'permalink',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-        fieldName: 'type', isRequired: true, ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+      fieldName: 'type',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
   });
 }

@@ -48,17 +48,8 @@ class PaymentMethod extends Model {
     return id;
   }
   
-  User get user {
-    try {
-      return _user!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  User? get user {
+    return _user;
   }
   
   PaymentMethodEnum get type {
@@ -151,9 +142,9 @@ class PaymentMethod extends Model {
     }
   }
   
-  const PaymentMethod._internal({required this.id, required user, required type, status, required data, required token, required customer_email, acceptance_token, paymentSourceID, required createdAt, required updatedAt}): _user = user, _type = type, _status = status, _data = data, _token = token, _customer_email = customer_email, _acceptance_token = acceptance_token, _paymentSourceID = paymentSourceID, _createdAt = createdAt, _updatedAt = updatedAt;
+  const PaymentMethod._internal({required this.id, user, required type, status, required data, required token, required customer_email, acceptance_token, paymentSourceID, required createdAt, required updatedAt}): _user = user, _type = type, _status = status, _data = data, _token = token, _customer_email = customer_email, _acceptance_token = acceptance_token, _paymentSourceID = paymentSourceID, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory PaymentMethod({String? id, required User user, required PaymentMethodEnum type, String? status, required PaymentMethodData data, required String token, required String customer_email, String? acceptance_token, int? paymentSourceID, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory PaymentMethod({String? id, User? user, required PaymentMethodEnum type, String? status, required PaymentMethodData data, required String token, required String customer_email, String? acceptance_token, int? paymentSourceID, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return PaymentMethod._internal(
       id: id == null ? UUID.getUUID() : id,
       user: user,
@@ -313,7 +304,7 @@ class PaymentMethod extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: PaymentMethod.USER,
-      isRequired: true,
+      isRequired: false,
       targetName: 'userID',
       ofModelName: 'User'
     ));

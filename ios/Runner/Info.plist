@@ -7,7 +7,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Flutter Passi</string>
+		<string>Passi</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>flutter_passi</string>
+		<string>Passi</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -33,9 +33,9 @@
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
 		<key>NSUserTrackingUsageDescription</key>
-<string>This identifier will be used to deliver personalized ads to you.</string>
-<key>NSCameraUsageDescription</key>
-<string>$(PRODUCT_NAME) would like to access the camera to view tickets</string>
+		<string>This identifier will be used to deliver personalized ads to you.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>$(PRODUCT_NAME) would like to access the camera to view tickets</string>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>

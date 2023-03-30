@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/payment_methods_by_user.dart';

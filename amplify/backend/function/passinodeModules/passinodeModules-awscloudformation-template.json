@@ -20,19 +20,23 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersionc00fcbf5": {
+    "LambdaLayerVersiona8c693c9": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
-        "CompatibleRuntimes": [
-          "nodejs14.x"
-        ],
+        "CompatibleRuntimes": {
+          "Ref": "runtimes"
+        },
         "Content": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/passinodeModules-LambdaLayerVersionc00fcbf5-build.zip"
+          "S3Key": {
+            "Ref": "s3Key"
+          }
         },
-        "Description": "Updated layer version 2023-03-16T16:56:47.430Z",
+        "Description": {
+          "Ref": "description"
+        },
         "LayerName": {
           "Fn::Sub": [
             "passinodeModules-${env}",
@@ -47,62 +51,13 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPublicc00fcbf5": {
+    "LambdaLayerPermissionPublica8c693c9": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:954573579519:layer:passinodeModules-prod:18",
-        "Principal": "*"
-      }
-    },
-    "LambdaLayerVersion2b4b934d": {
-      "Type": "AWS::Lambda::LayerVersion",
-      "Properties": {
-        "CompatibleRuntimes": [
-          "nodejs14.x"
-        ],
-        "Content": {
-          "S3Bucket": {
-            "Ref": "deploymentBucketName"
-          },
-          "S3Key": "amplify-builds/passinodeModules-LambdaLayerVersion2b4b934d-build.zip"
+        "LayerVersionArn": {
+          "Ref": "LambdaLayerVersiona8c693c9"
         },
-        "Description": "Updated layer version 2023-03-23T17:24:20.298Z",
-        "LayerName": {
-          "Fn::Sub": [
-            "passinodeModules-${env}",
-            {
-              "env": {
-                "Ref": "env"
-              }
-            }
-          ]
-        }
-      },
-      "DeletionPolicy": "Delete",
-      "UpdateReplacePolicy": "Retain"
-    },
-    "LambdaLayerPermissionPublic2b4b934d": {
-      "Type": "AWS::Lambda::LayerVersionPermission",
-      "Properties": {
-        "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:954573579519:layer:passinodeModules-prod:17",
-        "Principal": "*"
-      }
-    },
-    "LambdaLayerPermissionPublicLegacy16": {
-      "Type": "AWS::Lambda::LayerVersionPermission",
-      "Properties": {
-        "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:954573579519:layer:passinodeModules-prod:16",
-        "Principal": "*"
-      }
-    },
-    "LambdaLayerPermissionPublicLegacy15": {
-      "Type": "AWS::Lambda::LayerVersionPermission",
-      "Properties": {
-        "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:954573579519:layer:passinodeModules-prod:15",
         "Principal": "*"
       }
     }
@@ -110,7 +65,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersionc00fcbf5"
+        "Ref": "LambdaLayerVersiona8c693c9"
       }
     }
   }

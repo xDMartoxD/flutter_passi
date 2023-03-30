@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passi_app/models/screen_args/reset_password_screen_args.dart';
+import 'package:passi_app/models/screen_args/success_screen_args.dart';
 import 'package:passi_app/providers/discount_code_provider.dart';
 import 'package:passi_app/screens/add_card_screen.dart';
 import 'package:passi_app/screens/add_nequi_screen.dart';
+import 'package:passi_app/screens/forgot_password_email.dart';
 import 'package:passi_app/screens/payment_methods_screen.dart';
+import 'package:passi_app/screens/reset_password_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/screen_args/email_confirmation_screen_args.dart';
 import '../models/screen_args/errors_screen_args.dart';
@@ -136,8 +140,24 @@ class AppRouter {
               path: SuccessScreen.path,
               name: SuccessScreen.name,
               builder: (context, state) {
-                return const SuccessScreen();
-              })
+                final args = SuccessScreenArgs.fromJson(state.queryParams);
+                return SuccessScreen(title: args.title, message: args.message);
+              }),
+          GoRoute(
+              path: ForgotPasswordEmailScreen.path,
+              name: ForgotPasswordEmailScreen.name,
+              builder: (context, state) {
+                return const ForgotPasswordEmailScreen();
+              }),
+          GoRoute(
+              path: ResetPasswordScreen.path,
+              name: ResetPasswordScreen.name,
+              builder: (context, state) {
+                final args = ResetPasswordScreenArgs.fromJson(state.params);
+                return ResetPasswordScreen(
+                  username: args.username,
+                );
+              }),
         ],
       ),
     ],
