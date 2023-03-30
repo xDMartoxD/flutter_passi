@@ -190,7 +190,7 @@ class _EventContentState extends State<EventContent> {
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.star_border_rounded,
-                                      textContent: eventProvider.event!.eventCategory.name,
+                                      textContent: eventProvider.event!.eventCategory!.name,
                                     ),
                                   ],
                                 ),
@@ -502,11 +502,11 @@ class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProv
           )
         ]),
       ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.ios_share),
-        )
+      actions: const [
+        // IconButton(
+        //   onPressed: () {},
+        //   icon: const Icon(Icons.ios_share),
+        // )
       ],
     );
   }

@@ -11,12 +11,6 @@ const amplifyconfig = ''' {
                     "authorizationType": "API_KEY",
                     "apiKey": "da2-q45dnexunbhkjlhlzon7ai6qa4"
                 },
-                "appamplify_AMAZON_COGNITO_USER_POOLS": {
-                    "endpointType": "GraphQL",
-                    "endpoint": "https://ns7cu3vpybcfthrgsbzlcka6uy.appsync-api.us-east-1.amazonaws.com/graphql",
-                    "region": "us-east-1",
-                    "authorizationType": "AMAZON_COGNITO_USER_POOLS"
-                },
                 "endpoints": {
                     "endpointType": "REST",
                     "endpoint": "https://8d1a8ru57e.execute-api.us-east-1.amazonaws.com/prod",

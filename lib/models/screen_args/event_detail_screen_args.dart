@@ -8,10 +8,7 @@ class EventDetailScreenArgs implements ScreenArgs {
 
   @override
   Map<String, dynamic> queryParams() {
-    final Map<String, dynamic> data = <String, dynamic>{
-      'promoterCode': promoterCode ?? ''
-    };
-    return data;
+    return {'promoterCode': promoterCode ?? ''};
   }
 
   EventDetailScreenArgs.fromJson(Map<String, dynamic> json) {

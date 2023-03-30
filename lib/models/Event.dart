@@ -209,17 +209,8 @@ class Event extends Model {
     return _images;
   }
   
-  EventCategory get eventCategory {
-    try {
-      return _eventCategory!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  EventCategory? get eventCategory {
+    return _eventCategory;
   }
   
   List<Ticket>? get tickets {
@@ -272,9 +263,9 @@ class Event extends Model {
     return _ticketCategories;
   }
   
-  const Event._internal({required this.id, required title, description, required company, companyUrl, required startDateTime, required finishDateTime, coords, required address, place, minAge, required price, required maxCapacity, required totalAssistants, required primaryImage, contactNumber, images, required eventCategory, tickets, Jobs, discountCodes, needsCode, required createdAt, required updatedAt, maxBuyQuantity, ticketCategories}): _title = title, _description = description, _company = company, _companyUrl = companyUrl, _startDateTime = startDateTime, _finishDateTime = finishDateTime, _coords = coords, _address = address, _place = place, _minAge = minAge, _price = price, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _primaryImage = primaryImage, _contactNumber = contactNumber, _images = images, _eventCategory = eventCategory, _tickets = tickets, _Jobs = Jobs, _discountCodes = discountCodes, _needsCode = needsCode, _createdAt = createdAt, _updatedAt = updatedAt, _maxBuyQuantity = maxBuyQuantity, _ticketCategories = ticketCategories;
+  const Event._internal({required this.id, required title, description, required company, companyUrl, required startDateTime, required finishDateTime, coords, required address, place, minAge, required price, required maxCapacity, required totalAssistants, required primaryImage, contactNumber, images, eventCategory, tickets, Jobs, discountCodes, needsCode, required createdAt, required updatedAt, maxBuyQuantity, ticketCategories}): _title = title, _description = description, _company = company, _companyUrl = companyUrl, _startDateTime = startDateTime, _finishDateTime = finishDateTime, _coords = coords, _address = address, _place = place, _minAge = minAge, _price = price, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _primaryImage = primaryImage, _contactNumber = contactNumber, _images = images, _eventCategory = eventCategory, _tickets = tickets, _Jobs = Jobs, _discountCodes = discountCodes, _needsCode = needsCode, _createdAt = createdAt, _updatedAt = updatedAt, _maxBuyQuantity = maxBuyQuantity, _ticketCategories = ticketCategories;
   
-  factory Event({String? id, required String title, String? description, required String company, String? companyUrl, required TemporalDateTime startDateTime, required TemporalDateTime finishDateTime, Coordinates? coords, required String address, String? place, int? minAge, required double price, required int maxCapacity, required int totalAssistants, required String primaryImage, String? contactNumber, List<String>? images, required EventCategory eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
+  factory Event({String? id, required String title, String? description, required String company, String? companyUrl, required TemporalDateTime startDateTime, required TemporalDateTime finishDateTime, Coordinates? coords, required String address, String? place, int? minAge, required double price, required int maxCapacity, required int totalAssistants, required String primaryImage, String? contactNumber, List<String>? images, EventCategory? eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
     return Event._internal(
       id: id == null ? UUID.getUUID() : id,
       title: title,
@@ -638,28 +629,28 @@ class Event extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Event.EVENTCATEGORY,
-      isRequired: true,
+      isRequired: false,
       targetName: 'eventcategoryID',
       ofModelName: 'EventCategory'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Event.TICKETS,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'Ticket',
       associatedKey: Ticket.EVENT
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Event.JOBS,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'Job',
       associatedKey: Job.EVENT
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Event.DISCOUNTCODES,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'DiscountCode',
       associatedKey: DiscountCode.EVENT
     ));
@@ -690,7 +681,7 @@ class Event extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Event.TICKETCATEGORIES,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'TicketCategory',
       associatedKey: TicketCategory.EVENT
     ));

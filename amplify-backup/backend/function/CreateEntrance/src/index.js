@@ -30,7 +30,17 @@ exports.handler = async ({ body, requestContext: { identity } }, context) => {
 	if (args.code !== 'null') {
 		code = args.code
 	}
+	console.log("args ", args)
 	const { event, ticketCategoriesObject, ticketCategories, userTickets, eventDiscountCodes, discountCode, user, selectedPaymentMethod, error: blError } = await businessLogic(args.eventID, args.ticketCategoriesID, identity, args.userID, code)
+	console.log('event ', event)
+	console.log('ticketCategoriesObject ', ticketCategoriesObject)
+	console.log('ticketCategories ', ticketCategories)
+	console.log('userTickets ', userTickets)
+	console.log('eventDiscountCodes ', eventDiscountCodes)
+	console.log('discountCode ', discountCode)
+	console.log('user ', user)
+	console.log('selectedPaymentMethod ', selectedPaymentMethod)
+	console.log('Error ', blError)
 	if (blError) {
 		return {
 			statusCode: 401,

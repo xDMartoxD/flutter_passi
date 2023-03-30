@@ -14,9 +14,7 @@ class ScanScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Container(
-        child: const ScanWidget(),
-      ),
+      body: const ScanWidget(),
     );
   }
 }

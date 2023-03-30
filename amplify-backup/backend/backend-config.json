@@ -36,36 +36,36 @@
     "endpoints": {
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "validateTicket",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "validateTicket"
         },
         {
-          "category": "function",
-          "resourceName": "verifyEvent",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "verifyEvent"
         },
         {
-          "category": "function",
-          "resourceName": "CreatePaymentSource",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "CreatePaymentSource"
         },
         {
-          "category": "function",
-          "resourceName": "CreateEntrance",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "CreateEntrance"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -144,11 +144,11 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "api",
-          "resourceName": "appamplify",
           "attributes": [
             "GraphQLAPIIdOutput"
-          ]
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
         },
         {
           "attributes": [
@@ -305,11 +305,11 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "api",
-          "resourceName": "appamplify",
           "attributes": [
             "GraphQLAPIIdOutput"
-          ]
+          ],
+          "category": "api",
+          "resourceName": "appamplify"
         },
         {
           "attributes": [
@@ -591,6 +591,14 @@
         {
           "category": "function",
           "resourceName": "CreateFreeEntrance"
+        }
+      ]
+    },
+    "AMPLIFY_function_CreatePaymentSource_auth": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "CreatePaymentSource"
         }
       ]
     },

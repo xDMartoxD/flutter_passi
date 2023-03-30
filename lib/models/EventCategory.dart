@@ -207,7 +207,7 @@ class EventCategory extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: EventCategory.EVENTS,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'Event',
       associatedKey: Event.EVENTCATEGORY
     ));

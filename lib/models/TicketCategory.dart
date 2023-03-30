@@ -115,17 +115,8 @@ class TicketCategory extends Model {
     }
   }
   
-  Event get event {
-    try {
-      return _event!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  Event? get event {
+    return _event;
   }
   
   List<Ticket>? get tickets {
@@ -148,9 +139,9 @@ class TicketCategory extends Model {
     return _updatedAt;
   }
   
-  const TicketCategory._internal({required this.id, required price, required name, required color, required maxCapacity, required totalAssistants, required event, tickets, description, maxBuyQuantity, createdAt, updatedAt}): _price = price, _name = name, _color = color, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _event = event, _tickets = tickets, _description = description, _maxBuyQuantity = maxBuyQuantity, _createdAt = createdAt, _updatedAt = updatedAt;
+  const TicketCategory._internal({required this.id, required price, required name, required color, required maxCapacity, required totalAssistants, event, tickets, description, maxBuyQuantity, createdAt, updatedAt}): _price = price, _name = name, _color = color, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _event = event, _tickets = tickets, _description = description, _maxBuyQuantity = maxBuyQuantity, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory TicketCategory({String? id, required double price, required String name, required String color, required int maxCapacity, required int totalAssistants, required Event event, List<Ticket>? tickets, String? description, int? maxBuyQuantity}) {
+  factory TicketCategory({String? id, required double price, required String name, required String color, required int maxCapacity, required int totalAssistants, Event? event, List<Ticket>? tickets, String? description, int? maxBuyQuantity}) {
     return TicketCategory._internal(
       id: id == null ? UUID.getUUID() : id,
       price: price,
@@ -332,14 +323,14 @@ class TicketCategory extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: TicketCategory.EVENT,
-      isRequired: true,
+      isRequired: false,
       targetName: 'eventID',
       ofModelName: 'Event'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: TicketCategory.TICKETS,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'Ticket',
       associatedKey: Ticket.TICKETCATEGORY
     ));

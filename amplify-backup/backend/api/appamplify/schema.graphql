@@ -184,9 +184,9 @@ type Job
         { allow: groups, groups: ["Admin"] }
       ]
     )
-  event: Event! @belongsTo(fields: ["eventID"])
+  event: Event @belongsTo(fields: ["eventID"])
   eventID: ID! @index(name: "byEvent", queryField: "jobsByEvent")
-  user: User! @belongsTo(fields: ["userID"])
+  user: User @belongsTo(fields: ["userID"])
   userID: ID! @index(name: "byUser", queryField: "jobsByUser")
   type: [JobType]
   createdAt: AWSDateTime!
@@ -217,10 +217,10 @@ type User
   email: AWSEmail!
   name: String!
   avatar: S3Object
-  tickets: [Ticket!] @hasMany(indexName: "byUser", fields: ["id"])
-  jobs: [Job!] @hasMany(indexName: "byUser", fields: ["id"])
-  codes: [DiscountCode!] @hasMany(indexName: "byUser", fields: ["id"])
-  paymentMethods: [PaymentMethod!] @hasMany(indexName: "byUser", fields: ["id"])
+  tickets: [Ticket] @hasMany(indexName: "byUser", fields: ["id"])
+  jobs: [Job] @hasMany(indexName: "byUser", fields: ["id"])
+  codes: [DiscountCode] @hasMany(indexName: "byUser", fields: ["id"])
+  paymentMethods: [PaymentMethod] @hasMany(indexName: "byUser", fields: ["id"])
   selectedPaymentMethod: PaymentMethod @hasOne
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -238,7 +238,7 @@ type PaymentMethod
   ) {
   id: ID! @primaryKey
   userID: ID! @index(name: "byUser", queryField: "paymentMethodsByUser")
-  user: User! @belongsTo(fields: ["userID"])
+  user: User @belongsTo(fields: ["userID"])
   type: PaymentMethodEnum!
   status: String
   data: PaymentMethodData!
@@ -295,9 +295,9 @@ type Ticket
         { allow: public, operations: [read] }
       ]
     )
-  event: Event! @belongsTo(fields: ["eventID"])
+  event: Event @belongsTo(fields: ["eventID"])
   eventID: ID! @index(name: "byEvent", queryField: "ticketsByEvent")
-  ticketCategory: TicketCategory! @belongsTo(fields: ["ticketCategoryID"])
+  ticketCategory: TicketCategory @belongsTo(fields: ["ticketCategoryID"])
   ticketCategoryID: ID!
     @index(name: "byTicketCategory", queryField: "ticketsByTiketCategory")
   inDateTime: AWSDateTime
@@ -325,7 +325,7 @@ type Ticket
       ]
     )
   userID: ID! @index(name: "byUser", queryField: "ticketsByUser")
-  user: User! @belongsTo(fields: ["userID"])
+  user: User @belongsTo(fields: ["userID"])
   jobID: ID
     @index(name: "byJob", queryField: "ticketByJob")
     @auth(
@@ -361,7 +361,7 @@ type Transaction {
   customer_email: String
   currency: String
   status_message: String
-  # paymentethod: ID!
+  # paymentMethod: ID!
   user_type: Int
   user_legal_id: String
   user_legal_id_type: String
@@ -412,21 +412,21 @@ type Event
   primaryImage: AWSURL!
   contactNumber: String
   images: [AWSURL!]
-  eventCategory: EventCategory! @belongsTo(fields: ["eventcategoryID"])
+  eventCategory: EventCategory @belongsTo(fields: ["eventcategoryID"])
   eventcategoryID: ID
     @index(
       name: "byEventCategory"
       sortKeyFields: ["startDateTime"]
       queryField: "eventsByEventCategory"
     )
-  tickets: [Ticket!] @hasMany(indexName: "byEvent", fields: ["id"])
-  Jobs: [Job!] @hasMany(indexName: "byEvent", fields: ["id"])
-  discountCodes: [DiscountCode!] @hasMany(indexName: "byEvent", fields: ["id"])
+  tickets: [Ticket] @hasMany(indexName: "byEvent", fields: ["id"])
+  Jobs: [Job] @hasMany(indexName: "byEvent", fields: ["id"])
+  discountCodes: [DiscountCode] @hasMany(indexName: "byEvent", fields: ["id"])
   needsCode: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   maxBuyQuantity: Int
-  ticketCategories: [TicketCategory!]
+  ticketCategories: [TicketCategory]
     @hasMany(indexName: "byEvent", fields: ["id"])
 }
 
@@ -451,8 +451,8 @@ type TicketCategory
       queryField: "ticketCategoriesByEvent"
       sortKeyFields: ["price"]
     )
-  event: Event! @belongsTo(fields: ["eventID"])
-  tickets: [Ticket!] @hasMany(indexName: "byTicketCategory", fields: ["id"])
+  event: Event @belongsTo(fields: ["eventID"])
+  tickets: [Ticket] @hasMany(indexName: "byTicketCategory", fields: ["id"])
   description: String
   maxBuyQuantity: Int
 }
@@ -468,7 +468,7 @@ type EventCategory
   ) {
   id: ID! @primaryKey
   name: String!
-  events: [Event!] @hasMany(indexName: "byEventCategory", fields: ["id"])
+  events: [Event] @hasMany(indexName: "byEventCategory", fields: ["id"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -489,12 +489,12 @@ type DiscountCode
   validUntil: AWSDateTime!
   discount: Float!
   eventID: ID! @index(name: "byEvent", queryField: "discountCodesByEvent")
-  event: Event! @belongsTo(fields: ["eventID"])
+  event: Event @belongsTo(fields: ["eventID"])
   userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
   user: User @belongsTo(fields: ["userID"])
-  tickets: [Ticket!]
+  tickets: [Ticket]
     @hasMany(indexName: "byDiscountCode", fields: ["code", "eventID"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
- 
+  

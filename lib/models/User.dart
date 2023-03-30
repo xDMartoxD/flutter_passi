@@ -339,28 +339,28 @@ class User extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: User.TICKETS,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'Ticket',
       associatedKey: Ticket.USER
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: User.JOBS,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'Job',
       associatedKey: Job.USER
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: User.CODES,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'DiscountCode',
       associatedKey: DiscountCode.USER
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: User.PAYMENTMETHODS,
-      isRequired: true,
+      isRequired: false,
       ofModelName: 'PaymentMethod',
       associatedKey: PaymentMethod.USER
     ));

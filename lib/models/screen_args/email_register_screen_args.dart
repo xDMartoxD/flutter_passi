@@ -7,10 +7,9 @@ class EmailRegisterScreenArgs implements ScreenArgs {
 
   @override
   Map<String, dynamic> queryParams() {
-    final Map<String, dynamic> data = {
+    return {
       'comesFromEventDetails': comesFromEventDetails.toString(),
     };
-    return data;
   }
 
   EmailRegisterScreenArgs.fromJson(Map<String, dynamic> json) {

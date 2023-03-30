@@ -3,9 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/screen_args/errors_screen_args.dart';
-import 'package:passi_app/screens/app_tabs.dart';
 import 'package:passi_app/screens/errors_screen.dart';
 import 'package:passi_app/screens/success_screen.dart';
+import '../models/screen_args/success_screen_args.dart';
 import '../providers/discount_code_provider.dart';
 import '../providers/tickets_provider.dart';
 import '../screens/payment_methods_screen.dart';
@@ -138,8 +138,44 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
     }
   }
 
-  errorMessage() {}
-  Future<void> _buyTicketsHandler() async {
+  Future<void> _buyTicketsHandler(
+      AuthenticationProvider authProvider,
+      CartProvider cartProvider,
+      EventProvider eventProvider,
+      DiscountCodesByEventProvider discountCodesByEventProvider) async {
+    if (authProvider.user == null) {
+      errorMessage(context, "Se necesita un usuario");
+      return;
+    }
+    if ((authProvider.user!.userSelectedPaymentMethodId == null ||
+            authProvider.user!.userSelectedPaymentMethodId!.isEmpty) &&
+        cartProvider.total > 0) {
+      errorMessage(context,
+          "Se necesita un metodo de pago seleccionado para las entradas que tienen un costo");
+      return;
+    }
+    if (eventProvider.event == null) {
+      errorMessage(context, "No hay un evento existente");
+      return;
+    }
+    if (eventProvider.event!.finishDateTime.compareTo(TemporalDateTime.now()) < 0) {
+      errorMessage(context, "el evento ya ocurrio");
+      return;
+    }
+    if (discountCodesByEventProvider.discountCode != null) {
+      if (discountCodesByEventProvider.discountCode!.maxUse != null) {
+        if (discountCodesByEventProvider.discountCode!.maxUse! <=
+            discountCodesByEventProvider.discountCode!.actualUse) {
+          errorMessage(context, "el codifo de descuento ya no es valido");
+          return;
+        }
+      }
+      if (discountCodesByEventProvider.discountCode!.validUntil.compareTo(TemporalDateTime.now()) <
+          0) {
+        errorMessage(context, "El codigo ya no es valido");
+        return;
+      }
+    }
     try {
       setState(() {
         _isLoading = true;
@@ -147,7 +183,12 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       final error = await Provider.of<TicketsProvider>(context, listen: false).createTickets();
       if (error == null) {
         if (context.mounted) {
-          context.pushNamed(SuccessScreen.name);
+          final queryParams = SuccessScreenArgs(
+            title: "Entrada creada correctamente",
+            message:
+                "Entra a la pestaña de tiquetes y revisa que tus entradas hayan sido creadas correctamente. En caso de que haya ocurrido un error no dudes contactanos por WhatsApp a este numero +57 313 3286794.",
+          ).queryParams();
+          context.pushNamed(SuccessScreen.name, queryParams: queryParams);
         }
       } else {
         final params = ErrorsScreenArgs(error: error);
@@ -156,11 +197,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         }
       }
     } catch (e) {
-      errorMessage();
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      errorMessage(context, e.toString());
     }
   }
 
@@ -213,8 +250,8 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                               ).toList()
                             ],
                           )),
-                      eventProvider.event!.price > 0 ? const DiscountCodeWidget() : Container(),
-                      eventProvider.event!.price > 0
+                      cartProvider.total > 0 ? const DiscountCodeWidget() : Container(),
+                      cartProvider.total > 0
                           ? Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -234,7 +271,14 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                           width: MediaQuery.of(context).size.width * .8,
                           child: FloatingActionButton(
                             backgroundColor: Colors.white,
-                            onPressed: !_isLoading ? _buyTicketsHandler : null,
+                            onPressed: !_isLoading
+                                ? () => _buyTicketsHandler(
+                                      authProvider,
+                                      cartProvider,
+                                      eventProvider,
+                                      discountCodeProvider,
+                                    )
+                                : null,
                             child: _isLoading
                                 ? const CircularProgressIndicator()
                                 : const BuyButtonChild(),

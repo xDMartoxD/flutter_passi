@@ -1,4 +1,5 @@
-import 'package:amplify_api/model_queries.dart';
+import 'dart:convert';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:passi_app/providers/event_provider.dart';
@@ -37,19 +38,53 @@ class DiscountCodesByEventProvider with ChangeNotifier {
   Future<void> fetchDiscountCodes() async {
     if (eventProvider != null && eventProvider?.event != null) {
       try {
-        final request = apiKeyRequest(
-          ModelQueries.list(DiscountCode.classType,
-              where: DiscountCode.EVENT.eq(eventProvider!.event!.id)),
-        );
-        final response = await Amplify.API.query(request: request).response;
-        final paginatedDiscountCodes = response.data;
-        if (paginatedDiscountCodes == null) {
-          safePrint('errors: ${response.errors}');
+        const discountCodesByEvent = 'discountCodesByEvent';
+        String graphQLDocument = '''
+query DiscountCodesByEvent(\$eventID: ID!) {
+  $discountCodesByEvent(eventID: \$eventID) {
+    items {
+       code
+      actualUse
+      createdAt
+      discount
+      eventID
+      id
+      maxUse
+      updatedAt
+      userID
+      validUntil
+    }
+  }
+}
+
+''';
+
+        final discountCodesByEventRequest = apiKeyRequest(GraphQLRequest(
+          document: graphQLDocument,
+          variables: <String, String>{'eventID': eventProvider!.event!.id},
+          decodePath: discountCodesByEvent,
+        ));
+        final responseGraphQLDocument =
+            await Amplify.API.query(request: discountCodesByEventRequest).response;
+        if (responseGraphQLDocument.data == null) {
+          safePrint('errors: ${responseGraphQLDocument.errors}');
           return;
         }
+        final data = jsonDecode(responseGraphQLDocument.data);
+        final discountCodesMap =
+            List<Map<String, dynamic>>.from(data[discountCodesByEvent]['items']);
         List<DiscountCode?> loadedDiscountCodes = [];
-        for (var element in paginatedDiscountCodes.items) {
-          loadedDiscountCodes.add(element);
+        for (var discountCodeMap in discountCodesMap) {
+          final discountCode = DiscountCode(
+            code: discountCodeMap['code'],
+            actualUse: discountCodeMap['actualUse'],
+            validUntil: TemporalDateTime.fromString(discountCodeMap['validUntil']),
+            discount: discountCodeMap['discount'],
+            event: eventProvider!.event!,
+            createdAt: TemporalDateTime.fromString(discountCodeMap['createdAt']),
+            updatedAt: TemporalDateTime.fromString(discountCodeMap['updatedAt']),
+          );
+          loadedDiscountCodes.add(discountCode);
         }
         _fetchedDiscountCodes = loadedDiscountCodes;
         notifyListeners();

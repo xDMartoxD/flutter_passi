@@ -49,30 +49,12 @@ class Job extends Model {
     return _registeredTickets;
   }
   
-  Event get event {
-    try {
-      return _event!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  Event? get event {
+    return _event;
   }
   
-  User get user {
-    try {
-      return _user!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  User? get user {
+    return _user;
   }
   
   List<JobType>? get type {
@@ -105,9 +87,9 @@ class Job extends Model {
     }
   }
   
-  const Job._internal({required this.id, registeredTickets, required event, required user, type, required createdAt, required updatedAt}): _registeredTickets = registeredTickets, _event = event, _user = user, _type = type, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Job._internal({required this.id, registeredTickets, event, user, type, required createdAt, required updatedAt}): _registeredTickets = registeredTickets, _event = event, _user = user, _type = type, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Job({String? id, List<Ticket>? registeredTickets, required Event event, required User user, List<JobType>? type, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory Job({String? id, List<Ticket>? registeredTickets, Event? event, User? user, List<JobType>? type, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
     return Job._internal(
       id: id == null ? UUID.getUUID() : id,
       registeredTickets: registeredTickets != null ? List<Ticket>.unmodifiable(registeredTickets) : registeredTickets,
@@ -253,14 +235,14 @@ class Job extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Job.EVENT,
-      isRequired: true,
+      isRequired: false,
       targetName: 'eventID',
       ofModelName: 'Event'
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Job.USER,
-      isRequired: true,
+      isRequired: false,
       targetName: 'userID',
       ofModelName: 'User'
     ));

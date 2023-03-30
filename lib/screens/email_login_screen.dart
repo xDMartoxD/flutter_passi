@@ -1,6 +1,7 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart' show AuthException;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passi_app/screens/forgot_password_email.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart' show isEmail;
 import '../providers/authentication_provider.dart';
@@ -8,8 +9,6 @@ import '../providers/authentication_provider.dart';
 class EmailLoginScreen extends StatefulWidget {
   static const name = "email-login";
   static const path = "email-login";
-  static const fromEventDetailsPath = "event-details-$path";
-  static const fromEventDetailsName = "event-details-$name";
   const EmailLoginScreen({super.key});
 
   @override
@@ -135,6 +134,18 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                                   color: Colors.black,
                                 ),
                           ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.pushNamed(ForgotPasswordEmailScreen.name);
+                  },
+                  child: Text(
+                    "Olvidaste tu contraseña?",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 )
               ],

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class SuccessScreen extends StatelessWidget {
   static const path = 'success';
   static const name = 'success';
-  const SuccessScreen({super.key});
+  final String title;
+  final String? message;
+  const SuccessScreen({super.key, this.message, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +22,17 @@ class SuccessScreen extends StatelessWidget {
                 color: Colors.green,
               ),
               Text(
-                "Entrada creada correctamente",
+                title,
                 style: Theme.of(context).textTheme.displayMedium,
                 textAlign: TextAlign.center,
               ),
-              Text(
-                "Entra a la pestaña de tiquetes y revisa que tus entradas hayan sido creadas correctamente. En caso de que haya ocurrido un error no dudes contactanos por WhatsApp a este numero +57 313 3286794.",
-                style: Theme.of(context).textTheme.titleSmall,
-                textAlign: TextAlign.center,
-              )
+              message != null
+                  ? Text(
+                      message!,
+                      style: Theme.of(context).textTheme.titleSmall,
+                      textAlign: TextAlign.center,
+                    )
+                  : Container()
             ]),
       ),
     );

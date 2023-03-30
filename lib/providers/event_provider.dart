@@ -47,4 +47,22 @@ class EventProvider with ChangeNotifier {
       }
     }
   }
+
+  Future<Event?> getEventById(String id) async {
+    try {
+      final request = apiKeyRequest(
+        ModelQueries.get(Event.classType, id),
+      );
+      final response = await Amplify.API.query(request: request).response;
+      final event = response.data;
+      if (event == null) {
+        safePrint('errors: ${response.errors}');
+        return null;
+      }
+      return event;
+    } on ApiException catch (e) {
+      safePrint('Query failed: ${e.message}');
+    }
+    return null;
+  }
 }

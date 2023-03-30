@@ -7,10 +7,9 @@ class ErrorsScreenArgs implements ScreenArgs {
 
   @override
   Map<String, dynamic> queryParams() {
-    final Map<String, dynamic> data = <String, dynamic>{
+    return {
       'error': error,
     };
-    return data;
   }
 
   ErrorsScreenArgs.fromJson(Map<String, dynamic> json) {

@@ -1,15 +1,9 @@
 import 'dart:convert';
-
-import 'package:amplify_api/amplify_api.dart';
-import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 import 'package:passi_app/models/my_models/presigned_acceptance.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../models/PresignedAcceptance.dart';
-import '../utils/amplify_utils.dart';
 
 class PaymentProvider with ChangeNotifier {
   PresignedAcceptanceModel? cardToken;
