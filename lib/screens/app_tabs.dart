@@ -2,6 +2,7 @@ import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +28,7 @@ class AppTabs extends StatefulWidget {
 }
 
 class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
+  String _authStatus = 'Unknown';
   late final List<Map<String, Object?>> _screens;
   late int _currenPageIndex;
   // late final TabController _tabController;
@@ -51,6 +53,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
     super.initState();
     // _tabController = TabController(length: 3, vsync: this);
     // _tabController.index = 1;
+    initPlugin();
     _currenPageIndex = 0;
 
     _screens = [
@@ -101,6 +104,43 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
       }
     });
   }
+
+  Future<void> initPlugin() async {
+    final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
+    setState(() => _authStatus = '$status');
+    print(status.name);
+    // If the system can show an authorization request dialog
+    if (status == TrackingStatus.notDetermined) {
+      // Show a custom explainer dialog before the system dialog
+      await showCustomTrackingDialog(context);
+      // Wait for dialog popping animation
+      await Future.delayed(const Duration(milliseconds: 200));
+      // Request system's tracking authorization dialog
+      final TrackingStatus status = await AppTrackingTransparency.requestTrackingAuthorization();
+      setState(() => _authStatus = '$status');
+    }
+
+    final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+    safePrint("UUID: $uuid");
+  }
+
+  Future<void> showCustomTrackingDialog(BuildContext context) async => await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Querido Usuario'),
+          content: const Text(
+            'Nos preocupamos por su privacidad y la seguridad de sus datos. Mantenemos esta aplicación gratuita al mostrar anuncios. '
+            '¿Podemos seguir usando sus datos para personalizar los anuncios para usted?\n\nPuede cambiar su elección en cualquier momento en la configuración de la aplicación. '
+            "Nuestros socios recopilarán datos y utilizarán un identificador único en su dispositivo para mostrarle anuncios.",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Continue'),
+            ),
+          ],
+        ),
+      );
 
   @override
   void dispose() {
