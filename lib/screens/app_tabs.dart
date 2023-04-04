@@ -180,7 +180,6 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         onDestinationSelected: (value) => setState(() {
           _currenPageIndex = value;
         }),
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
       body: _isAmplifyConfigured ? _screens[_currenPageIndex]["screen"] as Widget : const Loading(),
     );
