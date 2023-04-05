@@ -37,9 +37,9 @@ final darkTheme = ThemeData(
   primaryColor: const Color.fromRGBO(255, 0, 255, 1),
   primarySwatch: primaryswatchcolor,
   colorScheme: ColorScheme.fromSwatch(
-    backgroundColor: const Color.fromRGBO(16, 16, 16, 1),
+    backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
     primarySwatch: primaryswatchcolor,
-    cardColor: const Color.fromRGBO(30, 30, 30, 1),
+    cardColor: const Color.fromRGBO(33, 33, 33, 1),
     errorColor: const Color.fromARGB(237, 67, 55, 1),
   ),
   fontFamily: "Nunito",
@@ -60,7 +60,7 @@ final darkTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       disabledBackgroundColor: Colors.grey[700],
-      disabledForegroundColor: const Color.fromRGBO(16, 16, 16, 1),
+      disabledForegroundColor: const Color.fromRGBO(25, 25, 25, 1),
       backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
       surfaceTintColor: Colors.transparent,
       shape: const StadiumBorder(),
@@ -70,7 +70,7 @@ final darkTheme = ThemeData(
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       disabledBackgroundColor: Colors.grey[700],
-      disabledForegroundColor: const Color.fromRGBO(16, 16, 16, 1),
+      disabledForegroundColor: const Color.fromRGBO(25, 25, 25, 1),
       backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
       shape: const StadiumBorder(),
       side: const BorderSide(color: Color.fromRGBO(255, 0, 255, 1)),
@@ -82,7 +82,7 @@ final darkTheme = ThemeData(
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       disabledBackgroundColor: Colors.grey[700],
-      disabledForegroundColor: const Color.fromRGBO(16, 16, 16, 1),
+      disabledForegroundColor: const Color.fromRGBO(25, 25, 25, 1),
       shape: const StadiumBorder(),
       textStyle: const TextStyle(
         fontWeight: FontWeight.w600,
@@ -91,6 +91,8 @@ final darkTheme = ThemeData(
   ),
   cardTheme: const CardTheme(
     elevation: 5,
+    color: Color.fromRGBO(33, 33, 33, 1),
+    surfaceTintColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(10),
