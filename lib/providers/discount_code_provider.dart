@@ -11,6 +11,7 @@ class DiscountCodesByEventProvider with ChangeNotifier {
   EventProvider? eventProvider;
   final List<_DiscountCode> _discountCodes = <_DiscountCode>[];
   DiscountCode? _discountCode;
+  // ignore: library_private_types_in_public_api
   List<_DiscountCode> get discountCodes => [..._discountCodes];
   DiscountCode? get discountCode => _discountCode;
   List<DiscountCode?> _fetchedDiscountCodes = [];

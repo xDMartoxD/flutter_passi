@@ -60,6 +60,7 @@ dependencies:
   string_to_hex: ^0.2.2
   json_annotation: ^4.8.0
   flutter_launcher_icons: ^0.12.0
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:

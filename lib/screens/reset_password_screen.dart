@@ -113,7 +113,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     labelText: 'Nueva Contraseña',
                     helperText: "Minimo 8 caracteres",
                   ),
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.visiblePassword,
                   validator: (value) {
                     if (value!.isEmpty || value.length < 8) {
                       return 'Contraseña invalida asegurate de que contenga por lo menos 8 caracteres';
@@ -131,7 +131,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Confirma tu contraseña',
                   ),
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.visiblePassword,
                   validator: (value) {
                     if (value != _authData['password']) {
                       return 'la contraseña no coinside';

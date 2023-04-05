@@ -46,15 +46,12 @@ final darkTheme = ThemeData(
   scaffoldBackgroundColor: const Color.fromRGBO(16, 16, 16, 1),
   cardColor: const Color.fromRGBO(33, 33, 33, 1),
   appBarTheme: const AppBarTheme(
-    foregroundColor: Colors.white,
-    backgroundColor: Color.fromRGBO(33, 33, 33, 1),
-    elevation: 5,
-    systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-    titleTextStyle: TextStyle(fontFamily: "Roboto", fontSize: 20, fontWeight: FontWeight.bold),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
-    ),
-  ),
+      foregroundColor: Colors.white,
+      color: Color.fromRGBO(33, 33, 33, 1),
+      elevation: 5,
+      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      titleTextStyle: TextStyle(fontFamily: "Roboto", fontSize: 20, fontWeight: FontWeight.bold),
+      surfaceTintColor: Colors.transparent),
   textTheme: GoogleFonts.nunitoTextTheme().apply(
     bodyColor: Colors.white,
     displayColor: Colors.white,
@@ -129,6 +126,10 @@ final darkTheme = ThemeData(
     elevation: 5,
     labelTextStyle: MaterialStateProperty.resolveWith(navBarTextStyle),
     iconTheme: MaterialStateProperty.resolveWith(navBarIconThemeData),
+    indicatorColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
   ),
   tabBarTheme: const TabBarTheme(
     labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
