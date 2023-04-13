@@ -343,7 +343,7 @@ exports.createTransaction = async (
 		}
 		console.log("TRANSACTION PARAMETERS", JSON.stringify(params))
 		const res = await docClient.transactWrite(params).promise()
-		console.log(res)
+		console.log("Response from docClient", res)
 		return res
 	} catch (err) {
 		console.log('Error al crear la transaccion', err)
