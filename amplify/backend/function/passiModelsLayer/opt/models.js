@@ -260,7 +260,7 @@ exports.createTransaction = async (
 	paymentData
 ) => {
 	try {
-		//Xd
+
 		const params = {
 			TransactItems: [],
 		}
@@ -341,8 +341,9 @@ exports.createTransaction = async (
 			}
 			params.TransactItems.push(ticketCategoryUpdateParams)
 		}
-		console.log(JSON.stringify(params))
+		console.log("TRANSACTION PARAMETERS", JSON.stringify(params))
 		const res = await docClient.transactWrite(params).promise()
+		console.log("Response from docClient", res)
 		return res
 	} catch (err) {
 		console.log('Error al crear la transaccion', err)
