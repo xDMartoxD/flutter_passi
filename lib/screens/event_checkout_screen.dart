@@ -186,7 +186,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
           final queryParams = SuccessScreenArgs(
             title: "Entrada creada correctamente",
             message:
-                "Entra a la pestaña de tiquetes y revisa que tus entradas hayan sido creadas correctamente. En caso de que haya ocurrido un error no dudes contactanos por WhatsApp a este numero +57 313 3286794.",
+                "Entra a la pestaña de tiquetes y revisa que tus entradas hayan sido creadas correctamente. En caso de que haya ocurrido un error no dudes contactanos por WhatsApp a este numero +57 300 8686262.",
           ).queryParams();
           context.pushNamed(SuccessScreen.name, queryParams: queryParams);
         }
