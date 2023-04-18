@@ -64,7 +64,7 @@ class PaymentMethodsContent extends StatelessWidget {
                   backgroundImage: AssetImage('assets/images/mastercard.png'),
                 ),
                 title: Text(
-                  "Tarjeta de credito",
+                  "Tarjeta debito/credito",
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
