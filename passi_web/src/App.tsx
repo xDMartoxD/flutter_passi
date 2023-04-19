@@ -41,7 +41,39 @@ function App() {
           <Route
             path="/.well-know/apple-app-site-association"
             action={async ({ params, request }) => {
-              return;
+              return new Response(
+                JSON.stringify({
+                  applinks: {
+                    details: [
+                      {
+                        appIDs: ["1595696436.com.m.restrepom.passi"],
+                        components: [
+                          {
+                            "#": "no_universal_links",
+                            exclude: true,
+                            comment:
+                              "Matches any URL with a fragment that equals no_universal_links and instructs the system not to open it as a universal link.",
+                          },
+                          {
+                            "/": "/event-details/*",
+                            comment:
+                              "Matches any URL with a path that starts with /event-details/.",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  webcredentials: {
+                    apps: ["1595696436.com.m.restrepom.passi"],
+                  },
+                }),
+                {
+                  status: 200,
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
             }}
           ></Route>
         </switch>
