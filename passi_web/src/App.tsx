@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import "./App.css";
+import { BrowserRouter, Route } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <div className="App">
@@ -32,16 +32,15 @@ function App() {
               Click on the Vite and React logos to learn more
             </p>
           </Route>
-          <Route path='/.well-know/assetlinks.json' action={async ({ params, request }) => {
+          {/* <Route path='/.well-know/assetlinks.json' action={async ({ params, request }) => {
             return;
-          }}>
+          }}> */}
 
-          </Route>
+          {/* </Route> */}
         </switch>
-
       </BrowserRouter>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
