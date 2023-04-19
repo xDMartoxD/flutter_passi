@@ -13,12 +13,14 @@ class AddCardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMethodsByUserProvider>(
+    return ChangeNotifierProxyProvider<AuthenticationProvider,
+        PaymentMethodsByUserProvider>(
       create: (context) {
         return PaymentMethodsByUserProvider();
       },
       update: (context, authenticationProvider, prev) {
-        return PaymentMethodsByUserProvider(authenticationProvider: authenticationProvider);
+        return PaymentMethodsByUserProvider(
+            authenticationProvider: authenticationProvider);
       },
       child: const CardForm(),
     );
@@ -38,7 +40,13 @@ class _CardFormState extends State<CardForm> {
   TextEditingController cardNumberController = TextEditingController();
   _CardType cardType = _CardType.Invalid;
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final _cardData = {'number': '', 'card_holder': '', 'exp_month': '', 'exp_year': '', 'cvc': ''};
+  final _cardData = {
+    'number': '',
+    'card_holder': '',
+    'exp_month': '',
+    'exp_year': '',
+    'cvc': ''
+  };
 
   @override
   void initState() {
@@ -79,7 +87,8 @@ class _CardFormState extends State<CardForm> {
         _isLoading = true;
       });
       _formKey.currentState!.save();
-      final cardSaved = await Provider.of<PaymentMethodsByUserProvider>(context, listen: false)
+      final cardSaved = await Provider.of<PaymentMethodsByUserProvider>(context,
+              listen: false)
           .saveNewCard(_cardData);
       if (cardSaved == null) {
         if (context.mounted) {
@@ -105,7 +114,10 @@ class _CardFormState extends State<CardForm> {
       SnackBar(
         content: Text(
           message,
-          style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.red),
+          style: Theme.of(context)
+              .textTheme
+              .titleSmall!
+              .copyWith(color: Colors.red),
         ),
       ),
     );
@@ -138,7 +150,8 @@ class _CardFormState extends State<CardForm> {
                       ),
                       validator: (input) => _CardUtils.validateCardNum(input),
                       onSaved: (input) {
-                        _cardData["number"] = _CardUtils.getCleanedNumber(input!);
+                        _cardData["number"] =
+                            _CardUtils.getCleanedNumber(input!);
                       },
                     ),
                     Padding(
@@ -185,11 +198,15 @@ class _CardFormState extends State<CardForm> {
                               LengthLimitingTextInputFormatter(5),
                               _CardMonthInputFormatter(),
                             ],
-                            decoration: const InputDecoration(hintText: "MM/YY"),
-                            validator: (input) => _CardUtils.validateDate(input),
+                            decoration:
+                                const InputDecoration(hintText: "MM/YY"),
+                            validator: (input) =>
+                                _CardUtils.validateDate(input),
                             onSaved: (input) {
-                              _cardData["exp_year"] = _CardUtils.getYear(input!);
-                              _cardData["exp_month"] = _CardUtils.getMonth(input);
+                              _cardData["exp_year"] =
+                                  _CardUtils.getYear(input!);
+                              _cardData["exp_month"] =
+                                  _CardUtils.getMonth(input);
                             },
                           ),
                         ),
@@ -210,10 +227,11 @@ class _CardFormState extends State<CardForm> {
                         )
                       : Text(
                           "Agregar",
-                          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                 ),
               ),
@@ -225,11 +243,22 @@ class _CardFormState extends State<CardForm> {
   }
 }
 
-enum _CardType { Master, Visa, Verve, Discover, AmericanExpress, DinersClub, Jcb, Others, Invalid }
+enum _CardType {
+  Master,
+  Visa,
+  Verve,
+  Discover,
+  AmericanExpress,
+  DinersClub,
+  Jcb,
+  Others,
+  Invalid
+}
 
 class _CardNumberInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     var text = newValue.text;
     if (newValue.selection.baseOffset == 0) {
       return newValue;
@@ -244,13 +273,15 @@ class _CardNumberInputFormatter extends TextInputFormatter {
     }
     var string = buffer.toString();
     return newValue.copyWith(
-        text: string, selection: TextSelection.collapsed(offset: string.length));
+        text: string,
+        selection: TextSelection.collapsed(offset: string.length));
   }
 }
 
 class _CardMonthInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     var newText = newValue.text;
     if (newValue.selection.baseOffset == 0) {
       return newValue;
@@ -265,15 +296,16 @@ class _CardMonthInputFormatter extends TextInputFormatter {
     }
     var string = buffer.toString();
     return newValue.copyWith(
-        text: string, selection: TextSelection.collapsed(offset: string.length));
+        text: string,
+        selection: TextSelection.collapsed(offset: string.length));
   }
 }
 
 class _CardUtils {
   static _CardType getCardTypeFrmNumber(String input) {
     _CardType cardType;
-    if (input.startsWith(
-        RegExp(r'((5[1-5])|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))'))) {
+    if (input.startsWith(RegExp(
+        r'((5[1-5])|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))'))) {
       cardType = _CardType.Master;
     } else if (input.startsWith(RegExp(r'[4]'))) {
       cardType = _CardType.Visa;
@@ -356,7 +388,8 @@ class _CardUtils {
     int length = input.length;
     for (var i = 0; i < length; i++) {
       // get digits in reverse order
-      int digit = int.parse(input[length - i - 1]); // every 2nd number multiply with 2
+      int digit =
+          int.parse(input[length - i - 1]); // every 2nd number multiply with 2
       if (i % 2 == 1) {
         digit *= 2;
       }
@@ -439,7 +472,8 @@ class _CardUtils {
     // 1. The year is in the past. In that case, we just assume that the month
     // has passed
     // 2. Card's month (plus another month) is more than current month.
-    return hasYearPassed(year) || convertYearTo4Digits(year) == now.year && (month < now.month + 1);
+    return hasYearPassed(year) ||
+        convertYearTo4Digits(year) == now.year && (month < now.month + 1);
   }
 
   static bool hasYearPassed(int year) {
