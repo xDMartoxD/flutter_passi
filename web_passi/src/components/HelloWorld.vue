@@ -7,16 +7,23 @@ defineProps({
 
 const count = ref(0);
 const serverHello = ref({});
+const serverHello2 = ref({});
 fetch(`/.well-known/apple-app-site-association`)
   .then((r) => r.json())
   .then((e) => {
     serverHello.value = e;
+  });
+fetch(`/.well-known/assetlinks.json`)
+  .then((r) => r.json())
+  .then((e) => {
+    serverHello2.value = e;
   });
 </script>
 
 <template>
   <h1>{{ msg }}</h1>
   <h2>{{ serverHello }}</h2>
+  <h2>{{ serverHello2 }}</h2>
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
     <p>

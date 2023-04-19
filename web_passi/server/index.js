@@ -36,6 +36,20 @@ app.get("/.well-known/apple-app-site-association", (_req, res) => {
     },
   });
 });
+app.get("/.well-known/assetlinks.json", (_req, res) => {
+  res.json([
+    {
+      relation: ["delegate_permission/common.handle_all_urls"],
+      target: {
+        namespace: "android_app",
+        package_name: "com.passiapp",
+        sha256_cert_fingerprints: [
+          "01:CD:23:0A:17:9F:A1:62:EA:07:D2:EF:71:9F:C4:14:F8:6D:A1:39:02:BC:AE:D8:57:F8:DC:92:38:1A:C8:E7",
+        ],
+      },
+    },
+  ]);
+});
 if (process.env.NODE_ENV === "production") {
   app.use("/", express.static(distPath));
 } else {
