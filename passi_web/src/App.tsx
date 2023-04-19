@@ -32,11 +32,18 @@ function App() {
               Click on the Vite and React logos to learn more
             </p>
           </Route>
-          {/* <Route path='/.well-know/assetlinks.json' action={async ({ params, request }) => {
-            return;
-          }}> */}
-
-          {/* </Route> */}
+          <Route
+            path="/.well-know/assetlinks.json"
+            action={async ({ params, request }) => {
+              return;
+            }}
+          ></Route>
+          <Route
+            path="/.well-know/apple-app-site-association"
+            action={async ({ params, request }) => {
+              return;
+            }}
+          ></Route>
         </switch>
       </BrowserRouter>
     </div>
