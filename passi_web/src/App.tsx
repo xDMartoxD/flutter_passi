@@ -38,7 +38,7 @@ function App() {
               return;
             }}
           ></Route>
-          <Route
+          {/* <Route
             path="/.well-know/apple-app-site-association"
             action={async ({ params, request }) => {
               return new Response(
@@ -75,7 +75,7 @@ function App() {
                 }
               );
             }}
-          ></Route>
+          ></Route> */}
         </switch>
       </BrowserRouter>
     </div>
