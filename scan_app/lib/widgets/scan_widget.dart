@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:provider/provider.dart';
-import 'package:scan_app/providers/event_provider.dart';
-import 'package:scan_app/services/validate_ticket_service.dart';
+import 'package:scan_app/screens/answer_screen.dart';
 
 class ScanWidget extends StatelessWidget {
   const ScanWidget({super.key});
@@ -15,41 +13,26 @@ class ScanWidget extends StatelessWidget {
         detectionSpeed: DetectionSpeed.normal,
         torchEnabled: true,
       ),
-      onDetect: (capture) async {
+      onDetect: (capture) {
         final List<Barcode> barcodes = capture.barcodes;
         if (barcodes.isNotEmpty &&
             barcodes.first.format == BarcodeFormat.qrCode &&
             barcodes.first.type == BarcodeType.text &&
             barcodes.first.rawValue != null) {
           final Barcode barcode = barcodes.first;
-          String ans = await validateTicket(
-              ticketId: barcode.rawValue!,
-              eventId: context.read<EventState>().event);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              settings: const RouteSettings(name: "/answer"),
+              builder: (context) {
+                return AnswerScreen(value: barcode.rawValue!);
+              },
+            ),
+          );
+
           // ignore: use_build_context_synchronously
-          if (!context.mounted) {
-            return;
-          }
-          _processResult(ans, context);
         }
       },
     );
-  }
-
-  void _processResult(String ans, BuildContext context) {
-    if (ans == "ERROR") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('Error validating ticket'),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Ticket is valid $ans'),
-        ),
-      );
-    }
   }
 }
