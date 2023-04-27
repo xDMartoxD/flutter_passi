@@ -12,6 +12,7 @@ class ScanWidget extends StatelessWidget {
     return MobileScanner(
       controller: MobileScannerController(
         facing: CameraFacing.back,
+        detectionSpeed: DetectionSpeed.normal,
         torchEnabled: true,
       ),
       onDetect: (capture) async {
