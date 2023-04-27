@@ -16,23 +16,22 @@ import { default as fetch, Request } from "node-fetch";
 const GRAPHQL_ENDPOINT = process.env.API_APPAMPLIFY_GRAPHQLAPIENDPOINTOUTPUT;
 const GRAPHQL_API_KEY = process.env.API_APPAMPLIFY_GRAPHQLAPIKEYOUTPUT;
 
-const query = `query MyQuery($id: ID!) {
-  listEvents(id: $id) {
+export const handler = async (event) => {
+  console.log(`EVENT: ${JSON.stringify(event)}`);
+
+  const query = `query MyQuery {
+  listEvents(id: "${event.eventId}"") {
     items {
       title
     }
   }
 }`;
-
-export const handler = async (event) => {
-  console.log(`EVENT: ${JSON.stringify(event)}`);
-  const variables = { id: event.eventId };
   const options = {
     method: "POST",
     headers: {
       "x-api-key": GRAPHQL_API_KEY,
     },
-    body: JSON.stringify({ query, variables }),
+    body: JSON.stringify({ query }),
   };
   console.log(`OPTIONS: ${JSON.stringify(options)} `);
   const request = new Request(GRAPHQL_ENDPOINT, options);
