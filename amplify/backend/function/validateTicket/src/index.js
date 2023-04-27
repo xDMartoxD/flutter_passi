@@ -21,8 +21,8 @@ const GRAPHQL_API_KEY = process.env.API_APPAMPLIFY_GRAPHQLAPIKEYOUTPUT;
  */
 export const handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
-  const query = `query MyQuery($id: id) {
-  getTicket(id: $id) {
+  const query = `query MyQuery{
+  getTicket(id: "${event.ticketId}") {
     eventID
     didAssist
     ticketCategory {
@@ -32,7 +32,6 @@ export const handler = async (event) => {
 }
 	`;
 
-  const variables = { id: event.ticketId };
   var mutation = `mutation MyMutation {
   updateTicket(input: {id: "${event.ticketId}", didAssist: true})
 }`;
@@ -42,7 +41,7 @@ export const handler = async (event) => {
     headers: {
       "x-api-key": GRAPHQL_API_KEY,
     },
-    body: JSON.stringify({ query, variables }),
+    body: JSON.stringify({ query }),
   };
 
   const options2 = {
