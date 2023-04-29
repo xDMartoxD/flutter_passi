@@ -18,9 +18,12 @@ const GRAPHQL_API_KEY = process.env.API_APPAMPLIFY_GRAPHQLAPIKEYOUTPUT;
 
 export const handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
-
+  console.log("here1");
+  event = JSON.parse(event.body);
+  console.log("here2");
+  console.log("parsed:", event);
   const query = `query MyQuery {
-  listEvents(id: "${event.eventId}"") {
+  listEvents(id: "${event.eventId}") {
     items {
       title
     }
