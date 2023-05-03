@@ -33,8 +33,8 @@ export const handler = async (event) => {
 }
 	`;
 
-  var mutation = `mutation MyMutation {
-  updateTicket(input: {id: "${event.ticketId}", didAssist: true})
+  var mutation = `mutation MyMutation($didAssist: Boolean = true) {
+  updateTicket(input: {id: "${event.ticketId}", didAssist: $didAssist})
 }`;
   console.log(`QUERY: ${query}`);
   const options = {
@@ -50,7 +50,7 @@ export const handler = async (event) => {
     headers: {
       "x-api-key": GRAPHQL_API_KEY,
     },
-    body: JSON.stringify({ mutation }),
+    body: JSON.stringify({ mutation, variables: { didAssist: true } }),
   };
   console.log(`OPTIONS: ${JSON.stringify(options)} `);
   console.log(`OPTIONS2: ${JSON.stringify(options2)} `);
