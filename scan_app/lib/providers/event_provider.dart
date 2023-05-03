@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 
 class EventState with ChangeNotifier, DiagnosticableTreeMixin {
@@ -11,11 +13,13 @@ class EventState with ChangeNotifier, DiagnosticableTreeMixin {
 
   set name(String value) {
     _name = value;
+    log(value);
     notifyListeners();
   }
 
   set event(String value) {
     _event = value;
+    log(value);
     notifyListeners();
   }
 }

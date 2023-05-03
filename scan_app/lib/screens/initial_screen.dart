@@ -45,12 +45,12 @@ class _EventSetterState extends State<EventSetter> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      String body = await verifyEvent(eventId: _eventFormController.text);
+                      String body =
+                          await verifyEvent(eventId: _eventFormController.text);
                       debugPrint(body);
                       if (body == "ERROR") {
                         return;
-                      }
-                      if (context.mounted) {
+                      } else if (context.mounted) {
                         auxMethod(context, body);
                       }
                     },
@@ -64,7 +64,8 @@ class _EventSetterState extends State<EventSetter> {
   }
 
   void auxMethod(BuildContext context, String body) {
-    Provider.of<EventState>(context, listen: false).event = _eventFormController.text;
+    Provider.of<EventState>(context, listen: false).event =
+        _eventFormController.text;
     Provider.of<EventState>(context, listen: false).name = body;
     Navigator.push(
       context,

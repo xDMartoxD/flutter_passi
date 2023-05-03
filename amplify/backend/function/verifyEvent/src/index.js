@@ -70,6 +70,8 @@ export const handler = async (event) => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
     },
-    body: JSON.stringify("Hello from Lambda!"),
+    body: JSON.stringify(
+      `${JSON.stringify(body.data.listEvents.items[0].title)}`
+    ),
   };
 };
