@@ -34,7 +34,6 @@ class _AnswerScreenState extends State<AnswerScreen> {
       body: FutureBuilder<String>(
         future: validateTicket(
             ticketId: widget.value, eventId: context.read<EventState>().event),
-        initialData: "Loading...",
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {

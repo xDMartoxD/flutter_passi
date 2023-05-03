@@ -53,6 +53,7 @@ export const handler = async (event) => {
     body: JSON.stringify({ mutation }),
   };
   console.log(`OPTIONS: ${JSON.stringify(options)} `);
+  console.log(`OPTIONS2: ${JSON.stringify(options2)} `);
   const request = new Request(GRAPHQL_ENDPOINT, options);
   const request2 = new Request(GRAPHQL_ENDPOINT, options2);
   let body2;
