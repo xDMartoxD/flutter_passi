@@ -34,7 +34,7 @@ export const handler = async (event) => {
 	`;
 
   var mutation = `mutation MyMutation($didAssist: Boolean = true) {
-  updateTicket(input: {id: "${event.ticketId}", didAssist: $didAssist})
+  updateTicket(input: {id: "${event.ticketId}", didAssist: $didAssist}){id}
 }`;
   console.log(`QUERY: ${query}`);
   const options = {

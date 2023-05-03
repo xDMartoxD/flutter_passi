@@ -350,10 +350,10 @@ type Ticket
 
 type Transaction {
   id: ID!
-  amount_in_cents: Int
-  status: String
-  reference: ID
-  payment_method_type: String
+  amount_in_cents: Int!
+  status: String!
+  reference: ID!
+  payment_method_type: String!
   redirect_url: String
   created_at: AWSDateTime
   finalized_at: String
