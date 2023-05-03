@@ -12,6 +12,7 @@ class ScanWidget extends StatelessWidget {
         facing: CameraFacing.back,
         detectionSpeed: DetectionSpeed.normal,
         torchEnabled: true,
+        detectionTimeoutMs: 1000,
       ),
       onDetect: (capture) {
         final List<Barcode> barcodes = capture.barcodes;

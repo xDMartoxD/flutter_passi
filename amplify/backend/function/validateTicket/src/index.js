@@ -84,17 +84,21 @@ export const handler = async (event) => {
   if (
     body.data.getTicket === null ||
     body.data.getTicket.eventID !== event.eventId
-  )
+  ) {
+    console.log("Invalid ticket", body.data.getTicket);
     return {
       statusCode: 400,
       body: JSON.stringify("Ticket is not valid for this event"),
     };
+  }
   if (body.data.getTicket.didAssist) {
+    console.log("Validated ticket", body.data.getTicket.didAssist);
     return {
       statusCode: 400,
       body: JSON.stringify("Ticket already validated"),
     };
   }
+  console.log("Status 200", body.data.getTicket.ticketCategory.name);
   return {
     statusCode: 200,
     //  Uncomment below to enable CORS requests
