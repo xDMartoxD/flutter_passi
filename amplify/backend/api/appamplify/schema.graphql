@@ -291,7 +291,7 @@ type Ticket
       rules: [
         { allow: private, operations: [read] }
         { allow: groups, groups: ["Admin"] }
-        { allow: public, operations: [read] }
+        { allow: public }
       ]
     )
   event: Event @belongsTo(fields: ["eventID"])
@@ -312,7 +312,7 @@ type Ticket
       rules: [
         { allow: private, operations: [update, read] }
         { allow: groups, groups: ["Admin"] }
-        { allow: public, operations: [read] }
+        { allow: public }
       ]
     )
   didAssist: Boolean!
@@ -320,7 +320,7 @@ type Ticket
       rules: [
         { allow: private, operations: [update, read] }
         { allow: groups, groups: ["Admin"] }
-        { allow: public, operations: [read] }
+        { allow: public }
       ]
     )
   userID: ID! @index(name: "byUser", queryField: "ticketsByUser")
