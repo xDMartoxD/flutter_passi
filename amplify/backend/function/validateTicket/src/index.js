@@ -50,7 +50,7 @@ export const handler = async (event) => {
     headers: {
       "x-api-key": GRAPHQL_API_KEY,
     },
-    body: JSON.stringify({ mutation, variables: { didAssist: true } }),
+    body: JSON.stringify({ query: mutation, variables: { didAssist: true } }),
   };
   console.log(`OPTIONS: ${JSON.stringify(options)} `);
   console.log(`OPTIONS2: ${JSON.stringify(options2)} `);
