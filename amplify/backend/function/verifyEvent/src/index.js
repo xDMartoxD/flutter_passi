@@ -70,8 +70,6 @@ export const handler = async (event) => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
     },
-    body: JSON.stringify(
-      `${JSON.stringify(body.data.listEvents.items[0].title)}`
-    ),
+    body: JSON.stringify(`${body.data.listEvents.items[0].title}`),
   };
 };
