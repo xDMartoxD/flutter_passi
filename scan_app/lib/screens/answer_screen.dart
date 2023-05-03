@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:scan_app/services/validate_ticket_service.dart';
 
 import '../providers/event_provider.dart';
+import './scan_screen.dart';
 
 class AnswerScreen extends StatefulWidget {
   String value;
@@ -23,7 +24,11 @@ class _AnswerScreenState extends State<AnswerScreen> {
         title: const Text('Answer Screen'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ScanScreen(),
+                  settings: const RouteSettings(name: "/scan"))),
         ),
       ),
       body: FutureBuilder<String>(
@@ -33,31 +38,17 @@ class _AnswerScreenState extends State<AnswerScreen> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
-            if (snapshot.data != "ERROR") {
-              children = <Widget>[
-                const Icon(
-                  Icons.check_circle_outline,
-                  color: Colors.green,
-                  size: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Result: ${snapshot.data}'),
-                ),
-              ];
-            } else {
-              children = <Widget>[
-                const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Result: ${snapshot.data}'),
-                ),
-              ];
-            }
+            children = <Widget>[
+              const Icon(
+                Icons.check_circle_outline,
+                color: Colors.green,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Result: ${snapshot.data}'),
+              ),
+            ];
           } else if (snapshot.hasError) {
             children = <Widget>[
               const Icon(

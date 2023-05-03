@@ -21,7 +21,7 @@ class ScanWidget extends StatelessWidget {
             barcodes.first.type == BarcodeType.text &&
             barcodes.first.rawValue != null) {
           final Barcode barcode = barcodes.first;
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               settings: const RouteSettings(name: "/answer"),
@@ -30,7 +30,6 @@ class ScanWidget extends StatelessWidget {
               },
             ),
           );
-
           // ignore: use_build_context_synchronously
         }
       },

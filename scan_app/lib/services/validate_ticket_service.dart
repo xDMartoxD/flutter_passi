@@ -25,7 +25,7 @@ Future<String> validateTicket(
   }
   //If response is not 200, throw exception
   if (response.statusCode != 200) {
-    return "ERROR";
+    throw Exception(response.body);
   }
   //Return response status code
   return response.body;

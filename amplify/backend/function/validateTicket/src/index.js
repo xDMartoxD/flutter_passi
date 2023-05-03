@@ -55,6 +55,7 @@ export const handler = async (event) => {
   console.log(`OPTIONS: ${JSON.stringify(options)} `);
   const request = new Request(GRAPHQL_ENDPOINT, options);
   const request2 = new Request(GRAPHQL_ENDPOINT, options2);
+  let body2;
   let statusCode = 200;
   let body;
   let response;
@@ -80,6 +81,14 @@ export const handler = async (event) => {
       ],
     };
   }
+  try {
+    console.log(`REQUEST: ${JSON.stringify(request2)}`);
+    response = await fetch(request2);
+    console.log(`RESPONSE: ${JSON.stringify(response)}`);
+    body2 = await response.json();
+    console.log(`BODY: ${JSON.stringify(body2)}`);
+    console.log(`Body.data: ${JSON.stringify(body2.data)}`);
+  } catch (error) {}
   console.log("aca", body.data);
   if (
     body.data.getTicket === null ||
