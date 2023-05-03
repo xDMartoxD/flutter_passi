@@ -83,7 +83,7 @@ export const handler = async (event) => {
   console.log("aca", body.data);
   if (
     body.data.getTicket === null ||
-    body.data.getTicket.eventID !== event.eventId
+    body.data.getTicket.eventID !== event.eventID
   ) {
     console.log("Invalid ticket", body.data.getTicket);
     return {
