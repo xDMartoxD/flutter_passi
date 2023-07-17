@@ -19,12 +19,11 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
-import 'package:amplify_core/amplify_core.dart';
-import 'package:flutter/foundation.dart';
+import 'ModelProvider.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
 /** This is an auto generated class representing the Transaction type in your schema. */
-@immutable
 class Transaction {
   final String id;
   final int? _amount_in_cents;
@@ -32,7 +31,7 @@ class Transaction {
   final String? _reference;
   final String? _payment_method_type;
   final String? _redirect_url;
-  final TemporalDateTime? _created_at;
+  final amplify_core.TemporalDateTime? _created_at;
   final String? _finalized_at;
   final String? _customer_email;
   final String? _currency;
@@ -48,10 +47,10 @@ class Transaction {
     try {
       return _amount_in_cents!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -61,10 +60,10 @@ class Transaction {
     try {
       return _status!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -74,10 +73,10 @@ class Transaction {
     try {
       return _reference!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -87,10 +86,10 @@ class Transaction {
     try {
       return _payment_method_type!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -100,7 +99,7 @@ class Transaction {
     return _redirect_url;
   }
   
-  TemporalDateTime? get created_at {
+  amplify_core.TemporalDateTime? get created_at {
     return _created_at;
   }
   
@@ -146,9 +145,9 @@ class Transaction {
   
   const Transaction._internal({required this.id, required amount_in_cents, required status, required reference, required payment_method_type, redirect_url, created_at, finalized_at, customer_email, currency, status_message, user_type, user_legal_id, user_legal_id_type, payment_description, financial_institution_code, async_payment_url}): _amount_in_cents = amount_in_cents, _status = status, _reference = reference, _payment_method_type = payment_method_type, _redirect_url = redirect_url, _created_at = created_at, _finalized_at = finalized_at, _customer_email = customer_email, _currency = currency, _status_message = status_message, _user_type = user_type, _user_legal_id = user_legal_id, _user_legal_id_type = user_legal_id_type, _payment_description = payment_description, _financial_institution_code = financial_institution_code, _async_payment_url = async_payment_url;
   
-  factory Transaction({String? id, required int amount_in_cents, required String status, required String reference, required String payment_method_type, String? redirect_url, TemporalDateTime? created_at, String? finalized_at, String? customer_email, String? currency, String? status_message, int? user_type, String? user_legal_id, String? user_legal_id_type, String? payment_description, String? financial_institution_code, String? async_payment_url}) {
+  factory Transaction({String? id, required int amount_in_cents, required String status, required String reference, required String payment_method_type, String? redirect_url, amplify_core.TemporalDateTime? created_at, String? finalized_at, String? customer_email, String? currency, String? status_message, int? user_type, String? user_legal_id, String? user_legal_id_type, String? payment_description, String? financial_institution_code, String? async_payment_url}) {
     return Transaction._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       amount_in_cents: amount_in_cents,
       status: status,
       reference: reference,
@@ -224,7 +223,7 @@ class Transaction {
     return buffer.toString();
   }
   
-  Transaction copyWith({String? id, int? amount_in_cents, String? status, String? reference, String? payment_method_type, String? redirect_url, TemporalDateTime? created_at, String? finalized_at, String? customer_email, String? currency, String? status_message, int? user_type, String? user_legal_id, String? user_legal_id_type, String? payment_description, String? financial_institution_code, String? async_payment_url}) {
+  Transaction copyWith({String? id, int? amount_in_cents, String? status, String? reference, String? payment_method_type, String? redirect_url, amplify_core.TemporalDateTime? created_at, String? finalized_at, String? customer_email, String? currency, String? status_message, int? user_type, String? user_legal_id, String? user_legal_id_type, String? payment_description, String? financial_institution_code, String? async_payment_url}) {
     return Transaction._internal(
       id: id ?? this.id,
       amount_in_cents: amount_in_cents ?? this.amount_in_cents,
@@ -245,6 +244,46 @@ class Transaction {
       async_payment_url: async_payment_url ?? this.async_payment_url);
   }
   
+  Transaction copyWithModelFieldValues({
+    ModelFieldValue<String>? id,
+    ModelFieldValue<int>? amount_in_cents,
+    ModelFieldValue<String>? status,
+    ModelFieldValue<String>? reference,
+    ModelFieldValue<String>? payment_method_type,
+    ModelFieldValue<String?>? redirect_url,
+    ModelFieldValue<amplify_core.TemporalDateTime?>? created_at,
+    ModelFieldValue<String?>? finalized_at,
+    ModelFieldValue<String?>? customer_email,
+    ModelFieldValue<String?>? currency,
+    ModelFieldValue<String?>? status_message,
+    ModelFieldValue<int?>? user_type,
+    ModelFieldValue<String?>? user_legal_id,
+    ModelFieldValue<String?>? user_legal_id_type,
+    ModelFieldValue<String?>? payment_description,
+    ModelFieldValue<String?>? financial_institution_code,
+    ModelFieldValue<String?>? async_payment_url
+  }) {
+    return Transaction._internal(
+      id: id == null ? this.id : id.value,
+      amount_in_cents: amount_in_cents == null ? this.amount_in_cents : amount_in_cents.value,
+      status: status == null ? this.status : status.value,
+      reference: reference == null ? this.reference : reference.value,
+      payment_method_type: payment_method_type == null ? this.payment_method_type : payment_method_type.value,
+      redirect_url: redirect_url == null ? this.redirect_url : redirect_url.value,
+      created_at: created_at == null ? this.created_at : created_at.value,
+      finalized_at: finalized_at == null ? this.finalized_at : finalized_at.value,
+      customer_email: customer_email == null ? this.customer_email : customer_email.value,
+      currency: currency == null ? this.currency : currency.value,
+      status_message: status_message == null ? this.status_message : status_message.value,
+      user_type: user_type == null ? this.user_type : user_type.value,
+      user_legal_id: user_legal_id == null ? this.user_legal_id : user_legal_id.value,
+      user_legal_id_type: user_legal_id_type == null ? this.user_legal_id_type : user_legal_id_type.value,
+      payment_description: payment_description == null ? this.payment_description : payment_description.value,
+      financial_institution_code: financial_institution_code == null ? this.financial_institution_code : financial_institution_code.value,
+      async_payment_url: async_payment_url == null ? this.async_payment_url : async_payment_url.value
+    );
+  }
+  
   Transaction.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _amount_in_cents = (json['amount_in_cents'] as num?)?.toInt(),
@@ -252,7 +291,7 @@ class Transaction {
       _reference = json['reference'],
       _payment_method_type = json['payment_method_type'],
       _redirect_url = json['redirect_url'],
-      _created_at = json['created_at'] != null ? TemporalDateTime.fromString(json['created_at']) : null,
+      _created_at = json['created_at'] != null ? amplify_core.TemporalDateTime.fromString(json['created_at']) : null,
       _finalized_at = json['finalized_at'],
       _customer_email = json['customer_email'],
       _currency = json['currency'],
@@ -269,113 +308,129 @@ class Transaction {
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'amount_in_cents': _amount_in_cents, 'status': _status, 'reference': _reference, 'payment_method_type': _payment_method_type, 'redirect_url': _redirect_url, 'created_at': _created_at, 'finalized_at': _finalized_at, 'customer_email': _customer_email, 'currency': _currency, 'status_message': _status_message, 'user_type': _user_type, 'user_legal_id': _user_legal_id, 'user_legal_id_type': _user_legal_id_type, 'payment_description': _payment_description, 'financial_institution_code': _financial_institution_code, 'async_payment_url': _async_payment_url
+    'id': id,
+    'amount_in_cents': _amount_in_cents,
+    'status': _status,
+    'reference': _reference,
+    'payment_method_type': _payment_method_type,
+    'redirect_url': _redirect_url,
+    'created_at': _created_at,
+    'finalized_at': _finalized_at,
+    'customer_email': _customer_email,
+    'currency': _currency,
+    'status_message': _status_message,
+    'user_type': _user_type,
+    'user_legal_id': _user_legal_id,
+    'user_legal_id_type': _user_legal_id_type,
+    'payment_description': _payment_description,
+    'financial_institution_code': _financial_institution_code,
+    'async_payment_url': _async_payment_url
   };
 
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Transaction";
     modelSchemaDefinition.pluralName = "Transactions";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'id',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'amount_in_cents',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'status',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'reference',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'payment_method_type',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'redirect_url',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'created_at',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'finalized_at',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'customer_email',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'currency',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'status_message',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'user_type',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'user_legal_id',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'user_legal_id_type',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'payment_description',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'financial_institution_code',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'async_payment_url',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
   });
 }

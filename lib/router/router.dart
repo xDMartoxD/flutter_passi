@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/screen_args/reset_password_screen_args.dart';
 import 'package:passi_app/models/screen_args/success_screen_args.dart';
-import 'package:passi_app/providers/discount_code_provider.dart';
 import 'package:passi_app/screens/add_card_screen.dart';
 import 'package:passi_app/screens/add_nequi_screen.dart';
 import 'package:passi_app/screens/forgot_password_email.dart';
 import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:passi_app/screens/reset_password_screen.dart';
-import 'package:provider/provider.dart';
 import '../models/screen_args/email_confirmation_screen_args.dart';
 import '../models/screen_args/errors_screen_args.dart';
 import '../models/screen_args/event_categories_screen_args.dart';
@@ -39,17 +37,11 @@ class AppRouter {
             path: EventDetailsScreen.path,
             name: EventDetailsScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              if (state.queryParams.isNotEmpty && state.queryParams.containsKey("promoterCode")) {
-                context.read<DiscountCodesByEventProvider>().addDiscountCode(
-                    discountCode: state.queryParams["promoterCode"]!, eventId: state.params["id"]!);
-              }
-              state.params.addAll(state.queryParams);
-              final args = EventDetailScreenArgs.fromJson(
-                state.params,
-              );
+              state.pathParameters.addAll(state.queryParameters);
+              final args = EventDetailScreenArgs.fromJson(state.pathParameters);
               return EventDetailsScreen(
                 id: args.id,
-                promoterCode: args.promoterCode,
+                promoterCode: args.code,
               );
             },
           ),
@@ -57,8 +49,12 @@ class AppRouter {
             path: EventCheckoutScreen.path,
             name: EventCheckoutScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              final args =
-                  EventCheckoutScreenArgs.fromJson({...state.params, ...state.queryParams});
+              final args = EventCheckoutScreenArgs.fromJson(
+                {
+                  ...state.pathParameters,
+                  ...state.queryParameters,
+                },
+              );
               return EventCheckoutScreen(
                 id: args.id,
                 discountCode: args.discountCode,
@@ -83,7 +79,8 @@ class AppRouter {
             path: EventCategoriesOverviewScreen.path,
             name: EventCategoriesOverviewScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              final args = EventCategoriesOverviewScreenArgs.fromJson(state.queryParams);
+              final args = EventCategoriesOverviewScreenArgs.fromJson(
+                  state.queryParameters);
               return EventCategoriesOverviewScreen(
                 id: args.id,
                 categoryName: args.categoryName,
@@ -102,7 +99,7 @@ class AppRouter {
               name: EmailConfirmationScreen.name,
               builder: (context, state) {
                 final args = EmailConfirmationScreenArgs.fromJson(
-                  state.queryParams,
+                  state.queryParameters,
                 );
                 return EmailConfirmationScreen(
                   email: args.email,
@@ -132,7 +129,7 @@ class AppRouter {
               name: ErrorsScreen.name,
               builder: (context, state) {
                 final args = ErrorsScreenArgs.fromJson(
-                  state.queryParams,
+                  state.queryParameters,
                 );
                 return ErrorsScreen(error: args.error);
               }),
@@ -140,7 +137,7 @@ class AppRouter {
               path: SuccessScreen.path,
               name: SuccessScreen.name,
               builder: (context, state) {
-                final args = SuccessScreenArgs.fromJson(state.queryParams);
+                final args = SuccessScreenArgs.fromJson(state.queryParameters);
                 return SuccessScreen(title: args.title, message: args.message);
               }),
           GoRoute(
@@ -153,7 +150,8 @@ class AppRouter {
               path: ResetPasswordScreen.path,
               name: ResetPasswordScreen.name,
               builder: (context, state) {
-                final args = ResetPasswordScreenArgs.fromJson(state.params);
+                final args =
+                    ResetPasswordScreenArgs.fromJson(state.pathParameters);
                 return ResetPasswordScreen(
                   username: args.username,
                 );

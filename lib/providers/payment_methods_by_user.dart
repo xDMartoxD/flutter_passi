@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
-import 'package:amplify_api/model_mutations.dart';
-import 'package:amplify_api/model_queries.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:passi_app/models/ModelProvider.dart';
@@ -17,7 +15,6 @@ import '../models/my_models/presigned_acceptance.dart';
 class PaymentMethodsByUserProvider with ChangeNotifier {
   final AuthenticationProvider? authenticationProvider;
   List<PaymentMethod> _paymentMethods = [];
-  PaymentMethod? _userSelectedPaymentMethod;
   PresignedAcceptanceModel? _presignedAcceptance;
   bool _isChecked = false;
   PaymentMethod? _selectedPaymentMethod;
@@ -34,13 +31,11 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
   }
 
   PaymentMethod? get selectedPaymentMethod => _selectedPaymentMethod;
-
-  PaymentMethod? get userSelectedPaymentMethod => _userSelectedPaymentMethod;
-
   PaymentMethodsByUserProvider({this.authenticationProvider});
 
   Future<void> getPaymentMethods() async {
-    if (authenticationProvider == null || authenticationProvider?.user == null) {
+    if (authenticationProvider == null ||
+        authenticationProvider?.user == null) {
       return;
     }
     try {
@@ -60,7 +55,8 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
       for (var element in paginatedPaymentMethods.items) {
         if (element != null) {
           loadedPaymentMethods.add(element);
-          if (element.id == authenticationProvider?.user?.userSelectedPaymentMethodId) {
+          if (element.id ==
+              authenticationProvider?.user?.userSelectedPaymentMethodId) {
             _selectedPaymentMethod = element;
           }
         }
@@ -82,7 +78,8 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
       final request = cognitoRequest(
         ModelQueries.get(
           PaymentMethod.classType,
-          authenticationProvider!.user!.userSelectedPaymentMethodId!,
+          authenticationProvider!.user!.userSelectedPaymentMethodId!
+              as ModelIdentifier<PaymentMethod>,
         ),
       );
       final response = await Amplify.API.query(request: request).response;
@@ -99,8 +96,8 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
 
   Future<void> fetchTermsAndConditions() async {
     try {
-      final uri = Uri.https(
-          "production.wompi.co", "/v1/merchants/pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo");
+      final uri = Uri.https("production.wompi.co",
+          "/v1/merchants/pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo");
       final response = await http.get(uri);
       final json = jsonDecode(response.body);
       _presignedAcceptance = PresignedAcceptanceModel.fromJson(json);
@@ -132,8 +129,11 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
         presignedAcceptance != null) {
       try {
         final uri = Uri.https("production.wompi.co", "/v1/tokens/cards");
-        final headers = {'Authorization': "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"};
-        final wompiResponse = await http.post(uri, headers: headers, body: json.encode(data));
+        final headers = {
+          'Authorization': "Bearer pub_prod_Pj1GDbtkn7l1WB5j9fiRQKryPnbteAdo"
+        };
+        final wompiResponse =
+            await http.post(uri, headers: headers, body: json.encode(data));
         if (wompiResponse.statusCode == 201) {
           final json = jsonDecode(wompiResponse.body);
           final createdPaymentMethod = await _createPaymentMethod(json);
@@ -171,14 +171,20 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     String status,
   ) async {
     try {
-      final options = RestOptions(
-        path: '/create-payment-source',
-        body: Uint8List.fromList(
-            "{\"id\":\"$id\", \"token\": \"$token\" ,\"type\": \"CARD\",  \"customer_email\": \"${authenticationProvider!.user!.email}\", \"acceptance_token\": \"${_presignedAcceptance!.acceptanceToken}\"}"
-                .codeUnits),
+      final restOperation = Amplify.API.post(
+        '/create-payment-source',
+        body: HttpPayload.json(
+          {
+            'id': id,
+            'token': token,
+            'type': "CARD",
+            "customer_email": authenticationProvider!.user!.email,
+            "acceptance_token": _presignedAcceptance!.acceptanceToken
+          },
+        ),
       );
-      final response = await Amplify.API.post(restOptions: options).response;
-      final body = json.decode(response.body);
+      final response = await restOperation.response;
+      final body = json.decode(response.decodeBody());
       return body["data"] as String;
     } on ApiException catch (e) {
       safePrint('POST call failed: $e');
@@ -186,21 +192,25 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> changeUserSelectedPaymentMethod(PaymentMethod paymentMethod) async {
-    if (authenticationProvider == null || authenticationProvider?.user == null) {
+  Future<bool> changeUserSelectedPaymentMethod(
+      PaymentMethod paymentMethod) async {
+    if (authenticationProvider == null ||
+        authenticationProvider?.user == null) {
       return false;
     }
     {
-      if (paymentMethod.id == authenticationProvider?.user?.userSelectedPaymentMethodId) {
+      if (paymentMethod.id ==
+          authenticationProvider?.user?.userSelectedPaymentMethodId) {
         return true;
       }
       try {
-        final userWithNewSelectedPaymentMethod = authenticationProvider!.user!.copyWith(
+        final userWithNewSelectedPaymentMethod =
+            authenticationProvider!.user!.copyWith(
           userSelectedPaymentMethodId: paymentMethod.id,
         );
 
-        final updatedUserRequest =
-            cognitoRequest(ModelMutations.update(userWithNewSelectedPaymentMethod));
+        final updatedUserRequest = cognitoRequest(
+            ModelMutations.update(userWithNewSelectedPaymentMethod));
         final updatedUserResponse = await Amplify.API
             .mutate(
               request: updatedUserRequest,
@@ -211,13 +221,52 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
           return false;
         }
 
-        await authenticationProvider!.setUser(newUser: updatedUserResponse.data);
+        await authenticationProvider!
+            .setUser(newUser: updatedUserResponse.data);
         _selectedPaymentMethod = paymentMethod;
         notifyListeners();
 
         return true;
       } on Exception catch (e) {
         safePrint("BOTO EXCEPCION");
+        safePrint(e);
+        rethrow;
+      }
+    }
+  }
+
+  Future<bool> deleteUserSelectedPaymentMethod() async {
+    if (authenticationProvider == null ||
+        authenticationProvider?.user == null) {
+      return false;
+    }
+    {
+      try {
+        final userWithDeletedSelectedPaymentMethod =
+            authenticationProvider!.user!.copyWith(
+          userSelectedPaymentMethodId: null,
+        );
+
+        final updatedUserRequest = cognitoRequest(
+            ModelMutations.update(userWithDeletedSelectedPaymentMethod));
+        final updatedUserResponse = await Amplify.API
+            .mutate(
+              request: updatedUserRequest,
+            )
+            .response;
+        if (updatedUserResponse.data == null) {
+          safePrint("errors: ${updatedUserResponse.errors}");
+          return false;
+        }
+
+        await authenticationProvider!
+            .setUser(newUser: updatedUserResponse.data);
+        notifyListeners();
+
+        return true;
+      } on Exception catch (e) {
+        safePrint("BOTO EXCEPCION");
+        safePrint(e);
         rethrow;
       }
     }
@@ -226,8 +275,10 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
   Future<PaymentMethod?> _createPaymentMethod(Map<String, dynamic> json) async {
     try {
       final cardToken = CardToken.fromJson(json);
-      final paymentMethod = cardToken.toPaymentMethod(authenticationProvider!.user!);
-      final createPaymentMethodRequest = cognitoRequest(ModelMutations.create(paymentMethod));
+      final paymentMethod =
+          cardToken.toPaymentMethod(authenticationProvider!.user!);
+      final createPaymentMethodRequest =
+          cognitoRequest(ModelMutations.create(paymentMethod));
       final createPaymentMethodResponse = await Amplify.API
           .mutate(
             request: createPaymentMethodRequest,

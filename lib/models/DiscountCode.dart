@@ -20,43 +20,56 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the DiscountCode type in your schema. */
-@immutable
-class DiscountCode extends Model {
+class DiscountCode extends amplify_core.Model {
   static const classType = const _DiscountCodeModelType();
   final String id;
   final String? _code;
   final int? _maxUse;
   final int? _actualUse;
-  final TemporalDateTime? _validUntil;
+  final amplify_core.TemporalDateTime? _validUntil;
   final double? _discount;
-  final Event? _event;
+  final String? _eventID;
   final User? _user;
   final List<Ticket>? _tickets;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => modelIdentifier.serializeAsString();
+  
+  DiscountCodeModelIdentifier get modelIdentifier {
+    try {
+      return DiscountCodeModelIdentifier(
+        code: _code!,
+        eventID: _eventID!
+      );
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   String get code {
     try {
       return _code!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -70,23 +83,23 @@ class DiscountCode extends Model {
     try {
       return _actualUse!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  TemporalDateTime get validUntil {
+  amplify_core.TemporalDateTime get validUntil {
     try {
       return _validUntil!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -96,17 +109,26 @@ class DiscountCode extends Model {
     try {
       return _discount!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  Event? get event {
-    return _event;
+  String get eventID {
+    try {
+      return _eventID!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   User? get user {
@@ -117,43 +139,43 @@ class DiscountCode extends Model {
     return _tickets;
   }
   
-  TemporalDateTime get createdAt {
+  amplify_core.TemporalDateTime get createdAt {
     try {
       return _createdAt!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  TemporalDateTime get updatedAt {
+  amplify_core.TemporalDateTime get updatedAt {
     try {
       return _updatedAt!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  const DiscountCode._internal({required this.id, required code, maxUse, required actualUse, required validUntil, required discount, event, user, tickets, required createdAt, required updatedAt}): _code = code, _maxUse = maxUse, _actualUse = actualUse, _validUntil = validUntil, _discount = discount, _event = event, _user = user, _tickets = tickets, _createdAt = createdAt, _updatedAt = updatedAt;
+  const DiscountCode._internal({required this.id, required code, maxUse, required actualUse, required validUntil, required discount, required eventID, user, tickets, required createdAt, required updatedAt}): _code = code, _maxUse = maxUse, _actualUse = actualUse, _validUntil = validUntil, _discount = discount, _eventID = eventID, _user = user, _tickets = tickets, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory DiscountCode({String? id, required String code, int? maxUse, required int actualUse, required TemporalDateTime validUntil, required double discount, Event? event, User? user, List<Ticket>? tickets, required TemporalDateTime createdAt, required TemporalDateTime updatedAt}) {
+  factory DiscountCode({String? id, required String code, int? maxUse, required int actualUse, required amplify_core.TemporalDateTime validUntil, required double discount, required String eventID, User? user, List<Ticket>? tickets, required amplify_core.TemporalDateTime createdAt, required amplify_core.TemporalDateTime updatedAt}) {
     return DiscountCode._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       code: code,
       maxUse: maxUse,
       actualUse: actualUse,
       validUntil: validUntil,
       discount: discount,
-      event: event,
+      eventID: eventID,
       user: user,
       tickets: tickets != null ? List<Ticket>.unmodifiable(tickets) : tickets,
       createdAt: createdAt,
@@ -174,7 +196,7 @@ class DiscountCode extends Model {
       _actualUse == other._actualUse &&
       _validUntil == other._validUntil &&
       _discount == other._discount &&
-      _event == other._event &&
+      _eventID == other._eventID &&
       _user == other._user &&
       DeepCollectionEquality().equals(_tickets, other._tickets) &&
       _createdAt == other._createdAt &&
@@ -195,7 +217,7 @@ class DiscountCode extends Model {
     buffer.write("actualUse=" + (_actualUse != null ? _actualUse!.toString() : "null") + ", ");
     buffer.write("validUntil=" + (_validUntil != null ? _validUntil!.format() : "null") + ", ");
     buffer.write("discount=" + (_discount != null ? _discount!.toString() : "null") + ", ");
-    buffer.write("event=" + (_event != null ? _event!.toString() : "null") + ", ");
+    buffer.write("eventID=" + "$_eventID" + ", ");
     buffer.write("user=" + (_user != null ? _user!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
@@ -204,19 +226,45 @@ class DiscountCode extends Model {
     return buffer.toString();
   }
   
-  DiscountCode copyWith({String? id, String? code, int? maxUse, int? actualUse, TemporalDateTime? validUntil, double? discount, Event? event, User? user, List<Ticket>? tickets, TemporalDateTime? createdAt, TemporalDateTime? updatedAt}) {
+  DiscountCode copyWith({String? id, int? maxUse, int? actualUse, amplify_core.TemporalDateTime? validUntil, double? discount, User? user, List<Ticket>? tickets, amplify_core.TemporalDateTime? createdAt, amplify_core.TemporalDateTime? updatedAt}) {
     return DiscountCode._internal(
       id: id ?? this.id,
-      code: code ?? this.code,
+      code: code,
       maxUse: maxUse ?? this.maxUse,
       actualUse: actualUse ?? this.actualUse,
       validUntil: validUntil ?? this.validUntil,
       discount: discount ?? this.discount,
-      event: event ?? this.event,
+      eventID: eventID,
       user: user ?? this.user,
       tickets: tickets ?? this.tickets,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt);
+  }
+  
+  DiscountCode copyWithModelFieldValues({
+    ModelFieldValue<String>? id,
+    ModelFieldValue<int?>? maxUse,
+    ModelFieldValue<int>? actualUse,
+    ModelFieldValue<amplify_core.TemporalDateTime>? validUntil,
+    ModelFieldValue<double>? discount,
+    ModelFieldValue<User?>? user,
+    ModelFieldValue<List<Ticket>?>? tickets,
+    ModelFieldValue<amplify_core.TemporalDateTime>? createdAt,
+    ModelFieldValue<amplify_core.TemporalDateTime>? updatedAt
+  }) {
+    return DiscountCode._internal(
+      id: id == null ? this.id : id.value,
+      code: code,
+      maxUse: maxUse == null ? this.maxUse : maxUse.value,
+      actualUse: actualUse == null ? this.actualUse : actualUse.value,
+      validUntil: validUntil == null ? this.validUntil : validUntil.value,
+      discount: discount == null ? this.discount : discount.value,
+      eventID: eventID,
+      user: user == null ? this.user : user.value,
+      tickets: tickets == null ? this.tickets : tickets.value,
+      createdAt: createdAt == null ? this.createdAt : createdAt.value,
+      updatedAt: updatedAt == null ? this.updatedAt : updatedAt.value
+    );
   }
   
   DiscountCode.fromJson(Map<String, dynamic> json)  
@@ -224,11 +272,9 @@ class DiscountCode extends Model {
       _code = json['code'],
       _maxUse = (json['maxUse'] as num?)?.toInt(),
       _actualUse = (json['actualUse'] as num?)?.toInt(),
-      _validUntil = json['validUntil'] != null ? TemporalDateTime.fromString(json['validUntil']) : null,
+      _validUntil = json['validUntil'] != null ? amplify_core.TemporalDateTime.fromString(json['validUntil']) : null,
       _discount = (json['discount'] as num?)?.toDouble(),
-      _event = json['event']?['serializedData'] != null
-        ? Event.fromJson(new Map<String, dynamic>.from(json['event']['serializedData']))
-        : null,
+      _eventID = json['eventID'],
       _user = json['user']?['serializedData'] != null
         ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
         : null,
@@ -238,136 +284,144 @@ class DiscountCode extends Model {
           .map((e) => Ticket.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'code': _code, 'maxUse': _maxUse, 'actualUse': _actualUse, 'validUntil': _validUntil?.format(), 'discount': _discount, 'event': _event?.toJson(), 'user': _user?.toJson(), 'tickets': _tickets?.map((Ticket? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'code': _code, 'maxUse': _maxUse, 'actualUse': _actualUse, 'validUntil': _validUntil?.format(), 'discount': _discount, 'eventID': _eventID, 'user': _user?.toJson(), 'tickets': _tickets?.map((Ticket? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'code': _code, 'maxUse': _maxUse, 'actualUse': _actualUse, 'validUntil': _validUntil, 'discount': _discount, 'event': _event, 'user': _user, 'tickets': _tickets, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id,
+    'code': _code,
+    'maxUse': _maxUse,
+    'actualUse': _actualUse,
+    'validUntil': _validUntil,
+    'discount': _discount,
+    'eventID': _eventID,
+    'user': _user,
+    'tickets': _tickets,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt
   };
 
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField CODE = QueryField(fieldName: "code");
-  static final QueryField MAXUSE = QueryField(fieldName: "maxUse");
-  static final QueryField ACTUALUSE = QueryField(fieldName: "actualUse");
-  static final QueryField VALIDUNTIL = QueryField(fieldName: "validUntil");
-  static final QueryField DISCOUNT = QueryField(fieldName: "discount");
-  static final QueryField EVENT = QueryField(
-    fieldName: "event",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Event'));
-  static final QueryField USER = QueryField(
+  static final amplify_core.QueryModelIdentifier<DiscountCodeModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<DiscountCodeModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final CODE = amplify_core.QueryField(fieldName: "code");
+  static final MAXUSE = amplify_core.QueryField(fieldName: "maxUse");
+  static final ACTUALUSE = amplify_core.QueryField(fieldName: "actualUse");
+  static final VALIDUNTIL = amplify_core.QueryField(fieldName: "validUntil");
+  static final DISCOUNT = amplify_core.QueryField(fieldName: "discount");
+  static final EVENTID = amplify_core.QueryField(fieldName: "eventID");
+  static final USER = amplify_core.QueryField(
     fieldName: "user",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'User'));
-  static final QueryField TICKETS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'User'));
+  static final TICKETS = amplify_core.QueryField(
     fieldName: "tickets",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
-  static final QueryField CREATEDAT = QueryField(fieldName: "createdAt");
-  static final QueryField UPDATEDAT = QueryField(fieldName: "updatedAt");
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
+  static final CREATEDAT = amplify_core.QueryField(fieldName: "createdAt");
+  static final UPDATEDAT = amplify_core.QueryField(fieldName: "updatedAt");
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "DiscountCode";
     modelSchemaDefinition.pluralName = "DiscountCodes";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.GROUPS,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.GROUPS,
         groupClaim: "cognito:groups",
         groups: [ "Admin" ],
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ]),
-      AuthRule(
-        authStrategy: AuthStrategy.PRIVATE,
-        operations: [
-          ModelOperation.READ
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PRIVATE,
+        operations: const [
+          amplify_core.ModelOperation.READ
         ]),
-      AuthRule(
-        authStrategy: AuthStrategy.PUBLIC,
-        operations: [
-          ModelOperation.READ
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PUBLIC,
+        operations: const [
+          amplify_core.ModelOperation.READ
         ])
     ];
     
     modelSchemaDefinition.indexes = [
-      ModelIndex(fields: const ["code", "eventID"], name: null),
-      ModelIndex(fields: const ["eventID"], name: "byEvent"),
-      ModelIndex(fields: const ["userID"], name: "byUser")
+      amplify_core.ModelIndex(fields: const ["code", "eventID"], name: null),
+      amplify_core.ModelIndex(fields: const ["eventID"], name: "byEvent"),
+      amplify_core.ModelIndex(fields: const ["userID"], name: "byUser")
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: DiscountCode.CODE,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: DiscountCode.MAXUSE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: DiscountCode.ACTUALUSE,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: DiscountCode.VALIDUNTIL,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: DiscountCode.DISCOUNT,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.double)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.double)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-      key: DiscountCode.EVENT,
-      isRequired: false,
-      targetName: 'eventID',
-      ofModelName: 'Event'
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: DiscountCode.EVENTID,
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: DiscountCode.USER,
       isRequired: false,
-      targetName: 'userID',
+      targetNames: ['userID'],
       ofModelName: 'User'
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: DiscountCode.TICKETS,
       isRequired: false,
       ofModelName: 'Ticket',
       associatedKey: Ticket.DISCOUNTCODE
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: DiscountCode.CREATEDAT,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: DiscountCode.UPDATEDAT,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
   });
 }
 
-class _DiscountCodeModelType extends ModelType<DiscountCode> {
+class _DiscountCodeModelType extends amplify_core.ModelType<DiscountCode> {
   const _DiscountCodeModelType();
   
   @override
@@ -379,4 +433,55 @@ class _DiscountCodeModelType extends ModelType<DiscountCode> {
   String modelName() {
     return 'DiscountCode';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [DiscountCode] in your schema.
+ */
+class DiscountCodeModelIdentifier implements amplify_core.ModelIdentifier<DiscountCode> {
+  final String code;
+  final String eventID;
+
+  /**
+   * Create an instance of DiscountCodeModelIdentifier using [code] the primary key.
+   * And [eventID] the sort key.
+   */
+  const DiscountCodeModelIdentifier({
+    required this.code,
+    required this.eventID});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'code': code,
+    'eventID': eventID
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'DiscountCodeModelIdentifier(code: $code, eventID: $eventID)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is DiscountCodeModelIdentifier &&
+      code == other.code &&
+      eventID == other.eventID;
+  }
+  
+  @override
+  int get hashCode =>
+    code.hashCode ^
+    eventID.hashCode;
 }

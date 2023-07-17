@@ -30,7 +30,7 @@ class EventCheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("checkout")),
+      appBar: AppBar(title: const Text("Checkout")),
       body: MultiProvider(providers: [
         ChangeNotifierProvider<TicketCategoriesByEventProvider>(
           create: (context) => TicketCategoriesByEventProvider(),
@@ -38,7 +38,8 @@ class EventCheckoutScreen extends StatelessWidget {
         ChangeNotifierProvider<EventProvider>(
           create: (context) => EventProvider(eventId: id),
         ),
-        ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMethodsByUserProvider>(
+        ChangeNotifierProxyProvider<AuthenticationProvider,
+            PaymentMethodsByUserProvider>(
           create: (context) {
             return PaymentMethodsByUserProvider();
           },
@@ -46,15 +47,18 @@ class EventCheckoutScreen extends StatelessWidget {
             return PaymentMethodsByUserProvider(authenticationProvider: auth);
           },
         ),
-        ChangeNotifierProxyProvider<TicketCategoriesByEventProvider, CartProvider>(
+        ChangeNotifierProxyProvider<TicketCategoriesByEventProvider,
+            CartProvider>(
           create: (context) {
             return CartProvider();
           },
           update: (context, ticketCategoryProvider, previous) {
-            return CartProvider(ticketCategoriesByEventProvider: ticketCategoryProvider);
+            return CartProvider(
+                ticketCategoriesByEventProvider: ticketCategoryProvider);
           },
         ),
-        ChangeNotifierProxyProvider<EventProvider, DiscountCodesByEventProvider>(
+        ChangeNotifierProxyProvider<EventProvider,
+            DiscountCodesByEventProvider>(
           create: (context) {
             return DiscountCodesByEventProvider();
           },
@@ -115,11 +119,13 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         await Provider.of<EventProvider>(context, listen: false).setEvent();
       }
       if (context.mounted) {
-        _ticketCategoriesByEventProvider = Provider.of<TicketCategoriesByEventProvider>(
+        _ticketCategoriesByEventProvider =
+            Provider.of<TicketCategoriesByEventProvider>(
           context,
           listen: false,
         );
-        await _ticketCategoriesByEventProvider!.fetchTicketCategoriesByEventId(widget.id);
+        await _ticketCategoriesByEventProvider!
+            .fetchTicketCategoriesByEventId(widget.id);
       }
       if (context.mounted) {
         final paymentMethodsProvider =
@@ -127,12 +133,12 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
         await paymentMethodsProvider.fetchTermsAndConditions();
         await paymentMethodsProvider.getPaymentMethods();
       }
-      if (context.mounted) {
-        await Provider.of<DiscountCodesByEventProvider>(
-          context,
-          listen: false,
-        ).fetchDiscountCodes();
-      }
+      // if (context.mounted) {
+      //   await Provider.of<DiscountCodesByEventProvider>(
+      //     context,
+      //     listen: false,
+      //   ).fetchDiscountCodes();
+      // }
     } catch (e) {
       safePrint(e.toString());
     }
@@ -158,7 +164,8 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       errorMessage(context, "No hay un evento existente");
       return;
     }
-    if (eventProvider.event!.finishDateTime.compareTo(TemporalDateTime.now()) < 0) {
+    if (eventProvider.event!.finishDateTime.compareTo(TemporalDateTime.now()) <
+        0) {
       errorMessage(context, "el evento ya ocurrio");
       return;
     }
@@ -170,7 +177,8 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
           return;
         }
       }
-      if (discountCodesByEventProvider.discountCode!.validUntil.compareTo(TemporalDateTime.now()) <
+      if (discountCodesByEventProvider.discountCode!.validUntil
+              .compareTo(TemporalDateTime.now()) <
           0) {
         errorMessage(context, "El codigo ya no es valido");
         return;
@@ -180,7 +188,8 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       setState(() {
         _isLoading = true;
       });
-      final error = await Provider.of<TicketsProvider>(context, listen: false).createTickets();
+      final error = await Provider.of<TicketsProvider>(context, listen: false)
+          .createTickets();
       if (error == null) {
         if (context.mounted) {
           final queryParams = SuccessScreenArgs(
@@ -188,12 +197,13 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
             message:
                 "Entra a la pestaña de tiquetes y revisa que tus entradas hayan sido creadas correctamente. En caso de que haya ocurrido un error no dudes contactanos por WhatsApp a este numero +57 300 8686262.",
           ).queryParams();
-          context.pushNamed(SuccessScreen.name, queryParams: queryParams);
+          context.pushNamed(SuccessScreen.name, queryParameters: queryParams);
         }
       } else {
         final params = ErrorsScreenArgs(error: error);
         if (context.mounted) {
-          context.pushNamed(ErrorsScreen.name, queryParams: params.queryParams());
+          context.pushNamed(ErrorsScreen.name,
+              queryParameters: params.queryParams());
         }
       }
     } catch (e) {
@@ -208,8 +218,13 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            return Consumer6<EventProvider, TicketCategoriesByEventProvider, AuthenticationProvider,
-                DiscountCodesByEventProvider, PaymentMethodsByUserProvider, CartProvider>(
+            return Consumer6<
+                EventProvider,
+                TicketCategoriesByEventProvider,
+                AuthenticationProvider,
+                DiscountCodesByEventProvider,
+                PaymentMethodsByUserProvider,
+                CartProvider>(
               builder: (
                 context,
                 eventProvider,
@@ -250,7 +265,9 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                               ).toList()
                             ],
                           )),
-                      cartProvider.total > 0 ? const DiscountCodeWidget() : Container(),
+                      cartProvider.total > 0
+                          ? const DiscountCodeWidget()
+                          : Container(),
                       cartProvider.total > 0
                           ? Container(
                               decoration: BoxDecoration(
@@ -314,8 +331,10 @@ class SelectedPaymentMethodContent extends StatelessWidget {
               children: [
                 Text(
                   "Metodo de pago",
-                  style:
-                      Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
                 TextButton(
                   onPressed: () {
@@ -336,7 +355,8 @@ class SelectedPaymentMethodContent extends StatelessWidget {
             ),
             paymentMethodsProvider.selectedPaymentMethod != null
                 ? PaymentMethodContent(
-                    paymentMethod: paymentMethodsProvider.selectedPaymentMethod!,
+                    paymentMethod:
+                        paymentMethodsProvider.selectedPaymentMethod!,
                     showTrailing: false,
                   )
                 : Container()
@@ -383,7 +403,9 @@ class BuyButtonChild extends StatelessWidget {
                     ),
               )
             : Text(
-                cartProvider.total > 0 ? "${formatNumber(cartProvider.total)} COP" : "Gratis",
+                cartProvider.total > 0
+                    ? "${formatNumber(cartProvider.total)} COP"
+                    : "Gratis",
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -411,15 +433,18 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
     _textFieldControler = TextEditingController();
   }
 
-  Future<void> _addDiscountCodeHandler(BuildContext context,
-      DiscountCodesByEventProvider discountCodeProvider, EventProvider eventProvider) async {
+  Future<void> _addDiscountCodeHandler(
+      BuildContext context,
+      DiscountCodesByEventProvider discountCodeProvider,
+      EventProvider eventProvider) async {
     showModalBottomSheet(
         backgroundColor: Theme.of(context).cardColor,
         context: context,
         builder: (context) {
           return Container(
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(15)),
               color: Theme.of(context).cardColor,
             ),
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 10),
@@ -432,7 +457,8 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
                 ),
                 TextButton(
                     onPressed: () {
-                      discountCodeProvider.setDiscountCode(_textFieldControler.text);
+                      discountCodeProvider
+                          .setDiscountCode(_textFieldControler.text);
                       Navigator.of(context).pop();
                     },
                     child: const Text("Buscar"))
@@ -472,11 +498,14 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
                         if (discountCodeProvider.discountCode != null) {
                           discountCodeProvider.removeDiscountCode();
                         } else {
-                          _addDiscountCodeHandler(context, discountCodeProvider, eventProvider);
+                          _addDiscountCodeHandler(
+                              context, discountCodeProvider, eventProvider);
                         }
                       },
                       child: Text(
-                        discountCodeProvider.discountCode != null ? "Eliminar" : "Agregar",
+                        discountCodeProvider.discountCode != null
+                            ? "Eliminar"
+                            : "Agregar",
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                               // color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
@@ -512,7 +541,8 @@ class TermsAndConditionsWidget extends StatefulWidget {
   });
 
   @override
-  State<TermsAndConditionsWidget> createState() => _TermsAndConditionsWidgetState();
+  State<TermsAndConditionsWidget> createState() =>
+      _TermsAndConditionsWidgetState();
 }
 
 class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
@@ -540,7 +570,8 @@ class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
                         },
                     ),
                     TextSpan(
-                      text: "y las politicas de privacidad para hacer esta compra.",
+                      text:
+                          "y las politicas de privacidad para hacer esta compra.",
                       style: Theme.of(context).textTheme.bodyMedium,
                     )
                   ],
@@ -599,7 +630,10 @@ class TicketCategoryContentWidget extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.grey),
                         textAlign: TextAlign.start,
                       ),
                       const SizedBox(height: 2),

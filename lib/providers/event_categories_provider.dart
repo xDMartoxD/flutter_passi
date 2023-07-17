@@ -1,4 +1,4 @@
-import 'package:amplify_api/model_queries.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:passi_app/utils/amplify_utils.dart';

@@ -20,13 +20,11 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the FinancialInstitutionResponse type in your schema. */
-@immutable
 class FinancialInstitutionResponse {
   final List<FinancialInstitution>? _data;
 
@@ -71,6 +69,14 @@ class FinancialInstitutionResponse {
       data: data ?? this.data);
   }
   
+  FinancialInstitutionResponse copyWithModelFieldValues({
+    ModelFieldValue<List<FinancialInstitution>>? data
+  }) {
+    return FinancialInstitutionResponse._internal(
+      data: data == null ? this.data : data.value
+    );
+  }
+  
   FinancialInstitutionResponse.fromJson(Map<String, dynamic> json)  
     : _data = json['data'] is List
         ? (json['data'] as List)
@@ -87,15 +93,15 @@ class FinancialInstitutionResponse {
     'data': _data
   };
 
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "FinancialInstitutionResponse";
     modelSchemaDefinition.pluralName = "FinancialInstitutionResponses";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'data',
       isRequired: false,
       isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'FinancialInstitution')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'FinancialInstitution')
     ));
   });
 }

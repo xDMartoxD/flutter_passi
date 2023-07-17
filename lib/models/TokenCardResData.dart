@@ -20,12 +20,10 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
-import 'package:flutter/foundation.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
 /** This is an auto generated class representing the TokenCardResData type in your schema. */
-@immutable
 class TokenCardResData {
   final String id;
   final String? _created_at;
@@ -42,10 +40,10 @@ class TokenCardResData {
     try {
       return _created_at!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -55,10 +53,10 @@ class TokenCardResData {
     try {
       return _brand!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -68,10 +66,10 @@ class TokenCardResData {
     try {
       return _name!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -81,10 +79,10 @@ class TokenCardResData {
     try {
       return _last_four!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -94,10 +92,10 @@ class TokenCardResData {
     try {
       return _bin!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -107,10 +105,10 @@ class TokenCardResData {
     try {
       return _exp_year!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -120,10 +118,10 @@ class TokenCardResData {
     try {
       return _exp_month!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -133,10 +131,10 @@ class TokenCardResData {
     try {
       return _card_holder!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -146,10 +144,10 @@ class TokenCardResData {
     try {
       return _expires_at!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -159,7 +157,7 @@ class TokenCardResData {
   
   factory TokenCardResData({String? id, required String created_at, required BrandEnum brand, required String name, required String last_four, required String bin, required String exp_year, required String exp_month, required String card_holder, required String expires_at}) {
     return TokenCardResData._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       created_at: created_at,
       brand: brand,
       name: name,
@@ -201,7 +199,7 @@ class TokenCardResData {
     buffer.write("TokenCardResData {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("created_at=" + "$_created_at" + ", ");
-    buffer.write("brand=" + (_brand != null ? enumToString(_brand)! : "null") + ", ");
+    buffer.write("brand=" + (_brand != null ? amplify_core.enumToString(_brand)! : "null") + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("last_four=" + "$_last_four" + ", ");
     buffer.write("bin=" + "$_bin" + ", ");
@@ -228,10 +226,36 @@ class TokenCardResData {
       expires_at: expires_at ?? this.expires_at);
   }
   
+  TokenCardResData copyWithModelFieldValues({
+    ModelFieldValue<String>? id,
+    ModelFieldValue<String>? created_at,
+    ModelFieldValue<BrandEnum>? brand,
+    ModelFieldValue<String>? name,
+    ModelFieldValue<String>? last_four,
+    ModelFieldValue<String>? bin,
+    ModelFieldValue<String>? exp_year,
+    ModelFieldValue<String>? exp_month,
+    ModelFieldValue<String>? card_holder,
+    ModelFieldValue<String>? expires_at
+  }) {
+    return TokenCardResData._internal(
+      id: id == null ? this.id : id.value,
+      created_at: created_at == null ? this.created_at : created_at.value,
+      brand: brand == null ? this.brand : brand.value,
+      name: name == null ? this.name : name.value,
+      last_four: last_four == null ? this.last_four : last_four.value,
+      bin: bin == null ? this.bin : bin.value,
+      exp_year: exp_year == null ? this.exp_year : exp_year.value,
+      exp_month: exp_month == null ? this.exp_month : exp_month.value,
+      card_holder: card_holder == null ? this.card_holder : card_holder.value,
+      expires_at: expires_at == null ? this.expires_at : expires_at.value
+    );
+  }
+  
   TokenCardResData.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _created_at = json['created_at'],
-      _brand = enumFromString<BrandEnum>(json['brand'], BrandEnum.values),
+      _brand = amplify_core.enumFromString<BrandEnum>(json['brand'], BrandEnum.values),
       _name = json['name'],
       _last_four = json['last_four'],
       _bin = json['bin'],
@@ -241,75 +265,84 @@ class TokenCardResData {
       _expires_at = json['expires_at'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'created_at': _created_at, 'brand': enumToString(_brand), 'name': _name, 'last_four': _last_four, 'bin': _bin, 'exp_year': _exp_year, 'exp_month': _exp_month, 'card_holder': _card_holder, 'expires_at': _expires_at
+    'id': id, 'created_at': _created_at, 'brand': amplify_core.enumToString(_brand), 'name': _name, 'last_four': _last_four, 'bin': _bin, 'exp_year': _exp_year, 'exp_month': _exp_month, 'card_holder': _card_holder, 'expires_at': _expires_at
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'created_at': _created_at, 'brand': _brand, 'name': _name, 'last_four': _last_four, 'bin': _bin, 'exp_year': _exp_year, 'exp_month': _exp_month, 'card_holder': _card_holder, 'expires_at': _expires_at
+    'id': id,
+    'created_at': _created_at,
+    'brand': _brand,
+    'name': _name,
+    'last_four': _last_four,
+    'bin': _bin,
+    'exp_year': _exp_year,
+    'exp_month': _exp_month,
+    'card_holder': _card_holder,
+    'expires_at': _expires_at
   };
 
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "TokenCardResData";
     modelSchemaDefinition.pluralName = "TokenCardResData";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'id',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'created_at',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'brand',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'name',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'last_four',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'bin',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'exp_year',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'exp_month',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'card_holder',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'expires_at',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
   });
 }

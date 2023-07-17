@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
@@ -21,27 +22,26 @@ class PaymentMethodsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Metodos de pago"),
       ),
-      body: ChangeNotifierProxyProvider<AuthenticationProvider, PaymentMethodsByUserProvider>(
+      body: ChangeNotifierProxyProvider<AuthenticationProvider,
+          PaymentMethodsByUserProvider>(
         create: (context) {
           return PaymentMethodsByUserProvider();
         },
         update: (context, auth, previous) {
           return PaymentMethodsByUserProvider(authenticationProvider: auth);
         },
-        child: PaymentMethodsContent(
-          scaffoldKey: _scaffoldKey,
-        ),
+        child: const PaymentMethodsContent(),
       ),
     );
   }
 }
 
 class PaymentMethodsContent extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  const PaymentMethodsContent({super.key, required this.scaffoldKey});
+  const PaymentMethodsContent({super.key});
 
   Future<void> _fetchUserPaymentMethods(BuildContext context) async {
-    await Provider.of<PaymentMethodsByUserProvider>(context, listen: false).getPaymentMethods();
+    await Provider.of<PaymentMethodsByUserProvider>(context, listen: false)
+        .getPaymentMethods();
   }
 
   void _addPaymentMethodHandler({
@@ -83,8 +83,10 @@ class PaymentMethodsContent extends StatelessWidget {
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            return Consumer2<PaymentMethodsByUserProvider, AuthenticationProvider>(
-              builder: (context, paymentMehtodsProvider, authenticationProvider, child) {
+            return Consumer2<PaymentMethodsByUserProvider,
+                AuthenticationProvider>(
+              builder: (context, paymentMehtodsProvider, authenticationProvider,
+                  child) {
                 return SingleChildScrollView(
                   padding: const EdgeInsets.all(15),
                   child: Column(
@@ -95,7 +97,10 @@ class PaymentMethodsContent extends StatelessWidget {
                       paymentMehtodsProvider.paymentMethods.isEmpty
                           ? Text(
                               "Agrega tu primer metodo de pago",
-                              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                             )
@@ -105,13 +110,15 @@ class PaymentMethodsContent extends StatelessWidget {
                       ),
                       FloatingActionButton(
                         backgroundColor: Colors.white,
-                        onPressed: () => _addPaymentMethodHandler(context: context),
+                        onPressed: () =>
+                            _addPaymentMethodHandler(context: context),
                         child: Text(
                           "Agregar metodo de pago",
-                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                         ),
                       )
                     ],
@@ -133,7 +140,8 @@ class PaymentMethodsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer2<AuthenticationProvider, PaymentMethodsByUserProvider>(
-        builder: (context, authenticationProvider, paymentMethodsProvider, child) {
+        builder:
+            (context, authenticationProvider, paymentMethodsProvider, child) {
       return Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -145,9 +153,28 @@ class PaymentMethodsListWidget extends StatelessWidget {
         child: Column(children: [
           ...paymentMethodsProvider.paymentMethods.map(
             (paymentMethod) {
-              return PaymentMethodContent(
-                paymentMethod: paymentMethod,
-                showTrailing: true,
+              return Dismissible(
+                onDismissed: (direction) async {
+                  if (paymentMethod.id ==
+                      paymentMethodsProvider.selectedPaymentMethod?.id) {
+                    await paymentMethodsProvider
+                        .deleteUserSelectedPaymentMethod();
+                  }
+                },
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  color: Colors.red,
+                  child: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.white,
+                  ),
+                ),
+                key: Key(paymentMethod.id),
+                child: PaymentMethodContent(
+                  paymentMethod: paymentMethod,
+                  showTrailing: true,
+                ),
               );
             },
           ).toList()

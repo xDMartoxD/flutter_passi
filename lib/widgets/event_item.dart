@@ -24,23 +24,20 @@ class EventItem extends StatelessWidget {
           GestureDetector(
             onTap: () {
               final args = EventDetailScreenArgs(id: id);
-              context.pushNamed(EventDetailsScreen.name, params: args.params());
+              context.pushNamed(
+                EventDetailsScreen.name,
+                pathParameters: args.params(),
+              );
             },
             child: Container(
               height: 150,
               width: 150,
-              decoration: const BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.black, //New
-                  blurRadius: 5.0,
-                  offset: Offset(0, 5),
-                ),
-              ]),
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(
                   Radius.circular(15),
                 ),
-                child: Hero(tag: id, child: Image.network(imageUrl, fit: BoxFit.cover)),
+                child: Hero(
+                    tag: id, child: Image.network(imageUrl, fit: BoxFit.cover)),
               ),
             ),
           ),

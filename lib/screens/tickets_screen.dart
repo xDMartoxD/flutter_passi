@@ -392,7 +392,8 @@ class TicketsContent extends StatelessWidget {
                                     ticketProvider.tickets[index]?.event != null
                                 ? Positioned.fill(
                                     child: Image.network(
-                                      ticketProvider.tickets[index]!.event!.primaryImage,
+                                      ticketProvider
+                                          .tickets[index]!.event!.primaryImage,
                                       fit: BoxFit.cover,
                                     ),
                                   )
@@ -411,20 +412,31 @@ class TicketsContent extends StatelessWidget {
                                   horizontal: 50,
                                 ),
                                 child: ticketProvider.tickets[index] != null &&
-                                        ticketProvider.tickets[index]?.event != null
+                                        ticketProvider.tickets[index]?.event !=
+                                            null
                                     ? TicketWidget(
-                                        didAssit: ticketProvider.tickets[index]!.didAssist,
-                                        eventMaxAge: ticketProvider.tickets[index]!.event!.minAge,
-                                        eventAddress: ticketProvider.tickets[index]!.event!.address,
-                                        eventCompany: ticketProvider.tickets[index]!.event!.company,
-                                        eventPlace: ticketProvider.tickets[index]!.event!.place,
+                                        didAssit: ticketProvider
+                                            .tickets[index]!.didAssist,
+                                        eventMaxAge: ticketProvider
+                                            .tickets[index]!.event!.minAge,
+                                        eventAddress: ticketProvider
+                                            .tickets[index]!.event!.address,
+                                        eventCompany: ticketProvider
+                                            .tickets[index]!.event!.company,
+                                        eventPlace: ticketProvider
+                                            .tickets[index]!.event!.place,
                                         eventStartDate: ticketProvider
-                                            .tickets[index]!.event!.startDateTime
+                                            .tickets[index]!
+                                            .event!
+                                            .startDateTime
                                             .toString(),
                                         id: ticketProvider.tickets[index]!.id,
-                                        eventTitle: ticketProvider.tickets[index]!.event!.title,
-                                        ticketCategoryName:
-                                            ticketProvider.tickets[index]!.ticketCategory!.name,
+                                        eventTitle: ticketProvider
+                                            .tickets[index]!.event!.title,
+                                        ticketCategoryName: ticketProvider
+                                            .tickets[index]!
+                                            .ticketCategory!
+                                            .name,
                                       )
                                     : Container(),
                               ),
@@ -475,11 +487,10 @@ class TicketWidget extends StatelessWidget {
         context: context,
         builder: (context) {
           return Center(
-            child: QrImage(
+            child: QrImageView(
               data: id,
               version: QrVersions.auto,
               size: MediaQuery.of(context).size.width * .8,
-              foregroundColor: Colors.black,
               backgroundColor: Colors.white,
             ),
           );
@@ -509,7 +520,8 @@ class TicketWidget extends StatelessWidget {
                     child: Text(
                       eventCompany,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   Text(
@@ -527,13 +539,15 @@ class TicketWidget extends StatelessWidget {
                   eventMaxAge != null
                       ? Text(
                           "+$eventMaxAge",
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                color: Colors.grey,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: Colors.grey,
+                                  ),
                         )
                       : Container(),
                   Text(
-                    DateFormat('yyyy-MM-dd').format(DateTime.parse(eventStartDate)),
+                    DateFormat('yyyy-MM-dd')
+                        .format(DateTime.parse(eventStartDate)),
                     style: Theme.of(context)
                         .textTheme
                         .titleSmall!
@@ -594,13 +608,13 @@ class TicketWidget extends StatelessWidget {
               InkWell(
                 onTap: () => showQr(context),
                 child: Center(
-                    child: QrImage(
-                  data: id,
-                  version: QrVersions.auto,
-                  size: 120.0,
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.white,
-                )),
+                  child: QrImageView(
+                    data: id,
+                    version: QrVersions.auto,
+                    size: 120.0,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
               ),
               Expanded(
                 child: Center(

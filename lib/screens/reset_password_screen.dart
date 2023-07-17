@@ -34,7 +34,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       setState(() {
         _isLoading = true;
       });
-      final authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+      final authProvider =
+          Provider.of<AuthenticationProvider>(context, listen: false);
       await authProvider.confirmResetPassword(
         widget.username,
         _authData['password']!,
@@ -42,9 +43,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       );
       if (context.mounted) {
         final queryParams = SuccessScreenArgs(
-                title: "Contraseña actulizada", message: "vuelver a ingresar tus datos")
+                title: "Contraseña actulizada",
+                message: "vuelver a ingresar tus datos")
             .queryParams();
-        context.pushNamed(SuccessScreen.name, queryParams: queryParams);
+        context.pushNamed(SuccessScreen.name, queryParameters: queryParams);
       }
     } on AuthException catch (e) {
       _showErrorDialog(e.message, context);
@@ -77,7 +79,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cambio de contraseña")),
+      appBar: AppBar(title: const Text("Cambio de contraseña")),
       body: GestureDetector(
         onTap: FocusManager.instance.primaryFocus?.unfocus,
         child: Form(
@@ -147,11 +149,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     onPressed: _isLoading ? null : _submit,
                     child: _isLoading
                         ? const Center(
-                            child: CircularProgressIndicator(color: Colors.black),
+                            child:
+                                CircularProgressIndicator(color: Colors.black),
                           )
                         : Text(
                             "Confirmar",
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),

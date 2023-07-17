@@ -20,22 +20,20 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the Event type in your schema. */
-@immutable
-class Event extends Model {
+class Event extends amplify_core.Model {
   static const classType = const _EventModelType();
   final String id;
   final String? _title;
   final String? _description;
   final String? _company;
   final String? _companyUrl;
-  final TemporalDateTime? _startDateTime;
-  final TemporalDateTime? _finishDateTime;
+  final amplify_core.TemporalDateTime? _startDateTime;
+  final amplify_core.TemporalDateTime? _finishDateTime;
   final Coordinates? _coords;
   final String? _address;
   final String? _place;
@@ -51,27 +49,32 @@ class Event extends Model {
   final List<Job>? _Jobs;
   final List<DiscountCode>? _discountCodes;
   final bool? _needsCode;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
   final int? _maxBuyQuantity;
   final List<TicketCategory>? _ticketCategories;
 
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => id;
+  
+  EventModelIdentifier get modelIdentifier {
+      return EventModelIdentifier(
+        id: id
+      );
   }
   
   String get title {
     try {
       return _title!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -85,10 +88,10 @@ class Event extends Model {
     try {
       return _company!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -98,27 +101,27 @@ class Event extends Model {
     return _companyUrl;
   }
   
-  TemporalDateTime get startDateTime {
+  amplify_core.TemporalDateTime get startDateTime {
     try {
       return _startDateTime!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  TemporalDateTime get finishDateTime {
+  amplify_core.TemporalDateTime get finishDateTime {
     try {
       return _finishDateTime!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -132,10 +135,10 @@ class Event extends Model {
     try {
       return _address!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -153,10 +156,10 @@ class Event extends Model {
     try {
       return _price!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -166,10 +169,10 @@ class Event extends Model {
     try {
       return _maxCapacity!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -179,10 +182,10 @@ class Event extends Model {
     try {
       return _totalAssistants!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -192,10 +195,10 @@ class Event extends Model {
     try {
       return _primaryImage!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -229,27 +232,27 @@ class Event extends Model {
     return _needsCode;
   }
   
-  TemporalDateTime get createdAt {
+  amplify_core.TemporalDateTime get createdAt {
     try {
       return _createdAt!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  TemporalDateTime get updatedAt {
+  amplify_core.TemporalDateTime get updatedAt {
     try {
       return _updatedAt!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -265,9 +268,9 @@ class Event extends Model {
   
   const Event._internal({required this.id, required title, description, required company, companyUrl, required startDateTime, required finishDateTime, coords, required address, place, minAge, required price, required maxCapacity, required totalAssistants, required primaryImage, contactNumber, images, eventCategory, tickets, Jobs, discountCodes, needsCode, required createdAt, required updatedAt, maxBuyQuantity, ticketCategories}): _title = title, _description = description, _company = company, _companyUrl = companyUrl, _startDateTime = startDateTime, _finishDateTime = finishDateTime, _coords = coords, _address = address, _place = place, _minAge = minAge, _price = price, _maxCapacity = maxCapacity, _totalAssistants = totalAssistants, _primaryImage = primaryImage, _contactNumber = contactNumber, _images = images, _eventCategory = eventCategory, _tickets = tickets, _Jobs = Jobs, _discountCodes = discountCodes, _needsCode = needsCode, _createdAt = createdAt, _updatedAt = updatedAt, _maxBuyQuantity = maxBuyQuantity, _ticketCategories = ticketCategories;
   
-  factory Event({String? id, required String title, String? description, required String company, String? companyUrl, required TemporalDateTime startDateTime, required TemporalDateTime finishDateTime, Coordinates? coords, required String address, String? place, int? minAge, required double price, required int maxCapacity, required int totalAssistants, required String primaryImage, String? contactNumber, List<String>? images, EventCategory? eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
+  factory Event({String? id, required String title, String? description, required String company, String? companyUrl, required amplify_core.TemporalDateTime startDateTime, required amplify_core.TemporalDateTime finishDateTime, Coordinates? coords, required String address, String? place, int? minAge, required double price, required int maxCapacity, required int totalAssistants, required String primaryImage, String? contactNumber, List<String>? images, EventCategory? eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, required amplify_core.TemporalDateTime createdAt, required amplify_core.TemporalDateTime updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
     return Event._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       title: title,
       description: description,
       company: company,
@@ -366,9 +369,9 @@ class Event extends Model {
     return buffer.toString();
   }
   
-  Event copyWith({String? id, String? title, String? description, String? company, String? companyUrl, TemporalDateTime? startDateTime, TemporalDateTime? finishDateTime, Coordinates? coords, String? address, String? place, int? minAge, double? price, int? maxCapacity, int? totalAssistants, String? primaryImage, String? contactNumber, List<String>? images, EventCategory? eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
+  Event copyWith({String? title, String? description, String? company, String? companyUrl, amplify_core.TemporalDateTime? startDateTime, amplify_core.TemporalDateTime? finishDateTime, Coordinates? coords, String? address, String? place, int? minAge, double? price, int? maxCapacity, int? totalAssistants, String? primaryImage, String? contactNumber, List<String>? images, EventCategory? eventCategory, List<Ticket>? tickets, List<Job>? Jobs, List<DiscountCode>? discountCodes, bool? needsCode, amplify_core.TemporalDateTime? createdAt, amplify_core.TemporalDateTime? updatedAt, int? maxBuyQuantity, List<TicketCategory>? ticketCategories}) {
     return Event._internal(
-      id: id ?? this.id,
+      id: id,
       title: title ?? this.title,
       description: description ?? this.description,
       company: company ?? this.company,
@@ -396,14 +399,71 @@ class Event extends Model {
       ticketCategories: ticketCategories ?? this.ticketCategories);
   }
   
+  Event copyWithModelFieldValues({
+    ModelFieldValue<String>? title,
+    ModelFieldValue<String?>? description,
+    ModelFieldValue<String>? company,
+    ModelFieldValue<String?>? companyUrl,
+    ModelFieldValue<amplify_core.TemporalDateTime>? startDateTime,
+    ModelFieldValue<amplify_core.TemporalDateTime>? finishDateTime,
+    ModelFieldValue<Coordinates?>? coords,
+    ModelFieldValue<String>? address,
+    ModelFieldValue<String?>? place,
+    ModelFieldValue<int?>? minAge,
+    ModelFieldValue<double>? price,
+    ModelFieldValue<int>? maxCapacity,
+    ModelFieldValue<int>? totalAssistants,
+    ModelFieldValue<String>? primaryImage,
+    ModelFieldValue<String?>? contactNumber,
+    ModelFieldValue<List<String>>? images,
+    ModelFieldValue<EventCategory?>? eventCategory,
+    ModelFieldValue<List<Ticket>?>? tickets,
+    ModelFieldValue<List<Job>?>? Jobs,
+    ModelFieldValue<List<DiscountCode>?>? discountCodes,
+    ModelFieldValue<bool?>? needsCode,
+    ModelFieldValue<amplify_core.TemporalDateTime>? createdAt,
+    ModelFieldValue<amplify_core.TemporalDateTime>? updatedAt,
+    ModelFieldValue<int?>? maxBuyQuantity,
+    ModelFieldValue<List<TicketCategory>?>? ticketCategories
+  }) {
+    return Event._internal(
+      id: id,
+      title: title == null ? this.title : title.value,
+      description: description == null ? this.description : description.value,
+      company: company == null ? this.company : company.value,
+      companyUrl: companyUrl == null ? this.companyUrl : companyUrl.value,
+      startDateTime: startDateTime == null ? this.startDateTime : startDateTime.value,
+      finishDateTime: finishDateTime == null ? this.finishDateTime : finishDateTime.value,
+      coords: coords == null ? this.coords : coords.value,
+      address: address == null ? this.address : address.value,
+      place: place == null ? this.place : place.value,
+      minAge: minAge == null ? this.minAge : minAge.value,
+      price: price == null ? this.price : price.value,
+      maxCapacity: maxCapacity == null ? this.maxCapacity : maxCapacity.value,
+      totalAssistants: totalAssistants == null ? this.totalAssistants : totalAssistants.value,
+      primaryImage: primaryImage == null ? this.primaryImage : primaryImage.value,
+      contactNumber: contactNumber == null ? this.contactNumber : contactNumber.value,
+      images: images == null ? this.images : images.value,
+      eventCategory: eventCategory == null ? this.eventCategory : eventCategory.value,
+      tickets: tickets == null ? this.tickets : tickets.value,
+      Jobs: Jobs == null ? this.Jobs : Jobs.value,
+      discountCodes: discountCodes == null ? this.discountCodes : discountCodes.value,
+      needsCode: needsCode == null ? this.needsCode : needsCode.value,
+      createdAt: createdAt == null ? this.createdAt : createdAt.value,
+      updatedAt: updatedAt == null ? this.updatedAt : updatedAt.value,
+      maxBuyQuantity: maxBuyQuantity == null ? this.maxBuyQuantity : maxBuyQuantity.value,
+      ticketCategories: ticketCategories == null ? this.ticketCategories : ticketCategories.value
+    );
+  }
+  
   Event.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _title = json['title'],
       _description = json['description'],
       _company = json['company'],
       _companyUrl = json['companyUrl'],
-      _startDateTime = json['startDateTime'] != null ? TemporalDateTime.fromString(json['startDateTime']) : null,
-      _finishDateTime = json['finishDateTime'] != null ? TemporalDateTime.fromString(json['finishDateTime']) : null,
+      _startDateTime = json['startDateTime'] != null ? amplify_core.TemporalDateTime.fromString(json['startDateTime']) : null,
+      _finishDateTime = json['finishDateTime'] != null ? amplify_core.TemporalDateTime.fromString(json['finishDateTime']) : null,
       _coords = json['coords']?['serializedData'] != null
         ? Coordinates.fromJson(new Map<String, dynamic>.from(json['coords']['serializedData']))
         : null,
@@ -438,8 +498,8 @@ class Event extends Model {
           .toList()
         : null,
       _needsCode = json['needsCode'],
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null,
       _maxBuyQuantity = (json['maxBuyQuantity'] as num?)?.toInt(),
       _ticketCategories = json['ticketCategories'] is List
         ? (json['ticketCategories'] as List)
@@ -453,233 +513,259 @@ class Event extends Model {
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'title': _title, 'description': _description, 'company': _company, 'companyUrl': _companyUrl, 'startDateTime': _startDateTime, 'finishDateTime': _finishDateTime, 'coords': _coords, 'address': _address, 'place': _place, 'minAge': _minAge, 'price': _price, 'maxCapacity': _maxCapacity, 'totalAssistants': _totalAssistants, 'primaryImage': _primaryImage, 'contactNumber': _contactNumber, 'images': _images, 'eventCategory': _eventCategory, 'tickets': _tickets, 'Jobs': _Jobs, 'discountCodes': _discountCodes, 'needsCode': _needsCode, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'maxBuyQuantity': _maxBuyQuantity, 'ticketCategories': _ticketCategories
+    'id': id,
+    'title': _title,
+    'description': _description,
+    'company': _company,
+    'companyUrl': _companyUrl,
+    'startDateTime': _startDateTime,
+    'finishDateTime': _finishDateTime,
+    'coords': _coords,
+    'address': _address,
+    'place': _place,
+    'minAge': _minAge,
+    'price': _price,
+    'maxCapacity': _maxCapacity,
+    'totalAssistants': _totalAssistants,
+    'primaryImage': _primaryImage,
+    'contactNumber': _contactNumber,
+    'images': _images,
+    'eventCategory': _eventCategory,
+    'tickets': _tickets,
+    'Jobs': _Jobs,
+    'discountCodes': _discountCodes,
+    'needsCode': _needsCode,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt,
+    'maxBuyQuantity': _maxBuyQuantity,
+    'ticketCategories': _ticketCategories
   };
 
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField TITLE = QueryField(fieldName: "title");
-  static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField COMPANY = QueryField(fieldName: "company");
-  static final QueryField COMPANYURL = QueryField(fieldName: "companyUrl");
-  static final QueryField STARTDATETIME = QueryField(fieldName: "startDateTime");
-  static final QueryField FINISHDATETIME = QueryField(fieldName: "finishDateTime");
-  static final QueryField COORDS = QueryField(fieldName: "coords");
-  static final QueryField ADDRESS = QueryField(fieldName: "address");
-  static final QueryField PLACE = QueryField(fieldName: "place");
-  static final QueryField MINAGE = QueryField(fieldName: "minAge");
-  static final QueryField PRICE = QueryField(fieldName: "price");
-  static final QueryField MAXCAPACITY = QueryField(fieldName: "maxCapacity");
-  static final QueryField TOTALASSISTANTS = QueryField(fieldName: "totalAssistants");
-  static final QueryField PRIMARYIMAGE = QueryField(fieldName: "primaryImage");
-  static final QueryField CONTACTNUMBER = QueryField(fieldName: "contactNumber");
-  static final QueryField IMAGES = QueryField(fieldName: "images");
-  static final QueryField EVENTCATEGORY = QueryField(
+  static final amplify_core.QueryModelIdentifier<EventModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<EventModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final TITLE = amplify_core.QueryField(fieldName: "title");
+  static final DESCRIPTION = amplify_core.QueryField(fieldName: "description");
+  static final COMPANY = amplify_core.QueryField(fieldName: "company");
+  static final COMPANYURL = amplify_core.QueryField(fieldName: "companyUrl");
+  static final STARTDATETIME = amplify_core.QueryField(fieldName: "startDateTime");
+  static final FINISHDATETIME = amplify_core.QueryField(fieldName: "finishDateTime");
+  static final COORDS = amplify_core.QueryField(fieldName: "coords");
+  static final ADDRESS = amplify_core.QueryField(fieldName: "address");
+  static final PLACE = amplify_core.QueryField(fieldName: "place");
+  static final MINAGE = amplify_core.QueryField(fieldName: "minAge");
+  static final PRICE = amplify_core.QueryField(fieldName: "price");
+  static final MAXCAPACITY = amplify_core.QueryField(fieldName: "maxCapacity");
+  static final TOTALASSISTANTS = amplify_core.QueryField(fieldName: "totalAssistants");
+  static final PRIMARYIMAGE = amplify_core.QueryField(fieldName: "primaryImage");
+  static final CONTACTNUMBER = amplify_core.QueryField(fieldName: "contactNumber");
+  static final IMAGES = amplify_core.QueryField(fieldName: "images");
+  static final EVENTCATEGORY = amplify_core.QueryField(
     fieldName: "eventCategory",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'EventCategory'));
-  static final QueryField TICKETS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'EventCategory'));
+  static final TICKETS = amplify_core.QueryField(
     fieldName: "tickets",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
-  static final QueryField JOBS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
+  static final JOBS = amplify_core.QueryField(
     fieldName: "Jobs",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Job'));
-  static final QueryField DISCOUNTCODES = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Job'));
+  static final DISCOUNTCODES = amplify_core.QueryField(
     fieldName: "discountCodes",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'DiscountCode'));
-  static final QueryField NEEDSCODE = QueryField(fieldName: "needsCode");
-  static final QueryField CREATEDAT = QueryField(fieldName: "createdAt");
-  static final QueryField UPDATEDAT = QueryField(fieldName: "updatedAt");
-  static final QueryField MAXBUYQUANTITY = QueryField(fieldName: "maxBuyQuantity");
-  static final QueryField TICKETCATEGORIES = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'DiscountCode'));
+  static final NEEDSCODE = amplify_core.QueryField(fieldName: "needsCode");
+  static final CREATEDAT = amplify_core.QueryField(fieldName: "createdAt");
+  static final UPDATEDAT = amplify_core.QueryField(fieldName: "updatedAt");
+  static final MAXBUYQUANTITY = amplify_core.QueryField(fieldName: "maxBuyQuantity");
+  static final TICKETCATEGORIES = amplify_core.QueryField(
     fieldName: "ticketCategories",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'TicketCategory'));
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'TicketCategory'));
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Event";
     modelSchemaDefinition.pluralName = "Events";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.PUBLIC,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PUBLIC,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ]),
-      AuthRule(
-        authStrategy: AuthStrategy.GROUPS,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.GROUPS,
         groupClaim: "cognito:groups",
         groups: [ "Admin" ],
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ]),
-      AuthRule(
-        authStrategy: AuthStrategy.PRIVATE,
-        operations: [
-          ModelOperation.READ
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PRIVATE,
+        operations: const [
+          amplify_core.ModelOperation.READ
         ])
     ];
     
     modelSchemaDefinition.indexes = [
-      ModelIndex(fields: const ["id"], name: null),
-      ModelIndex(fields: const ["eventcategoryID", "startDateTime"], name: "byEventCategory")
+      amplify_core.ModelIndex(fields: const ["id"], name: null),
+      amplify_core.ModelIndex(fields: const ["eventcategoryID", "startDateTime"], name: "byEventCategory")
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.TITLE,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.DESCRIPTION,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.COMPANY,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.COMPANYURL,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.STARTDATETIME,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.FINISHDATETIME,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'coords',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Coordinates')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Coordinates')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.ADDRESS,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.PLACE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.MINAGE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.PRICE,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.double)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.double)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.MAXCAPACITY,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.TOTALASSISTANTS,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.PRIMARYIMAGE,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.CONTACTNUMBER,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.IMAGES,
       isRequired: false,
       isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.string.name)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: Event.EVENTCATEGORY,
       isRequired: false,
-      targetName: 'eventcategoryID',
+      targetNames: ['eventcategoryID'],
       ofModelName: 'EventCategory'
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Event.TICKETS,
       isRequired: false,
       ofModelName: 'Ticket',
       associatedKey: Ticket.EVENT
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Event.JOBS,
       isRequired: false,
       ofModelName: 'Job',
       associatedKey: Job.EVENT
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Event.DISCOUNTCODES,
       isRequired: false,
       ofModelName: 'DiscountCode',
-      associatedKey: DiscountCode.EVENT
+      associatedKey: DiscountCode.EVENTID
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.NEEDSCODE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.bool)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.CREATEDAT,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.UPDATEDAT,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Event.MAXBUYQUANTITY,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Event.TICKETCATEGORIES,
       isRequired: false,
       ofModelName: 'TicketCategory',
@@ -688,7 +774,7 @@ class Event extends Model {
   });
 }
 
-class _EventModelType extends ModelType<Event> {
+class _EventModelType extends amplify_core.ModelType<Event> {
   const _EventModelType();
   
   @override
@@ -700,4 +786,47 @@ class _EventModelType extends ModelType<Event> {
   String modelName() {
     return 'Event';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [Event] in your schema.
+ */
+class EventModelIdentifier implements amplify_core.ModelIdentifier<Event> {
+  final String id;
+
+  /** Create an instance of EventModelIdentifier using [id] the primary key. */
+  const EventModelIdentifier({
+    required this.id});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'EventModelIdentifier(id: $id)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is EventModelIdentifier &&
+      id == other.id;
+  }
+  
+  @override
+  int get hashCode =>
+    id.hashCode;
 }

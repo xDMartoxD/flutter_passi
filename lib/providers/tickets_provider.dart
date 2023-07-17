@@ -43,18 +43,27 @@ class TicketsProvider with ChangeNotifier {
         eventProvider?.event != null &&
         paymentMethodsByUserProvider != null &&
         paymentMethodsByUserProvider!.presignedAcceptance != null) {
-      if (paymentMethodsByUserProvider!.presignedAcceptance!.acceptanceToken.isNotEmpty) {
+      if (paymentMethodsByUserProvider!
+          .presignedAcceptance!.acceptanceToken.isNotEmpty) {
         try {
-          final options = RestOptions(
-            path: '/create-entrance',
-            body: Uint8List.fromList(
-                "{\"acceptanceToken\":\"${paymentMethodsByUserProvider!.presignedAcceptance!.acceptanceToken}\", \"installments\": 1 ,\"eventID\": \"${eventProvider!.event!.id}\",  \"code\": \"${discountCodesByEventProvider?.discountCode?.code}\", \"ticketCategoriesID\": ${cartProvider!.transformCart}, \"userID\":\"${authenticationProvider!.user!.id}\"}"
-                    .codeUnits),
+          final restOperation = Amplify.API.post(
+            './create-entrance',
+            body: HttpPayload.json(
+              {
+                "acceptanceToken": paymentMethodsByUserProvider!
+                    .presignedAcceptance!.acceptanceToken,
+                "installments": 1,
+                "eventID": eventProvider!.eventId,
+                "code": discountCodesByEventProvider?.discountCode?.code,
+                "ticketCategoriesID": cartProvider!.transformCart,
+                "userID": authenticationProvider!.user!.id
+              },
+            ),
           );
-          final response = await Amplify.API.post(restOptions: options).response;
-          final body = json.decode(response.body);
+          final response = await restOperation.response;
+          final body = json.decode(response.decodeBody());
           if (response.statusCode == 401) {
-            return body["data"];
+            return body["data"]["data"];
           }
           return null;
         } on ApiException catch (e) {
@@ -102,7 +111,9 @@ query TicketsByUser(\$userID: ID!) {
         final ticketsByUserRequest = cognitoRequest(
           GraphQLRequest(
             document: graphQLDocument,
-            variables: <String, String>{'userID': authenticationProvider!.user!.id},
+            variables: <String, String>{
+              'userID': authenticationProvider!.user!.id
+            },
             decodePath: ticketsByUser,
           ),
         );
@@ -113,12 +124,13 @@ query TicketsByUser(\$userID: ID!) {
           return;
         }
         final data = jsonDecode(responseGraphQLDocument.data);
-        final ticketsMap = List<Map<String, dynamic>>.from(data[ticketsByUser]['items']);
+        final ticketsMap =
+            List<Map<String, dynamic>>.from(data[ticketsByUser]['items']);
         List<Ticket?> loadedTickets = [];
         for (var ticketMap in ticketsMap) {
           final event = await eventProvider!.getEventById(ticketMap['eventID']);
-          final ticketCategory =
-              await ticketCategoryProvider!.getTicketCategoryById(ticketMap['ticketCategoryID']);
+          final ticketCategory = await ticketCategoryProvider!
+              .getTicketCategoryById(ticketMap['ticketCategoryID']);
           final ticket = Ticket(
             user: authenticationProvider!.user,
             didAssist: ticketMap['didAssist'],

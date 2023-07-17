@@ -1,4 +1,4 @@
-import 'package:amplify_api/model_queries.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:passi_app/models/ModelProvider.dart';
@@ -9,7 +9,8 @@ class TicketCategoryProvider with ChangeNotifier {
   Future<TicketCategory?> getTicketCategoryById(String id) async {
     try {
       final request = apiKeyRequest(
-        ModelQueries.get(TicketCategory.classType, id),
+        ModelQueries.get(
+            TicketCategory.classType, TicketCategoryModelIdentifier(id: id)),
       );
       final response = await Amplify.API.query(request: request).response;
       final ticketCategory = response.data;

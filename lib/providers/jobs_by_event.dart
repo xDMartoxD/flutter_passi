@@ -1,4 +1,4 @@
-import 'package:amplify_api/model_queries.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:passi_app/models/JobTypeEnum.dart';
@@ -24,7 +24,9 @@ class JobsByEventProvider with ChangeNotifier {
       final request = apiKeyRequest(
         ModelQueries.list(
           Job.classType,
-          where: Job.EVENT.eq(eventProvider!.event!.id).and(Job.TYPE.eq(JobTypeEnum.Promoter)),
+          where: Job.EVENT
+              .eq(eventProvider!.event!.id)
+              .and(Job.TYPE.eq(JobTypeEnum.Promoter)),
         ),
       );
       final response = await Amplify.API.query(request: request).response;

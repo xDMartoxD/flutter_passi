@@ -10,13 +10,16 @@ class EventCategoriesOverviewScreen extends StatefulWidget {
   static const name = "event-categories";
   final String id;
   final String categoryName;
-  const EventCategoriesOverviewScreen({super.key, required this.id, required this.categoryName});
+  const EventCategoriesOverviewScreen(
+      {super.key, required this.id, required this.categoryName});
 
   @override
-  State<EventCategoriesOverviewScreen> createState() => _EventCategoriesOverviewScreenState();
+  State<EventCategoriesOverviewScreen> createState() =>
+      _EventCategoriesOverviewScreenState();
 }
 
-class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewScreen>
+class _EventCategoriesOverviewScreenState
+    extends State<EventCategoriesOverviewScreen>
     with SingleTickerProviderStateMixin {
   late DraggableScrollableController _scrollableController;
   late double _appBarElevation;
@@ -30,16 +33,17 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
 
     _scrollableController = DraggableScrollableController();
     _scrollableController.addListener(_scrollableControllerListener);
-    _appBarElevation = 5;
-    _animationController =
-        AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
+    _appBarElevation = 0;
+    _animationController = AnimationController(
+        duration: const Duration(milliseconds: 300), vsync: this);
     _mapButtonVisible = true;
 
     Future.delayed(Duration.zero).then((_) {
-      _appBarAnimation =
-          ColorTween(begin: Theme.of(context).appBarTheme.backgroundColor, end: Colors.transparent)
-              .animate(_animationController)
-            ..addListener(animationListener);
+      _appBarAnimation = ColorTween(
+              begin: Theme.of(context).appBarTheme.backgroundColor,
+              end: Colors.transparent)
+          .animate(_animationController)
+        ..addListener(animationListener);
     });
   }
 
@@ -80,7 +84,8 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
   }
 
   Future<void> _fetchEventsByCategory(BuildContext context) async {
-    await Provider.of<EventsByCategoryProvider>(context).fetchEventsByCategory();
+    await Provider.of<EventsByCategoryProvider>(context)
+        .fetchEventsByCategory();
   }
 
   @override
@@ -94,7 +99,7 @@ class _EventCategoriesOverviewScreenState extends State<EventCategoriesOverviewS
       ),
       body: ChangeNotifierProvider<EventsByCategoryProvider>(
           create: (_) {
-            return EventsByCategoryProvider(categoryId: widget.id);
+            return EventsByCategoryProvider(eventCategoryId: widget.id);
           },
           child: FutureBuilder(
             future: _fetchEventsByCategory(context),
@@ -149,7 +154,8 @@ class EventsByCategoryContent extends StatelessWidget {
               return Stack(children: [
                 Material(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(25)),
                   elevation: 5,
                   child: Column(
                     children: [

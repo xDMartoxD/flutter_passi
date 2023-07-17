@@ -104,5 +104,46 @@
         "passiStorage": {}
       }
     }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-passi-dev-190551-authRole",
+      "UnauthRoleArn": "arn:aws:iam::954573579519:role/amplify-passi-dev-190551-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::954573579519:role/amplify-passi-dev-190551-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-passi-dev-190551-deployment",
+      "UnauthRoleName": "amplify-passi-dev-190551-unauthRole",
+      "StackName": "amplify-passi-dev-190551",
+      "StackId": "arn:aws:cloudformation:us-east-1:954573579519:stack/amplify-passi-dev-190551/07a9e740-2111-11ee-bcfb-12549cad2e49",
+      "AmplifyAppId": "d32iatki73wyls"
+    },
+    "categories": {
+      "auth": {
+        "appamplify02fef6e8": {}
+      },
+      "function": {
+        "ConfirmNequiPayment": {},
+        "CreateEntracePayment": {},
+        "CreateEntrance": {},
+        "CreateEntranceBusinessLogic": {},
+        "CreateEntranceDB": {},
+        "CreateEntranceNequiBusinessLogic": {},
+        "CreateEntranceNequiDB": {},
+        "CreateEntrancePSE": {},
+        "CreateFreeEntrance": {},
+        "CreatePaymentSource": {},
+        "CreateUserDynamo": {},
+        "RefreshTransactionStatus": {},
+        "appamplify02fef6e8PostConfirmation": {},
+        "createEvent": {},
+        "passiModelsLayer": {},
+        "passiWompiLayer": {},
+        "passinodeModules": {},
+        "validateTicket": {},
+        "verifyEvent": {},
+        "appamplify": {},
+        "appamplify02fef6e8": {}
+      }
+    }
   }
 }

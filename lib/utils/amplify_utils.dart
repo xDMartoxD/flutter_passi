@@ -2,15 +2,22 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import '../constants/amplify_api_names.dart';
 
-Future<String?> getUrl(String key) async {
+Future<String> getDownloadUrl(String key) async {
   try {
-    S3GetUrlOptions options =
-        S3GetUrlOptions(accessLevel: StorageAccessLevel.private, expires: 10000);
-    GetUrlResult result = await Amplify.Storage.getUrl(key: key, options: options);
-    return result.url;
-  } on StorageException catch (storeError) {
-    safePrint('Storage failed - ${storeError.message}');
-    return '';
+    final result = await Amplify.Storage.getUrl(
+      key: key,
+      options: const StorageGetUrlOptions(
+        accessLevel: StorageAccessLevel.guest,
+        pluginOptions: S3GetUrlPluginOptions(
+          validateObjectExistence: true,
+          expiresIn: Duration(days: 1),
+        ),
+      ),
+    ).result;
+    return result.url.toString();
+  } on StorageException catch (e) {
+    safePrint('Could not get a downloadable URL: ${e.message}');
+    rethrow;
   }
 }
 

@@ -13,7 +13,8 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   Future<void> _listEventCategories(BuildContext context) async {
-    await Provider.of<EventCategoriesProvider>(context, listen: false).fetchEventCategories();
+    await Provider.of<EventCategoriesProvider>(context, listen: false)
+        .fetchEventCategories();
   }
 
   @override
@@ -54,7 +55,8 @@ class EventsContent extends StatelessWidget {
             ),
             ChangeNotifierProvider<EventsByCategoryProvider>(
               create: (context) {
-                return EventsByCategoryProvider(categoryId: eventCategories[index].id);
+                return EventsByCategoryProvider(
+                    eventCategoryId: eventCategories[index].id);
               },
               child: const EventsByCategoryList(),
             ),
@@ -73,7 +75,8 @@ class EventsByCategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<void> fetchEventsByCategory(BuildContext context) async {
-      Provider.of<EventsByCategoryProvider>(context, listen: false).fetchEventsByCategory();
+      Provider.of<EventsByCategoryProvider>(context, listen: false)
+          .fetchEventsByCategory();
     }
 
     return SizedBox(
@@ -83,7 +86,8 @@ class EventsByCategoryList extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return const Center(child: CircularProgressIndicator(color: Colors.white));
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.white));
             default:
               return Consumer<EventsByCategoryProvider>(
                 builder: (context, value, _) {

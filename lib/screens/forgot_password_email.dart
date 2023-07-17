@@ -15,7 +15,8 @@ class ForgotPasswordEmailScreen extends StatefulWidget {
   const ForgotPasswordEmailScreen({super.key});
 
   @override
-  State<ForgotPasswordEmailScreen> createState() => _ForgotPasswordEmailScreenState();
+  State<ForgotPasswordEmailScreen> createState() =>
+      _ForgotPasswordEmailScreenState();
 }
 
 class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
@@ -32,11 +33,13 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
         // Invalid!
         return;
       }
-      final authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+      final authProvider =
+          Provider.of<AuthenticationProvider>(context, listen: false);
       await authProvider.resetPassword(_authData['email']!);
       if (context.mounted) {
-        final params = ResetPasswordScreenArgs(username: _authData['email']!).params();
-        context.pushNamed(ResetPasswordScreen.name, params: params);
+        final params =
+            ResetPasswordScreenArgs(username: _authData['email']!).params();
+        context.pushNamed(ResetPasswordScreen.name, pathParameters: params);
       }
     } on AuthException catch (e) {
       _showErrorDialog(e.message, context);
@@ -81,7 +84,8 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                   style: const TextStyle(fontSize: 20),
                   decoration: const InputDecoration(
                       labelText: 'Correo',
-                      helperText: "Enviaremos un correo electronico con un codigo"),
+                      helperText:
+                          "Enviaremos un correo electronico con un codigo"),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || !isEmail(value)) {

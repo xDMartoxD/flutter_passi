@@ -28,7 +28,6 @@ class AppTabs extends StatefulWidget {
 }
 
 class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
-  String _authStatus = 'Unknown';
   late final List<Map<String, Object?>> _screens;
   late int _currenPageIndex;
   // late final TabController _tabController;
@@ -44,7 +43,8 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
     try {
       await Amplify.configure(amplifyconfig);
     } on AmplifyAlreadyConfiguredException {
-      safePrint("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+      safePrint(
+          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
     }
   }
 
@@ -58,7 +58,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
 
     _screens = [
       {
-        "title": "home",
+        "title": "Home",
         "screen": const HomeScreen(),
         "appBarBottom": null,
         "appBarActions": [],
@@ -100,14 +100,14 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         });
       }
       if (context.mounted) {
-        await Provider.of<AuthenticationProvider>(context, listen: false).setUser();
+        await Provider.of<AuthenticationProvider>(context, listen: false)
+            .setUser();
       }
     });
   }
 
   Future<void> initPlugin() async {
-    final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
-    setState(() => _authStatus = '$status');
+    final status = await AppTrackingTransparency.trackingAuthorizationStatus;
     print(status.name);
     // If the system can show an authorization request dialog
     if (status == TrackingStatus.notDetermined) {
@@ -116,15 +116,16 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
       // Wait for dialog popping animation
       await Future.delayed(const Duration(milliseconds: 200));
       // Request system's tracking authorization dialog
-      final TrackingStatus status = await AppTrackingTransparency.requestTrackingAuthorization();
-      setState(() => _authStatus = '$status');
+      final TrackingStatus status =
+          await AppTrackingTransparency.requestTrackingAuthorization();
     }
 
     final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
     safePrint("UUID: $uuid");
   }
 
-  Future<void> showCustomTrackingDialog(BuildContext context) async => await showDialog<void>(
+  Future<void> showCustomTrackingDialog(BuildContext context) async =>
+      await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Querido Usuario'),
@@ -153,7 +154,8 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(_screens[_currenPageIndex]["title"] as String),
-        bottom: _screens[_currenPageIndex]["appBarBottom"] as PreferredSizeWidget?,
+        bottom:
+            _screens[_currenPageIndex]["appBarBottom"] as PreferredSizeWidget?,
         actions: List<IconButton>.from(
           _screens[_currenPageIndex]["appBarActions"] as List<dynamic>,
         ),
@@ -181,7 +183,9 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
           _currenPageIndex = value;
         }),
       ),
-      body: _isAmplifyConfigured ? _screens[_currenPageIndex]["screen"] as Widget : const Loading(),
+      body: _isAmplifyConfigured
+          ? _screens[_currenPageIndex]["screen"] as Widget
+          : const Loading(),
     );
   }
 }

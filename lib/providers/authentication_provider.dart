@@ -51,7 +51,8 @@ class AuthenticationProvider with ChangeNotifier {
       try {
         final id = await _attemptAutoLogin();
         if (id != null) {
-          final request = apiKeyRequest(ModelQueries.get(User.classType, id));
+          final request = apiKeyRequest(
+              ModelQueries.get(User.classType, UserModelIdentifier(id: id)));
           final response = await Amplify.API.query(request: request).response;
           final data = response.data;
           if (data == null) {
@@ -98,7 +99,8 @@ class AuthenticationProvider with ChangeNotifier {
 
   Future<void> confirmUser(String username, String confirmationCode) async {
     try {
-      await Amplify.Auth.confirmSignUp(username: username, confirmationCode: confirmationCode);
+      await Amplify.Auth.confirmSignUp(
+          username: username, confirmationCode: confirmationCode);
     } on AuthException catch (e) {
       safePrint(e.message);
       rethrow;
@@ -170,7 +172,9 @@ class AuthenticationProvider with ChangeNotifier {
       String username, String password, String confirmationCode) async {
     try {
       await Amplify.Auth.confirmResetPassword(
-          username: username, newPassword: password, confirmationCode: confirmationCode);
+          username: username,
+          newPassword: password,
+          confirmationCode: confirmationCode);
     } on AmplifyException catch (e) {
       safePrint(e);
       rethrow;

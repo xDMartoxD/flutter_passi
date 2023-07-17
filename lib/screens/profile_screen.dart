@@ -20,7 +20,8 @@ class ProfileScreen extends StatelessWidget {
     return FutureBuilder(
         future: _getUser(context),
         builder: (context, snapshot) {
-          return Consumer<AuthenticationProvider>(builder: (context, value, child) {
+          return Consumer<AuthenticationProvider>(
+              builder: (context, value, child) {
             if (value.user == null) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -50,9 +51,9 @@ class _AuthState extends State<Auth> {
   @override
   void initState() {
     super.initState();
-    getUrl(widget.avatar?.key ?? "").then((value) {
+    getDownloadUrl(widget.avatar?.key ?? "").then((value) {
       setState(() {
-        avatarUrl = value ?? "";
+        avatarUrl = value;
       });
     });
   }
@@ -73,7 +74,8 @@ class _AuthState extends State<Auth> {
               width: 100,
               child: FittedBox(
                 fit: BoxFit.contain,
-                child: ClipOval(child: Image.asset('assets/images/empty-profile.png')),
+                child: ClipOval(
+                    child: Image.asset('assets/images/empty-profile.png')),
               ),
             ),
           ),
@@ -108,19 +110,21 @@ class UnAuth extends StatelessWidget {
             size: 120,
           ),
           SizedBox(
-              width: 240,
-              child: FloatingActionButton(
-                  shape: const StadiumBorder(),
-                  onPressed: () => bottomSheetAuthHandler(
-                        context: context,
-                      ),
-                  child: Text(
-                    "Ingresa",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ))),
+            width: 240,
+            child: FloatingActionButton(
+              shape: const StadiumBorder(),
+              onPressed: () => bottomSheetAuthHandler(
+                context: context,
+              ),
+              child: Text(
+                "Ingresa",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ],
       ),
     );

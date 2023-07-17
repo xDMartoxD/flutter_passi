@@ -281,8 +281,8 @@ type Ticket
     rules: [
       { allow: owner, operations: [read], ownerField: "userID" }
       { allow: groups, groups: ["Admin"] }
-      { allow: public }
-      { allow: private }
+      { allow: public,  operations: [read]  }
+      { allow: private, , operations: [read] }
     ]
   ) {
   id: ID!
@@ -291,7 +291,7 @@ type Ticket
       rules: [
         { allow: private, operations: [read] }
         { allow: groups, groups: ["Admin"] }
-        { allow: public }
+        { allow: public, , operations: [read] }
       ]
     )
   event: Event @belongsTo(fields: ["eventID"])
@@ -389,7 +389,7 @@ type Event
   @model
   @auth(
     rules: [
-      { allow: public }
+      { allow: public, operations: [read] }
       { allow: groups, groups: ["Admin"] }
       { allow: private, operations: [read] }
     ]
@@ -473,7 +473,7 @@ type EventCategory
 }
 
 type DiscountCode
-  @model
+  @model(queries: { list: null })
   @auth(
     rules: [
       { allow: groups, groups: ["Admin"] }
@@ -488,7 +488,6 @@ type DiscountCode
   validUntil: AWSDateTime!
   discount: Float!
   eventID: ID! @index(name: "byEvent", queryField: "discountCodesByEvent")
-  event: Event @belongsTo(fields: ["eventID"])
   userID: ID @index(name: "byUser", queryField: "discountCodesByUser")
   user: User @belongsTo(fields: ["userID"])
   tickets: [Ticket]

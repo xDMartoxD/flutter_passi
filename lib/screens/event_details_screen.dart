@@ -34,7 +34,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
     super.initState();
     Future.delayed(Duration.zero).then(
       (value) {
-        _authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+        _authenticationProvider =
+            Provider.of<AuthenticationProvider>(context, listen: false);
         // _authenticationProvider!.addListener(_authenticationListener);
       },
     );
@@ -52,11 +53,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   }
 
   void _goToCheckout(BuildContext context) {
-    final args = EventCheckoutScreenArgs(id: widget.id, discountCode: widget.promoterCode);
+    final args = EventCheckoutScreenArgs(
+        id: widget.id, discountCode: widget.promoterCode);
     context.pushNamed(
       EventCheckoutScreen.name,
-      params: args.params(),
-      queryParams: args.queryParams(),
+      pathParameters: args.params(),
+      queryParameters: args.queryParams(),
     );
   }
 
@@ -95,7 +97,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             ChangeNotifierProvider<EventProvider>(create: (context) {
               return EventProvider(eventId: widget.id);
             }),
-            ChangeNotifierProxyProvider<EventProvider, JobsByEventProvider>(create: (context) {
+            ChangeNotifierProxyProvider<EventProvider, JobsByEventProvider>(
+                create: (context) {
               return JobsByEventProvider();
             }, update: (context, eventProvider, prev) {
               return JobsByEventProvider();
@@ -154,7 +157,10 @@ class _EventContentState extends State<EventContent> {
                                 padding: const EdgeInsets.all(10),
                                 child: Text(
                                   eventProvider.event!.title,
-                                  style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge!
+                                      .copyWith(
                                         fontWeight: FontWeight.bold,
                                       ),
                                   softWrap: true,
@@ -166,7 +172,8 @@ class _EventContentState extends State<EventContent> {
                               ),
                               Container(
                                 height: 100,
-                                decoration: const BoxDecoration(border: Border.symmetric()),
+                                decoration: const BoxDecoration(
+                                    border: Border.symmetric()),
                                 child: ListView(
                                   scrollDirection: Axis.horizontal,
                                   children: [
@@ -190,7 +197,8 @@ class _EventContentState extends State<EventContent> {
                                     ),
                                     EventInfoIcon(
                                       icon: Icons.star_border_rounded,
-                                      textContent: eventProvider.event!.eventCategory!.name,
+                                      textContent: eventProvider
+                                          .event!.eventCategory!.name,
                                     ),
                                   ],
                                 ),
@@ -199,8 +207,10 @@ class _EventContentState extends State<EventContent> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Card(
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 10),
-                                    child: ChangeNotifierProvider<TicketCategoriesByEventProvider>(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: ChangeNotifierProvider<
+                                        TicketCategoriesByEventProvider>(
                                       create: (context) {
                                         return TicketCategoriesByEventProvider();
                                       },
@@ -211,7 +221,8 @@ class _EventContentState extends State<EventContent> {
                                   ),
                                 ),
                               ),
-                              if (jobsProvider.promoters.isNotEmpty) const PromotersWidget(),
+                              if (jobsProvider.promoters.isNotEmpty)
+                                const PromotersWidget(),
                               // SizedBox(height: 20),
                               // Padding(
                               //   padding: const EdgeInsets.all(8.0),
@@ -227,7 +238,8 @@ class _EventContentState extends State<EventContent> {
                               if (eventProvider.event!.description != null)
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: ExpandableText(eventProvider.event!.description),
+                                  child: ExpandableText(
+                                      eventProvider.event!.description),
                                 ),
                               const SizedBox(height: 80)
                             ],
@@ -336,6 +348,7 @@ class EventInfoIcon extends StatelessWidget {
               Text(
                 textContent,
                 textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               )
             ],
           ),
@@ -395,7 +408,8 @@ class EventDetailsCategoriesInfo extends StatelessWidget {
                             height: 50,
                             child: Text(
                               "\$ ${formatNumber(ticketCategory.price)}",
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -437,7 +451,8 @@ class EventDetailsAppBar extends StatefulWidget {
   State<EventDetailsAppBar> createState() => _EventDetailsAppBarState();
 }
 
-class _EventDetailsAppBarState extends State<EventDetailsAppBar> with TickerProviderStateMixin {
+class _EventDetailsAppBarState extends State<EventDetailsAppBar>
+    with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override

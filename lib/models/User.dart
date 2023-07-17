@@ -20,14 +20,12 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the User type in your schema. */
-@immutable
-class User extends Model {
+class User extends amplify_core.Model {
   static const classType = const _UserModelType();
   final String id;
   final String? _email;
@@ -38,26 +36,31 @@ class User extends Model {
   final List<DiscountCode>? _codes;
   final List<PaymentMethod>? _paymentMethods;
   final PaymentMethod? _selectedPaymentMethod;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
   final String? _userSelectedPaymentMethodId;
 
   @override
   getInstanceType() => classType;
   
+  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
-  String getId() {
-    return id;
+  String getId() => id;
+  
+  UserModelIdentifier get modelIdentifier {
+      return UserModelIdentifier(
+        id: id
+      );
   }
   
   String get email {
     try {
       return _email!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -67,10 +70,10 @@ class User extends Model {
     try {
       return _name!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -100,27 +103,27 @@ class User extends Model {
     return _selectedPaymentMethod;
   }
   
-  TemporalDateTime get createdAt {
+  amplify_core.TemporalDateTime get createdAt {
     try {
       return _createdAt!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  TemporalDateTime get updatedAt {
+  amplify_core.TemporalDateTime get updatedAt {
     try {
       return _updatedAt!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -132,9 +135,9 @@ class User extends Model {
   
   const User._internal({required this.id, required email, required name, avatar, tickets, jobs, codes, paymentMethods, selectedPaymentMethod, required createdAt, required updatedAt, userSelectedPaymentMethodId}): _email = email, _name = name, _avatar = avatar, _tickets = tickets, _jobs = jobs, _codes = codes, _paymentMethods = paymentMethods, _selectedPaymentMethod = selectedPaymentMethod, _createdAt = createdAt, _updatedAt = updatedAt, _userSelectedPaymentMethodId = userSelectedPaymentMethodId;
   
-  factory User({String? id, required String email, required String name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, required TemporalDateTime createdAt, required TemporalDateTime updatedAt, String? userSelectedPaymentMethodId}) {
+  factory User({String? id, required String email, required String name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, required amplify_core.TemporalDateTime createdAt, required amplify_core.TemporalDateTime updatedAt, String? userSelectedPaymentMethodId}) {
     return User._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       email: email,
       name: name,
       avatar: avatar,
@@ -190,9 +193,9 @@ class User extends Model {
     return buffer.toString();
   }
   
-  User copyWith({String? id, String? email, String? name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, TemporalDateTime? createdAt, TemporalDateTime? updatedAt, String? userSelectedPaymentMethodId}) {
+  User copyWith({String? email, String? name, S3Object? avatar, List<Ticket>? tickets, List<Job>? jobs, List<DiscountCode>? codes, List<PaymentMethod>? paymentMethods, PaymentMethod? selectedPaymentMethod, amplify_core.TemporalDateTime? createdAt, amplify_core.TemporalDateTime? updatedAt, String? userSelectedPaymentMethodId}) {
     return User._internal(
-      id: id ?? this.id,
+      id: id,
       email: email ?? this.email,
       name: name ?? this.name,
       avatar: avatar ?? this.avatar,
@@ -204,6 +207,35 @@ class User extends Model {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       userSelectedPaymentMethodId: userSelectedPaymentMethodId ?? this.userSelectedPaymentMethodId);
+  }
+  
+  User copyWithModelFieldValues({
+    ModelFieldValue<String>? email,
+    ModelFieldValue<String>? name,
+    ModelFieldValue<S3Object?>? avatar,
+    ModelFieldValue<List<Ticket>?>? tickets,
+    ModelFieldValue<List<Job>?>? jobs,
+    ModelFieldValue<List<DiscountCode>?>? codes,
+    ModelFieldValue<List<PaymentMethod>?>? paymentMethods,
+    ModelFieldValue<PaymentMethod?>? selectedPaymentMethod,
+    ModelFieldValue<amplify_core.TemporalDateTime>? createdAt,
+    ModelFieldValue<amplify_core.TemporalDateTime>? updatedAt,
+    ModelFieldValue<String?>? userSelectedPaymentMethodId
+  }) {
+    return User._internal(
+      id: id,
+      email: email == null ? this.email : email.value,
+      name: name == null ? this.name : name.value,
+      avatar: avatar == null ? this.avatar : avatar.value,
+      tickets: tickets == null ? this.tickets : tickets.value,
+      jobs: jobs == null ? this.jobs : jobs.value,
+      codes: codes == null ? this.codes : codes.value,
+      paymentMethods: paymentMethods == null ? this.paymentMethods : paymentMethods.value,
+      selectedPaymentMethod: selectedPaymentMethod == null ? this.selectedPaymentMethod : selectedPaymentMethod.value,
+      createdAt: createdAt == null ? this.createdAt : createdAt.value,
+      updatedAt: updatedAt == null ? this.updatedAt : updatedAt.value,
+      userSelectedPaymentMethodId: userSelectedPaymentMethodId == null ? this.userSelectedPaymentMethodId : userSelectedPaymentMethodId.value
+    );
   }
   
   User.fromJson(Map<String, dynamic> json)  
@@ -240,8 +272,8 @@ class User extends Model {
       _selectedPaymentMethod = json['selectedPaymentMethod']?['serializedData'] != null
         ? PaymentMethod.fromJson(new Map<String, dynamic>.from(json['selectedPaymentMethod']['serializedData']))
         : null,
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null,
       _userSelectedPaymentMethodId = json['userSelectedPaymentMethodId'];
   
   Map<String, dynamic> toJson() => {
@@ -249,150 +281,162 @@ class User extends Model {
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'email': _email, 'name': _name, 'avatar': _avatar, 'tickets': _tickets, 'jobs': _jobs, 'codes': _codes, 'paymentMethods': _paymentMethods, 'selectedPaymentMethod': _selectedPaymentMethod, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'userSelectedPaymentMethodId': _userSelectedPaymentMethodId
+    'id': id,
+    'email': _email,
+    'name': _name,
+    'avatar': _avatar,
+    'tickets': _tickets,
+    'jobs': _jobs,
+    'codes': _codes,
+    'paymentMethods': _paymentMethods,
+    'selectedPaymentMethod': _selectedPaymentMethod,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt,
+    'userSelectedPaymentMethodId': _userSelectedPaymentMethodId
   };
 
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField EMAIL = QueryField(fieldName: "email");
-  static final QueryField NAME = QueryField(fieldName: "name");
-  static final QueryField AVATAR = QueryField(fieldName: "avatar");
-  static final QueryField TICKETS = QueryField(
+  static final amplify_core.QueryModelIdentifier<UserModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<UserModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final EMAIL = amplify_core.QueryField(fieldName: "email");
+  static final NAME = amplify_core.QueryField(fieldName: "name");
+  static final AVATAR = amplify_core.QueryField(fieldName: "avatar");
+  static final TICKETS = amplify_core.QueryField(
     fieldName: "tickets",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
-  static final QueryField JOBS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Ticket'));
+  static final JOBS = amplify_core.QueryField(
     fieldName: "jobs",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Job'));
-  static final QueryField CODES = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Job'));
+  static final CODES = amplify_core.QueryField(
     fieldName: "codes",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'DiscountCode'));
-  static final QueryField PAYMENTMETHODS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'DiscountCode'));
+  static final PAYMENTMETHODS = amplify_core.QueryField(
     fieldName: "paymentMethods",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'PaymentMethod'));
-  static final QueryField SELECTEDPAYMENTMETHOD = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'PaymentMethod'));
+  static final SELECTEDPAYMENTMETHOD = amplify_core.QueryField(
     fieldName: "selectedPaymentMethod",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'PaymentMethod'));
-  static final QueryField CREATEDAT = QueryField(fieldName: "createdAt");
-  static final QueryField UPDATEDAT = QueryField(fieldName: "updatedAt");
-  static final QueryField USERSELECTEDPAYMENTMETHODID = QueryField(fieldName: "userSelectedPaymentMethodId");
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'PaymentMethod'));
+  static final CREATEDAT = amplify_core.QueryField(fieldName: "createdAt");
+  static final UPDATEDAT = amplify_core.QueryField(fieldName: "updatedAt");
+  static final USERSELECTEDPAYMENTMETHODID = amplify_core.QueryField(fieldName: "userSelectedPaymentMethodId");
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "User";
     modelSchemaDefinition.pluralName = "Users";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.OWNER,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.OWNER,
         ownerField: "id",
         identityClaim: "cognito:username",
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ]),
-      AuthRule(
-        authStrategy: AuthStrategy.PRIVATE,
-        operations: [
-          ModelOperation.READ
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PRIVATE,
+        operations: const [
+          amplify_core.ModelOperation.READ
         ]),
-      AuthRule(
-        authStrategy: AuthStrategy.GROUPS,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.GROUPS,
         groupClaim: "cognito:groups",
         groups: [ "Admin" ],
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ]),
-      AuthRule(
-        authStrategy: AuthStrategy.PUBLIC,
-        operations: [
-          ModelOperation.READ
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PUBLIC,
+        operations: const [
+          amplify_core.ModelOperation.READ
         ])
     ];
     
     modelSchemaDefinition.indexes = [
-      ModelIndex(fields: const ["id"], name: null)
+      amplify_core.ModelIndex(fields: const ["id"], name: null)
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: User.EMAIL,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: User.NAME,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'avatar',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'S3Object')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'S3Object')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: User.TICKETS,
       isRequired: false,
       ofModelName: 'Ticket',
       associatedKey: Ticket.USER
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: User.JOBS,
       isRequired: false,
       ofModelName: 'Job',
       associatedKey: Job.USER
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: User.CODES,
       isRequired: false,
       ofModelName: 'DiscountCode',
       associatedKey: DiscountCode.USER
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: User.PAYMENTMETHODS,
       isRequired: false,
       ofModelName: 'PaymentMethod',
       associatedKey: PaymentMethod.USER
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: User.SELECTEDPAYMENTMETHOD,
       isRequired: false,
       ofModelName: 'PaymentMethod',
-      associatedKey: PaymentMethod.ID
+      associatedKey: PaymentMethod.USER
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: User.CREATEDAT,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: User.UPDATEDAT,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: User.USERSELECTEDPAYMENTMETHODID,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
   });
 }
 
-class _UserModelType extends ModelType<User> {
+class _UserModelType extends amplify_core.ModelType<User> {
   const _UserModelType();
   
   @override
@@ -404,4 +448,47 @@ class _UserModelType extends ModelType<User> {
   String modelName() {
     return 'User';
   }
+}
+
+/**
+ * This is an auto generated class representing the model identifier
+ * of [User] in your schema.
+ */
+class UserModelIdentifier implements amplify_core.ModelIdentifier<User> {
+  final String id;
+
+  /** Create an instance of UserModelIdentifier using [id] the primary key. */
+  const UserModelIdentifier({
+    required this.id});
+  
+  @override
+  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
+    'id': id
+  });
+  
+  @override
+  List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
+    .entries
+    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
+    .toList();
+  
+  @override
+  String serializeAsString() => serializeAsMap().values.join('#');
+  
+  @override
+  String toString() => 'UserModelIdentifier(id: $id)';
+  
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    
+    return other is UserModelIdentifier &&
+      id == other.id;
+  }
+  
+  @override
+  int get hashCode =>
+    id.hashCode;
 }

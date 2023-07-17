@@ -18,9 +18,9 @@
     {
       "type": "ProjectLayer",
       "resourceName": "passiModelsLayer",
-      "env": "devel",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true
+      "isLatestVersionSelected": true,
+      "env": "prod"
     }
   ],
   "permissions": {

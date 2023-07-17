@@ -29,7 +29,7 @@ class EventItemLarge extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.pushNamed(
         EventDetailsScreen.name,
-        params: EventDetailScreenArgs(
+        pathParameters: EventDetailScreenArgs(
           id: id,
         ).params(),
       ),

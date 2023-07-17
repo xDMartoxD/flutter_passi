@@ -1,4 +1,5 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart' show AuthException;
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart'
+    show AuthException;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/models/screen_args/email_confirmation_screen_args.dart';
@@ -40,7 +41,8 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
       setState(() {
         _isLoading = true;
       });
-      await Provider.of<AuthenticationProvider>(context, listen: false).signUpUser(
+      await Provider.of<AuthenticationProvider>(context, listen: false)
+          .signUpUser(
         _authData["name"]!,
         _authData["email"]!,
         _authData["password"]!,
@@ -52,7 +54,7 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
       if (context.mounted) {
         context.pushNamed(
           EmailConfirmationScreen.name,
-          queryParams: emailConfirmationArgs.queryParams(),
+          queryParameters: emailConfirmationArgs.queryParams(),
         );
       }
     } on AuthException catch (e) {
@@ -100,7 +102,8 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
               children: [
                 TextFormField(
                   style: const TextStyle(fontSize: 20),
-                  decoration: const InputDecoration(labelText: 'Nombre completo'),
+                  decoration:
+                      const InputDecoration(labelText: 'Nombre completo'),
                   textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.name,
                   validator: (value) {
@@ -153,7 +156,8 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                 ),
                 TextFormField(
                   style: const TextStyle(fontSize: 20),
-                  decoration: const InputDecoration(labelText: 'Confirma tu contraseña'),
+                  decoration: const InputDecoration(
+                      labelText: 'Confirma tu contraseña'),
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
                   validator: (value) {
@@ -171,11 +175,15 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                     onPressed: _isLoading ? null : _submit,
                     child: _isLoading
                         ? const Center(
-                            child: CircularProgressIndicator(color: Colors.black),
+                            child:
+                                CircularProgressIndicator(color: Colors.black),
                           )
                         : Text(
                             "Ingresar",
-                            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),

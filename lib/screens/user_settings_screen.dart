@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
+import 'package:passi_app/screens/payment_methods_screen.dart';
 import 'package:provider/provider.dart';
 
 class UserSettingsScreen extends StatefulWidget {
@@ -19,7 +20,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero).then((_) {
-      _authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+      _authProvider =
+          Provider.of<AuthenticationProvider>(context, listen: false);
       if (context.mounted && _authProvider!.user == null) {
         context.pop();
       }
@@ -33,7 +35,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Eliminar Cuenta'),
-            content: const Text('Estas seguro que deseas eliminar esta cuenta?'),
+            content:
+                const Text('Estas seguro que deseas eliminar esta cuenta?'),
             actions: <Widget>[
               TextButton(
                 style: TextButton.styleFrom(
@@ -109,6 +112,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       color: Colors.white,
                     ),
                     title: const Text("Eliminar cuenta"),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      context.pushNamed(PaymentMethodsScreen.name);
+                    },
+                    leading: const Icon(
+                      Icons.credit_card,
+                      color: Colors.white,
+                    ),
+                    title: const Text("Metodos de pago"),
                   )
                 ],
               ),
