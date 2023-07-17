@@ -57,7 +57,7 @@ class AppRouter {
               );
               return EventCheckoutScreen(
                 id: args.id,
-                discountCode: args.discountCode,
+                code: args.discountCode,
               );
             },
           ),

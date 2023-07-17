@@ -24,8 +24,8 @@ class EventCheckoutScreen extends StatelessWidget {
   static const path = "event-checkout/:id";
   static const name = "event-checkout";
   final String id;
-  final String? discountCode;
-  const EventCheckoutScreen({super.key, required this.id, this.discountCode});
+  final String? code;
+  const EventCheckoutScreen({super.key, required this.id, this.code});
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +77,16 @@ class EventCheckoutScreen extends StatelessWidget {
           create: (context) {
             return TicketsProvider();
           },
-          update: (context,
-              eventProvider,
-              authenticationProvider,
-              cartProvider,
-              ticketCategoriesByEventProvider,
-              paymentMethodsByUserProvider,
-              discountCodesByEventProvider,
-              prev) {
+          update: (
+            context,
+            eventProvider,
+            authenticationProvider,
+            cartProvider,
+            ticketCategoriesByEventProvider,
+            paymentMethodsByUserProvider,
+            discountCodesByEventProvider,
+            prev,
+          ) {
             return TicketsProvider(
               eventProvider: eventProvider,
               authenticationProvider: authenticationProvider,
@@ -110,35 +112,25 @@ class EventCheckoutContent extends StatefulWidget {
 
 class _EventCheckoutContentState extends State<EventCheckoutContent> {
   TicketCategoriesByEventProvider? _ticketCategoriesByEventProvider;
-  double totalAmount = 0;
+
   bool _isLoading = false;
 
   Future<void> _fetchCheckoutInfo(BuildContext context) async {
     try {
       if (context.mounted) {
-        await Provider.of<EventProvider>(context, listen: false).setEvent();
-      }
-      if (context.mounted) {
+        final paymentMethodsProvider =
+            Provider.of<PaymentMethodsByUserProvider>(context, listen: false);
         _ticketCategoriesByEventProvider =
             Provider.of<TicketCategoriesByEventProvider>(
           context,
           listen: false,
         );
+        await Provider.of<EventProvider>(context, listen: false).setEvent();
         await _ticketCategoriesByEventProvider!
             .fetchTicketCategoriesByEventId(widget.id);
-      }
-      if (context.mounted) {
-        final paymentMethodsProvider =
-            Provider.of<PaymentMethodsByUserProvider>(context, listen: false);
         await paymentMethodsProvider.fetchTermsAndConditions();
         await paymentMethodsProvider.getPaymentMethods();
       }
-      // if (context.mounted) {
-      //   await Provider.of<DiscountCodesByEventProvider>(
-      //     context,
-      //     listen: false,
-      //   ).fetchDiscountCodes();
-      // }
     } catch (e) {
       safePrint(e.toString());
     }
@@ -173,7 +165,7 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       if (discountCodesByEventProvider.discountCode!.maxUse != null) {
         if (discountCodesByEventProvider.discountCode!.maxUse! <=
             discountCodesByEventProvider.discountCode!.actualUse) {
-          errorMessage(context, "el codifo de descuento ya no es valido");
+          errorMessage(context, "el codigo de descuento ya no es valido");
           return;
         }
       }
