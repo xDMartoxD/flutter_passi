@@ -1,22 +1,15 @@
-import 'package:amplify_api/amplify_api.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
-
 import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
 import 'package:passi_app/screens/user_settings_screen.dart';
 import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
-
-import '../amplifyconfiguration.dart';
-import '../models/ModelProvider.dart';
 
 class AppTabs extends StatefulWidget {
   static const path = "/";
@@ -31,22 +24,6 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
   late final List<Map<String, Object?>> _screens;
   late int _currenPageIndex;
   // late final TabController _tabController;
-  bool _isAmplifyConfigured = false;
-  Future<void> _configureAmplify() async {
-    final authPlugin = AmplifyAuthCognito();
-    final api = AmplifyAPI(modelProvider: ModelProvider.instance);
-    final storage = AmplifyStorageS3();
-    await Amplify.addPlugins([api, authPlugin, storage]);
-    setState(() {
-      _isAmplifyConfigured = true;
-    });
-    try {
-      await Amplify.configure(amplifyconfig);
-    } on AmplifyAlreadyConfiguredException {
-      safePrint(
-          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-    }
-  }
 
   @override
   void initState() {
@@ -92,13 +69,6 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
     ];
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (!Amplify.isConfigured) {
-        await _configureAmplify();
-      } else {
-        setState(() {
-          _isAmplifyConfigured = true;
-        });
-      }
       if (context.mounted) {
         await Provider.of<AuthenticationProvider>(context, listen: false)
             .setUser();
@@ -116,8 +86,6 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
       // Wait for dialog popping animation
       await Future.delayed(const Duration(milliseconds: 200));
       // Request system's tracking authorization dialog
-      final TrackingStatus status =
-          await AppTrackingTransparency.requestTrackingAuthorization();
     }
 
     final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
@@ -183,9 +151,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
           _currenPageIndex = value;
         }),
       ),
-      body: _isAmplifyConfigured
-          ? _screens[_currenPageIndex]["screen"] as Widget
-          : const Loading(),
+      body: _screens[_currenPageIndex]["screen"] as Widget,
     );
   }
 }

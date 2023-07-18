@@ -7,7 +7,8 @@ class CartProvider with ChangeNotifier {
   Map<String, int> get cart => _cart;
   CartProvider({this.ticketCategoriesByEventProvider}) {
     if (ticketCategoriesByEventProvider != null) {
-      for (var ticketCategory in ticketCategoriesByEventProvider!.ticketCategories) {
+      for (var ticketCategory
+          in ticketCategoriesByEventProvider!.ticketCategories) {
         _cart[ticketCategory.id] = 0;
       }
     }
@@ -45,7 +46,8 @@ class CartProvider with ChangeNotifier {
   double get total {
     double total = 0;
     if (ticketCategoriesByEventProvider != null) {
-      for (var ticketCategory in ticketCategoriesByEventProvider!.ticketCategories) {
+      for (var ticketCategory
+          in ticketCategoriesByEventProvider!.ticketCategories) {
         total += cart[ticketCategory.id]! * ticketCategory.price;
       }
     }
@@ -56,7 +58,7 @@ class CartProvider with ChangeNotifier {
     List<String> ticketCategoriesID = [];
     for (var entrie in _cart.entries) {
       for (var i = 0; i < entrie.value; i++) {
-        ticketCategoriesID.add("\"${entrie.key}\"");
+        ticketCategoriesID.add(entrie.key);
       }
     }
     return ticketCategoriesID;

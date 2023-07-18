@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:passi_app/models/ModelProvider.dart';
@@ -63,7 +61,7 @@ class TicketsProvider with ChangeNotifier {
           final response = await restOperation.response;
           final body = json.decode(response.decodeBody());
           if (response.statusCode == 401) {
-            return body["data"]["data"];
+            return body["data"];
           }
           return null;
         } on ApiException catch (e) {

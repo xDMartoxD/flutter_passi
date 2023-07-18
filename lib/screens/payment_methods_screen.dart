@@ -155,11 +155,8 @@ class PaymentMethodsListWidget extends StatelessWidget {
             (paymentMethod) {
               return Dismissible(
                 onDismissed: (direction) async {
-                  if (paymentMethod.id ==
-                      paymentMethodsProvider.selectedPaymentMethod?.id) {
-                    await paymentMethodsProvider
-                        .deleteUserSelectedPaymentMethod();
-                  }
+                  await paymentMethodsProvider
+                      .removeUserPaymentMethod(paymentMethod);
                 },
                 background: Container(
                   alignment: Alignment.centerRight,

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
@@ -17,20 +16,18 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
   List<PaymentMethod> _paymentMethods = [];
   PresignedAcceptanceModel? _presignedAcceptance;
   bool _isChecked = false;
-  PaymentMethod? _selectedPaymentMethod;
   PresignedAcceptanceModel? get presignedAcceptance {
     return _presignedAcceptance;
   }
 
-  bool get isChecked {
-    return _isChecked;
+  bool get isChecked => _isChecked;
+
+  List<PaymentMethod> get paymentMethods => [..._paymentMethods];
+
+  PaymentMethod? get selectedPaymentMethod {
+    return authenticationProvider!.user?.selectedPaymentMethod;
   }
 
-  List<PaymentMethod> get paymentMethods {
-    return [..._paymentMethods];
-  }
-
-  PaymentMethod? get selectedPaymentMethod => _selectedPaymentMethod;
   PaymentMethodsByUserProvider({this.authenticationProvider});
 
   Future<void> getPaymentMethods() async {
@@ -52,13 +49,9 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
         return;
       }
       final List<PaymentMethod> loadedPaymentMethods = [];
-      for (var element in paginatedPaymentMethods.items) {
-        if (element != null) {
-          loadedPaymentMethods.add(element);
-          if (element.id ==
-              authenticationProvider?.user?.userSelectedPaymentMethodId) {
-            _selectedPaymentMethod = element;
-          }
+      for (var paymentMethod in paginatedPaymentMethods.items) {
+        if (paymentMethod != null) {
+          loadedPaymentMethods.add(paymentMethod);
         }
       }
       _paymentMethods = loadedPaymentMethods;
@@ -223,9 +216,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
 
         await authenticationProvider!
             .setUser(newUser: updatedUserResponse.data);
-        _selectedPaymentMethod = paymentMethod;
         notifyListeners();
-
         return true;
       } on Exception catch (e) {
         safePrint("BOTO EXCEPCION");
@@ -293,5 +284,18 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     } on Exception catch (_) {
       rethrow;
     }
+  }
+
+  Future<void> removeUserPaymentMethod(PaymentMethod paymentMethod) async {
+    if (paymentMethod.id == selectedPaymentMethod?.id) {
+      await deleteUserSelectedPaymentMethod();
+    }
+
+    final request = cognitoRequest(ModelMutations.deleteById(
+      PaymentMethod.classType,
+      paymentMethod.modelIdentifier,
+    ));
+    final response = await (Amplify.API.mutate(request: request).response);
+    safePrint('Response: $response');
   }
 }
