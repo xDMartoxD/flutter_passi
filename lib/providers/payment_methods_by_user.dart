@@ -30,34 +30,170 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
 
   PaymentMethodsByUserProvider({this.authenticationProvider});
 
+  PaymentMethodEnum _fromStringToPaymentMethodEnum(String paymentMethodStr) {
+    switch (paymentMethodStr) {
+      case "CARD":
+        return PaymentMethodEnum.CARD;
+
+      case "NEQUI":
+        return PaymentMethodEnum.NEQUI;
+      case "PSE":
+        return PaymentMethodEnum.PSE;
+      case "BANCOLOMBIA_TRANSFER":
+        return PaymentMethodEnum.BANCOLOMBIA_TRANSFER;
+      case "BANCOLOMBIA_COLLECT":
+        return PaymentMethodEnum.BANCOLOMBIA_COLLECT;
+      default:
+        throw Exception("El tipo de metodo de pago no esta definido");
+    }
+  }
+
+  BrandEnum _fromStringToBrandEnum(String brandStr) {
+    switch (brandStr) {
+      case "VISA":
+        return BrandEnum.VISA;
+      case "AMEX":
+        return BrandEnum.AMEX;
+      case "MASTERCARD":
+        return BrandEnum.MASTERCARD;
+      case "DINERS":
+        return BrandEnum.DINERS;
+
+      default:
+        throw Exception("La marca de la tarjeta no esta definida");
+    }
+  }
+
+  // Future<void> getPaymentMethods() async {
+  //   if (authenticationProvider == null ||
+  //       authenticationProvider?.user == null) {
+  //     return;
+  //   }
+  //   try {
+  //     final request = cognitoRequest(
+  //       ModelQueries.list(
+  //         PaymentMethod.classType,
+  //         where: PaymentMethod.USER.eq(authenticationProvider!.user!.id),
+  //       ),
+  //     );
+  //     safePrint(request.document);
+  //     final response = await Amplify.API.query(request: request).response;
+  //     final paginatedPaymentMethods = response.data;
+  //     if (paginatedPaymentMethods == null) {
+  //       safePrint('errors: ${response.errors}');
+  //       return;
+  //     }
+  //     final List<PaymentMethod> loadedPaymentMethods = [];
+  //     for (var paymentMethod in paginatedPaymentMethods.items) {
+  //       if (paymentMethod != null) {
+  //         loadedPaymentMethods.add(paymentMethod);
+  //       }
+  //     }
+  //     _paymentMethods = loadedPaymentMethods;
+  //     notifyListeners();
+  //   } on ApiException catch (e) {
+  //     safePrint('Query failed: $e');
+  //   }
+  // }
+
   Future<void> getPaymentMethods() async {
     if (authenticationProvider == null ||
         authenticationProvider?.user == null) {
       return;
     }
     try {
-      final request = cognitoRequest(
-        ModelQueries.list(
-          PaymentMethod.classType,
-          where: PaymentMethod.USER.eq(authenticationProvider!.user!.id),
+      const paymentMethodsByUser = 'paymentMethodsByUser';
+      String graphQLDocument = '''
+        query PaymentMethodsByUser(\$userId: ID!) {
+          $paymentMethodsByUser(userID: \$userId) {
+            items {
+              id
+              customer_email
+              createdAt
+              acceptance_token
+              paymentSourceID
+              status
+              token
+              type
+              updatedAt
+              userID
+              data {
+                bin
+                brand
+                card_holder
+                created_at
+                exp_month
+                exp_year
+                expires_at
+                id
+                last_four
+                name
+                phone_number
+                status
+              }
+            }
+          }
+        }
+      ''';
+
+      final ticketsByUserRequest = cognitoRequest(
+        GraphQLRequest(
+          document: graphQLDocument,
+          variables: <String, String>{
+            'userId': authenticationProvider!.user!.id
+          },
+          decodePath: paymentMethodsByUser,
         ),
       );
-      final response = await Amplify.API.query(request: request).response;
-      final paginatedPaymentMethods = response.data;
-      if (paginatedPaymentMethods == null) {
-        safePrint('errors: ${response.errors}');
+      final responseGraphQLDocument =
+          await Amplify.API.query(request: ticketsByUserRequest).response;
+      if (responseGraphQLDocument.data == null) {
+        safePrint('errors: ${responseGraphQLDocument.errors}');
         return;
       }
-      final List<PaymentMethod> loadedPaymentMethods = [];
-      for (var paymentMethod in paginatedPaymentMethods.items) {
-        if (paymentMethod != null) {
+      final data = jsonDecode(responseGraphQLDocument.data);
+      final paymentMethodsMap =
+          List<Map<String, dynamic>?>.from(data[paymentMethodsByUser]['items']);
+      List<PaymentMethod> loadedPaymentMethods = [];
+      for (var paymentMethodMap in paymentMethodsMap) {
+        if (paymentMethodMap != null) {
+          final paymentMethodData = PaymentMethodData(
+              bin: paymentMethodMap['data']['bin'],
+              brand: _fromStringToBrandEnum(paymentMethodMap['data']['brand']),
+              card_holder: paymentMethodMap['data']['card_holder'],
+              created_at: paymentMethodMap['data']['created_at'],
+              exp_month: paymentMethodMap['data']['exp_month'],
+              exp_year: paymentMethodMap['data']['exp_year'],
+              expires_at: paymentMethodMap['data']['expires_at'],
+              id: paymentMethodMap['data']['id'],
+              last_four: paymentMethodMap['data']['last_four'],
+              name: paymentMethodMap['data']['name'],
+              phone_number: paymentMethodMap['data']['phone_number'],
+              status: paymentMethodMap['data']['status']);
+          final paymentMethod = PaymentMethod(
+            id: paymentMethodMap['id'],
+            customer_email: paymentMethodMap['customer_email'],
+            createdAt:
+                TemporalDateTime.fromString(paymentMethodMap['createdAt']),
+            acceptance_token: paymentMethodMap['acceptance_token'],
+            paymentSourceID: paymentMethodMap['paymentSourceID'],
+            status: paymentMethodMap['status'],
+            token: paymentMethodMap['token'],
+            type: _fromStringToPaymentMethodEnum(paymentMethodMap['type']),
+            updatedAt:
+                TemporalDateTime.fromString(paymentMethodMap['updatedAt']),
+            user: authenticationProvider!.user,
+            data: paymentMethodData,
+          );
+
           loadedPaymentMethods.add(paymentMethod);
         }
+        _paymentMethods = loadedPaymentMethods;
       }
       _paymentMethods = loadedPaymentMethods;
       notifyListeners();
     } on ApiException catch (e) {
-      safePrint('Query failed: $e');
+      safePrint('Query failed $e');
     }
   }
 
@@ -141,6 +277,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
           if (createPaymentSourceData != 'ok') {
             return "No se pudo crear el payment source";
           }
+
           final didChangedUserSelectedPaymentMethod =
               await changeUserSelectedPaymentMethod(createdPaymentMethod);
           if (!didChangedUserSelectedPaymentMethod) {

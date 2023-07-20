@@ -32,11 +32,9 @@ Future<void> _configureAmplify() async {
     final storage = AmplifyStorageS3();
     // Create the Auth plugin.
     final auth = AmplifyAuthCognito();
-    final datastorePlugin =
-        AmplifyDataStore(modelProvider: ModelProvider.instance);
 
     // Add the plugins and configure Amplify for your app.
-    await Amplify.addPlugins([api, auth, storage, datastorePlugin]);
+    await Amplify.addPlugins([api, auth, storage]);
     await Amplify.configure(amplifyconfig);
 
     safePrint('Successfully configured');

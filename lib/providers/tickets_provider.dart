@@ -83,8 +83,8 @@ class TicketsProvider with ChangeNotifier {
       try {
         const ticketsByUser = 'ticketsByUser';
         String graphQLDocument = '''
-query TicketsByUser(\$userID: ID!) {
-  $ticketsByUser(userID: \$userID) {
+query TicketsByUser(\$userId: ID!) {
+  $ticketsByUser(userID: \$userId) {
     items {
       id
       code
@@ -110,7 +110,7 @@ query TicketsByUser(\$userID: ID!) {
           GraphQLRequest(
             document: graphQLDocument,
             variables: <String, String>{
-              'userID': authenticationProvider!.user!.id
+              'userId': authenticationProvider!.user!.id
             },
             decodePath: ticketsByUser,
           ),
@@ -123,23 +123,26 @@ query TicketsByUser(\$userID: ID!) {
         }
         final data = jsonDecode(responseGraphQLDocument.data);
         final ticketsMap =
-            List<Map<String, dynamic>>.from(data[ticketsByUser]['items']);
+            List<Map<String, dynamic>?>.from(data[ticketsByUser]['items']);
         List<Ticket?> loadedTickets = [];
         for (var ticketMap in ticketsMap) {
-          final event = await eventProvider!.getEventById(ticketMap['eventID']);
-          final ticketCategory = await ticketCategoryProvider!
-              .getTicketCategoryById(ticketMap['ticketCategoryID']);
-          final ticket = Ticket(
-            user: authenticationProvider!.user,
-            didAssist: ticketMap['didAssist'],
-            event: event,
-            id: ticketMap['id'],
-            seat: ticketMap['seat'],
-            ticketCategory: ticketCategory,
-            createdAt: TemporalDateTime.fromString(ticketMap['createdAt']),
-            updatedAt: TemporalDateTime.fromString(ticketMap['updatedAt']),
-          );
-          loadedTickets.add(ticket);
+          if (ticketMap != null) {
+            final event =
+                await eventProvider!.getEventById(ticketMap['eventID']);
+            final ticketCategory = await ticketCategoryProvider!
+                .getTicketCategoryById(ticketMap['ticketCategoryID']);
+            final ticket = Ticket(
+              user: authenticationProvider!.user,
+              didAssist: ticketMap['didAssist'],
+              event: event,
+              id: ticketMap['id'],
+              seat: ticketMap['seat'],
+              ticketCategory: ticketCategory,
+              createdAt: TemporalDateTime.fromString(ticketMap['createdAt']),
+              updatedAt: TemporalDateTime.fromString(ticketMap['updatedAt']),
+            );
+            loadedTickets.add(ticket);
+          }
         }
         _tickets = loadedTickets;
         notifyListeners();

@@ -15,10 +15,6 @@
         "cognitoUserPoolId": "authappamplify02fef6e8"
       }
     ],
-    "conflictResolution": {
-      "defaultResolutionStrategy": {
-        "type": "AUTOMERGE"
-      }
-    }
+    "conflictResolution": {}
   }
 }

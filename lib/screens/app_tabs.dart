@@ -8,7 +8,6 @@ import 'package:passi_app/screens/home_screen.dart';
 import 'package:passi_app/screens/profile_screen.dart';
 import 'package:passi_app/screens/tickets_screen.dart';
 import 'package:passi_app/screens/user_settings_screen.dart';
-import 'package:passi_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 class AppTabs extends StatefulWidget {
