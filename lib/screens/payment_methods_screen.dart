@@ -1,6 +1,6 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:passi_app/models/ModelProvider.dart';
 import 'package:passi_app/providers/authentication_provider.dart';
 import 'package:passi_app/providers/payment_methods_by_user.dart';
 import 'package:passi_app/screens/add_card_screen.dart';
@@ -134,8 +134,36 @@ class PaymentMethodsContent extends StatelessWidget {
   }
 }
 
-class PaymentMethodsListWidget extends StatelessWidget {
+class PaymentMethodsListWidget extends StatefulWidget {
   const PaymentMethodsListWidget({super.key});
+
+  @override
+  State<PaymentMethodsListWidget> createState() =>
+      _PaymentMethodsListWidgetState();
+}
+
+class _PaymentMethodsListWidgetState extends State<PaymentMethodsListWidget> {
+  late String? _selectedPaymentMethodId;
+  bool didChange = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!didChange) {
+      setState(() {
+        _selectedPaymentMethodId = context
+            .read<PaymentMethodsByUserProvider>()
+            .selectedPaymentMethod
+            ?.id;
+      });
+    }
+  }
+
+  void _onChangeHandler(PaymentMethod newSelectedPaymentMethod) async {
+    setState(() {
+      _selectedPaymentMethodId = newSelectedPaymentMethod.id;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,6 +199,8 @@ class PaymentMethodsListWidget extends StatelessWidget {
                 child: PaymentMethodContent(
                   paymentMethod: paymentMethod,
                   showTrailing: true,
+                  selectedPaymentMethodId: _selectedPaymentMethodId,
+                  onChangeHandler: _onChangeHandler,
                 ),
               );
             },

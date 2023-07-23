@@ -1,43 +1,19 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../constants/paymentMethodsLogos.dart';
 import '../models/PaymentMethod.dart';
-import '../providers/authentication_provider.dart';
-import '../providers/payment_methods_by_user.dart';
 
-class PaymentMethodContent extends StatefulWidget {
+class PaymentMethodContent extends StatelessWidget {
   final PaymentMethod paymentMethod;
   final bool showTrailing;
+  final String? selectedPaymentMethodId;
+  final void Function(PaymentMethod)? onChangeHandler;
   const PaymentMethodContent({
     super.key,
     required this.paymentMethod,
     required this.showTrailing,
+    this.selectedPaymentMethodId,
+    this.onChangeHandler,
   });
-
-  @override
-  State<PaymentMethodContent> createState() => _PaymentMethodContentState();
-}
-
-class _PaymentMethodContentState extends State<PaymentMethodContent> {
-  bool _isLoading = false;
-
-  void onChangeHandler(BuildContext buildContext, PaymentMethod paymentMethod) async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-      await Provider.of<PaymentMethodsByUserProvider>(context, listen: false)
-          .changeUserSelectedPaymentMethod(paymentMethod);
-    } on Exception catch (e) {
-      safePrint(e);
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,51 +22,48 @@ class _PaymentMethodContentState extends State<PaymentMethodContent> {
         ListTile(
           leading: CircleAvatar(
             backgroundImage: AssetImage(
-              getPaymentMethodLogo(widget.paymentMethod.type, widget.paymentMethod.data.brand),
+              getPaymentMethodLogo(
+                  paymentMethod.type, paymentMethod.data.brand),
             ),
           ),
           title: Text(
-            widget.paymentMethod.data.name ?? widget.paymentMethod.data.phone_number ?? '',
+            paymentMethod.data.name ?? paymentMethod.data.phone_number ?? '',
             style: Theme.of(context).textTheme.titleSmall!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          trailing: widget.showTrailing
+          trailing: showTrailing
               ? TrailingWidget(
-                  paymentMethod: widget.paymentMethod,
-                  onChangeHandler: onChangeHandler,
-                  isLoading: _isLoading,
+                  paymentMethod: paymentMethod,
+                  onChangeHandler: onChangeHandler!,
+                  selectedPaymentMethodId: selectedPaymentMethodId,
                 )
               : Container(
                   width: 0,
                 ),
         ),
-        widget.showTrailing ? const Divider() : Container()
+        showTrailing ? const Divider() : Container()
       ],
     );
   }
 }
 
 class TrailingWidget extends StatelessWidget {
-  final bool isLoading;
   final PaymentMethod paymentMethod;
-  final void Function(BuildContext, PaymentMethod) onChangeHandler;
+  final String? selectedPaymentMethodId;
+  final void Function(PaymentMethod) onChangeHandler;
   const TrailingWidget({
     super.key,
-    required this.isLoading,
     required this.paymentMethod,
     required this.onChangeHandler,
+    required this.selectedPaymentMethodId,
   });
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const CircularProgressIndicator()
-        : Consumer<AuthenticationProvider>(builder: (context, authenticationProvider, child) {
-            return Radio(
-                groupValue: authenticationProvider.user?.userSelectedPaymentMethodId,
-                value: paymentMethod.id,
-                onChanged: (_) => onChangeHandler(context, paymentMethod));
-          });
+    return Radio(
+        groupValue: selectedPaymentMethodId,
+        value: paymentMethod.id,
+        onChanged: (_) => onChangeHandler(paymentMethod));
   }
 }

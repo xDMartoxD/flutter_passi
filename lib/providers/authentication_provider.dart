@@ -60,12 +60,28 @@ class AuthenticationProvider with ChangeNotifier {
             return;
           }
           _user = data;
+          await _setUserSelectedPaymentMethod();
           notifyListeners();
         }
       } on ApiException catch (e) {
         safePrint('Query failed: $e');
       }
     }
+  }
+
+  Future<void> _setUserSelectedPaymentMethod() async {
+    if (_user != null && _user?.userSelectedPaymentMethodId != null) {
+      final request = cognitoRequest(
+        ModelQueries.get(
+          PaymentMethod.classType,
+          PaymentMethodModelIdentifier(id: user!.userSelectedPaymentMethodId!),
+        ),
+      );
+      final response = await Amplify.API.query(request: request).response;
+      final selectedPaymentMethodData = response.data;
+      _user = _user!.copyWith(selectedPaymentMethod: selectedPaymentMethodData);
+    }
+    notifyListeners();
   }
 
   Future<bool> isUserSignedIn() async {

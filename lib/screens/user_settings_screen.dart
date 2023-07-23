@@ -115,7 +115,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                   ),
                   ListTile(
                     onTap: () {
-                      context.pushNamed(PaymentMethodsScreen.name);
+                      context
+                          .pushNamed(PaymentMethodsScreen.name)
+                          .then((value) {});
                     },
                     leading: const Icon(
                       Icons.credit_card,

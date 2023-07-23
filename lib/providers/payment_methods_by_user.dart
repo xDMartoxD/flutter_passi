@@ -323,13 +323,16 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
   }
 
   Future<bool> changeUserSelectedPaymentMethod(
-      PaymentMethod paymentMethod) async {
+      PaymentMethod? paymentMethod) async {
     if (authenticationProvider == null ||
         authenticationProvider?.user == null) {
       return false;
     }
     {
-      if (paymentMethod.id ==
+      if (selectedPaymentMethod == null) {
+        return true;
+      }
+      if (paymentMethod!.id ==
           authenticationProvider?.user?.userSelectedPaymentMethodId) {
         return true;
       }

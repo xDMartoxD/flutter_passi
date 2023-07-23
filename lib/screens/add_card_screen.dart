@@ -93,6 +93,7 @@ class _CardFormState extends State<CardForm> {
       if (cardSaved == null) {
         if (context.mounted) {
           context.pop();
+          context.pop();
         }
       } else {
         _showErrorDialog(cardSaved);
