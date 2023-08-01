@@ -104,7 +104,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Continue'),
+              child: const Text('Continuar'),
             ),
           ],
         ),
@@ -128,27 +128,31 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
         ),
       ),
       bottomNavigationBar: NavigationBar(
+        
         destinations: const [
           NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.house),
+            icon: FaIcon(FontAwesomeIcons.house, size: 20,),
             label: "Home",
+
           ),
           NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.ticket),
+            icon: FaIcon(FontAwesomeIcons.ticket, size: 20,),
             label: "Tickets",
           ),
           NavigationDestination(
-            icon: Icon(
-              Icons.person,
-              size: 32,
+            icon: FaIcon(
+              FontAwesomeIcons.user,
+              size: 20,
             ),
-            label: "Profile",
+            
+            label: "Perfil",
           )
         ],
         selectedIndex: _currenPageIndex,
         onDestinationSelected: (value) => setState(() {
           _currenPageIndex = value;
         }),
+        
       ),
       body: _screens[_currenPageIndex]["screen"] as Widget,
     );

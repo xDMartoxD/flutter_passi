@@ -20,7 +20,7 @@ class PaymentMethodsScreen extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: const Text("Metodos de pago"),
+        title: const Text("Métodos de pago"),
       ),
       body: ChangeNotifierProxyProvider<AuthenticationProvider,
           PaymentMethodsByUserProvider>(
@@ -28,7 +28,7 @@ class PaymentMethodsScreen extends StatelessWidget {
           return PaymentMethodsByUserProvider();
         },
         update: (context, auth, previous) {
-          return PaymentMethodsByUserProvider(authenticationProvider: auth);
+          return PaymentMethodsByUserProvider(authenticationProvider: auth, paymentMethods: previous?.paymentMethods );
         },
         child: const PaymentMethodsContent(),
       ),
@@ -64,7 +64,7 @@ class PaymentMethodsContent extends StatelessWidget {
                   backgroundImage: AssetImage('assets/images/mastercard.png'),
                 ),
                 title: Text(
-                  "Tarjeta debito/credito",
+                  "Tarjeta débito/crédito con CVV",
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
@@ -113,7 +113,7 @@ class PaymentMethodsContent extends StatelessWidget {
                         onPressed: () =>
                             _addPaymentMethodHandler(context: context),
                         child: Text(
-                          "Agregar metodo de pago",
+                          "Agregar método de pago",
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
                                     fontWeight: FontWeight.bold,
@@ -163,6 +163,10 @@ class _PaymentMethodsListWidgetState extends State<PaymentMethodsListWidget> {
     setState(() {
       _selectedPaymentMethodId = newSelectedPaymentMethod.id;
     });
+    context
+            .read<PaymentMethodsByUserProvider>().changeUserSelectedPaymentMethod(newSelectedPaymentMethod);
+
+
   }
 
   @override

@@ -36,7 +36,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           return AlertDialog(
             title: const Text('Eliminar Cuenta'),
             content:
-                const Text('Estas seguro que deseas eliminar esta cuenta?'),
+                const Text("¿Estás seguro de que deseas eliminar esta cuenta?"),
             actions: <Widget>[
               TextButton(
                 style: TextButton.styleFrom(
@@ -123,7 +123,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       Icons.credit_card,
                       color: Colors.white,
                     ),
-                    title: const Text("Metodos de pago"),
+                    title: const Text("Métodos de pago"),
                   )
                 ],
               ),

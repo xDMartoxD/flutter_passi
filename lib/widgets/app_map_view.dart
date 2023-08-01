@@ -1,106 +1,145 @@
-// import 'dart:async';
+import 'dart:async';
+import 'dart:typed_data';
 
-// import 'package:flutter/material.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:passi_app/widgets/loading.dart';
+import 'dart:ui' as ui;
+import '../models/Event.dart';
 
-// void main() => runApp(MyApp());
+class AppMapView extends StatefulWidget {
+  final LatLng? center;
+  List<Event> events;
+  final bool? useGeoLoc;
+  final bool? canInteract; 
+  AppMapView({this.center, this.events = const [], this.useGeoLoc = false, this.canInteract = true});
+  @override
+  State<AppMapView> createState() => AppMapViewState();
+}
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Google Maps Demo',
-//       home: AppMapView(),
-//     );
-//   }
-// }
+class AppMapViewState extends State<AppMapView> {
+  Completer<GoogleMapController> _controller = Completer();
+  String? mapTheme;
+  late CameraPosition cameraPosition;
+  late Set<Marker> markers;
+  late Future<void> _data;
 
-// class AppMapView extends StatefulWidget {
-//   @override
-//   State<AppMapView> createState() => AppMapViewState();
-// }
+  @override
+  void initState() {
+    super.initState();
+    _data = _fromLatLngToMarkers();
+    cameraPosition = CameraPosition(
+      target: widget.center ?? const LatLng(4.591667, -74.123886),
+      zoom: 14.4746,
+    );
 
-// class AppMapViewState extends State<AppMapView> {
-//   Completer<GoogleMapController> _controller = Completer();
-//   String? mapTheme;
+    markers = {};
 
-//   @override
-//   void initState() {
-//     super.initState();
+    Future.delayed(Duration.zero).then((_) async {
+      mapTheme = await DefaultAssetBundle.of(context)
+          .loadString("assets/map_theme.json");
+    });
+  }
 
-//     Future.delayed(Duration.zero).then((value) async {
-//       mapTheme = await DefaultAssetBundle.of(context).loadString("assets/map_theme.json");
-//     });
-//   }
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-//   Future<Position> _determinePosition() async {
-//     bool serviceEnabled;
-//     LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Permisos de geolocalizacion desabilitados.');
+    }
 
-//     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-//     if (!serviceEnabled) {
-//       return Future.error('Location services are disabled.');
-//     }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Los permisos de geolocalizacion estan denegados');
+      }
+    }
 
-//     permission = await Geolocator.checkPermission();
-//     if (permission == LocationPermission.denied) {
-//       permission = await Geolocator.requestPermission();
-//       if (permission == LocationPermission.denied) {
-//         return Future.error('Location permissions are denied');
-//       }
-//     }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Los Permisos de Geolocalizacion estan denegados de forma permanente, no podemos solicitarlos.');
+    }
+    return await Geolocator.getCurrentPosition();
+  }
 
-//     if (permission == LocationPermission.deniedForever) {
-//       return Future.error(
-//           'Location permissions are permanently denied, we cannot request permissions.');
-//     }
-//     return await Geolocator.getCurrentPosition();
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _data,
+      builder: (ctx, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: cameraPosition,
+              zoomGesturesEnabled: widget.canInteract ?? true,
+              onMapCreated: (GoogleMapController controller) {
+                controller.setMapStyle(mapTheme);
+                if(widget.useGeoLoc == true) {
+                  _determinePosition().then(
+                  (position) => controller.animateCamera(
+                    CameraUpdate.newLatLng(
+                        LatLng(position.latitude, position.longitude)),
+                  ),
+                );
+                }
+                
 
-//   static final CameraPosition _kGooglePlex = CameraPosition(
-//     target: LatLng(37.42796133580664, -122.085749655962),
-//     zoom: 14.4746,
-//   );
+                _controller.complete(controller);
+              },
+              myLocationEnabled: true,
+              myLocationButtonEnabled: false,
+              markers: markers,
+              mapToolbarEnabled: false,
+              buildingsEnabled: false,
+              zoomControlsEnabled: false,
+              compassEnabled: false,
+            );
+          default:
+            return const Loading();
+        }
+      },
+    );
+  }
 
-//   static final CameraPosition _kLake = CameraPosition(
-//       bearing: 192.8334901395799,
-//       target: LatLng(37.43296265331129, -122.08832357078792),
-//       tilt: 59.440717697143555,
-//       zoom: 19.151926040649414);
+  Future<void> _fromLatLngToMarkers() async {
+    final Uint8List markerIconBytes = await getBytesFromAsset("assets/images/passi_pet.png", 300);
+    final icon = BitmapDescriptor.fromBytes(markerIconBytes);
+    for (var event in widget.events) {
+        final marker = Marker(
+        markerId: MarkerId(event.id),
+        draggable: false,
+        icon: icon,
+        position: LatLng(event.coords.lat, event.coords.lng),
+        anchor: Offset(0.5, 0.5)
+        
+      );
+      setState(() {
+        markers.add(marker);
+      });
+      
+    }
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return GoogleMap(
-//       mapType: MapType.normal,
-//       initialCameraPosition: _kGooglePlex,
-//       onMapCreated: (GoogleMapController controller) {
-//         controller.setMapStyle(mapTheme);
-//         _determinePosition().then(
-//           (position) => controller.animateCamera(
-//             CameraUpdate.newLatLng(LatLng(position.latitude, position.longitude)),
-//           ),
-//         );
+  // Future<BitmapDescriptor> _fromUrlToBitmap(String path) async {
+  //   Uri url = Uri.parse(path);
+  //   final request = await http.get(url);
+  //   final bytes = request.bodyBytes;
+  //   return BitmapDescriptor.fromBytes(bytes, size: const Size(.0001, .001));
+  // }
 
-//         _controller.complete(controller);
-//       },
-//       myLocationEnabled: true,
-//       myLocationButtonEnabled: false,
-//       markers: {
-//         Marker(
-//           markerId: MarkerId("1"),
-//           draggable: false,
-//         )
-//       },
-//       mapToolbarEnabled: false,
-//       buildingsEnabled: false,
-//       zoomControlsEnabled: false,
-//       compassEnabled: false,
-//     );
-//   }
 
-// Future<void> _goToTheLake() async {
-//   final GoogleMapController controller = await _controller.future;
-//   controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-// }
-// }
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  ByteData data = await rootBundle.load(path);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+}
+}

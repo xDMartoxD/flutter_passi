@@ -55,7 +55,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: const Text("Ocurrio un error"),
+            title: const Text("Ocurrió un error"),
             content: Text(message),
             actions: [
               TextButton(
@@ -91,7 +91,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || !isEmail(value)) {
-                      return 'Correo invalido';
+                      return 'Correo inválido';
                     }
                     return null;
                   },
@@ -109,7 +109,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   obscureText: true,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Contraseña invalida asegurate de que contenga por lo menos 8 caracteres';
+                      return 'Contraseña inválida, asegúrate de que contenga por lo menos 8 caracteres';
                     }
                     return null;
                   },

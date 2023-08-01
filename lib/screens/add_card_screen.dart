@@ -383,7 +383,7 @@ class _CardUtils {
     }
     input = getCleanedNumber(input);
     if (input.length < 8) {
-      return "Tarjeta invalida";
+      return "Tarjeta inválida";
     }
     int sum = 0;
     int length = input.length;
@@ -399,7 +399,7 @@ class _CardUtils {
     if (sum % 10 == 0) {
       return null;
     }
-    return "Tarjeta invalida";
+    return "Tarjeta inválida";
   }
 
   static String? validateCVV(String? value) {
@@ -407,7 +407,7 @@ class _CardUtils {
       return "Campo requerido";
     }
     if (value.length < 3 || value.length > 4) {
-      return "CVV es invalido";
+      return "CVV es inválido";
     }
     return null;
   }
@@ -429,13 +429,13 @@ class _CardUtils {
     }
     if ((month < 1) || (month > 12)) {
       // A valid month is between 1 (January) and 12 (December)
-      return 'Mes de vencimiento invalido';
+      return "Mes de vencimiento inválido";
     }
     var fourDigitsYear = convertYearTo4Digits(year);
     if ((fourDigitsYear < 1) || (fourDigitsYear > 2099)) {
       // We are assuming a valid should be between 1 and 2099.
       // Note that, it's valid doesn't mean that it has not expired.
-      return 'año de vencimiento invalido';
+      return  "Año de vencimiento inválido";
     }
     if (!hasDateExpired(month, year)) {
       return "Tarjeta vencida";

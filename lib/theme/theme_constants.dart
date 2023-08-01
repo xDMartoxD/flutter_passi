@@ -47,6 +47,7 @@ final darkTheme = ThemeData(
   cardColor: const Color.fromRGBO(33, 33, 33, 1),
   appBarTheme: const AppBarTheme(
     foregroundColor: Colors.white,
+    surfaceTintColor: Colors.transparent,
     color: Color.fromRGBO(33, 33, 33, 1),
     elevation: 0,
     titleTextStyle: TextStyle(
@@ -135,7 +136,9 @@ final darkTheme = ThemeData(
     surfaceTintColor: Colors.transparent,
     backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
     labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+  
   ),
+  
   tabBarTheme: const TabBarTheme(
     labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
     labelColor: Colors.white,

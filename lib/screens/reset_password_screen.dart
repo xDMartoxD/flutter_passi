@@ -44,7 +44,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       if (context.mounted) {
         final queryParams = SuccessScreenArgs(
                 title: "Contraseña actulizada",
-                message: "vuelver a ingresar tus datos")
+                message: "Vuelve a ingresar tus datos")
             .queryParams();
         context.pushNamed(SuccessScreen.name, queryParameters: queryParams);
       }
@@ -92,14 +92,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 TextFormField(
                   style: const TextStyle(fontSize: 20),
                   decoration: const InputDecoration(
-                    labelText: 'Codigo de confirmacion',
+                    labelText: 'Codigo de confirmación',
                     helperText:
-                        "Te hemos enviado un codigo de confirmacion a tu correo electronico",
+                        "Te hemos enviado un código de confirmación a tu correo electrónico",
                   ),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Codigo Invalido';
+                      return 'Código Invalido';
                     }
                     return null;
                   },
@@ -118,7 +118,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   keyboardType: TextInputType.visiblePassword,
                   validator: (value) {
                     if (value!.isEmpty || value.length < 8) {
-                      return 'Contraseña invalida asegurate de que contenga por lo menos 8 caracteres';
+                      return "Contraseña inválida, asegúrate de que contenga por lo menos 8 caracteres.";
                     }
                     return null;
                   },

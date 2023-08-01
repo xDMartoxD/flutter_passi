@@ -401,7 +401,7 @@ type Event
   companyUrl: AWSURL
   startDateTime: AWSDateTime!
   finishDateTime: AWSDateTime!
-  coords: Coordinates
+  coords: Coordinates!
   address: String!
   place: String
   minAge: Int

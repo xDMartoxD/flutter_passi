@@ -108,7 +108,7 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                   keyboardType: TextInputType.name,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Nombre Invalido';
+                      return 'Nombre Inválido';
                     }
                     return null;
                   },
@@ -125,7 +125,7 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || !isEmail(value)) {
-                      return 'Correo invalido';
+                      return 'Correo inválido';
                     }
                     return null;
                   },
@@ -143,7 +143,7 @@ class _EmailRegisterScreenState extends State<EmailRegisterScreen> {
                   keyboardType: TextInputType.visiblePassword,
                   validator: (value) {
                     if (value!.isEmpty || value.length < 8) {
-                      return 'Contraseña invalida asegurate de que contenga por lo menos 8 caracteres';
+                      return 'Contraseña inválida, asegurate de que contenga por lo menos 8 caracteres';
                     }
                     return null;
                   },

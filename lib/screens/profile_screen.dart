@@ -68,7 +68,7 @@ class _AuthState extends State<Auth> {
           CircleAvatar(
             backgroundColor: Theme.of(context).cardColor,
             radius: 50,
-            // backgroundImage: AssetImage('assets/images/empty-profile.png'),
+            
             child: SizedBox(
               height: 100,
               width: 100,

@@ -28,7 +28,9 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     return authenticationProvider!.user?.selectedPaymentMethod;
   }
 
-  PaymentMethodsByUserProvider({this.authenticationProvider});
+  PaymentMethodsByUserProvider({this.authenticationProvider, List<PaymentMethod>? paymentMethods}) {
+    _paymentMethods = paymentMethods ?? [];
+  }
 
   PaymentMethodEnum _fromStringToPaymentMethodEnum(String paymentMethodStr) {
     switch (paymentMethodStr) {
@@ -64,37 +66,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
     }
   }
 
-  // Future<void> getPaymentMethods() async {
-  //   if (authenticationProvider == null ||
-  //       authenticationProvider?.user == null) {
-  //     return;
-  //   }
-  //   try {
-  //     final request = cognitoRequest(
-  //       ModelQueries.list(
-  //         PaymentMethod.classType,
-  //         where: PaymentMethod.USER.eq(authenticationProvider!.user!.id),
-  //       ),
-  //     );
-  //     safePrint(request.document);
-  //     final response = await Amplify.API.query(request: request).response;
-  //     final paginatedPaymentMethods = response.data;
-  //     if (paginatedPaymentMethods == null) {
-  //       safePrint('errors: ${response.errors}');
-  //       return;
-  //     }
-  //     final List<PaymentMethod> loadedPaymentMethods = [];
-  //     for (var paymentMethod in paginatedPaymentMethods.items) {
-  //       if (paymentMethod != null) {
-  //         loadedPaymentMethods.add(paymentMethod);
-  //       }
-  //     }
-  //     _paymentMethods = loadedPaymentMethods;
-  //     notifyListeners();
-  //   } on ApiException catch (e) {
-  //     safePrint('Query failed: $e');
-  //   }
-  // }
+  
 
   Future<void> getPaymentMethods() async {
     if (authenticationProvider == null ||
@@ -340,6 +312,7 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
         final userWithNewSelectedPaymentMethod =
             authenticationProvider!.user!.copyWith(
           userSelectedPaymentMethodId: paymentMethod.id,
+          selectedPaymentMethod: paymentMethod
         );
 
         final updatedUserRequest = cognitoRequest(
@@ -355,8 +328,9 @@ class PaymentMethodsByUserProvider with ChangeNotifier {
         }
 
         await authenticationProvider!
-            .setUser(newUser: updatedUserResponse.data);
-        notifyListeners();
+            .setUser(newUser: userWithNewSelectedPaymentMethod);
+
+        
         return true;
       } on Exception catch (e) {
         safePrint("BOTO EXCEPCION");

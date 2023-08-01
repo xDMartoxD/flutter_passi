@@ -37,11 +37,11 @@ class AppRouter {
             path: EventDetailsScreen.path,
             name: EventDetailsScreen.name,
             builder: (BuildContext context, GoRouterState state) {
-              state.pathParameters.addAll(state.queryParameters);
+              state.pathParameters.addAll(state.uri.queryParameters);
               final args = EventDetailScreenArgs.fromJson(state.pathParameters);
               return EventDetailsScreen(
                 id: args.id,
-                promoterCode: args.code,
+                code: args.code,
               );
             },
           ),
@@ -52,12 +52,12 @@ class AppRouter {
               final args = EventCheckoutScreenArgs.fromJson(
                 {
                   ...state.pathParameters,
-                  ...state.queryParameters,
+                  ...state.uri.queryParameters,
                 },
               );
               return EventCheckoutScreen(
                 id: args.id,
-                code: args.discountCode,
+                code: args.code,
               );
             },
           ),
@@ -80,7 +80,7 @@ class AppRouter {
             name: EventCategoriesOverviewScreen.name,
             builder: (BuildContext context, GoRouterState state) {
               final args = EventCategoriesOverviewScreenArgs.fromJson(
-                  state.queryParameters);
+                  state.uri.queryParameters);
               return EventCategoriesOverviewScreen(
                 id: args.id,
                 categoryName: args.categoryName,
@@ -99,7 +99,7 @@ class AppRouter {
               name: EmailConfirmationScreen.name,
               builder: (context, state) {
                 final args = EmailConfirmationScreenArgs.fromJson(
-                  state.queryParameters,
+                  state.uri.queryParameters,
                 );
                 return EmailConfirmationScreen(
                   email: args.email,
@@ -129,7 +129,7 @@ class AppRouter {
               name: ErrorsScreen.name,
               builder: (context, state) {
                 final args = ErrorsScreenArgs.fromJson(
-                  state.queryParameters,
+                  state.uri.queryParameters,
                 );
                 return ErrorsScreen(error: args.error);
               }),
@@ -137,7 +137,7 @@ class AppRouter {
               path: SuccessScreen.path,
               name: SuccessScreen.name,
               builder: (context, state) {
-                final args = SuccessScreenArgs.fromJson(state.queryParameters);
+                final args = SuccessScreenArgs.fromJson(state.uri.queryParameters);
                 return SuccessScreen(title: args.title, message: args.message);
               }),
           GoRoute(

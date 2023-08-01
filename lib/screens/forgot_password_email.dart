@@ -85,11 +85,11 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                   decoration: const InputDecoration(
                       labelText: 'Correo',
                       helperText:
-                          "Enviaremos un correo electronico con un codigo"),
+                         "Enviaremos un correo electrónico con un código"),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || !isEmail(value)) {
-                      return 'Correo invalido';
+                      return 'Correo inválido';
                     }
                     return null;
                   },

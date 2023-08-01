@@ -1,15 +1,18 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:passi_app/providers/jobs_by_event.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/screen_args/event_checkout_screen_args.dart';
 import '../providers/authentication_provider.dart';
 import '../providers/event_provider.dart';
 import '../providers/ticket_cateogories_by_event_provider.dart';
 import './event_checkout_screen.dart';
 import '../widgets/expandable_text.dart';
-// import '../widgets/app_map_view.dart';
+import '../widgets/app_map_view.dart';
 import '../widgets/loading.dart';
 import '../utils/flutter_utils.dart';
 
@@ -18,9 +21,9 @@ class EventDetailsScreen extends StatefulWidget {
   static const name = "event-details";
 
   final String id;
-  final String? promoterCode;
+  final String? code;
 
-  const EventDetailsScreen({super.key, required this.id, this.promoterCode});
+  const EventDetailsScreen({super.key, required this.id, this.code});
 
   @override
   State<EventDetailsScreen> createState() => _EventDetailsScreenState();
@@ -36,25 +39,18 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       (value) {
         _authenticationProvider =
             Provider.of<AuthenticationProvider>(context, listen: false);
-        // _authenticationProvider!.addListener(_authenticationListener);
       },
     );
   }
 
-  // void _authenticationListener() {
-  //   _user = _authenticationProvider?.user;
-  //   print("LISTENER ${_user?.name}");
-  // }
-
   @override
   void dispose() {
-    // _authenticationProvider?.removeListener(_authenticationListener);
     super.dispose();
   }
 
   void _goToCheckout(BuildContext context) {
     final args = EventCheckoutScreenArgs(
-        id: widget.id, discountCode: widget.promoterCode);
+        id: widget.id, code: widget.code);
     context.pushNamed(
       EventCheckoutScreen.name,
       pathParameters: args.params(),
@@ -223,18 +219,40 @@ class _EventContentState extends State<EventContent> {
                               ),
                               if (jobsProvider.promoters.isNotEmpty)
                                 const PromotersWidget(),
-                              // SizedBox(height: 20),
-                              // Padding(
-                              //   padding: const EdgeInsets.all(8.0),
-                              //   child: AspectRatio(
-                              //     aspectRatio: 3 / 2,
-                              //     child: ClipRRect(
-                              //       borderRadius: BorderRadius.circular(15),
-                              //       child: AppMapView(),
-                              //     ),
-                              //   ),
-                              // ),
-                              // SizedBox(height: 20),
+                              const SizedBox(height: 10),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AspectRatio(
+                                  aspectRatio: 3 / 2,
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: AppMapView(
+                                          canInteract: false,
+                                          center: LatLng(
+                                            eventProvider.event!.coords.lat,
+                                            eventProvider.event!.coords.lng,
+                                          ),
+                                          events: [eventProvider.event!],
+                                        ),
+                                      ),
+                                      Positioned.fill(
+                                        child: InkWell(
+                                          onTap: () async {
+                                            safePrint("Hola");
+                                            await openMap(
+                                              eventProvider.event!.coords.lat,
+                                              eventProvider.event!.coords.lng,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
                               if (eventProvider.event!.description != null)
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -252,6 +270,16 @@ class _EventContentState extends State<EventContent> {
       },
     );
   }
+
+  static Future<void> openMap(double latitude, double longitude) async {
+    final googleUrl = Uri.parse(
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
+    if (await canLaunchUrl(googleUrl)) {
+      await launchUrl(googleUrl);
+    } else {
+      throw 'Could not open the map.';
+    }
+  }
 }
 
 class PromotersWidget extends StatelessWidget {
@@ -266,7 +294,7 @@ class PromotersWidget extends StatelessWidget {
         ListTile(
           leading: CircleAvatar(backgroundColor: Theme.of(context).cardColor),
           title: Text(
-            "Pimer Promotor",
+            "Primer Promotor",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(
@@ -285,7 +313,7 @@ class PromotersWidget extends StatelessWidget {
         ListTile(
           leading: CircleAvatar(backgroundColor: Theme.of(context).cardColor),
           title: Text(
-            "Pimer Promotor",
+            "Primer Promotor",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(
@@ -304,7 +332,7 @@ class PromotersWidget extends StatelessWidget {
         ListTile(
           leading: CircleAvatar(backgroundColor: Theme.of(context).cardColor),
           title: Text(
-            "Pimer Promotor",
+            "Primer Promotor",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           trailing: IconButton(

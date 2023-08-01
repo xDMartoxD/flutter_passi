@@ -61,7 +61,7 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
     showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: const Text("Ocurrio un error"),
+            title: const Text("Ocurrió un error"),
             content: Text(message),
             actions: [
               TextButton(

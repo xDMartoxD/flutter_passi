@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/EventCategory.dart';
-
 import '../providers/event_categories_provider.dart';
 import '../providers/events_by_category.dart';
-
 import '../widgets/event_item.dart';
-
 import '../widgets/loading.dart';
 import 'package:provider/provider.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -134,6 +132,7 @@ class EventCategoryTitle extends StatelessWidget {
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
+            overflow: TextOverflow.clip,
           ),
         ),
         // TextButton(
@@ -141,7 +140,7 @@ class EventCategoryTitle extends StatelessWidget {
         //     final args = EventCategoriesOverviewScreenArgs(id: id, categoryName: name);
         //     context.pushNamed(
         //       EventCategoriesOverviewScreen.name,
-        //       queryParams: args.queryParams(),
+        //       queryParameters: args.queryParams(),
         //     );
         //   }),
         //   style: TextButton.styleFrom(

@@ -60,7 +60,7 @@ class EventItemLarge extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
             Text(
-              "$address - $place",
+              "$address - ${place ?? ""}",
               style: const TextStyle(color: Colors.grey),
               textAlign: TextAlign.left,
             ),

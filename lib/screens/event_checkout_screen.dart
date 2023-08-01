@@ -141,6 +141,10 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       CartProvider cartProvider,
       EventProvider eventProvider,
       DiscountCodesByEventProvider discountCodesByEventProvider) async {
+        try{
+         setState(() {
+        _isLoading = true;
+      });
     if (authProvider.user == null) {
       errorMessage(context, "Se necesita un usuario");
       return;
@@ -165,21 +169,17 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
       if (discountCodesByEventProvider.discountCode!.maxUse != null) {
         if (discountCodesByEventProvider.discountCode!.maxUse! <=
             discountCodesByEventProvider.discountCode!.actualUse) {
-          errorMessage(context, "el codigo de descuento ya no es valido");
+          errorMessage(context, "El código de descuento ya no es válido");
           return;
         }
       }
       if (discountCodesByEventProvider.discountCode!.validUntil
               .compareTo(TemporalDateTime.now()) <
           0) {
-        errorMessage(context, "El codigo ya no es valido");
+        errorMessage(context, "El código de descuento ya no es válido");
         return;
       }
-    }
-    try {
-      setState(() {
-        _isLoading = true;
-      });
+    } 
       final error = await Provider.of<TicketsProvider>(context, listen: false)
           .createTickets();
       if (error == null) {
@@ -187,19 +187,24 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
           final queryParams = SuccessScreenArgs(
             title: "Entrada creada correctamente",
             message:
-                "Entra a la pestaña de tiquetes y revisa que tus entradas hayan sido creadas correctamente. En caso de que haya ocurrido un error no dudes contactanos por WhatsApp a este numero +57 300 8686262.",
+                "Entra a la pestaña de tiquetes y revisa que tus entradas hayan sido creadas correctamente. En caso de que haya ocurrido un error, no dudes en contactarnos por WhatsApp a este número +57 300 8686262.",
           ).queryParams();
-          context.pushNamed(SuccessScreen.name, queryParameters: queryParams);
+          context.goNamed(SuccessScreen.name, queryParameters: queryParams);
         }
       } else {
         final params = ErrorsScreenArgs(error: error);
         if (context.mounted) {
-          context.pushNamed(ErrorsScreen.name,
+          context.goNamed(ErrorsScreen.name,
               queryParameters: params.queryParams());
         }
       }
     } catch (e) {
       errorMessage(context, e.toString());
+    }
+    finally{
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -292,7 +297,10 @@ class _EventCheckoutContentState extends State<EventCheckoutContent> {
                                 ? const CircularProgressIndicator()
                                 : const BuyButtonChild(),
                           ),
-                        )
+                        ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                     ],
                   ),
                 );
@@ -381,7 +389,7 @@ class BuyButtonChild extends StatelessWidget {
                         ),
                     children: [
                       TextSpan(
-                        text:
+                        text: cartProvider.total - discountCodesProvider.discountCode!.discount < 0? " Gratis ":
                             " ${formatNumber(cartProvider.total - discountCodesProvider.discountCode!.discount)} COP",
                         style: Theme.of(context).textTheme.titleLarge!.copyWith(
                               color: Colors.black,
@@ -479,7 +487,7 @@ class _DiscountCodeWidgetState extends State<DiscountCodeWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Codigo de descuento",
+                    "Código de descuento",
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge!
@@ -548,11 +556,11 @@ class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
             children: [
               Text.rich(
                 TextSpan(
-                  text: "He leido y acepto los ",
+                  text: "He leído y acepto los ",
                   style: Theme.of(context).textTheme.bodyMedium,
                   children: [
                     TextSpan(
-                      text: "Terminos y condiciones ",
+                      text: "Términos y condiciones ",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: const Color.fromRGBO(26, 135, 244, 1),
                           ),
@@ -563,7 +571,7 @@ class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
                     ),
                     TextSpan(
                       text:
-                          "y las politicas de privacidad para hacer esta compra.",
+                          "y las políticas de privacidad para hacer esta compra.",
                       style: Theme.of(context).textTheme.bodyMedium,
                     )
                   ],
