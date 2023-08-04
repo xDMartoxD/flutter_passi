@@ -29,7 +29,7 @@ class EventItem extends StatelessWidget {
                 pathParameters: args.params(),
               );
             },
-            child: Container(
+            child: SizedBox(
               height: 150,
               width: 150,
               child: ClipRRect(

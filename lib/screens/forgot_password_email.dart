@@ -79,7 +79,7 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 TextFormField(
                   style: const TextStyle(fontSize: 20),
                   decoration: const InputDecoration(

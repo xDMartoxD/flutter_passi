@@ -17,7 +17,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 5.0.1+2
+version: 5.0.2+3
 
 environment:
   sdk: ">=2.18.6 <4.0.0"
@@ -41,7 +41,6 @@ dependencies:
   url_launcher: ^6.1.10
   path_provider: ^2.0.11
   font_awesome_flutter: ^10.3.0
-  flutter_native_splash: ^2.2.17
   flutter_local_notifications: ^15.1.0+1
   app_tracking_transparency: ^2.0.3
   shared_preferences: ^2.0.17
@@ -60,10 +59,10 @@ dependencies:
   json_annotation: ^4.8.0
   flutter_launcher_icons: ^0.13.1
   http: ^1.1.0
-  amplify_datastore: ^1.2.0-supports-only-mobile+1
   google_maps_flutter: ^2.4.0
   geolocator: ^9.0.2
   flutter_config: ^2.0.2
+  flutter_native_splash: ^2.2.17
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +75,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
+
 flutter_icons:
   android: true
   ios: true
@@ -83,7 +83,8 @@ flutter_icons:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_native_splash:
-  image: assets/images/passi_logo_dark.jpg
+  image: assets/images/passi_pet.png
+  color: "#212121"
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is

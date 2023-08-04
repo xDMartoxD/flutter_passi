@@ -38,7 +38,7 @@ class CardForm extends StatefulWidget {
 class _CardFormState extends State<CardForm> {
   bool _isLoading = false;
   TextEditingController cardNumberController = TextEditingController();
-  _CardType cardType = _CardType.Invalid;
+  _CardType cardType = _CardType.invalid;
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _cardData = {
     'number': '',
@@ -245,15 +245,15 @@ class _CardFormState extends State<CardForm> {
 }
 
 enum _CardType {
-  Master,
-  Visa,
-  Verve,
-  Discover,
-  AmericanExpress,
-  DinersClub,
-  Jcb,
-  Others,
-  Invalid
+  master,
+  visa,
+  verve,
+  discover,
+  americanExpress,
+  dinersClub,
+  jcb,
+  others,
+  invalid
 }
 
 class _CardNumberInputFormatter extends TextInputFormatter {
@@ -307,23 +307,23 @@ class _CardUtils {
     _CardType cardType;
     if (input.startsWith(RegExp(
         r'((5[1-5])|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))'))) {
-      cardType = _CardType.Master;
+      cardType = _CardType.master;
     } else if (input.startsWith(RegExp(r'[4]'))) {
-      cardType = _CardType.Visa;
+      cardType = _CardType.visa;
     } else if (input.startsWith(RegExp(r'((506(0|1))|(507(8|9))|(6500))'))) {
-      cardType = _CardType.Verve;
+      cardType = _CardType.verve;
     } else if (input.startsWith(RegExp(r'((34)|(37))'))) {
-      cardType = _CardType.AmericanExpress;
+      cardType = _CardType.americanExpress;
     } else if (input.startsWith(RegExp(r'((6[45])|(6011))'))) {
-      cardType = _CardType.Discover;
+      cardType = _CardType.discover;
     } else if (input.startsWith(RegExp(r'((30[0-5])|(3[89])|(36)|(3095))'))) {
-      cardType = _CardType.DinersClub;
+      cardType = _CardType.dinersClub;
     } else if (input.startsWith(RegExp(r'(352[89]|35[3-8][0-9])'))) {
-      cardType = _CardType.Jcb;
+      cardType = _CardType.jcb;
     } else if (input.length <= 8) {
-      cardType = _CardType.Others;
+      cardType = _CardType.others;
     } else {
-      cardType = _CardType.Invalid;
+      cardType = _CardType.invalid;
     }
     return cardType;
   }
@@ -332,19 +332,19 @@ class _CardUtils {
     String img = "";
     Icon? icon;
     switch (cardType) {
-      case _CardType.Master:
+      case _CardType.master:
         img = 'mastercard.png';
         break;
-      case _CardType.Visa:
+      case _CardType.visa:
         img = 'visa.jpeg';
         break;
-      case _CardType.AmericanExpress:
+      case _CardType.americanExpress:
         img = 'american_express.png';
         break;
-      case _CardType.DinersClub:
+      case _CardType.dinersClub:
         img = 'dinners_club.jpeg';
         break;
-      case _CardType.Others:
+      case _CardType.others:
         icon = const Icon(
           Icons.credit_card,
           size: 24.0,
@@ -460,11 +460,6 @@ class _CardUtils {
   static bool isNotExpired(int year, int month) {
     // It has not expired if both the year and date has not passed
     return !hasYearPassed(year) && !hasMonthPassed(year, month);
-  }
-
-  static List<int> getExpiryDate(String value) {
-    var split = value.split(RegExp(r'(/)'));
-    return [int.parse(split[0]), int.parse(split[1])];
   }
 
   static bool hasMonthPassed(int year, int month) {

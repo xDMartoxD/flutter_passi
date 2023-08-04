@@ -22,6 +22,7 @@ class AppTabs extends StatefulWidget {
 class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
   late final List<Map<String, Object?>> _screens;
   late int _currenPageIndex;
+
   // late final TabController _tabController;
 
   @override
@@ -29,7 +30,8 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
     super.initState();
     // _tabController = TabController(length: 3, vsync: this);
     // _tabController.index = 1;
-    initPlugin();
+     WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) => initPlugin());
+
     _currenPageIndex = 0;
 
     _screens = [
@@ -74,14 +76,14 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
       }
     });
   }
-
-  Future<void> initPlugin() async {
-    final status = await AppTrackingTransparency.trackingAuthorizationStatus;
-    print(status.name);
+ Future<void> initPlugin() async {
+    final TrackingStatus status =
+        await AppTrackingTransparency.trackingAuthorizationStatus;
+   
     // If the system can show an authorization request dialog
     if (status == TrackingStatus.notDetermined) {
       // Show a custom explainer dialog before the system dialog
-      await showCustomTrackingDialog(context);
+      await showCustomTrackingDialog();
       // Wait for dialog popping animation
       await Future.delayed(const Duration(milliseconds: 200));
       // Request system's tracking authorization dialog
@@ -90,8 +92,7 @@ class _AppTabsState extends State<AppTabs> with TickerProviderStateMixin {
     final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
     safePrint("UUID: $uuid");
   }
-
-  Future<void> showCustomTrackingDialog(BuildContext context) async =>
+  Future<void> showCustomTrackingDialog() async =>
       await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(

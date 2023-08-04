@@ -509,9 +509,10 @@ class TicketWidget extends StatelessWidget {
             horizontal: 20.0,
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 10),
+           
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -555,9 +556,9 @@ class TicketWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 24,
-              ),
+            //  SizedBox(
+            //     height: MediaQuery.of(context).size.height * .01,
+            //   ),
               Text(
                 "Evento",
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -571,9 +572,9 @@ class TicketWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(
-                height: 16,
-              ),
+              // const SizedBox(
+              //   height: 16,
+              // ),
               Text(
                 "Lugar y Direccion",
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -587,9 +588,9 @@ class TicketWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(
-                height: 24,
-              ),
+              //  SizedBox(
+              //   height: MediaQuery.of(context).size.height * .01,
+              // ),
               Row(
                 children: [
                   Text(
@@ -602,30 +603,28 @@ class TicketWidget extends StatelessWidget {
                   Checkbox(value: didAssit, onChanged: (value) {})
                 ],
               ),
-              const SizedBox(
-                height: 24,
-              ),
+              //  SizedBox(
+              //   height: MediaQuery.of(context).size.height * .01,
+              // ),
               InkWell(
                 onTap: () => showQr(context),
                 child: Center(
                   child: QrImageView(
                     data: id,
                     version: QrVersions.auto,
-                    size: 120.0,
+                    size: MediaQuery.of(context).size.height * .15,
                     backgroundColor: Colors.white,
                   ),
                 ),
               ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    ticketCategoryName,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
+              Center(
+                child: Text(
+                  ticketCategoryName,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
               )
             ],

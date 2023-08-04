@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:typed_data';
-
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'package:passi_app/widgets/loading.dart';
 import 'dart:ui' as ui;
 import '../models/Event.dart';
@@ -16,13 +12,13 @@ class AppMapView extends StatefulWidget {
   List<Event> events;
   final bool? useGeoLoc;
   final bool? canInteract; 
-  AppMapView({this.center, this.events = const [], this.useGeoLoc = false, this.canInteract = true});
+  AppMapView({this.center, this.events = const [], this.useGeoLoc = false, this.canInteract = true, super.key});
   @override
   State<AppMapView> createState() => AppMapViewState();
 }
 
 class AppMapViewState extends State<AppMapView> {
-  Completer<GoogleMapController> _controller = Completer();
+  final _controller = Completer();
   String? mapTheme;
   late CameraPosition cameraPosition;
   late Set<Marker> markers;
@@ -118,7 +114,7 @@ class AppMapViewState extends State<AppMapView> {
         draggable: false,
         icon: icon,
         position: LatLng(event.coords.lat, event.coords.lng),
-        anchor: Offset(0.5, 0.5)
+        anchor: const Offset(0.5, 0.5)
         
       );
       setState(() {

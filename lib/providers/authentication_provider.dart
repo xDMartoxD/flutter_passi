@@ -1,6 +1,5 @@
 import 'package:amplify_api/amplify_api.dart';
 
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -104,7 +103,7 @@ class AuthenticationProvider with ChangeNotifier {
       await Amplify.Auth.signUp(
         username: email,
         password: password,
-        options: CognitoSignUpOptions(userAttributes: userAttributes),
+        options: SignUpOptions(userAttributes: userAttributes),
       );
     } on AuthException catch (e) {
       safePrint(e.message);

@@ -21,7 +21,8 @@ Future<String> validateTicket(
       }),
     );
   } on Exception catch (e) {
-    return "ERROR";
+    
+    return "ERROR $e";
   }
   //If response is not 200, throw exception
   if (response.statusCode != 200) {
